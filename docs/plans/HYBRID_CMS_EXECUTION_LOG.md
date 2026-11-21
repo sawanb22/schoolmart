@@ -273,8 +273,8 @@
 
 ## T7 – Backend Consumers Read from Tables – DONE
 - Date: 2026-11-21
-- Commit: `0a7dba5` (T7: Backend consumers read from tables)
-- Review Status: Self-verified (T7 complete, 0 critical, 0 important)
+- Commit: `27f4310` (T7: Backend consumers read from tables)
+- Review Status: APPROVED (commits 8de212e..27f4310, review clean, 0 critical, 0 important)
 - Backup used (if DB touched): N/A (read-only queries and tests strictly against isolated test DB DATABASE_URL_TEST).
 - Files changed (summary):
   - Updated `backend/src/services/solutions-finder/types/solutions-card.types.ts`: added `cmsVersion?: number` to `DataWatermarks`.
