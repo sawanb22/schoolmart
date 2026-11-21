@@ -325,6 +325,10 @@ router.post('/:pageId/items', async (req: AuthRequest, res: Response) => {
 
     res.status(201).json(toItemFull(completeItem, { includeCard: true }));
   } catch (error) {
+    if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === 'P2002') {
+      res.status(409).json({ error: 'slug_taken', message: 'Slug collision on creation' });
+      return;
+    }
     console.error('[AdminPageItems] POST /:pageId/items failed:', error);
     res.status(500).json({ error: 'Failed to create page item' });
   }
@@ -918,6 +922,10 @@ router.post('/:pageId/categories', async (req: AuthRequest, res: Response) => {
       },
     });
   } catch (error) {
+    if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === 'P2002') {
+      res.status(409).json({ error: 'slug_taken', message: 'Category slug already exists on page' });
+      return;
+    }
     console.error('[AdminPageItems] POST /:pageId/categories failed:', error);
     res.status(500).json({ error: 'Failed to create category' });
   }

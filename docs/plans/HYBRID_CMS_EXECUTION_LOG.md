@@ -234,8 +234,8 @@
 
 ## T6 – Admin Item and Category API with Validation and Locking – DONE
 - Date: 2026-11-21
-- Commit: `6edd69f` (T6: Admin item and category API with validation and locking)
-- Review Status: PENDING_REVIEW
+- Commit: `829c243` (T6: Admin item and category API with validation and locking)
+- Review Status: APPROVED (commits 124b903..829c243, review clean, 0 critical, 0 important)
 - Backup used (if DB touched): N/A (Admin tests run strictly against isolated test DB `DATABASE_URL_TEST`).
 - Files changed (summary):
   - Installed and pinned `zod@3.23.8`, `sanitize-html@2.14.0`, and `@types/sanitize-html@2.16.2` in `backend/package.json`.
