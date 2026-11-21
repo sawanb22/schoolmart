@@ -1,4 +1,5 @@
 import jwt from 'jsonwebtoken';
+import prisma from '../../src/lib/prisma';
 
 export interface TestUserPayload {
   id?: number;
@@ -23,4 +24,29 @@ export function createAdminToken(user: Partial<TestUserPayload> = {}): string {
     email: user.email ?? 'admin@schoolmart.in',
     role: 'admin',
   });
+}
+
+export async function seedAdminUser(): Promise<{ user: any; token: string }> {
+  const admin = await prisma.user.upsert({
+    where: { email: 'admin@schoolmart.in' },
+    create: {
+      id: 999,
+      email: 'admin@schoolmart.in',
+      name: 'Admin Test',
+      passwordHash: 'dummy_hash',
+      role: 'admin',
+      emailVerified: true,
+    },
+    update: {
+      role: 'admin',
+      emailVerified: true,
+    },
+  });
+  const token = createAdminToken({ id: admin.id, email: admin.email, role: 'admin' });
+  return { user: admin, token };
+}
+
+export async function getAdminToken(): Promise<string> {
+  const { token } = await seedAdminUser();
+  return token;
 }

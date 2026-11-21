@@ -1,6 +1,11 @@
-import { PrismaClient } from '@prisma/client';
+import dns from 'dns';
+import prisma from '../../src/lib/prisma';
 
-export const prisma = new PrismaClient();
+if (typeof dns.setDefaultResultOrder === 'function') {
+  dns.setDefaultResultOrder('ipv4first');
+}
+
+export { prisma };
 
 export async function resetContentTables(): Promise<void> {
   // Truncate all content tables and reset identity

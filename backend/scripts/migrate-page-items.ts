@@ -12,7 +12,7 @@ import {
 import { writeStructuredPage } from '../src/services/page-content/structured-writer';
 
 export interface MigrationOptions {
-  mode?: 'dry-run' | 'apply';
+  mode?: 'dry-run' | 'apply' | 'rollback';
   pages?: string[];
   force?: boolean;
   outputPath?: string;
@@ -23,7 +23,7 @@ export interface PageMigrationReport {
   id: number;
   slug: string;
   classification: 'document' | 'structured';
-  status: 'migrated' | 'skipped' | 'failed';
+  status: 'migrated' | 'skipped' | 'failed' | 'rolled_back';
   itemCounts: Record<string, number>;
   totalItems: number;
   categoryCount: number;
@@ -35,7 +35,7 @@ export interface PageMigrationReport {
 }
 
 export interface MigrationReport {
-  mode: 'dry-run' | 'apply';
+  mode: 'dry-run' | 'apply' | 'rollback';
   timestamp: string;
   totalPages: number;
   totals: {
@@ -82,7 +82,133 @@ export async function runMigration(options: MigrationOptions = {}): Promise<Migr
   let totalWarningsCount = 0;
   let totalErrorsCount = 0;
 
-  for (const page of allPages) {
+  if (mode === 'rollback') {
+    for (const page of allPages) {
+      if (page.contentModel !== 'structured') {
+        documentCount++;
+        console.log(`[ROLLBACK SKIP] '${page.slug}' (Page ${page.id}) is not structured (contentModel=${page.contentModel})`);
+        reportPages.push({
+          id: page.id,
+          slug: page.slug,
+          classification: 'document',
+          status: 'skipped',
+          itemCounts: {},
+          totalItems: 0,
+          categoryCount: 0,
+          warnings: ['Not structured, skipped rollback'],
+          bytesBefore: Buffer.byteLength(JSON.stringify(page.pageData || {}), 'utf8'),
+          bytesAfter: Buffer.byteLength(JSON.stringify(page.pageData || {}), 'utf8'),
+          unknownArrayKeys: [],
+        });
+        continue;
+      }
+
+      structuredCount++;
+      const preMigrationRev = await db.pageRevision.findFirst({
+        where: { pageId: page.id, reason: 'pre-migration' },
+        orderBy: { id: 'desc' },
+      });
+
+      if (!preMigrationRev || !preMigrationRev.snapshot || typeof preMigrationRev.snapshot !== 'object') {
+        totalErrorsCount++;
+        console.error(`ERROR: No pre-migration revision found for structured page '${page.slug}' (Page ${page.id})`);
+        reportPages.push({
+          id: page.id,
+          slug: page.slug,
+          classification: 'structured',
+          status: 'failed',
+          itemCounts: {},
+          totalItems: 0,
+          categoryCount: 0,
+          warnings: [],
+          bytesBefore: Buffer.byteLength(JSON.stringify(page.pageData || {}), 'utf8'),
+          bytesAfter: Buffer.byteLength(JSON.stringify(page.pageData || {}), 'utf8'),
+          unknownArrayKeys: [],
+          error: 'No pre-migration revision snapshot found',
+        });
+        continue;
+      }
+
+      const snapshot = preMigrationRev.snapshot as any;
+      const restoredPageData = snapshot.pageData;
+      const restoredContentModel = snapshot.contentModel || 'document';
+      const bytesBefore = Buffer.byteLength(JSON.stringify(page.pageData || {}), 'utf8');
+      const bytesAfter = Buffer.byteLength(JSON.stringify(restoredPageData || {}), 'utf8');
+
+      try {
+        await db.$transaction(
+          async tx => {
+            // Delete join rows
+            await tx.pageItemCategory.deleteMany({
+              where: { item: { pageId: page.id } },
+            });
+            // Delete items
+            await tx.pageItem.deleteMany({
+              where: { pageId: page.id },
+            });
+            // Delete categories
+            await tx.pageCategory.deleteMany({
+              where: { pageId: page.id },
+            });
+
+            // Restore page
+            await tx.page.update({
+              where: { id: page.id },
+              data: {
+                pageData: restoredPageData as any,
+                contentModel: restoredContentModel,
+                version: { increment: 1 },
+              },
+            });
+
+            // Bump CmsState version
+            await tx.cmsState.upsert({
+              where: { id: 1 },
+              create: { id: 1, version: 2 },
+              update: { version: { increment: 1 } },
+            });
+          },
+          { maxWait: 15000, timeout: 60000 }
+        );
+
+        reportPages.push({
+          id: page.id,
+          slug: page.slug,
+          classification: 'structured',
+          status: 'rolled_back',
+          itemCounts: {},
+          totalItems: 0,
+          categoryCount: 0,
+          warnings: [],
+          bytesBefore,
+          bytesAfter,
+          unknownArrayKeys: [],
+        });
+
+        console.log(
+          `⏪ [ROLLED BACK] '${page.slug}' (Page ${page.id}): Restored to ${restoredContentModel}. Size: ${bytesBefore}B -> ${bytesAfter}B`
+        );
+      } catch (rollbackErr: any) {
+        totalErrorsCount++;
+        console.error(`ERROR: Rollback transaction failed for page '${page.slug}':`, rollbackErr);
+        reportPages.push({
+          id: page.id,
+          slug: page.slug,
+          classification: 'structured',
+          status: 'failed',
+          itemCounts: {},
+          totalItems: 0,
+          categoryCount: 0,
+          warnings: [],
+          bytesBefore,
+          bytesAfter,
+          unknownArrayKeys: [],
+          error: String(rollbackErr?.message || rollbackErr),
+        });
+      }
+    }
+  } else {
+    for (const page of allPages) {
     let sourceBlob: Record<string, unknown>;
 
     // 1. If page is already structured
@@ -283,6 +409,7 @@ export async function runMigration(options: MigrationOptions = {}): Promise<Migr
       );
     }
   }
+}
 
   const report: MigrationReport = {
     mode,
@@ -328,7 +455,7 @@ export async function runMigration(options: MigrationOptions = {}): Promise<Migr
 // CLI entry point
 if (require.main === module) {
   const args = process.argv.slice(2);
-  let mode: 'dry-run' | 'apply' = 'dry-run';
+  let mode: 'dry-run' | 'apply' | 'rollback' = 'dry-run';
   let force = false;
   let outputPath: string | undefined;
   const pages: string[] = [];
@@ -338,6 +465,8 @@ if (require.main === module) {
       mode = 'apply';
     } else if (arg === '--dry-run') {
       mode = 'dry-run';
+    } else if (arg === '--rollback') {
+      mode = 'rollback';
     } else if (arg === '--force') {
       force = true;
     } else if (arg.startsWith('--page=')) {

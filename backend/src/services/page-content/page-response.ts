@@ -20,8 +20,9 @@ export function toLegacyPageResponse<T extends { pageData: any }>(
         }
     }
 
+    const { items, categories, revisions, ...rest } = page as any;
     return {
-        ...page,
+        ...rest,
         pageData: serialized,
     };
 }

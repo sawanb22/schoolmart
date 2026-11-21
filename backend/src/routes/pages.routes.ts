@@ -3,10 +3,14 @@ import { Prisma } from '@prisma/client';
 import prisma from '../lib/prisma';
 import { parsePageData } from '../lib/page-data';
 import { toLegacyPageResponse, toLegacyPagesResponse } from '../services/page-content/page-response';
-import { verifyToken, requireAdmin, AuthRequest } from '../middleware/auth.middleware';
+import { verifyToken, requireAdmin, optionalAuth, AuthRequest } from '../middleware/auth.middleware';
 import { uploadDocument } from '../middleware/upload.middleware';
-import { solutionsIndexService } from '../services/solutions-finder';
 import { bootstrapPages } from '../services/bootstrap-pages';
+import { pageContentService } from '../services/page-content/page-content.service';
+import { splitLegacyPageData, classifyPage } from '../services/page-content/legacy-mapper';
+import { writeStructuredPage } from '../services/page-content/structured-writer';
+import { afterContentWrite } from '../services/page-content/after-content-write';
+import { COLLECTIONS } from '../services/page-content/constants';
 
 const router = Router();
 
@@ -205,34 +209,48 @@ router.get('/hub/catalog', async (req: Request, res: Response) => {
     }
 });
 
-// GET /api/pages/:idOrSlug - get specific page by ID (number) or slug (string)
-router.get('/:idOrSlug', async (req: Request, res: Response) => {
+// GET /api/pages/:slug/items/:itemSlug - get single item within a hub (or redirect)
+router.get('/:slug/items/:itemSlug', optionalAuth, async (req: AuthRequest, res: Response) => {
     try {
-        const param = req.params.idOrSlug as string;
-        const normalizedParam = param;
-        const numericId = parseInt(normalizedParam);
-        const isNumeric = !isNaN(numericId) && String(numericId) === normalizedParam;
+        const slug = String(req.params.slug);
+        const itemSlug = String(req.params.itemSlug);
+        const isAdmin = req.user?.role === 'admin';
+        const result = await pageContentService.getItem(slug, itemSlug, { isAdmin });
 
-        let page = isNumeric
-            ? await prisma.page.findUnique({ where: { id: numericId } })
-            : await prisma.page.findUnique({ where: { slug: normalizedParam } });
-
-        if (!page && !isNumeric) {
-            if (normalizedParam === 'sports') {
-                page = await prisma.page.findUnique({ where: { slug: 'sports-infra' } });
-            } else if (normalizedParam === 'sports-infra') {
-                page = await prisma.page.findUnique({ where: { slug: 'sports' } });
-            } else if (normalizedParam === 'sell-on-schoolmart') {
-                page = await prisma.page.findUnique({ where: { slug: 'sell-on-campusmart' } });
-            } else if (normalizedParam === 'sell-on-campusmart') {
-                page = await prisma.page.findUnique({ where: { slug: 'sell-on-schoolmart' } });
-            }
+        if (!result) {
+            return res.status(404).json({ error: 'not_found' });
         }
 
+        if ('redirectTo' in result) {
+            return res.status(200).json(result);
+        }
+
+        res.json(result);
+    } catch (err) {
+        console.error(`Failed to fetch item ${req.params.itemSlug} in hub ${req.params.slug}:`, err);
+        res.status(500).json({ error: 'An unexpected internal error occurred. Please try again later.' });
+    }
+});
+
+// GET /api/pages/:idOrSlug - get specific page by ID (number) or slug (string)
+router.get('/:idOrSlug', optionalAuth, async (req: AuthRequest, res: Response) => {
+    try {
+        const param = req.params.idOrSlug as string;
+        const isAdmin = req.user?.role === 'admin';
+
+        if (req.query.v === '2') {
+            const v2 = await pageContentService.getHubV2(param, { isAdmin });
+            if (!v2) {
+                return res.status(404).json({ error: 'Page not found' });
+            }
+            return res.json(v2);
+        }
+
+        const page = await pageContentService.getPageLegacy(param, { isAdmin });
         if (!page) {
             return res.status(404).json({ error: 'Page not found' });
         }
-        res.json(toLegacyPageResponse(page));
+        res.json(page);
     } catch (err) {
         console.error('Failed to fetch page:', err);
         res.status(500).json({ error: 'An unexpected internal error occurred. Please try again later.' });
@@ -268,6 +286,8 @@ router.post('/', verifyToken, requireAdmin, async (req: AuthRequest, res: Respon
             'title', 'slug', 'content', 'template', 'pageData', 'published'
         ];
 
+        let parsedIncomingPageData: Record<string, unknown> = {};
+
         for (const field of validFields) {
             if (req.body[field] !== undefined) {
                 if (field === 'pageData') {
@@ -275,7 +295,8 @@ router.post('/', verifyToken, requireAdmin, async (req: AuthRequest, res: Respon
                     const cleanStr = JSON.stringify(parsed)
                         .replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '')
                         .replace(/<style\b[^<]*(?:(?!<\/style>)<[^<]*)*<\/style>/gi, '');
-                    createData.pageData = JSON.parse(cleanStr) as Prisma.InputJsonValue;
+                    parsedIncomingPageData = JSON.parse(cleanStr);
+                    createData.pageData = parsedIncomingPageData as Prisma.InputJsonValue;
                 } else if (field === 'published' && typeof req.body.published !== 'boolean') {
                     createData.published = req.body.published === 'true' || req.body.published === 1;
                 } else {
@@ -299,12 +320,45 @@ router.post('/', verifyToken, requireAdmin, async (req: AuthRequest, res: Respon
         }
         createData.slug = targetSlug;
 
-        const page = await prisma.page.create({
-            data: createData as any
-        });
-        console.log(`Page created by admin ${req.user?.id}: ${page.slug}`);
-        solutionsIndexService.rebuild().catch(err => console.error('[SolutionsIndex] Rebuild error on page create:', err));
-        res.status(201).json(toLegacyPageResponse(page));
+        const classification = classifyPage({ slug: targetSlug, template: createData.template, pageData: parsedIncomingPageData });
+        const hasCollectionKeys =
+            COLLECTIONS.some(col => col in parsedIncomingPageData) ||
+            ('categories' in parsedIncomingPageData);
+
+        let createdPage: any;
+
+        if (classification === 'structured' && hasCollectionKeys) {
+            const splitResult = splitLegacyPageData(parsedIncomingPageData);
+            createdPage = await prisma.$transaction(async tx => {
+                const page = await tx.page.create({
+                    data: {
+                        ...createData,
+                        pageData: splitResult.settings as Prisma.InputJsonValue,
+                        contentModel: 'structured',
+                        version: 0,
+                    } as any,
+                });
+                await writeStructuredPage(tx, page.id, splitResult, {
+                    reason: 'page-create',
+                    authorId: req.user?.id,
+                });
+                return page;
+            });
+        } else {
+            createdPage = await prisma.page.create({
+                data: {
+                    ...createData,
+                    contentModel: 'document',
+                    version: 1,
+                } as any,
+            });
+        }
+
+        console.log(`Page created by admin ${req.user?.id}: ${createdPage.slug}`);
+        await afterContentWrite({ pageId: createdPage.id, reason: 'page-create', authorId: req.user?.id });
+
+        const responsePage = await pageContentService.getPageLegacy(createdPage.id, { isAdmin: true });
+        res.status(201).json(responsePage);
     } catch (error: any) {
         if (error?.code === 'P2002') {
             try {
@@ -315,7 +369,9 @@ router.post('/', verifyToken, requireAdmin, async (req: AuthRequest, res: Respon
                     data: createData as any
                 });
                 console.log(`Page created with collision resolution by admin ${req.user?.id}: ${page.slug}`);
-                return res.status(201).json(toLegacyPageResponse(page));
+                await afterContentWrite({ pageId: page.id, reason: 'page-create', authorId: req.user?.id });
+                const responsePage = await pageContentService.getPageLegacy(page.id, { isAdmin: true });
+                return res.status(201).json(responsePage);
             } catch (retryError: any) {
                 console.error('Collision resolution retry failed:', retryError);
                 return res.status(409).json({ error: 'A page with this slug already exists. Please choose a different title or slug.' });
@@ -338,10 +394,19 @@ router.put('/:id', verifyToken, requireAdmin, async (req: AuthRequest, res: Resp
         }
 
         // Check page exists before attempting update
-        const existing = await prisma.page.findUnique({ where: { id } });
+        const existing = await pageContentService.loadPage(id, { includeUnpublished: true });
         if (!existing) {
             res.status(404).json({ error: 'Page not found' });
             return;
+        }
+
+        // Optimistic locking check: if version is provided, it must match existing.version
+        if (req.body.version !== undefined && req.body.version !== null) {
+            const incomingVersion = Number(req.body.version);
+            if (!isNaN(incomingVersion) && incomingVersion !== existing.version) {
+                const current = await pageContentService.getPageLegacy(id, { isAdmin: true });
+                return res.status(409).json({ error: 'version_conflict', current });
+            }
         }
 
         const validFields: Array<'title' | 'slug' | 'content' | 'template' | 'pageData' | 'published'> = [
@@ -351,14 +416,19 @@ router.put('/:id', verifyToken, requireAdmin, async (req: AuthRequest, res: Resp
             updatedAt: new Date()
         };
 
+        let hasIncomingPageData = false;
+        let incomingPageData: Record<string, unknown> = {};
+
         for (const field of validFields) {
             if (req.body[field] !== undefined) {
                 if (field === 'pageData') {
+                    hasIncomingPageData = true;
                     const parsed = parsePageData(req.body.pageData);
                     const cleanStr = JSON.stringify(parsed)
                         .replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '')
                         .replace(/<style\b[^<]*(?:(?!<\/style>)<[^<]*)*<\/style>/gi, '');
-                    updateData.pageData = JSON.parse(cleanStr) as Prisma.InputJsonValue;
+                    incomingPageData = JSON.parse(cleanStr);
+                    updateData.pageData = incomingPageData as Prisma.InputJsonValue;
                 } else if (field === 'published' && typeof req.body.published !== 'boolean') {
                     updateData.published = req.body.published === 'true' || req.body.published === 1;
                 } else {
@@ -367,27 +437,93 @@ router.put('/:id', verifyToken, requireAdmin, async (req: AuthRequest, res: Resp
             }
         }
 
-        // Update page (atomic transaction if slug changes)
-        let page;
-        if (updateData.slug && updateData.slug !== existing.slug) {
-            const [updatedPage] = await prisma.$transaction([
-                prisma.page.update({ where: { id }, data: updateData }),
-                prisma.searchCard.updateMany({
-                    where: { targetSlug: existing.slug },
-                    data: { targetSlug: updateData.slug }
-                })
-            ]);
-            page = updatedPage;
+        const isStructured = existing.contentModel === 'structured';
+        const hasCollectionKeys =
+            hasIncomingPageData &&
+            (COLLECTIONS.some(col => col in incomingPageData) || ('categories' in incomingPageData));
+
+        if (isStructured && hasCollectionKeys) {
+            // Full blob write on structured page: split & writeStructuredPage
+            const splitResult = splitLegacyPageData(incomingPageData);
+
+            await prisma.$transaction(async tx => {
+                const basicUpdates: any = { updatedAt: new Date() };
+                if (updateData.title !== undefined) basicUpdates.title = updateData.title;
+                if (updateData.slug !== undefined) basicUpdates.slug = updateData.slug;
+                if (updateData.content !== undefined) basicUpdates.content = updateData.content;
+                if (updateData.template !== undefined) basicUpdates.template = updateData.template;
+                if (updateData.published !== undefined) basicUpdates.published = updateData.published;
+
+                await tx.page.update({
+                    where: { id },
+                    data: basicUpdates,
+                });
+
+                await writeStructuredPage(tx, id, splitResult, {
+                    reason: 'legacy-adapter-update',
+                    authorId: req.user?.id,
+                });
+
+                if (updateData.slug && updateData.slug !== existing.slug) {
+                    await tx.searchCard.updateMany({
+                        where: { targetSlug: existing.slug },
+                        data: { targetSlug: updateData.slug }
+                    });
+                }
+            });
+        } else if (isStructured && !hasCollectionKeys) {
+            // Settings-only update on structured page: merge settings over existing
+            const currentSettings = parsePageData(existing.pageData);
+            const mergedSettings = hasIncomingPageData
+                ? { ...currentSettings, ...incomingPageData }
+                : currentSettings;
+
+            const basicUpdates: any = {
+                ...updateData,
+                pageData: mergedSettings as Prisma.InputJsonValue,
+                version: { increment: 1 },
+                updatedAt: new Date(),
+            };
+
+            await prisma.$transaction(async tx => {
+                await tx.page.update({
+                    where: { id },
+                    data: basicUpdates,
+                });
+
+                if (updateData.slug && updateData.slug !== existing.slug) {
+                    await tx.searchCard.updateMany({
+                        where: { targetSlug: existing.slug },
+                        data: { targetSlug: updateData.slug }
+                    });
+                }
+            });
         } else {
-            page = await prisma.page.update({
-                where: { id },
-                data: updateData
+            // Document page: standard update
+            await prisma.$transaction(async tx => {
+                await tx.page.update({
+                    where: { id },
+                    data: {
+                        ...updateData,
+                        version: { increment: 1 },
+                        updatedAt: new Date(),
+                    },
+                });
+
+                if (updateData.slug && updateData.slug !== existing.slug) {
+                    await tx.searchCard.updateMany({
+                        where: { targetSlug: existing.slug },
+                        data: { targetSlug: updateData.slug }
+                    });
+                }
             });
         }
-        
+
         console.log(`Page ${id} updated by admin ${req.user?.id}`);
-        solutionsIndexService.rebuild().catch(err => console.error('[SolutionsIndex] Rebuild error on page update:', err));
-        res.json(toLegacyPageResponse(page));
+        await afterContentWrite({ pageId: id, reason: 'legacy-adapter-update', authorId: req.user?.id });
+
+        const updatedResponse = await pageContentService.getPageLegacy(id, { isAdmin: true });
+        res.json(updatedResponse);
     } catch (error: any) {
         if (error?.code === 'P2002') {
             res.status(409).json({ error: 'A page with this URL slug already exists. Please choose a different slug.' });
@@ -426,7 +562,7 @@ router.delete('/:id', verifyToken, requireAdmin, async (req: AuthRequest, res: R
             where: { id }
         });
         console.log(`Page ${id} deleted by admin ${req.user?.id}`);
-        solutionsIndexService.rebuild().catch(err => console.error('[SolutionsIndex] Rebuild error on page delete:', err));
+        await afterContentWrite({ pageId: id, reason: 'page-delete', authorId: req.user?.id });
         res.status(204).end();
     } catch (error) {
         console.error(`Failed to delete page ${req.params.id}:`, error);

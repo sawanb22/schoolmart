@@ -1,7 +1,11 @@
 import request from 'supertest';
 import { describe, it, expect, beforeAll } from 'vitest';
 import app from '../helpers/app';
+import prisma from '../../src/lib/prisma';
+import { resetContentTables } from '../helpers/db';
 import { loadAllPageFixtures, seedPagesFromFixtures } from '../helpers/seed-fixtures';
+import { assertLegacyEquivalent } from '../helpers/legacy-equivalence';
+import { runMigration } from '../../scripts/migrate-page-items';
 
 function orderKeysLike(target: any, template: any): any {
     if (target === null || typeof target !== 'object') {
@@ -55,10 +59,11 @@ function normalizePageResponse(body: any, expectedTemplate?: any) {
     };
 }
 
-describe('Legacy Pages Characterization Contract Snapshots', () => {
+describe('Legacy Pages Characterization Contract Snapshots (Mode 1: Unmigrated)', () => {
     const fixtures = loadAllPageFixtures();
 
     beforeAll(async () => {
+        await resetContentTables();
         await seedPagesFromFixtures(fixtures);
     }, 60000);
 
@@ -89,4 +94,28 @@ describe('Legacy Pages Characterization Contract Snapshots', () => {
             './__snapshots__/hub-catalog-labs.json'
         );
     });
+});
+
+describe('Legacy Pages Equivalent Rebuilt Contract (Mode 2: Migrated via --apply)', () => {
+    const fixtures = loadAllPageFixtures();
+
+    beforeAll(async () => {
+        await runMigration({ mode: 'apply', prisma });
+    }, 120000);
+
+    for (const fixture of fixtures) {
+        it(`GET /api/pages/${fixture.slug} passes assertLegacyEquivalent after migration`, async () => {
+            const res = await request(app).get(`/api/pages/${fixture.slug}`);
+            expect(res.status).toBe(200);
+
+            const originalPageData = typeof fixture.pageData === 'string'
+                ? JSON.parse(fixture.pageData)
+                : fixture.pageData;
+            const responsePageData = typeof res.body.pageData === 'string'
+                ? JSON.parse(res.body.pageData)
+                : res.body.pageData;
+
+            assertLegacyEquivalent(originalPageData, responsePageData);
+        });
+    }
 });

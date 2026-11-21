@@ -1,0 +1,251 @@
+{
+  "info": {
+    "_postman_id": "c1f78e12-8924-4e2b-b673-9a3c7e4e1a05",
+    "name": "CampusMart Pages & Hub API",
+    "description": "Collection covering CampusMart Hybrid CMS Page endpoints: legacy read path, Hub v2 (?v=2), individual item detail endpoint (/:slug/items/:itemSlug), and legacy write adapter with optimistic locking.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Public Pages",
+      "item": [
+        {
+          "name": "Get Page (Legacy Shape v1)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/pages/:idOrSlug",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "pages", ":idOrSlug"],
+              "variable": [
+                {
+                  "key": "idOrSlug",
+                  "value": "labs",
+                  "description": "Page ID or URL slug (e.g. labs, sports-infra, privacy-policy)"
+                }
+              ]
+            },
+            "description": "Fetches page in legacy format. Reconstructs pageData string for structured pages from tables while preserving identical backward compatibility."
+          },
+          "response": []
+        },
+        {
+          "name": "Get Hub v2 (Lightweight, No Detail - Invariant I5)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/pages/:slug?v=2",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "pages", ":slug"],
+              "query": [
+                {
+                  "key": "v",
+                  "value": "2",
+                  "description": "API version 2 for lightweight hub response without detail blobs"
+                }
+              ],
+              "variable": [
+                {
+                  "key": "slug",
+                  "value": "labs",
+                  "description": "Hub page slug"
+                }
+              ]
+            },
+            "description": "Fetches lightweight hub payload containing page metadata, settings, collections of ItemSummary, and categories. Invariant I5 guarantees no detail key is included anywhere."
+          },
+          "response": []
+        },
+        {
+          "name": "Get Hub Item Detail",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/pages/:slug/items/:itemSlug",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "pages", ":slug", "items", ":itemSlug"],
+              "variable": [
+                {
+                  "key": "slug",
+                  "value": "labs",
+                  "description": "Hub slug"
+                },
+                {
+                  "key": "itemSlug",
+                  "value": "composite-skill-lab",
+                  "description": "Item slug, title slug fallback, or redirect source"
+                }
+              ]
+            },
+            "description": "Fetches individual item full detail within hub context or returns redirectTo instruction."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Admin Page Operations",
+      "item": [
+        {
+          "name": "Create Page",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{adminToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Robotics & AI Innovation Hub\",\n  \"slug\": \"robotics-ai-innovation\",\n  \"template\": \"solution-hub\",\n  \"published\": true,\n  \"pageData\": {\n    \"hero\": {\n      \"title\": \"Robotics & AI Lab\",\n      \"subtitle\": \"Empowering future engineers\"\n    },\n    \"cards\": [\n      {\n        \"title\": \"Advanced Robotics Cell\",\n        \"slug\": \"advanced-robotics-cell\",\n        \"description\": \"Industrial-grade robotic arms for education\",\n        \"image\": \"/uploads/robotics-cell.png\",\n        \"categories\": [\"Robotics\"]\n      }\n    ]\n  }\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/pages",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "pages"]
+            },
+            "description": "Creates a page. Automatically classifies page model, splits structured collections into PageItem rows, and increments CmsState version."
+          },
+          "response": []
+        },
+        {
+          "name": "Update Page via Legacy Adapter (Full Blob or Settings)",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{adminToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Composite & Skill Labs\",\n  \"version\": 1,\n  \"pageData\": {\n    \"hero\": {\n      \"title\": \"Advanced LABS.\",\n      \"subtitle\": \"Updated via legacy adapter\"\n    },\n    \"cards\": [\n      {\n        \"title\": \"Computer Lab Setup\",\n        \"slug\": \"computer-lab\",\n        \"description\": \"Modern computing lab\",\n        \"image\": \"/uploads/lab.png\",\n        \"categories\": [\"COMPUTER LAB\"]\n      }\n    ]\n  }\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/pages/:id",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "pages", ":id"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "1",
+                  "description": "Page ID"
+                }
+              ]
+            },
+            "description": "Updates page using optimistic locking version check. If structured, splits collections into table items, maintaining existing IDs."
+          },
+          "response": []
+        },
+        {
+          "name": "Update Page Version Conflict (Deliberate 409)",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{adminToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Stale Edit Attempt\",\n  \"version\": 99999\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/pages/:id",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "pages", ":id"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "1",
+                  "description": "Page ID"
+                }
+              ]
+            },
+            "description": "Deliberately provides mismatched version to verify optimistic locking conflict response (409 with current page representation)."
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Page",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{adminToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/pages/:id",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "pages", ":id"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "100",
+                  "description": "Non-protected page ID"
+                }
+              ]
+            },
+            "description": "Deletes non-protected page, cascades to items and categories, and bumps CmsState.version."
+          },
+          "response": []
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:3001",
+      "type": "string"
+    },
+    {
+      "key": "adminToken",
+      "value": "",
+      "type": "string"
+    }
+  ]
+}

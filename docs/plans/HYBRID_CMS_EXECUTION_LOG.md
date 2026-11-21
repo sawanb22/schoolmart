@@ -185,5 +185,51 @@
 - Found, not fixed:
   - None.
 
+---
+
+## T5 – Read Path from Tables, Legacy Write Adapter, Item Endpoint, Data Cut-Over – DONE
+- Date: 2026-11-21
+- Commit: `446b065` (T5: Read path from tables, legacy write adapter, item endpoint, data cut-over)
+- Review Status: PENDING_REVIEW
+- Backup used (if DB touched): Fresh dev DB export created at `backend/prisma/database-export.json` (1,407,690 bytes, 1374.70 KB, 130 pages) prior to executing `migrate-page-items.ts --apply` on dev database.
+- Files changed (summary):
+  - Created `backend/src/services/page-content/page-content.service.ts` implementing `loadPage` (single Prisma query with joins and alias resolution for `sports` <-> `sports-infra` and `sell-on-schoolmart` <-> `sell-on-campusmart`), `getPageLegacy` (clean legacy reconstruction with `buildLegacyPageData`), `getHubV2` (Invariant I5: zero `detail` keys, clean hub v2 shape), `findItem` (exact slug -> `SlugRedirect` -> fallback title/href leaf), and `getItem` (with 301 redirects and 404s).
+  - Created `backend/src/services/page-content/after-content-write.ts` implementing global write hook with atomic `CmsState.version` bump (Invariant I6) and 2000 ms debounced `solutionsIndexService.rebuild()`.
+  - Updated `backend/src/services/page-content/page-response.ts` (`toLegacyPageResponse`) to omit relational CMS attributes (`items`, `categories`, `revisions`) from legacy page response shapes.
+  - Implemented rollback mode `--rollback [--page=<slug>]` in `backend/scripts/migrate-page-items.ts` restoring `pre-migration` snapshots, deleting items/categories, restoring `contentModel='document'`, and bumping versions.
+  - Updated `backend/src/routes/pages.routes.ts`:
+    - Mounted `GET /:slug/items/:itemSlug` before `/:idOrSlug`.
+    - Updated `GET /:idOrSlug` to route `?v=2` to `getHubV2` and legacy to `getPageLegacy`.
+    - Added optimistic concurrency locking (`version` check -> HTTP 409 `version_conflict`) and legacy write adapter (re-splitting incoming `pageData` blobs to relational tables via `writeStructuredPage`) in `PUT /:id`.
+    - Integrated `afterContentWrite` in `POST /`, `PUT /:id`, and `DELETE /:id`.
+  - Updated `backend/src/routes/content.routes.ts` to call `afterContentWrite` in `PUT /` and `PUT /:key`.
+  - Configured `postman/collections/campusmart-pages-api.json` covering public and admin CMS endpoints, Hub v2, item endpoint, and 409 version conflict test.
+  - Hardened backend test harness: updated `backend/tests/helpers/auth.ts` (`seedAdminUser`, `getAdminToken`), unified `prisma` singleton in `backend/tests/helpers/db.ts` with IPv4-first, and increased hook timeouts in `backend/vitest.config.mts`.
+  - Executed dev database cut-over with `--apply`: 130 total pages processed, 11 structured pages migrated, 119 document pages skipped, 57 items created, 49 categories created, 0 warnings, 0 errors. Report saved to `backend/scripts/output/migrate-page-items-2026-11-21T11-54-42-549Z.json`.
+  - Verified Invariant I7 with Playwright smoke suite: 206 routes passed / 206 executed (3 known baseline failures skipped), 0 regressions.
+- Tests added:
+  - `backend/tests/contract/legacy-pages.contract.test.ts` (Dual mode: Mode 1 with 26 unmigrated snapshots + Mode 2 with 24 migrated `assertLegacyEquivalent` tests = 50 tests)
+  - `backend/tests/page-content/hub-v2.test.ts` (7 tests: shape, Invariant I5 recursive zero-detail verification, public/admin visibility, category ordering, document fallback)
+  - `backend/tests/page-content/item-endpoint.test.ts` (7 tests: exact slug, SlugRedirect 301, title-slug fallback, href-leaf fallback, public/admin 404, alias resolution)
+  - `backend/tests/page-content/legacy-write-adapter.test.ts` (4 tests: full blob write item diffing, settings-only update, 409 version conflict, version increment)
+  - `backend/tests/page-content/cms-version.test.ts` (5 tests: Invariant I6 version increment on POST page, PUT page, DELETE page, PUT content, PUT content key)
+  - `backend/tests/scripts/migrate-rollback.test.ts` (2 tests: full DB rollback deep-equal pageData verification, single-page `--page=<slug>` rollback)
+- Test results:
+  - `npm run test --prefix backend`: 134 passed / 134 total (15 test files)
+  - `npm run build --prefix backend`: 0 compilation errors
+  - `npx playwright test tests/e2e/smoke.spec.ts`: 206 passed / 206 executed (3 known baseline failures skipped), 0 regressions
+- Metrics:
+  - Dev database cut-over: 11 structured pages, 119 document pages, 57 items, 49 categories, 0 warnings, 0 errors
+  - Vitest test suites: 15/15 test files passed, 134/134 unit and contract tests passed
+  - Invariant I5 (zero detail in Hub v2): 0 detail occurrences across public and admin responses
+  - Invariant I6 (write bumps version): verified across all 5 CMS write routes
+  - Invariant I7 (smoke test stability): 206/206 routes pass with 0 regressions
+- Deviations from plan and why:
+  - Vitest hook timeouts on Windows connecting to Neon Postgres pooler required increasing vitest timeouts to 60s/120s and scoping test suite fixtures so each suite seeds only the pages it needs.
+  - In `PageResponse`, removed relational properties (`items`, `categories`, `revisions`) from `toLegacyPageResponse` so legacy endpoints remain byte-for-byte identical to pre-migration schemas.
+- Found, not fixed:
+  - Visual regression suite (`visual.spec.ts`) exhibits subpixel and height diffs on Windows due to uncommitted working-copy styling changes in `frontend/src/` outside T5 scope; smoke test suite (`smoke.spec.ts`) proved all 206 routes continue to resolve cleanly with 0 regressions (Invariant I7).
+
+
 
 

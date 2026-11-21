@@ -2,6 +2,7 @@ import { Router, Request, Response } from 'express';
 import prisma from '../lib/prisma';
 import { verifyToken, requireAdmin, AuthRequest } from '../middleware/auth.middleware';
 import { validateTaxonomyPayload, solutionsIndexService } from '../services/solutions-finder';
+import { afterContentWrite } from '../services/page-content/after-content-write';
 
 const router = Router();
 
@@ -55,9 +56,7 @@ router.put('/', verifyToken, requireAdmin, async (req: AuthRequest, res: Respons
             await prisma.$transaction(promises);
         }
 
-        if (taxonomyUpdated) {
-            solutionsIndexService.rebuild().catch(err => console.error('[SolutionsIndex] Rebuild error on taxonomy bulk update:', err));
-        }
+        await afterContentWrite({ reason: 'content-update', authorId: req.user?.id });
 
         res.json({ message: 'Content updated successfully' });
     } catch {
@@ -95,9 +94,7 @@ router.put('/:key', verifyToken, requireAdmin, async (req: AuthRequest, res: Res
             create: { key, value: stringValue },
         });
 
-        if (taxonomyUpdated) {
-            solutionsIndexService.rebuild().catch(err => console.error('[SolutionsIndex] Rebuild error on taxonomy update:', err));
-        }
+        await afterContentWrite({ reason: 'content-key-update', authorId: req.user?.id });
 
         res.json(content);
     } catch {
