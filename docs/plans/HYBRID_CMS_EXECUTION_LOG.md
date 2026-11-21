@@ -50,7 +50,7 @@
 ## T1 – Backend Test Harness and Clean Migration Baseline – DONE
 - Date: 2026-11-21
 - Commit: Pending (T1 commit)
-- Review Status: PENDING
+- Review Status: APPROVED (commits 21268a7..6ab584c, review clean, 0 critical, 0 important)
 - Backup used (if DB touched): Verified `backend/prisma/database-export.json` on test database via `npm run db:restore`. Dev database baselined cleanly without data loss.
 - Files changed (summary):
   - Split `backend/src/index.ts` into `backend/src/app.ts` (Express app configuration) and `backend/src/server.ts` (HTTP listen & solutions indexer boot). Made `index.ts` a one-line forwarder.
