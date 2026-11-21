@@ -1,3 +1,4 @@
+import { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight, X, type LucideIcon } from 'lucide-react';
 
@@ -18,11 +19,81 @@ const LoginPromptModal = ({
   title = 'Login to save items to your quotation wishlist',
   description = 'Sign in to build your institutional wishlist, track quotation requests, and receive official pricing for your campus.',
 }: LoginPromptModalProps) => {
+  const modalRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!open) return;
+
+    const previousActiveElement = document.activeElement as HTMLElement | null;
+
+    const focusFirstElement = () => {
+      if (!modalRef.current) return;
+      const focusable = modalRef.current.querySelectorAll<HTMLElement>(
+        'button:not([disabled]), [href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])'
+      );
+      if (focusable.length > 0) {
+        focusable[0].focus();
+      }
+    };
+
+    const timer = setTimeout(focusFirstElement, 50);
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        event.preventDefault();
+        onClose();
+        return;
+      }
+
+      if (event.key === 'Tab') {
+        if (!modalRef.current) return;
+        const focusable = modalRef.current.querySelectorAll<HTMLElement>(
+          'button:not([disabled]), [href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])'
+        );
+        if (focusable.length === 0) return;
+
+        const first = focusable[0];
+        const last = focusable[focusable.length - 1];
+
+        if (event.shiftKey) {
+          if (document.activeElement === first || document.activeElement === modalRef.current) {
+            event.preventDefault();
+            last.focus();
+          }
+        } else {
+          if (document.activeElement === last) {
+            event.preventDefault();
+            first.focus();
+          }
+        }
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+
+    return () => {
+      clearTimeout(timer);
+      window.removeEventListener('keydown', handleKeyDown);
+      previousActiveElement?.focus?.();
+    };
+  }, [open, onClose]);
+
   if (!open) return null;
 
   return (
-    <div className="fixed inset-0 z-[100] flex items-center justify-center bg-slate-950/65 p-4 backdrop-blur-sm" role="dialog" aria-modal="true" aria-labelledby="login-prompt-title">
-      <div className="relative w-full max-w-lg overflow-hidden rounded-2xl bg-white shadow-2xl">
+    <div
+      className="fixed inset-0 z-[100] flex items-center justify-center bg-slate-950/65 p-4 backdrop-blur-sm"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="login-prompt-title"
+      onClick={onClose}
+    >
+      <div
+        ref={modalRef}
+        tabIndex={-1}
+        className="relative w-full max-w-lg overflow-hidden rounded-2xl bg-white shadow-2xl focus:outline-none"
+        onClick={(event) => event.stopPropagation()}
+      >
         <button
           type="button"
           onClick={onClose}

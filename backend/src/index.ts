@@ -69,7 +69,9 @@ console.log(`Serving uploads from: ${UPLOADS_DIR}`);
 // Security middleware - allow external images (Unsplash, CDNs, etc.)
 app.use(helmet({ 
     crossOriginResourcePolicy: { policy: 'cross-origin' },
-    contentSecurityPolicy: false 
+    contentSecurityPolicy: false,
+    xContentTypeOptions: true,
+    xFrameOptions: { action: 'deny' },
 }));
 // Env vars may hold a single URL or a comma-separated list, sometimes with a
 // stray path, trailing slash, or missing protocol; normalize everything down to bare origins

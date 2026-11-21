@@ -8,25 +8,32 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 // https://vite.dev/config/
-export default defineConfig({
-  plugins: [inspectAttr(), react()],
-  resolve: {
-    alias: {
-      "@": path.resolve(__dirname, "./src"),
-    },
-  },
-  server: {
-    host: true,
-    allowedHosts: true,
-    proxy: {
-      "/api": {
-        target: "http://localhost:3001",
-        changeOrigin: true,
-      },
-      "/uploads": {
-        target: "http://localhost:3001",
-        changeOrigin: true,
+export default defineConfig(({ mode }) => {
+  const isDev = mode !== "production" && process.env.NODE_ENV !== "production";
+
+  return {
+    plugins: [
+      ...(isDev ? [inspectAttr()] : []),
+      react(),
+    ],
+    resolve: {
+      alias: {
+        "@": path.resolve(__dirname, "./src"),
       },
     },
-  },
+    server: {
+      host: true,
+      allowedHosts: true,
+      proxy: {
+        "/api": {
+          target: "http://localhost:3001",
+          changeOrigin: true,
+        },
+        "/uploads": {
+          target: "http://localhost:3001",
+          changeOrigin: true,
+        },
+      },
+    },
+  };
 });

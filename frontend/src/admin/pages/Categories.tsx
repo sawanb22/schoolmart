@@ -904,7 +904,10 @@ export default function Categories() {
                                                                     value={editingCategoryValue}
                                                                     onChange={(e) => setEditingCategoryValue(e.target.value)}
                                                                     onKeyDown={(e) => {
-                                                                        if (e.key === 'Enter') handleConfirmRename(idx);
+                                                                        if (e.key === 'Enter') {
+                                                                            if (e.nativeEvent.isComposing) return;
+                                                                            handleConfirmRename(idx);
+                                                                        }
                                                                         if (e.key === 'Escape') setEditingCategoryIndex(null);
                                                                     }}
                                                                     className="flex-1 px-3 py-1.5 rounded-lg border border-blue-400 text-xs font-bold text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500/20 bg-white"
@@ -983,6 +986,7 @@ export default function Categories() {
                                         onChange={(e) => setNewCategoryInput(e.target.value)}
                                         onKeyDown={(e) => {
                                             if (e.key === 'Enter') {
+                                                if (e.nativeEvent.isComposing) return;
                                                 e.preventDefault();
                                                 handleAddCategory();
                                             }

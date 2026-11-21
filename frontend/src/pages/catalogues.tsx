@@ -174,6 +174,8 @@ const Catalogues = () => {
                 <MediaImage
                   src={heroImage}
                   alt={heroTitle}
+                  priority
+                  loading="eager"
                   className="rounded-2xl shadow-xl w-full h-[240px] sm:h-[260px] object-cover border-2 border-cm-blue-dark relative z-10"
                 />
               </div>

@@ -2,9 +2,11 @@ import React, { useState, useEffect } from 'react';
 import { resolveMediaUrl } from '@/lib/media-url';
 import { cn } from '@/lib/utils';
 
-export interface MediaImageProps extends React.ImgHTMLAttributes<HTMLImageElement> {
+export interface MediaImageProps extends Omit<React.ImgHTMLAttributes<HTMLImageElement>, 'fetchPriority'> {
   fallbackSrc?: string;
   fallbackNode?: React.ReactNode;
+  priority?: boolean;
+  fetchPriority?: 'high' | 'low' | 'auto';
 }
 
 export const MediaImage: React.FC<MediaImageProps> = ({
@@ -14,7 +16,9 @@ export const MediaImage: React.FC<MediaImageProps> = ({
   fallbackSrc,
   fallbackNode,
   onError,
-  loading = 'lazy',
+  loading,
+  priority = false,
+  fetchPriority,
   ...rest
 }) => {
   const [useFallback, setUseFallback] = useState(false);
@@ -31,6 +35,10 @@ export const MediaImage: React.FC<MediaImageProps> = ({
 
   // Determine which URL should be actively attempted
   const effectiveUrl = !initialUrl || useFallback ? fallbackUrl : initialUrl;
+
+  const isHighPriority = priority === true || fetchPriority === 'high';
+  const resolvedLoading: 'eager' | 'lazy' = isHighPriority ? 'eager' : (loading || 'lazy');
+  const resolvedFetchPriority = isHighPriority ? 'high' : fetchPriority;
 
   if (!effectiveUrl || hasError) {
     if (fallbackNode) {
@@ -68,7 +76,8 @@ export const MediaImage: React.FC<MediaImageProps> = ({
     <img
       src={effectiveUrl}
       alt={alt}
-      loading={loading}
+      loading={resolvedLoading}
+      {...(resolvedFetchPriority ? { fetchPriority: resolvedFetchPriority } : {})}
       className={className}
       onError={(e) => {
         if (!useFallback && fallbackUrl && fallbackUrl !== effectiveUrl) {

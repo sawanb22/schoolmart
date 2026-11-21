@@ -10,6 +10,9 @@ const __dirname = path.dirname(__filename);
 
 console.log("🚀 Starting clean frontend Vite production build...");
 
+process.env.NODE_ENV = process.env.NODE_ENV || "production";
+const isDev = process.env.NODE_ENV !== "production";
+
 const distDir = path.resolve(__dirname, "dist");
 const assetsDir = path.join(distDir, "assets");
 if (fs.existsSync(assetsDir)) {
@@ -21,7 +24,10 @@ try {
     configFile: false,
     root: __dirname,
     publicDir: false, // Prevent Vite from copying .htaccess and triggering sandbox EPERM
-    plugins: [inspectAttr(), react()],
+    plugins: [
+      ...(isDev ? [inspectAttr()] : []),
+      react(),
+    ],
     resolve: {
       alias: {
         "@": path.resolve(__dirname, "./src"),

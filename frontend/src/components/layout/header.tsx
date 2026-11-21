@@ -139,6 +139,16 @@ const MainHeader = () => {
                       className="relative"
                       onMouseEnter={() => setDropdownOpen(item.label)}
                       onMouseLeave={() => setDropdownOpen(null)}
+                      onBlur={(e) => {
+                        if (!e.currentTarget.contains(e.relatedTarget as Node)) {
+                          setDropdownOpen((current) => (current === item.label ? null : current));
+                        }
+                      }}
+                      onKeyDown={(e) => {
+                        if (e.key === 'Escape') {
+                          setDropdownOpen(null);
+                        }
+                      }}
                     >
                       {item.href ? (
                         isExternalUrl(item.href) ? (
@@ -146,6 +156,9 @@ const MainHeader = () => {
                             href={item.href}
                             target="_blank"
                             rel="noopener noreferrer"
+                            aria-haspopup="menu"
+                            aria-expanded={dropdownOpen === item.label}
+                            onFocus={() => setDropdownOpen(item.label)}
                             className={`nav-link flex items-center gap-1 ${isItemActive(item) ? 'bg-white/20 text-white rounded-md' : 'text-white'}`}
                           >
                             {item.label}
@@ -154,6 +167,9 @@ const MainHeader = () => {
                         ) : (
                           <Link
                             to={item.href}
+                            aria-haspopup="menu"
+                            aria-expanded={dropdownOpen === item.label}
+                            onFocus={() => setDropdownOpen(item.label)}
                             className={`nav-link flex items-center gap-1 ${isItemActive(item) ? 'bg-white/20 text-white rounded-md' : 'text-white'}`}
                           >
                             {item.label}
@@ -162,6 +178,10 @@ const MainHeader = () => {
                         )
                       ) : (
                         <button
+                          type="button"
+                          aria-haspopup="menu"
+                          aria-expanded={dropdownOpen === item.label}
+                          onFocus={() => setDropdownOpen(item.label)}
                           className={`nav-link flex items-center gap-1 cursor-pointer ${isItemActive(item) ? 'bg-white/20 text-white rounded-md' : 'text-white'}`}
                           onClick={() => setDropdownOpen(dropdownOpen === item.label ? null : item.label)}
                         >
@@ -170,7 +190,7 @@ const MainHeader = () => {
                         </button>
                       )}
                       {dropdownOpen === item.label && item.dropdownItems && (
-                        <div className="absolute top-full left-0 pt-2 z-[150] animate-fade-in">
+                        <div className="absolute top-full left-0 pt-2 z-[150] animate-fade-in" role="menu">
                           <div className="w-56 rounded-2xl border border-slate-200 bg-white py-2 shadow-2xl overflow-hidden ring-1 ring-black/5">
                             {item.dropdownItems.map((dropdownItem) => (
                               isExternalUrl(dropdownItem.href) ? (
@@ -179,6 +199,8 @@ const MainHeader = () => {
                                   href={dropdownItem.href}
                                   target="_blank"
                                   rel="noopener noreferrer"
+                                  role="menuitem"
+                                  onClick={() => setDropdownOpen(null)}
                                   className="block px-4 py-2.5 text-xs uppercase tracking-wider text-slate-700 hover:bg-sm-blue hover:text-white transition-colors font-bold"
                                 >
                                   {dropdownItem.label}
@@ -187,6 +209,8 @@ const MainHeader = () => {
                                 <Link
                                   key={dropdownItem.label}
                                   to={dropdownItem.href}
+                                  role="menuitem"
+                                  onClick={() => setDropdownOpen(null)}
                                   className="block px-4 py-2.5 text-xs uppercase tracking-wider text-slate-700 hover:bg-sm-blue hover:text-white transition-colors font-bold"
                                 >
                                   {dropdownItem.label}
@@ -244,6 +268,9 @@ const MainHeader = () => {
                   {item.hasDropdown ? (
                     <div>
                       <button
+                        type="button"
+                        aria-haspopup="menu"
+                        aria-expanded={dropdownOpen === item.label}
                         className={`flex w-full items-center justify-between rounded-lg px-3 py-2 text-left text-xs font-semibold uppercase transition-colors ${isItemActive(item) ? 'bg-white/25 text-white' : 'text-white/90 hover:bg-white/15 hover:text-white'}`}
                         onClick={() => setDropdownOpen(dropdownOpen === item.label ? null : item.label)}
                       >

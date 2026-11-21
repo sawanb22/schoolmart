@@ -1015,7 +1015,7 @@ export default function UnifiedPageEditor({
         }
 
         if (templateMode === 'replace') {
-            const cloned = JSON.parse(JSON.stringify(effectiveDefaults));
+            const cloned = structuredClone(effectiveDefaults);
             setData(cloned);
             setShowTemplateModal(false);
             return;
@@ -1037,7 +1037,7 @@ export default function UnifiedPageEditor({
             return !existingTitles.has(titleKey);
         });
 
-        const mergedCards = [...currentCards, ...JSON.parse(JSON.stringify(nonDuplicateSamples))];
+        const mergedCards = [...currentCards, ...structuredClone(nonDuplicateSamples)];
 
         // 2. Additional card sets deduplication
         let mergedSection2Cards = data.section2Cards;
@@ -1045,7 +1045,7 @@ export default function UnifiedPageEditor({
             const current = Array.isArray(data.section2Cards) ? [...data.section2Cards] : [];
             const existingS2Titles = new Set(current.map((c: any) => (c?.title || '').trim().toLowerCase()).filter(Boolean));
             const nonDup = effectiveDefaults.section2Cards.filter((s: any) => !existingS2Titles.has((s?.title || '').trim().toLowerCase()));
-            mergedSection2Cards = [...current, ...JSON.parse(JSON.stringify(nonDup))];
+            mergedSection2Cards = [...current, ...structuredClone(nonDup)];
         }
 
         let mergedCaseStudies = data.caseStudies;
@@ -1053,7 +1053,7 @@ export default function UnifiedPageEditor({
             const current = Array.isArray(data.caseStudies) ? [...data.caseStudies] : [];
             const existingCSTitles = new Set(current.map((c: any) => (c?.title || '').trim().toLowerCase()).filter(Boolean));
             const nonDup = effectiveDefaults.caseStudies.filter((s: any) => !existingCSTitles.has((s?.title || '').trim().toLowerCase()));
-            mergedCaseStudies = [...current, ...JSON.parse(JSON.stringify(nonDup))];
+            mergedCaseStudies = [...current, ...structuredClone(nonDup)];
         }
 
         let mergedMoreCards = data.moreCards;
@@ -1061,7 +1061,7 @@ export default function UnifiedPageEditor({
             const current = Array.isArray(data.moreCards) ? [...data.moreCards] : [];
             const existingMoreTitles = new Set(current.map((c: any) => (c?.title || '').trim().toLowerCase()).filter(Boolean));
             const nonDup = effectiveDefaults.moreCards.filter((s: any) => !existingMoreTitles.has((s?.title || '').trim().toLowerCase()));
-            mergedMoreCards = [...current, ...JSON.parse(JSON.stringify(nonDup))];
+            mergedMoreCards = [...current, ...structuredClone(nonDup)];
         }
 
         // 3. Backfill empty scalar properties from effectiveDefaults without overwriting existing non-empty values
@@ -1069,7 +1069,7 @@ export default function UnifiedPageEditor({
         Object.entries(effectiveDefaults).forEach(([key, val]) => {
             if (key === 'cards' || key === 'section2Cards' || key === 'caseStudies' || key === 'moreCards') return;
             if (mergedData[key] === undefined || mergedData[key] === null || mergedData[key] === '') {
-                mergedData[key] = JSON.parse(JSON.stringify(val));
+                mergedData[key] = structuredClone(val);
             }
         });
 
