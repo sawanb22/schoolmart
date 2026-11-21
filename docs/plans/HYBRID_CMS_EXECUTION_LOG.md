@@ -156,8 +156,8 @@
 
 ## T4 – Migration Script: Blobs to Rows – DONE
 - Date: 2026-11-21
-- Commit: `1c8c88a` (T4: Migration script: blobs to rows)
-- Review Status: APPROVED (commits 654340e..1c8c88a)
+- Commit: `f514044` (T4: Migration script: blobs to rows)
+- Review Status: APPROVED (commits 654340e..f514044, review clean, 0 critical, 0 important)
 - Backup used (if DB touched): N/A (read-only dev DB queries for dry-run; `--apply` strictly forbidden on dev DB in T4 and executed only against isolated test DB `DATABASE_URL_TEST`).
 - Files changed (summary):
   - Created `backend/src/services/page-content/constants.ts` defining canonical collections, column keys, detail keys, HTML keys, document slugs, and payload limits.

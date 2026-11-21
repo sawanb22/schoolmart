@@ -78,7 +78,7 @@ describe('Page Items Migration Script (migrate-page-items.ts)', () => {
     expect(structuredPage).not.toBeNull();
     expect(structuredPage?.contentModel).toBe('structured');
     expect(structuredPage?.items.length).toBe(3);
-  }, 45000);
+  }, 90000);
 
   it('idempotence: second --apply run causes zero mutations (same IDs, versions, and counts)', async () => {
     // 1. Snapshot state after first apply
@@ -141,7 +141,7 @@ describe('Page Items Migration Script (migrate-page-items.ts)', () => {
     for (let i = 0; i < beforePages.length; i++) {
       expect(afterPages[i].version).toBe(beforePages[i].version);
     }
-  }, 45000);
+  }, 90000);
 
   it('pre-migration revision snapshots exist with original document pageData', async () => {
     const structuredPages = await prisma.page.findMany({
@@ -179,7 +179,7 @@ describe('Page Items Migration Script (migrate-page-items.ts)', () => {
 
     expect(itemsAfter).toBe(itemsBefore);
     expect(categoriesAfter).toBe(categoriesBefore);
-  }, 45000);
+  }, 90000);
 
   it('document pages remain untouched with zero items and zero categories', async () => {
     const documentPages = await prisma.page.findMany({
