@@ -189,8 +189,8 @@
 
 ## T5 – Read Path from Tables, Legacy Write Adapter, Item Endpoint, Data Cut-Over – DONE
 - Date: 2026-11-21
-- Commit: `446b065` (T5: Read path from tables, legacy write adapter, item endpoint, data cut-over)
-- Review Status: PENDING_REVIEW
+- Commit: `c1c7fd9` (T5: Read path from tables, legacy write adapter, item endpoint, data cut-over)
+- Review Status: APPROVED (commits ef315d3..c1c7fd9, review clean, 0 critical, 0 important)
 - Backup used (if DB touched): Fresh dev DB export created at `backend/prisma/database-export.json` (1,407,690 bytes, 1374.70 KB, 130 pages) prior to executing `migrate-page-items.ts --apply` on dev database.
 - Files changed (summary):
   - Created `backend/src/services/page-content/page-content.service.ts` implementing `loadPage` (single Prisma query with joins and alias resolution for `sports` <-> `sports-infra` and `sell-on-schoolmart` <-> `sell-on-campusmart`), `getPageLegacy` (clean legacy reconstruction with `buildLegacyPageData`), `getHubV2` (Invariant I5: zero `detail` keys, clean hub v2 shape), `findItem` (exact slug -> `SlugRedirect` -> fallback title/href leaf), and `getItem` (with 301 redirects and 404s).
