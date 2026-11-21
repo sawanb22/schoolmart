@@ -120,8 +120,8 @@
 
 ## T3 – Schema: New Tables, JSONB, Versions – DONE
 - Date: 2026-11-21
-- Commit: `cf77156` (T3: Schema: new tables, jsonb, versions)
-- Review Status: Pending Review
+- Commit: `17040ae` (T3: Schema: new tables, jsonb, versions)
+- Review Status: APPROVED (commits 198f0c4..17040ae, review clean, 0 critical, 0 important)
 - Backup used (if DB touched): Fresh dev DB export created at `backend/prisma/database-export.json` (1,309,504 bytes, 130 pages) prior to `prisma migrate deploy`. Rehearsed migration on isolated Neon test database with 100% data retention before applying to dev database.
 - Files changed (summary):
   - Updated `backend/prisma/schema.prisma` with 6 relational CMS models (`PageItem`, `PageCategory`, `PageItemCategory`, `SlugRedirect`, `PageRevision`, `CmsState`) and updated `Page` model (`contentModel`, `pageData Json?`, `version`, index on `published`).
