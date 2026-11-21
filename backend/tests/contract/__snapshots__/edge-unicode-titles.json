@@ -1,0 +1,27 @@
+{
+  "title": "Edge Unicode Titles (Édition Française & 实验室 & 🚀)",
+  "slug": "edge-unicode-titles",
+  "content": null,
+  "template": "solution-hub",
+  "pageData": {
+    "heroTitle": "Unicode & Emojis Hub 🚀 实验室",
+    "cards": [
+      {
+        "title": "Laboratoire d'Innovation 🧪",
+        "description": "Laboratoire avec caractères accentués",
+        "slug": "laboratoire-innovation"
+      },
+      {
+        "title": "人工智能实验室 (AI Lab) 🤖",
+        "description": "Chinese and emoji characters in title",
+        "slug": "ai-lab-chinese"
+      },
+      {
+        "title": "विद्यालय प्रयोगशाला 🇮🇳",
+        "description": "Hindi script and flag emoji",
+        "slug": "vidyalaya-lab"
+      }
+    ]
+  },
+  "published": true
+}

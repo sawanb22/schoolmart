@@ -1,0 +1,20 @@
+{
+  "title": "Privacy Policy",
+  "slug": "privacy-policy",
+  "content": null,
+  "template": "article",
+  "pageData": {
+    "category": "",
+    "heroTitle": "Privacy Policy",
+    "heroImage": "",
+    "body": "",
+    "ctaTitle": "",
+    "ctaSubtitle": "",
+    "ctaButtonLabel": "",
+    "ctaHref": "/contact-us",
+    "hideHero": false,
+    "hideBody": false,
+    "hideCta": true
+  },
+  "published": true
+}

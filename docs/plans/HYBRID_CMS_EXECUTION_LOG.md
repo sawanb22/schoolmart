@@ -80,3 +80,39 @@
   - In `backend/scripts/restore-database.js`, added `dns.setDefaultResultOrder('ipv4first')` and `withRetry` around upserts to prevent remote connection drops (`P1001`/`P1017`) during high-frequency bulk restore loops.
 - Found, not fixed:
   - None.
+
+---
+
+## T2 – Characterization Tests and Removal of GET Side Effects – DONE
+- Date: 2026-11-21
+- Commit: `8682acd` (T2: Characterization tests and removal of GET side effects)
+- Review Status: PENDING_REVIEW
+- Backup used (if DB touched): N/A (read-only dev DB queries for fixture extraction; tests run strictly against isolated test DB `DATABASE_URL_TEST`).
+- Files changed (summary):
+  - Created `backend/scripts/export-page-fixtures.ts` to export real page fixtures from dev DB.
+  - Exported 14 real page fixtures to `backend/tests/fixtures/pages/` (`labs`, `ai-ml`, `campus-master-planning`, `campus-design-execution`, `faq`, `job-openings`, `catalogues`, `colleges-universities-for-sale`, `sports-infra`, `libraries`, `tech-infra`, `privacy-policy`, `guide-50-global-resources-for-school-excellence`, `resource-composite-skill-lab`).
+  - Added 10 synthetic edge-case fixtures to `backend/tests/fixtures/pages/` (`edge-duplicate-titles`, `edge-no-card-slugs`, `edge-category-mix`, `edge-section2-only`, `edge-featured-duplicate`, `edge-featured-empty`, `edge-null-entries`, `edge-faq-no-title`, `edge-script-injection`, `edge-unicode-titles`).
+  - Created fixture seeding helper `backend/tests/helpers/seed-fixtures.ts`.
+  - Created characterization snapshot suite `backend/tests/contract/legacy-pages.contract.test.ts` and generated 26 file snapshots in `backend/tests/contract/__snapshots__/` (covering 24 page fixtures + `hub/catalog` + `hub/catalog?hub=labs`).
+  - Extracted page seeding logic into dedicated service `backend/src/services/bootstrap-pages.ts` exporting `bootstrapPages(): Promise<{ created: string[], updated: string[] }>` with concurrency safety (Prisma P2002 handling and re-read).
+  - Updated `backend/src/server.ts` to execute `await bootstrapPages()` prior to `app.listen()`.
+  - Updated `backend/prisma/seed.ts` and `backend/src/runSeed.ts` to invoke `await bootstrapPages()`.
+  - Eliminated all database side effects from public GET routes in `backend/src/routes/pages.routes.ts` (`GET /published`, `GET /:idOrSlug`); zero `ensure*` functions remain in route files. Admin `GET /` calls `bootstrapPages()`.
+  - Created verification suite `backend/tests/pages/no-side-effects.test.ts` proving Invariant I1 (row counts and max updatedAt unchanged across public endpoints; missing `faq` returns 404 without resurrection).
+  - Created unit & concurrency suite `backend/tests/services/bootstrap-pages.test.ts` verifying empty DB bootstrapping, idempotency on subsequent runs, and race-free concurrent execution (`Promise.all`).
+  - Updated `backend/tests/smoke.test.ts` to bootstrap defaults in `beforeAll` without relying on legacy GET side effects.
+- Tests added:
+  - `backend/tests/contract/legacy-pages.contract.test.ts` (26 tests)
+  - `backend/tests/services/bootstrap-pages.test.ts` (3 tests)
+  - `backend/tests/pages/no-side-effects.test.ts` (1 test)
+- Test results:
+  - `npm run test --prefix backend`: 37 passed / 37 total (4 test files)
+  - `npm run build --prefix backend`: 0 compilation errors
+- Metrics:
+  - Contract snapshots: 26 JSON snapshot files committed under `backend/tests/contract/__snapshots__/`
+  - Zero regex matches for `ensure(Simple|Article|CollegeSale|Partner|JobOpenings)Page` in `backend/src/routes`
+- Deviations from plan and why:
+  - `toMatchFileSnapshot` in Vitest returns a Promise and must be awaited (`await expect(...).toMatchFileSnapshot(...)`), which was properly applied.
+- Found, not fixed:
+  - None.
+

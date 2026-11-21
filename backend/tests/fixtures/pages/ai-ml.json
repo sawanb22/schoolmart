@@ -1,0 +1,8 @@
+{
+  "title": "AI & ML Labs",
+  "slug": "ai-ml",
+  "template": "ai-ml",
+  "published": true,
+  "content": null,
+  "pageData": "{\"heroTitle\":\"AI & Machine Learning\",\"heroSubtitle\":\"Cutting-edge AI and ML solutions for educational institutions. Prepare students for the future with hands-on learning experiences.\",\"heroImage\":\"https://images.unsplash.com/photo-1677442136019-21780ecad995?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80\",\"section1Title\":\"AI/ML Solutions\",\"section2Title\":\"Future-Ready Education\",\"cards\":[{\"title\":\"AI Learning Stations\",\"description\":\"Interactive AI-powered learning environments\"},{\"title\":\"ML Labs\",\"description\":\"Machine learning experimentation setups\"},{\"title\":\"Coding Platforms\",\"description\":\"Programming and development environments\"},{\"title\":\"Computing Infrastructure\",\"description\":\"High-performance computing solutions\"}]}"
+}

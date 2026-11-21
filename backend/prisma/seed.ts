@@ -1,6 +1,7 @@
 import { PrismaClient } from '@prisma/client';
 import 'dotenv/config';
 import bcrypt from 'bcryptjs';
+import { bootstrapPages } from '../src/services/bootstrap-pages';
 
 const prisma = new PrismaClient();
 
@@ -246,6 +247,9 @@ async function main() {
             },
         }));
     }
+
+    const bootstrapResult = await bootstrapPages();
+    console.log(`✓ Bootstrapped defaults: ${bootstrapResult.created.length} created, ${bootstrapResult.updated.length} updated`);
 
     // Mark System Bootstrapped
     await withRetry(() => prisma.siteContent.upsert({

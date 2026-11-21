@@ -1,0 +1,101 @@
+{
+  "activeHub": "labs",
+  "hubs": [
+    {
+      "id": "furniture",
+      "title": "Campus Furniture",
+      "subcategories": [],
+      "totalCount": 0
+    },
+    {
+      "id": "labs",
+      "title": "Composite & Skill Labs",
+      "subcategories": [
+        "COMPUTER LAB",
+        "COMPOSITE SKILLS LAB",
+        "STEM LAB"
+      ],
+      "totalCount": 3
+    },
+    {
+      "id": "sports-infra",
+      "title": "Sports Infrastructure",
+      "subcategories": [
+        "Track & Field",
+        "Playground",
+        "Indoor Courts",
+        "Equipment",
+        "Gym Tech"
+      ],
+      "totalCount": 5
+    },
+    {
+      "id": "tech-infra",
+      "title": "Tech Infrastructure",
+      "subcategories": [
+        "Classroom Tech",
+        "Displays",
+        "Networking",
+        "Wi-Fi & Fiber",
+        "Servers & Cloud",
+        "Security"
+      ],
+      "totalCount": 4
+    },
+    {
+      "id": "libraries",
+      "title": "Libraries",
+      "subcategories": [
+        "Phygital Libraries",
+        "Reading Zones",
+        "Digital Catalogs",
+        "AR Libraries",
+        "Study Pods",
+        "Open Shelving",
+        "Audio Rooms"
+      ],
+      "totalCount": 7
+    }
+  ],
+  "items": [
+    {
+      "id": "labs-0",
+      "title": "Composite Skill Lab & Technical Workshop",
+      "description": "Multidisciplinary vocational learning spaces with carpentry, electronics workbench, IoT prototyping stations, and 3D printing.",
+      "image": "/uploads/1777103755353-COMPOSITE SKILL LAB.PNG",
+      "categories": [
+        "COMPOSITE SKILLS LAB"
+      ],
+      "slug": "composite-skill-lab",
+      "href": "/p/composite-skill-lab",
+      "hubSlug": "labs",
+      "hubTitle": "Composite & Skill Labs"
+    },
+    {
+      "id": "labs-1",
+      "title": "Next-Gen AI & High-Performance Computer Lab",
+      "description": "Ergonomic networked computing workstations configured for computational thinking, graphic coding, and CBSE cyber security curriculums.",
+      "image": "/uploads/1776969406388-Gemini_Generated_Image_nathq4nathq4nath.png",
+      "categories": [
+        "COMPUTER LAB"
+      ],
+      "slug": "ai-computer-lab",
+      "href": "/labs/ai-computer-lab",
+      "hubSlug": "labs",
+      "hubTitle": "Composite & Skill Labs"
+    },
+    {
+      "id": "labs-2",
+      "title": "Integrated STEM Discovery & Robotics Studio",
+      "description": "Hands-on maker station equipped with modular robotics test tracks, microcontroller kits, sensor matrices, and rapid prototyping tools.",
+      "image": "/uploads/1777104618774-GAMIFIED SCIENCE LAB.PNG",
+      "categories": [
+        "STEM LAB"
+      ],
+      "slug": "stem-discovery-studio",
+      "href": "/labs/stem-discovery-studio",
+      "hubSlug": "labs",
+      "hubTitle": "Composite & Skill Labs"
+    }
+  ]
+}

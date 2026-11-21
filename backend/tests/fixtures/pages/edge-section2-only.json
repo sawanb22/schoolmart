@@ -1,0 +1,8 @@
+{
+  "title": "Edge Section 2 Only",
+  "slug": "edge-section2-only",
+  "template": "solution-hub",
+  "published": true,
+  "content": null,
+  "pageData": "{\"heroTitle\":\"Section 2 Only\",\"section2Title\":\"Exclusive Section 2\",\"section2Cards\":[{\"title\":\"Specialized Testing Unit\",\"description\":\"Only in section2\",\"slug\":\"testing-unit\"},{\"title\":\"Sensor Calibration Station\",\"description\":\"Secondary section card\",\"slug\":\"sensor-station\"}]}"
+}

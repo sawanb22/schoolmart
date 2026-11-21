@@ -1,0 +1,8 @@
+{
+  "title": "Edge Script Injection",
+  "slug": "edge-script-injection",
+  "template": "solution-hub",
+  "published": true,
+  "content": null,
+  "pageData": "{\"heroTitle\":\"Script Injection Test\",\"cards\":[{\"title\":\"Vulnerable HTML Card\",\"description\":\"Contains script tags <script>alert(1)</script>\",\"slug\":\"vulnerable-card\",\"detail\":{\"overview\":\"<p>Safe overview</p><script>alert(1)</script><p>More text</p>\",\"specs\":\"<img src=x onerror=alert(2) />\"}}]}"
+}

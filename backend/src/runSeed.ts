@@ -5,6 +5,7 @@
  */
 import { PrismaClient } from '@prisma/client';
 import bcrypt from 'bcryptjs';
+import { bootstrapPages } from './services/bootstrap-pages';
 
 const prisma = new PrismaClient();
 
@@ -939,6 +940,9 @@ async function seed() {
     }
 
     console.log(`✓ ${corePages.length} pages seeded with pageData`);
+
+    const bootstrapResult = await bootstrapPages();
+    console.log(`✓ Bootstrapped defaults: ${bootstrapResult.created.length} created, ${bootstrapResult.updated.length} updated`);
 
     // ── Mark System Bootstrapped ──────────────────────────────────────────
     await prisma.siteContent.upsert({

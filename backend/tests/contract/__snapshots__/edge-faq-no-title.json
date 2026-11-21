@@ -1,0 +1,20 @@
+{
+  "title": "Edge FAQ No Title",
+  "slug": "edge-faq-no-title",
+  "content": null,
+  "template": "faq",
+  "pageData": {
+    "heroTitle": "FAQ No Title Test",
+    "faqs": [
+      {
+        "question": "What is the warranty period?",
+        "answer": "All equipment comes with a 3-year warranty."
+      },
+      {
+        "question": "How long does installation take?",
+        "answer": "Turnkey setups typically take 4-6 weeks."
+      }
+    ]
+  },
+  "published": true
+}
