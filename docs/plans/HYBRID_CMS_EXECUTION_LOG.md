@@ -330,8 +330,8 @@
 
 ## T8 – HTTP performance: compression, caching, ETag, resolve endpoint – DONE
 - Date: 2026-11-21
-- Commit: `7146312` (T8: HTTP performance: compression, caching, ETag, resolve endpoint)
-- Review Status: Pending Review
+- Commit: `78854947be1bd8eff9e9700d37db89ae574a361d` (T8: HTTP performance: compression, caching, ETag, resolve endpoint)
+- Review Status: APPROVED (commits 1ecbbe9..7885494, review clean, 0 critical, 0 important)
 - Backup used (if DB touched): N/A (read-only dev DB queries; tests run strictly against isolated test DB DATABASE_URL_TEST).
 - Files changed (summary):
   - Updated `backend/package.json` and `backend/package-lock.json`: installed `compression`, `lru-cache`, `@types/compression`.
