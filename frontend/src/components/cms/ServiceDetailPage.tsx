@@ -1,7 +1,8 @@
-import { Link, useParams, useSearchParams } from 'react-router-dom';
+import { Link, Navigate, useParams, useSearchParams } from 'react-router-dom';
 import { ArrowLeft, ArrowRight, Star, Pencil } from 'lucide-react';
 import { isAdminSession } from '@/lib/auth-session';
-import { usePageData } from '@/hooks/usePageData';
+import { useHubItem } from '@/hooks/useHubItem';
+import { itemToCard } from '@/lib/item-to-card';
 import { MediaImage } from '@/components/ui/media-image';
 import RichTextContent from '@/components/common/RichTextContent';
 import { ArticleDetailSkeleton } from '@/components/ui/page-skeleton';
@@ -31,67 +32,60 @@ export default function ServiceDetailPage({
   const params = useParams();
   const [searchParams] = useSearchParams();
   const slug = categorySlug || params.categorySlug || '';
-  const itemSlug = params.itemSlug || Object.values(params).find((p) => p && p !== slug) || '';
+  const rawItemSlug = params.itemSlug || Object.values(params).find((p) => p && p !== slug) || '';
 
   const refIntent = searchParams.get('ref_intent') || '';
   const refInst = searchParams.get('ref_inst') || '';
   const refQty = searchParams.get('ref_qty') || '';
   const refTrace = searchParams.get('ref_trace') || '';
 
-  const { data, loading } = usePageData(slug);
+  let normalizedItemSlug = '';
+  try {
+    normalizedItemSlug = decodeURIComponent(rawItemSlug).trim().toLowerCase();
+  } catch {
+    normalizedItemSlug = rawItemSlug.trim().toLowerCase();
+  }
+
+  const { data: hubItemData, isLoading } = useHubItem(slug, normalizedItemSlug);
   const isAdmin = isAdminSession();
 
-  const rawCards =
-    (Array.isArray((data as any)?.cards) && (data as any).cards.length > 0 ? (data as any).cards : null) ??
-    (Array.isArray((data as any)?.section2Cards) && (data as any).section2Cards.length > 0
-      ? (data as any).section2Cards
-      : null) ??
-    [];
-
-  const allCards = [
-    ...((data as any)?.featured &&
-    typeof (data as any).featured === 'object' &&
-    !rawCards.some((c: any) => c?.title === (data as any).featured?.title)
-      ? [(data as any).featured]
-      : []),
-    ...rawCards,
-  ];
-
-  const normalizedItemSlug = decodeURIComponent(itemSlug).trim().toLowerCase();
-  const card = allCards.find((item: any) => {
-    if (!item) return false;
-    const s = (item.slug || '').trim().toLowerCase();
-    const t = slugify(item.title || '');
-    const h = (item.href || '').trim().toLowerCase();
-    return (
-      s === normalizedItemSlug ||
-      t === normalizedItemSlug ||
-      (h && (h.endsWith(`/${normalizedItemSlug}`) || h === normalizedItemSlug))
-    );
-  });
-
-  if (loading && !card) {
+  if (isLoading) {
     return <ArticleDetailSkeleton />;
   }
 
-  if (!card) {
+  if (hubItemData && (hubItemData as any).redirectTo) {
+    return <Navigate to={(hubItemData as any).redirectTo as string} replace />;
+  }
+
+  const item = hubItemData ? (hubItemData as any).item : null;
+  const hub = hubItemData ? ((hubItemData as any).hub || {}) : {};
+
+  if (!item) {
     return (
       <main className="flex min-h-screen flex-col items-center justify-center gap-4 px-4">
         <p className="text-gray-600">That module couldn't be found.</p>
         <Link to={'/' + slug} className="btn-primary">
-          Back to {categoryTitle || (data as any)?.heroTitle || 'Overview'}
+          Back to {categoryTitle || hub?.title || 'Overview'}
         </Link>
       </main>
     );
   }
 
-  const rawCtaHref = card?.ctaButtonHref || card?.ctaHref || ctaButtonHref || (data as any)?.ctaHref || '/contact-us';
+  const card = itemToCard(item, { includeDetail: true });
+
+  const hubCta = hub?.cta || {};
+  const hubCtaHref = hubCta.ctaButtonHref || hubCta.ctaHref || hub?.ctaButtonHref || hub?.ctaHref;
+  const hubCtaLabel = hubCta.ctaButtonLabel || hub?.ctaButtonLabel;
+  const hubCtaTitle = hubCta.ctaTitle || hub?.subpageCtaTitle || hub?.ctaTitle;
+  const hubCtaSubtitle = hubCta.ctaSubtitle || hub?.subpageCtaSubtitle || hub?.ctaSubtitle;
+
+  const rawCtaHref = card?.ctaButtonHref || card?.ctaHref || ctaButtonHref || hubCtaHref || '/contact-us';
   const effectiveCtaHref = rawCtaHref.startsWith('http') || rawCtaHref.startsWith('/') ? rawCtaHref : `/${rawCtaHref}`;
   const effectiveCtaLabel =
-    card?.ctaButtonLabel || ctaButtonLabel || (data as any)?.ctaButtonLabel || (effectiveCtaHref.includes('quote') ? 'Request a Quote' : 'Contact Us');
+    card?.ctaButtonLabel || ctaButtonLabel || hubCtaLabel || (effectiveCtaHref.includes('quote') ? 'Request a Quote' : 'Contact Us');
   const effectiveCtaTitle =
-    card?.ctaTitle?.trim() || (data as any)?.subpageCtaTitle || (data as any)?.ctaTitle || `Want ${card?.title?.toLowerCase()} on your campus?`;
-  const effectiveCtaSubtitle = card?.ctaSubtitle?.trim() || (data as any)?.subpageCtaSubtitle || (data as any)?.ctaSubtitle || '';
+    card?.ctaTitle?.trim() || hubCtaTitle || `Want ${card?.title?.toLowerCase()} on your campus?`;
+  const effectiveCtaSubtitle = card?.ctaSubtitle?.trim() || hubCtaSubtitle || '';
 
   const ctaParams = new URLSearchParams();
   if (refIntent) ctaParams.set('ref_intent', refIntent);
@@ -104,6 +98,8 @@ export default function ServiceDetailPage({
   const targetCtaHref = qs ? `${effectiveCtaHref}${effectiveCtaHref.includes('?') ? '&' : '?'}${qs}` : effectiveCtaHref;
   const isExternalCta = effectiveCtaHref.startsWith('http');
 
+  const parentOverviewTitle = categoryTitle || hub?.title || 'Overview';
+
   return (
     <main className="min-h-screen bg-gray-50/50 py-8 sm:py-12">
       <article className="mx-auto max-w-3xl px-4 sm:px-6">
@@ -112,7 +108,7 @@ export default function ServiceDetailPage({
             to={'/' + slug}
             className="inline-flex items-center gap-2 font-semibold text-cm-blue hover:underline"
           >
-            <ArrowLeft className="h-4 w-4" /> Back to {categoryTitle || (data as any)?.heroTitle || 'Overview'}
+            <ArrowLeft className="h-4 w-4" /> Back to {parentOverviewTitle}
           </Link>
           {isAdmin && (
             <a
@@ -122,7 +118,7 @@ export default function ServiceDetailPage({
               className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold bg-amber-50 text-amber-900 border border-amber-200 hover:bg-amber-100 transition shadow-xs"
               title="Jump to parent hub editor with this card expanded"
             >
-              <Pencil className="w-3 h-3 text-amber-700" /> Edit in {categoryTitle || 'Hub Page'}
+              <Pencil className="w-3 h-3 text-amber-700" /> Edit in {categoryTitle || hub?.title || 'Hub Page'}
             </a>
           )}
         </div>

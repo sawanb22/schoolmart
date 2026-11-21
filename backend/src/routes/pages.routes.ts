@@ -431,7 +431,7 @@ router.post('/', verifyToken, requireAdmin, async (req: AuthRequest, res: Respon
                     authorId: req.user?.id,
                 });
                 return page;
-            });
+            }, { maxWait: 10000, timeout: 30000 });
         } else {
             createdPage = await prisma.page.create({
                 data: {
@@ -557,7 +557,7 @@ router.put('/:id', verifyToken, requireAdmin, async (req: AuthRequest, res: Resp
                         data: { targetSlug: updateData.slug }
                     });
                 }
-            });
+            }, { maxWait: 10000, timeout: 30000 });
         } else if (isStructured && !hasCollectionKeys) {
             // Settings-only update on structured page: merge settings over existing
             const currentSettings = parsePageData(existing.pageData);

@@ -53,10 +53,19 @@ export async function fetchHub(slug: string): Promise<Record<string, unknown>> {
 /**
  * Fetch single hub item.
  * GET /api/pages/:hubSlug/items/:itemSlug
+ * Catches 404 and returns null without throwing.
  */
-export async function fetchHubItem(hubSlug: string, itemSlug: string): Promise<Record<string, unknown>> {
-  const res = await api.get(`/pages/${hubSlug}/items/${itemSlug}`);
-  return res.data;
+export async function fetchHubItem(hubSlug: string, itemSlug: string): Promise<Record<string, unknown> | null> {
+  try {
+    const res = await api.get(`/pages/${hubSlug}/items/${itemSlug}`);
+    return res.data;
+  } catch (err: unknown) {
+    const axiosError = err as { response?: { status?: number; data?: Record<string, unknown> } };
+    if (axiosError.response?.status === 404) {
+      return null;
+    }
+    throw err;
+  }
 }
 
 /**

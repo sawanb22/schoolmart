@@ -414,3 +414,48 @@
 
 
 
+
+
+---
+
+## T10 – Detail pages and dynamic routing use the item and resolve endpoints – DONE
+- Date: 2026-11-21
+- Commit: Pending (T10: Detail pages and dynamic routing use the item and resolve endpoints)
+- Review Status: PENDING REVIEW
+- Backup used (if DB touched): N/A (read-only dev DB queries; backend tests isolated to DATABASE_URL_TEST).
+- Files changed (summary):
+  - Created `frontend/src/components/cms/article-view-model.ts`: pure extraction of `buildArticleViewModel(card, hub, options)` supporting category resolution, body derivation with lead paragraph formatting, deliverables HTML generation, cta overrides, modern `hub.cta` nested fallbacks, admin edit links, and backLinks.
+  - Created `frontend/src/lib/item-to-card.ts`: pure `itemToCard(item, options)` mapper mirroring backend `buildItem` (data, detail, title derived state, slug, summary -> description, imageUrl -> image, href, badge, categories).
+  - Created `backend/tests/fixtures/generate-item-fixtures.test.ts` & generated `frontend/src/test/fixtures/items/items.json`: 46 fixtures covering all structured pages and edge cases.
+  - Updated `frontend/src/components/cms/ServiceDetailPage.tsx`: switched to `useHubItem(categorySlug, itemSlug)`, handles `redirectTo`, maps item with `itemToCard(item, { includeDetail: true })`, falls back to `hub.cta` CTA defaults, preserves AI Solutions Finder context notice.
+  - Updated `frontend/src/components/cms/UniversalArticleDetail.tsx`: replaced sequential `api.get` probes and `usePageData` with `useResolvePath('/' + hubSlug + '/' + itemSlug)`, handles `redirect` (`<Navigate>`), `page` (`GenericPageRenderer`), and `item` (`useHubItem` + `buildArticleViewModel`).
+  - Updated `frontend/src/App.tsx`: replaced 4-step probe fallback cascade in `DynamicPageRoute` with `useResolvePath('/' + slug)`; fixed prefixed-slug bug by passing resolved `result.slug` to templates (`SolutionPageRenderer`, `ServicePageRenderer`, etc.); handled redirects and not-found.
+  - Updated `frontend/src/components/cms/DynamicChildPageRoute.tsx`: switched to `useResolvePath('/' + hubSlug + '/' + itemSlug)`, dispatches `ServiceDetailPage` or `UniversalArticleDetail` based on `hubTemplate`.
+  - Updated `frontend/src/pages/partnership-model-detail.tsx` & `frontend/src/pages/campus-design-execution-detail.tsx`: adapted from whole-hub `usePageData` to `useHubItem`.
+  - Updated `frontend/src/api/cms.ts`: caught 404 in `fetchHubItem` returning null without throwing, preventing unnecessary retry network requests.
+  - Updated `frontend/src/test/setup.ts`: added standard `window.matchMedia` mock for jsdom environment.
+  - Updated `backend/src/routes/pages.routes.ts`: increased `$transaction` timeout to 30s to prevent Neon internet round-trip timeouts during multi-entity batch updates.
+  - Updated `docs/plans/baseline/requests.md`: recorded re-measured cold load request counts.
+  - Created test suites:
+    - `frontend/src/components/cms/article-view-model.test.ts` (12 tests)
+    - `frontend/src/lib/item-to-card.test.ts` (9 tests)
+    - `frontend/src/components/cms/ServiceDetailPage.test.tsx` (4 tests)
+    - `frontend/src/components/cms/UniversalArticleDetail.test.tsx` (4 tests)
+    - `frontend/src/components/cms/DynamicPageRoute.test.tsx` (4 tests)
+  - Created task report `docs/plans/sdd/task-10-report.md`.
+- Tests added:
+  - 5 frontend test files, 33 new unit/integration tests (total 46 tests across 9 files in frontend, 100% passing).
+- Test results:
+  - `npm run test --prefix frontend`: 46 passed / 46 total (9 test files, 100% green).
+  - `npm run typecheck:frontend`: 0 errors.
+  - `npm run build:frontend`: Vite production build passed in 25.67s with 0 errors.
+  - `npm run build:backend`: TypeScript & Prisma build passed with 0 errors.
+  - Playwright smoke test (`npx playwright test tests/e2e/smoke.spec.ts`): 206 passed / 206 executed (3 known baseline failures skipped), 0 regressions.
+- Metrics:
+  - Cold load `/labs/composite-skill-lab` (Item Detail): whole-hub fetch eliminated; makes exactly 1 `/api/pages*` call + `/api/content`.
+  - Cold load `/50-global-resources-for-school-excellence` (Prefixed Dynamic Page): 4-probe waterfall eliminated; makes exactly 1 `/api/pages*` resolve call + `/api/content`.
+- Deviations from plan and why:
+  - Increased Prisma `$transaction` timeout from default 5000ms to 30000ms in `pages.routes.ts` to accommodate multi-entity updates over Neon network latency on Windows local dev.
+  - Added standard `window.matchMedia` stub to `frontend/src/test/setup.ts` to support GSAP ScrollTrigger in headless JSDOM test environments.
+- Found, not fixed:
+  - None.

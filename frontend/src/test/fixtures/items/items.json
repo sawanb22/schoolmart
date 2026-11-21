@@ -1,0 +1,1535 @@
+[
+  {
+    "sourcePage": "ai-ml.json",
+    "item": {
+      "collection": "cards",
+      "sortOrder": 0,
+      "title": "AI Learning Stations",
+      "slug": "ai-learning-stations",
+      "summary": "Interactive AI-powered learning environments",
+      "imageUrl": null,
+      "href": null,
+      "badge": null,
+      "published": true,
+      "data": {},
+      "detail": {},
+      "categoryNames": []
+    },
+    "expectedLegacyNoDetail": {
+      "title": "AI Learning Stations",
+      "slug": "ai-learning-stations",
+      "description": "Interactive AI-powered learning environments"
+    },
+    "expectedLegacyWithDetail": {
+      "title": "AI Learning Stations",
+      "slug": "ai-learning-stations",
+      "description": "Interactive AI-powered learning environments"
+    }
+  },
+  {
+    "sourcePage": "ai-ml.json",
+    "item": {
+      "collection": "cards",
+      "sortOrder": 1,
+      "title": "ML Labs",
+      "slug": "ml-labs",
+      "summary": "Machine learning experimentation setups",
+      "imageUrl": null,
+      "href": null,
+      "badge": null,
+      "published": true,
+      "data": {},
+      "detail": {},
+      "categoryNames": []
+    },
+    "expectedLegacyNoDetail": {
+      "title": "ML Labs",
+      "slug": "ml-labs",
+      "description": "Machine learning experimentation setups"
+    },
+    "expectedLegacyWithDetail": {
+      "title": "ML Labs",
+      "slug": "ml-labs",
+      "description": "Machine learning experimentation setups"
+    }
+  },
+  {
+    "sourcePage": "ai-ml.json",
+    "item": {
+      "collection": "cards",
+      "sortOrder": 2,
+      "title": "Coding Platforms",
+      "slug": "coding-platforms",
+      "summary": "Programming and development environments",
+      "imageUrl": null,
+      "href": null,
+      "badge": null,
+      "published": true,
+      "data": {},
+      "detail": {},
+      "categoryNames": []
+    },
+    "expectedLegacyNoDetail": {
+      "title": "Coding Platforms",
+      "slug": "coding-platforms",
+      "description": "Programming and development environments"
+    },
+    "expectedLegacyWithDetail": {
+      "title": "Coding Platforms",
+      "slug": "coding-platforms",
+      "description": "Programming and development environments"
+    }
+  },
+  {
+    "sourcePage": "ai-ml.json",
+    "item": {
+      "collection": "cards",
+      "sortOrder": 3,
+      "title": "Computing Infrastructure",
+      "slug": "computing-infrastructure",
+      "summary": "High-performance computing solutions",
+      "imageUrl": null,
+      "href": null,
+      "badge": null,
+      "published": true,
+      "data": {},
+      "detail": {},
+      "categoryNames": []
+    },
+    "expectedLegacyNoDetail": {
+      "title": "Computing Infrastructure",
+      "slug": "computing-infrastructure",
+      "description": "High-performance computing solutions"
+    },
+    "expectedLegacyWithDetail": {
+      "title": "Computing Infrastructure",
+      "slug": "computing-infrastructure",
+      "description": "High-performance computing solutions"
+    }
+  },
+  {
+    "sourcePage": "colleges-universities-for-sale.json",
+    "item": {
+      "collection": "cards",
+      "sortOrder": 0,
+      "title": "School for Sale in Bahraich, India",
+      "slug": "school-for-sale-in-bahraich-india",
+      "summary": "CBSE school with 800+ students, day and boarding facility for sale in Bahraich. The school encompasses a total area of 87,000 square feet and includes approximately 40 rooms, fully equipped science and computer labs.",
+      "imageUrl": "https://images.unsplash.com/photo-1580582932707-520aed937b7b?auto=format&fit=crop&w=700&q=80",
+      "href": null,
+      "badge": null,
+      "published": true,
+      "data": {
+        "location": "Bahraich",
+        "rating": "6.8",
+        "sales": "INR 2.6 crore",
+        "margin": "40 %",
+        "askingPrice": "INR 20 Cr",
+        "premium": true
+      },
+      "detail": {},
+      "categoryNames": []
+    },
+    "expectedLegacyNoDetail": {
+      "location": "Bahraich",
+      "rating": "6.8",
+      "sales": "INR 2.6 crore",
+      "margin": "40 %",
+      "askingPrice": "INR 20 Cr",
+      "premium": true,
+      "title": "School for Sale in Bahraich, India",
+      "slug": "school-for-sale-in-bahraich-india",
+      "description": "CBSE school with 800+ students, day and boarding facility for sale in Bahraich. The school encompasses a total area of 87,000 square feet and includes approximately 40 rooms, fully equipped science and computer labs.",
+      "image": "https://images.unsplash.com/photo-1580582932707-520aed937b7b?auto=format&fit=crop&w=700&q=80"
+    },
+    "expectedLegacyWithDetail": {
+      "location": "Bahraich",
+      "rating": "6.8",
+      "sales": "INR 2.6 crore",
+      "margin": "40 %",
+      "askingPrice": "INR 20 Cr",
+      "premium": true,
+      "title": "School for Sale in Bahraich, India",
+      "slug": "school-for-sale-in-bahraich-india",
+      "description": "CBSE school with 800+ students, day and boarding facility for sale in Bahraich. The school encompasses a total area of 87,000 square feet and includes approximately 40 rooms, fully equipped science and computer labs.",
+      "image": "https://images.unsplash.com/photo-1580582932707-520aed937b7b?auto=format&fit=crop&w=700&q=80"
+    }
+  },
+  {
+    "sourcePage": "colleges-universities-for-sale.json",
+    "item": {
+      "collection": "cards",
+      "sortOrder": 1,
+      "title": "Playschool Seeking Loan in Haryana, India",
+      "slug": "playschool-seeking-loan-in-haryana-india",
+      "summary": "Education society in Haryana with 5 CBSE schools and 70 playschools. This is an educational society with primary and play schools seeking growth funding.",
+      "imageUrl": "https://images.unsplash.com/photo-1562774053-701939374585?auto=format&fit=crop&w=700&q=80",
+      "href": null,
+      "badge": null,
+      "published": true,
+      "data": {
+        "location": "Haryana",
+        "rating": "6.8",
+        "sales": "INR 30 crore",
+        "margin": "25 %",
+        "askingPrice": "INR 5 Cr at 15%",
+        "premium": true
+      },
+      "detail": {},
+      "categoryNames": []
+    },
+    "expectedLegacyNoDetail": {
+      "location": "Haryana",
+      "rating": "6.8",
+      "sales": "INR 30 crore",
+      "margin": "25 %",
+      "askingPrice": "INR 5 Cr at 15%",
+      "premium": true,
+      "title": "Playschool Seeking Loan in Haryana, India",
+      "slug": "playschool-seeking-loan-in-haryana-india",
+      "description": "Education society in Haryana with 5 CBSE schools and 70 playschools. This is an educational society with primary and play schools seeking growth funding.",
+      "image": "https://images.unsplash.com/photo-1562774053-701939374585?auto=format&fit=crop&w=700&q=80"
+    },
+    "expectedLegacyWithDetail": {
+      "location": "Haryana",
+      "rating": "6.8",
+      "sales": "INR 30 crore",
+      "margin": "25 %",
+      "askingPrice": "INR 5 Cr at 15%",
+      "premium": true,
+      "title": "Playschool Seeking Loan in Haryana, India",
+      "slug": "playschool-seeking-loan-in-haryana-india",
+      "description": "Education society in Haryana with 5 CBSE schools and 70 playschools. This is an educational society with primary and play schools seeking growth funding.",
+      "image": "https://images.unsplash.com/photo-1562774053-701939374585?auto=format&fit=crop&w=700&q=80"
+    }
+  },
+  {
+    "sourcePage": "colleges-universities-for-sale.json",
+    "item": {
+      "collection": "cards",
+      "sortOrder": 2,
+      "title": "School for Sale in Thiruvananthapuram, India",
+      "slug": "school-for-sale-in-thiruvananthapuram-india",
+      "summary": "CBSE-affiliated school with 400+ students and owned facilities. Located in Thiruvananthapuram, this school offers quality education from a well-established campus.",
+      "imageUrl": "https://images.unsplash.com/photo-1498243691581-b145c3f54a5a?auto=format&fit=crop&w=700&q=80",
+      "href": null,
+      "badge": null,
+      "published": true,
+      "data": {
+        "location": "Thiruvananthapuram",
+        "rating": "6.2",
+        "sales": "INR 1.6 crore",
+        "margin": "10 - 20 %",
+        "askingPrice": "INR 8 Cr"
+      },
+      "detail": {},
+      "categoryNames": []
+    },
+    "expectedLegacyNoDetail": {
+      "location": "Thiruvananthapuram",
+      "rating": "6.2",
+      "sales": "INR 1.6 crore",
+      "margin": "10 - 20 %",
+      "askingPrice": "INR 8 Cr",
+      "title": "School for Sale in Thiruvananthapuram, India",
+      "slug": "school-for-sale-in-thiruvananthapuram-india",
+      "description": "CBSE-affiliated school with 400+ students and owned facilities. Located in Thiruvananthapuram, this school offers quality education from a well-established campus.",
+      "image": "https://images.unsplash.com/photo-1498243691581-b145c3f54a5a?auto=format&fit=crop&w=700&q=80"
+    },
+    "expectedLegacyWithDetail": {
+      "location": "Thiruvananthapuram",
+      "rating": "6.2",
+      "sales": "INR 1.6 crore",
+      "margin": "10 - 20 %",
+      "askingPrice": "INR 8 Cr",
+      "title": "School for Sale in Thiruvananthapuram, India",
+      "slug": "school-for-sale-in-thiruvananthapuram-india",
+      "description": "CBSE-affiliated school with 400+ students and owned facilities. Located in Thiruvananthapuram, this school offers quality education from a well-established campus.",
+      "image": "https://images.unsplash.com/photo-1498243691581-b145c3f54a5a?auto=format&fit=crop&w=700&q=80"
+    }
+  },
+  {
+    "sourcePage": "edge-category-mix.json",
+    "item": {
+      "collection": "cards",
+      "sortOrder": 0,
+      "title": "Card Single Category",
+      "slug": "card-single-category",
+      "summary": "String category",
+      "imageUrl": null,
+      "href": null,
+      "badge": null,
+      "published": true,
+      "data": {},
+      "detail": {},
+      "categoryNames": [
+        "Robotics"
+      ]
+    },
+    "expectedLegacyNoDetail": {
+      "title": "Card Single Category",
+      "slug": "card-single-category",
+      "description": "String category",
+      "categories": [
+        "Robotics"
+      ]
+    },
+    "expectedLegacyWithDetail": {
+      "title": "Card Single Category",
+      "slug": "card-single-category",
+      "description": "String category",
+      "categories": [
+        "Robotics"
+      ]
+    }
+  },
+  {
+    "sourcePage": "edge-category-mix.json",
+    "item": {
+      "collection": "cards",
+      "sortOrder": 1,
+      "title": "Card Multi Category",
+      "slug": "card-multi-category",
+      "summary": "Array categories",
+      "imageUrl": null,
+      "href": null,
+      "badge": null,
+      "published": true,
+      "data": {},
+      "detail": {},
+      "categoryNames": [
+        "Robotics",
+        "AI",
+        "Innovation"
+      ]
+    },
+    "expectedLegacyNoDetail": {
+      "title": "Card Multi Category",
+      "slug": "card-multi-category",
+      "description": "Array categories",
+      "categories": [
+        "Robotics",
+        "AI",
+        "Innovation"
+      ]
+    },
+    "expectedLegacyWithDetail": {
+      "title": "Card Multi Category",
+      "slug": "card-multi-category",
+      "description": "Array categories",
+      "categories": [
+        "Robotics",
+        "AI",
+        "Innovation"
+      ]
+    }
+  },
+  {
+    "sourcePage": "edge-duplicate-titles.json",
+    "item": {
+      "collection": "cards",
+      "sortOrder": 0,
+      "title": "Robotics Lab",
+      "slug": "robotics-lab",
+      "summary": "First lab",
+      "imageUrl": null,
+      "href": null,
+      "badge": null,
+      "published": true,
+      "data": {},
+      "detail": {},
+      "categoryNames": []
+    },
+    "expectedLegacyNoDetail": {
+      "title": "Robotics Lab",
+      "slug": "robotics-lab",
+      "description": "First lab"
+    },
+    "expectedLegacyWithDetail": {
+      "title": "Robotics Lab",
+      "slug": "robotics-lab",
+      "description": "First lab"
+    }
+  },
+  {
+    "sourcePage": "edge-duplicate-titles.json",
+    "item": {
+      "collection": "cards",
+      "sortOrder": 1,
+      "title": "Robotics Lab",
+      "slug": "robotics-lab-2",
+      "summary": "Second lab with same title",
+      "imageUrl": null,
+      "href": null,
+      "badge": null,
+      "published": true,
+      "data": {},
+      "detail": {},
+      "categoryNames": []
+    },
+    "expectedLegacyNoDetail": {
+      "title": "Robotics Lab",
+      "slug": "robotics-lab-2",
+      "description": "Second lab with same title"
+    },
+    "expectedLegacyWithDetail": {
+      "title": "Robotics Lab",
+      "slug": "robotics-lab-2",
+      "description": "Second lab with same title"
+    }
+  },
+  {
+    "sourcePage": "edge-faq-no-title.json",
+    "item": {
+      "collection": "faqs",
+      "sortOrder": 0,
+      "title": "What is the warranty period?",
+      "slug": "what-is-the-warranty-period",
+      "summary": null,
+      "imageUrl": null,
+      "href": null,
+      "badge": null,
+      "published": true,
+      "data": {
+        "question": "What is the warranty period?",
+        "answer": "All equipment comes with a 3-year warranty.",
+        "__titleDerived": true
+      },
+      "detail": {},
+      "categoryNames": []
+    },
+    "expectedLegacyNoDetail": {
+      "question": "What is the warranty period?",
+      "answer": "All equipment comes with a 3-year warranty.",
+      "slug": "what-is-the-warranty-period"
+    },
+    "expectedLegacyWithDetail": {
+      "question": "What is the warranty period?",
+      "answer": "All equipment comes with a 3-year warranty.",
+      "slug": "what-is-the-warranty-period"
+    }
+  },
+  {
+    "sourcePage": "edge-faq-no-title.json",
+    "item": {
+      "collection": "faqs",
+      "sortOrder": 1,
+      "title": "How long does installation take?",
+      "slug": "how-long-does-installation-take",
+      "summary": null,
+      "imageUrl": null,
+      "href": null,
+      "badge": null,
+      "published": true,
+      "data": {
+        "question": "How long does installation take?",
+        "answer": "Turnkey setups typically take 4-6 weeks.",
+        "__titleDerived": true
+      },
+      "detail": {},
+      "categoryNames": []
+    },
+    "expectedLegacyNoDetail": {
+      "question": "How long does installation take?",
+      "answer": "Turnkey setups typically take 4-6 weeks.",
+      "slug": "how-long-does-installation-take"
+    },
+    "expectedLegacyWithDetail": {
+      "question": "How long does installation take?",
+      "answer": "Turnkey setups typically take 4-6 weeks.",
+      "slug": "how-long-does-installation-take"
+    }
+  },
+  {
+    "sourcePage": "edge-featured-duplicate.json",
+    "item": {
+      "collection": "cards",
+      "sortOrder": 0,
+      "title": "Flagship STEM Center",
+      "slug": "flagship-stem",
+      "summary": "Flagship card description",
+      "imageUrl": null,
+      "href": null,
+      "badge": null,
+      "published": true,
+      "data": {},
+      "detail": {},
+      "categoryNames": []
+    },
+    "expectedLegacyNoDetail": {
+      "title": "Flagship STEM Center",
+      "slug": "flagship-stem",
+      "description": "Flagship card description"
+    },
+    "expectedLegacyWithDetail": {
+      "title": "Flagship STEM Center",
+      "slug": "flagship-stem",
+      "description": "Flagship card description"
+    }
+  },
+  {
+    "sourcePage": "edge-featured-duplicate.json",
+    "item": {
+      "collection": "cards",
+      "sortOrder": 1,
+      "title": "Secondary Lab",
+      "slug": "secondary-lab",
+      "summary": "Other card",
+      "imageUrl": null,
+      "href": null,
+      "badge": null,
+      "published": true,
+      "data": {},
+      "detail": {},
+      "categoryNames": []
+    },
+    "expectedLegacyNoDetail": {
+      "title": "Secondary Lab",
+      "slug": "secondary-lab",
+      "description": "Other card"
+    },
+    "expectedLegacyWithDetail": {
+      "title": "Secondary Lab",
+      "slug": "secondary-lab",
+      "description": "Other card"
+    }
+  },
+  {
+    "sourcePage": "edge-featured-duplicate.json",
+    "item": {
+      "collection": "featured",
+      "sortOrder": 0,
+      "title": "Flagship STEM Center",
+      "slug": "flagship-stem-2",
+      "summary": "Flagship card description",
+      "imageUrl": null,
+      "href": null,
+      "badge": null,
+      "published": true,
+      "data": {},
+      "detail": {},
+      "categoryNames": []
+    },
+    "expectedLegacyNoDetail": {
+      "title": "Flagship STEM Center",
+      "slug": "flagship-stem-2",
+      "description": "Flagship card description"
+    },
+    "expectedLegacyWithDetail": {
+      "title": "Flagship STEM Center",
+      "slug": "flagship-stem-2",
+      "description": "Flagship card description"
+    }
+  },
+  {
+    "sourcePage": "edge-featured-empty.json",
+    "item": {
+      "collection": "cards",
+      "sortOrder": 0,
+      "title": "Standard Lab",
+      "slug": "standard-lab",
+      "summary": "Standard card",
+      "imageUrl": null,
+      "href": null,
+      "badge": null,
+      "published": true,
+      "data": {},
+      "detail": {},
+      "categoryNames": []
+    },
+    "expectedLegacyNoDetail": {
+      "title": "Standard Lab",
+      "slug": "standard-lab",
+      "description": "Standard card"
+    },
+    "expectedLegacyWithDetail": {
+      "title": "Standard Lab",
+      "slug": "standard-lab",
+      "description": "Standard card"
+    }
+  },
+  {
+    "sourcePage": "edge-no-card-slugs.json",
+    "item": {
+      "collection": "cards",
+      "sortOrder": 0,
+      "title": "Advanced Physics Studio",
+      "slug": "advanced-physics-studio",
+      "summary": "No slug property here",
+      "imageUrl": null,
+      "href": null,
+      "badge": null,
+      "published": true,
+      "data": {},
+      "detail": {},
+      "categoryNames": []
+    },
+    "expectedLegacyNoDetail": {
+      "title": "Advanced Physics Studio",
+      "slug": "advanced-physics-studio",
+      "description": "No slug property here"
+    },
+    "expectedLegacyWithDetail": {
+      "title": "Advanced Physics Studio",
+      "slug": "advanced-physics-studio",
+      "description": "No slug property here"
+    }
+  },
+  {
+    "sourcePage": "edge-no-card-slugs.json",
+    "item": {
+      "collection": "cards",
+      "sortOrder": 1,
+      "title": "Bio Research Facility",
+      "slug": "bio-research-facility",
+      "summary": "Also missing slug",
+      "imageUrl": null,
+      "href": null,
+      "badge": null,
+      "published": true,
+      "data": {},
+      "detail": {},
+      "categoryNames": []
+    },
+    "expectedLegacyNoDetail": {
+      "title": "Bio Research Facility",
+      "slug": "bio-research-facility",
+      "description": "Also missing slug"
+    },
+    "expectedLegacyWithDetail": {
+      "title": "Bio Research Facility",
+      "slug": "bio-research-facility",
+      "description": "Also missing slug"
+    }
+  },
+  {
+    "sourcePage": "edge-null-entries.json",
+    "item": {
+      "collection": "cards",
+      "sortOrder": 0,
+      "title": "Valid First Card",
+      "slug": "valid-first-card",
+      "summary": "After null entry",
+      "imageUrl": null,
+      "href": null,
+      "badge": null,
+      "published": true,
+      "data": {},
+      "detail": {},
+      "categoryNames": []
+    },
+    "expectedLegacyNoDetail": {
+      "title": "Valid First Card",
+      "slug": "valid-first-card",
+      "description": "After null entry"
+    },
+    "expectedLegacyWithDetail": {
+      "title": "Valid First Card",
+      "slug": "valid-first-card",
+      "description": "After null entry"
+    }
+  },
+  {
+    "sourcePage": "edge-null-entries.json",
+    "item": {
+      "collection": "cards",
+      "sortOrder": 1,
+      "title": "Valid Second Card",
+      "slug": "valid-second-card",
+      "summary": "After another null",
+      "imageUrl": null,
+      "href": null,
+      "badge": null,
+      "published": true,
+      "data": {},
+      "detail": {},
+      "categoryNames": []
+    },
+    "expectedLegacyNoDetail": {
+      "title": "Valid Second Card",
+      "slug": "valid-second-card",
+      "description": "After another null"
+    },
+    "expectedLegacyWithDetail": {
+      "title": "Valid Second Card",
+      "slug": "valid-second-card",
+      "description": "After another null"
+    }
+  },
+  {
+    "sourcePage": "edge-script-injection.json",
+    "item": {
+      "collection": "cards",
+      "sortOrder": 0,
+      "title": "Vulnerable HTML Card",
+      "slug": "vulnerable-card",
+      "summary": "Contains script tags <script>alert(1)</script>",
+      "imageUrl": null,
+      "href": null,
+      "badge": null,
+      "published": true,
+      "data": {
+        "detail": {
+          "overview": "<p>Safe overview</p><script>alert(1)</script><p>More text</p>",
+          "specs": "<img src=x onerror=alert(2) />"
+        }
+      },
+      "detail": {},
+      "categoryNames": []
+    },
+    "expectedLegacyNoDetail": {
+      "detail": {
+        "overview": "<p>Safe overview</p><script>alert(1)</script><p>More text</p>",
+        "specs": "<img src=x onerror=alert(2) />"
+      },
+      "title": "Vulnerable HTML Card",
+      "slug": "vulnerable-card",
+      "description": "Contains script tags <script>alert(1)</script>"
+    },
+    "expectedLegacyWithDetail": {
+      "detail": {
+        "overview": "<p>Safe overview</p><script>alert(1)</script><p>More text</p>",
+        "specs": "<img src=x onerror=alert(2) />"
+      },
+      "title": "Vulnerable HTML Card",
+      "slug": "vulnerable-card",
+      "description": "Contains script tags <script>alert(1)</script>"
+    }
+  },
+  {
+    "sourcePage": "edge-section2-only.json",
+    "item": {
+      "collection": "section2Cards",
+      "sortOrder": 0,
+      "title": "Specialized Testing Unit",
+      "slug": "testing-unit",
+      "summary": "Only in section2",
+      "imageUrl": null,
+      "href": null,
+      "badge": null,
+      "published": true,
+      "data": {},
+      "detail": {},
+      "categoryNames": []
+    },
+    "expectedLegacyNoDetail": {
+      "title": "Specialized Testing Unit",
+      "slug": "testing-unit",
+      "description": "Only in section2"
+    },
+    "expectedLegacyWithDetail": {
+      "title": "Specialized Testing Unit",
+      "slug": "testing-unit",
+      "description": "Only in section2"
+    }
+  },
+  {
+    "sourcePage": "edge-section2-only.json",
+    "item": {
+      "collection": "section2Cards",
+      "sortOrder": 1,
+      "title": "Sensor Calibration Station",
+      "slug": "sensor-station",
+      "summary": "Secondary section card",
+      "imageUrl": null,
+      "href": null,
+      "badge": null,
+      "published": true,
+      "data": {},
+      "detail": {},
+      "categoryNames": []
+    },
+    "expectedLegacyNoDetail": {
+      "title": "Sensor Calibration Station",
+      "slug": "sensor-station",
+      "description": "Secondary section card"
+    },
+    "expectedLegacyWithDetail": {
+      "title": "Sensor Calibration Station",
+      "slug": "sensor-station",
+      "description": "Secondary section card"
+    }
+  },
+  {
+    "sourcePage": "edge-unicode-titles.json",
+    "item": {
+      "collection": "cards",
+      "sortOrder": 0,
+      "title": "Laboratoire d'Innovation 🧪",
+      "slug": "laboratoire-innovation",
+      "summary": "Laboratoire avec caractères accentués",
+      "imageUrl": null,
+      "href": null,
+      "badge": null,
+      "published": true,
+      "data": {},
+      "detail": {},
+      "categoryNames": []
+    },
+    "expectedLegacyNoDetail": {
+      "title": "Laboratoire d'Innovation 🧪",
+      "slug": "laboratoire-innovation",
+      "description": "Laboratoire avec caractères accentués"
+    },
+    "expectedLegacyWithDetail": {
+      "title": "Laboratoire d'Innovation 🧪",
+      "slug": "laboratoire-innovation",
+      "description": "Laboratoire avec caractères accentués"
+    }
+  },
+  {
+    "sourcePage": "edge-unicode-titles.json",
+    "item": {
+      "collection": "cards",
+      "sortOrder": 1,
+      "title": "人工智能实验室 (AI Lab) 🤖",
+      "slug": "ai-lab-chinese",
+      "summary": "Chinese and emoji characters in title",
+      "imageUrl": null,
+      "href": null,
+      "badge": null,
+      "published": true,
+      "data": {},
+      "detail": {},
+      "categoryNames": []
+    },
+    "expectedLegacyNoDetail": {
+      "title": "人工智能实验室 (AI Lab) 🤖",
+      "slug": "ai-lab-chinese",
+      "description": "Chinese and emoji characters in title"
+    },
+    "expectedLegacyWithDetail": {
+      "title": "人工智能实验室 (AI Lab) 🤖",
+      "slug": "ai-lab-chinese",
+      "description": "Chinese and emoji characters in title"
+    }
+  },
+  {
+    "sourcePage": "edge-unicode-titles.json",
+    "item": {
+      "collection": "cards",
+      "sortOrder": 2,
+      "title": "विद्यालय प्रयोगशाला 🇮🇳",
+      "slug": "vidyalaya-lab",
+      "summary": "Hindi script and flag emoji",
+      "imageUrl": null,
+      "href": null,
+      "badge": null,
+      "published": true,
+      "data": {},
+      "detail": {},
+      "categoryNames": []
+    },
+    "expectedLegacyNoDetail": {
+      "title": "विद्यालय प्रयोगशाला 🇮🇳",
+      "slug": "vidyalaya-lab",
+      "description": "Hindi script and flag emoji"
+    },
+    "expectedLegacyWithDetail": {
+      "title": "विद्यालय प्रयोगशाला 🇮🇳",
+      "slug": "vidyalaya-lab",
+      "description": "Hindi script and flag emoji"
+    }
+  },
+  {
+    "sourcePage": "labs.json",
+    "item": {
+      "collection": "cards",
+      "sortOrder": 0,
+      "title": "Composite Skill Lab & Technical Workshop",
+      "slug": "composite-skill-lab",
+      "summary": "Multidisciplinary vocational learning spaces with carpentry, electronics workbench, IoT prototyping stations, and 3D printing.",
+      "imageUrl": "/uploads/1777103755353-COMPOSITE SKILL LAB.PNG",
+      "href": "/p/composite-skill-lab",
+      "badge": null,
+      "published": true,
+      "data": {},
+      "detail": {},
+      "categoryNames": [
+        "COMPOSITE SKILLS LAB"
+      ]
+    },
+    "expectedLegacyNoDetail": {
+      "title": "Composite Skill Lab & Technical Workshop",
+      "slug": "composite-skill-lab",
+      "description": "Multidisciplinary vocational learning spaces with carpentry, electronics workbench, IoT prototyping stations, and 3D printing.",
+      "image": "/uploads/1777103755353-COMPOSITE SKILL LAB.PNG",
+      "href": "/p/composite-skill-lab",
+      "categories": [
+        "COMPOSITE SKILLS LAB"
+      ]
+    },
+    "expectedLegacyWithDetail": {
+      "title": "Composite Skill Lab & Technical Workshop",
+      "slug": "composite-skill-lab",
+      "description": "Multidisciplinary vocational learning spaces with carpentry, electronics workbench, IoT prototyping stations, and 3D printing.",
+      "image": "/uploads/1777103755353-COMPOSITE SKILL LAB.PNG",
+      "href": "/p/composite-skill-lab",
+      "categories": [
+        "COMPOSITE SKILLS LAB"
+      ]
+    }
+  },
+  {
+    "sourcePage": "labs.json",
+    "item": {
+      "collection": "cards",
+      "sortOrder": 1,
+      "title": "Next-Gen AI & High-Performance Computer Lab",
+      "slug": "ai-computer-lab",
+      "summary": "Ergonomic networked computing workstations configured for computational thinking, graphic coding, and CBSE cyber security curriculums.",
+      "imageUrl": "/uploads/1776969406388-Gemini_Generated_Image_nathq4nathq4nath.png",
+      "href": "/labs/ai-computer-lab",
+      "badge": null,
+      "published": true,
+      "data": {},
+      "detail": {},
+      "categoryNames": [
+        "COMPUTER LAB"
+      ]
+    },
+    "expectedLegacyNoDetail": {
+      "title": "Next-Gen AI & High-Performance Computer Lab",
+      "slug": "ai-computer-lab",
+      "description": "Ergonomic networked computing workstations configured for computational thinking, graphic coding, and CBSE cyber security curriculums.",
+      "image": "/uploads/1776969406388-Gemini_Generated_Image_nathq4nathq4nath.png",
+      "href": "/labs/ai-computer-lab",
+      "categories": [
+        "COMPUTER LAB"
+      ]
+    },
+    "expectedLegacyWithDetail": {
+      "title": "Next-Gen AI & High-Performance Computer Lab",
+      "slug": "ai-computer-lab",
+      "description": "Ergonomic networked computing workstations configured for computational thinking, graphic coding, and CBSE cyber security curriculums.",
+      "image": "/uploads/1776969406388-Gemini_Generated_Image_nathq4nathq4nath.png",
+      "href": "/labs/ai-computer-lab",
+      "categories": [
+        "COMPUTER LAB"
+      ]
+    }
+  },
+  {
+    "sourcePage": "labs.json",
+    "item": {
+      "collection": "cards",
+      "sortOrder": 2,
+      "title": "Integrated STEM Discovery & Robotics Studio",
+      "slug": "stem-discovery-studio",
+      "summary": "Hands-on maker station equipped with modular robotics test tracks, microcontroller kits, sensor matrices, and rapid prototyping tools.",
+      "imageUrl": "/uploads/1777104618774-GAMIFIED SCIENCE LAB.PNG",
+      "href": "/labs/stem-discovery-studio",
+      "badge": null,
+      "published": true,
+      "data": {},
+      "detail": {},
+      "categoryNames": [
+        "STEM LAB"
+      ]
+    },
+    "expectedLegacyNoDetail": {
+      "title": "Integrated STEM Discovery & Robotics Studio",
+      "slug": "stem-discovery-studio",
+      "description": "Hands-on maker station equipped with modular robotics test tracks, microcontroller kits, sensor matrices, and rapid prototyping tools.",
+      "image": "/uploads/1777104618774-GAMIFIED SCIENCE LAB.PNG",
+      "href": "/labs/stem-discovery-studio",
+      "categories": [
+        "STEM LAB"
+      ]
+    },
+    "expectedLegacyWithDetail": {
+      "title": "Integrated STEM Discovery & Robotics Studio",
+      "slug": "stem-discovery-studio",
+      "description": "Hands-on maker station equipped with modular robotics test tracks, microcontroller kits, sensor matrices, and rapid prototyping tools.",
+      "image": "/uploads/1777104618774-GAMIFIED SCIENCE LAB.PNG",
+      "href": "/labs/stem-discovery-studio",
+      "categories": [
+        "STEM LAB"
+      ]
+    }
+  },
+  {
+    "sourcePage": "libraries.json",
+    "item": {
+      "collection": "cards",
+      "sortOrder": 0,
+      "title": "Phygital Smart Library & RFID Automation",
+      "slug": "library-innovations",
+      "summary": "Automated RFID check-in/check-out kiosks, anti-theft security gates, and digital catalog kiosks connected to school LMS.",
+      "imageUrl": "/uploads/1777103789495-LIBRARY INNOVATIONS.PNG",
+      "href": "/p/library-innovations",
+      "badge": null,
+      "published": true,
+      "data": {},
+      "detail": {},
+      "categoryNames": [
+        "Phygital Libraries"
+      ]
+    },
+    "expectedLegacyNoDetail": {
+      "title": "Phygital Smart Library & RFID Automation",
+      "slug": "library-innovations",
+      "description": "Automated RFID check-in/check-out kiosks, anti-theft security gates, and digital catalog kiosks connected to school LMS.",
+      "image": "/uploads/1777103789495-LIBRARY INNOVATIONS.PNG",
+      "href": "/p/library-innovations",
+      "categories": [
+        "Phygital Libraries"
+      ]
+    },
+    "expectedLegacyWithDetail": {
+      "title": "Phygital Smart Library & RFID Automation",
+      "slug": "library-innovations",
+      "description": "Automated RFID check-in/check-out kiosks, anti-theft security gates, and digital catalog kiosks connected to school LMS.",
+      "image": "/uploads/1777103789495-LIBRARY INNOVATIONS.PNG",
+      "href": "/p/library-innovations",
+      "categories": [
+        "Phygital Libraries"
+      ]
+    }
+  },
+  {
+    "sourcePage": "libraries.json",
+    "item": {
+      "collection": "cards",
+      "sortOrder": 1,
+      "title": "Collaborative Reading Amphitheatres",
+      "slug": "collaborative-reading-zones",
+      "summary": "Tiered upholstered amphitheater seating and ergonomic reading nooks designed to foster quiet immersion and group discussions.",
+      "imageUrl": "/uploads/1777012622668-Gemini_Generated_Image_ngcuvengcuvengcu.png",
+      "href": "/libraries/collaborative-reading-zones",
+      "badge": null,
+      "published": true,
+      "data": {},
+      "detail": {},
+      "categoryNames": [
+        "Reading Zones"
+      ]
+    },
+    "expectedLegacyNoDetail": {
+      "title": "Collaborative Reading Amphitheatres",
+      "slug": "collaborative-reading-zones",
+      "description": "Tiered upholstered amphitheater seating and ergonomic reading nooks designed to foster quiet immersion and group discussions.",
+      "image": "/uploads/1777012622668-Gemini_Generated_Image_ngcuvengcuvengcu.png",
+      "href": "/libraries/collaborative-reading-zones",
+      "categories": [
+        "Reading Zones"
+      ]
+    },
+    "expectedLegacyWithDetail": {
+      "title": "Collaborative Reading Amphitheatres",
+      "slug": "collaborative-reading-zones",
+      "description": "Tiered upholstered amphitheater seating and ergonomic reading nooks designed to foster quiet immersion and group discussions.",
+      "image": "/uploads/1777012622668-Gemini_Generated_Image_ngcuvengcuvengcu.png",
+      "href": "/libraries/collaborative-reading-zones",
+      "categories": [
+        "Reading Zones"
+      ]
+    }
+  },
+  {
+    "sourcePage": "libraries.json",
+    "item": {
+      "collection": "cards",
+      "sortOrder": 2,
+      "title": "Cloud Digital Catalogs & Touch Terminals",
+      "slug": "digital-catalogs-terminals",
+      "summary": "OPAC touch consoles enabling instant book lookup, cross-campus inter-library reservations, and digital eBook previews.",
+      "imageUrl": "/uploads/1777012622668-Gemini_Generated_Image_ngcuvengcuvengcu.png",
+      "href": "/libraries/digital-catalogs-terminals",
+      "badge": null,
+      "published": true,
+      "data": {},
+      "detail": {},
+      "categoryNames": [
+        "Digital Catalogs"
+      ]
+    },
+    "expectedLegacyNoDetail": {
+      "title": "Cloud Digital Catalogs & Touch Terminals",
+      "slug": "digital-catalogs-terminals",
+      "description": "OPAC touch consoles enabling instant book lookup, cross-campus inter-library reservations, and digital eBook previews.",
+      "image": "/uploads/1777012622668-Gemini_Generated_Image_ngcuvengcuvengcu.png",
+      "href": "/libraries/digital-catalogs-terminals",
+      "categories": [
+        "Digital Catalogs"
+      ]
+    },
+    "expectedLegacyWithDetail": {
+      "title": "Cloud Digital Catalogs & Touch Terminals",
+      "slug": "digital-catalogs-terminals",
+      "description": "OPAC touch consoles enabling instant book lookup, cross-campus inter-library reservations, and digital eBook previews.",
+      "image": "/uploads/1777012622668-Gemini_Generated_Image_ngcuvengcuvengcu.png",
+      "href": "/libraries/digital-catalogs-terminals",
+      "categories": [
+        "Digital Catalogs"
+      ]
+    }
+  },
+  {
+    "sourcePage": "libraries.json",
+    "item": {
+      "collection": "cards",
+      "sortOrder": 3,
+      "title": "Augmented Reality Immersive Book Stations",
+      "slug": "ar-libraries-experience",
+      "summary": "Interactive 3D visual projection desks where physical picture books trigger immersive animated educational models.",
+      "imageUrl": "/uploads/1777104808239-IMMERSIVE LEARNING.PNG",
+      "href": "/libraries/ar-libraries-experience",
+      "badge": null,
+      "published": true,
+      "data": {},
+      "detail": {},
+      "categoryNames": [
+        "AR Libraries"
+      ]
+    },
+    "expectedLegacyNoDetail": {
+      "title": "Augmented Reality Immersive Book Stations",
+      "slug": "ar-libraries-experience",
+      "description": "Interactive 3D visual projection desks where physical picture books trigger immersive animated educational models.",
+      "image": "/uploads/1777104808239-IMMERSIVE LEARNING.PNG",
+      "href": "/libraries/ar-libraries-experience",
+      "categories": [
+        "AR Libraries"
+      ]
+    },
+    "expectedLegacyWithDetail": {
+      "title": "Augmented Reality Immersive Book Stations",
+      "slug": "ar-libraries-experience",
+      "description": "Interactive 3D visual projection desks where physical picture books trigger immersive animated educational models.",
+      "image": "/uploads/1777104808239-IMMERSIVE LEARNING.PNG",
+      "href": "/libraries/ar-libraries-experience",
+      "categories": [
+        "AR Libraries"
+      ]
+    }
+  },
+  {
+    "sourcePage": "libraries.json",
+    "item": {
+      "collection": "cards",
+      "sortOrder": 4,
+      "title": "Acoustic Focus & Individual Study Pods",
+      "slug": "acoustic-study-pods",
+      "summary": "Sound-dampening single and dual study pods equipped with task lighting, universal power sockets, and ergonomic seating.",
+      "imageUrl": "/uploads/1777012622668-Gemini_Generated_Image_ngcuvengcuvengcu.png",
+      "href": "/libraries/acoustic-study-pods",
+      "badge": null,
+      "published": true,
+      "data": {},
+      "detail": {},
+      "categoryNames": [
+        "Study Pods"
+      ]
+    },
+    "expectedLegacyNoDetail": {
+      "title": "Acoustic Focus & Individual Study Pods",
+      "slug": "acoustic-study-pods",
+      "description": "Sound-dampening single and dual study pods equipped with task lighting, universal power sockets, and ergonomic seating.",
+      "image": "/uploads/1777012622668-Gemini_Generated_Image_ngcuvengcuvengcu.png",
+      "href": "/libraries/acoustic-study-pods",
+      "categories": [
+        "Study Pods"
+      ]
+    },
+    "expectedLegacyWithDetail": {
+      "title": "Acoustic Focus & Individual Study Pods",
+      "slug": "acoustic-study-pods",
+      "description": "Sound-dampening single and dual study pods equipped with task lighting, universal power sockets, and ergonomic seating.",
+      "image": "/uploads/1777012622668-Gemini_Generated_Image_ngcuvengcuvengcu.png",
+      "href": "/libraries/acoustic-study-pods",
+      "categories": [
+        "Study Pods"
+      ]
+    }
+  },
+  {
+    "sourcePage": "libraries.json",
+    "item": {
+      "collection": "cards",
+      "sortOrder": 5,
+      "title": "Curved Modular Open Shelving Displays",
+      "slug": "curved-open-shelving",
+      "summary": "Double-sided powder-coated metal book stacks with beechwood end panels and child-height accessible curved perimeter display runs.",
+      "imageUrl": "/uploads/1777012622668-Gemini_Generated_Image_ngcuvengcuvengcu.png",
+      "href": "/libraries/curved-open-shelving",
+      "badge": null,
+      "published": true,
+      "data": {},
+      "detail": {},
+      "categoryNames": [
+        "Open Shelving"
+      ]
+    },
+    "expectedLegacyNoDetail": {
+      "title": "Curved Modular Open Shelving Displays",
+      "slug": "curved-open-shelving",
+      "description": "Double-sided powder-coated metal book stacks with beechwood end panels and child-height accessible curved perimeter display runs.",
+      "image": "/uploads/1777012622668-Gemini_Generated_Image_ngcuvengcuvengcu.png",
+      "href": "/libraries/curved-open-shelving",
+      "categories": [
+        "Open Shelving"
+      ]
+    },
+    "expectedLegacyWithDetail": {
+      "title": "Curved Modular Open Shelving Displays",
+      "slug": "curved-open-shelving",
+      "description": "Double-sided powder-coated metal book stacks with beechwood end panels and child-height accessible curved perimeter display runs.",
+      "image": "/uploads/1777012622668-Gemini_Generated_Image_ngcuvengcuvengcu.png",
+      "href": "/libraries/curved-open-shelving",
+      "categories": [
+        "Open Shelving"
+      ]
+    }
+  },
+  {
+    "sourcePage": "libraries.json",
+    "item": {
+      "collection": "cards",
+      "sortOrder": 6,
+      "title": "Audio Recording & Audiobook Studio Rooms",
+      "slug": "audio-listening-rooms",
+      "summary": "Soundproofed media listening booths and podcast recording stations designed for student storytelling and language acquisition.",
+      "imageUrl": "/uploads/1777272882057-SMART MUSIC ROOMS [ PROFESSIONAL ].PNG",
+      "href": "/libraries/audio-listening-rooms",
+      "badge": null,
+      "published": true,
+      "data": {},
+      "detail": {},
+      "categoryNames": [
+        "Audio Rooms"
+      ]
+    },
+    "expectedLegacyNoDetail": {
+      "title": "Audio Recording & Audiobook Studio Rooms",
+      "slug": "audio-listening-rooms",
+      "description": "Soundproofed media listening booths and podcast recording stations designed for student storytelling and language acquisition.",
+      "image": "/uploads/1777272882057-SMART MUSIC ROOMS [ PROFESSIONAL ].PNG",
+      "href": "/libraries/audio-listening-rooms",
+      "categories": [
+        "Audio Rooms"
+      ]
+    },
+    "expectedLegacyWithDetail": {
+      "title": "Audio Recording & Audiobook Studio Rooms",
+      "slug": "audio-listening-rooms",
+      "description": "Soundproofed media listening booths and podcast recording stations designed for student storytelling and language acquisition.",
+      "image": "/uploads/1777272882057-SMART MUSIC ROOMS [ PROFESSIONAL ].PNG",
+      "href": "/libraries/audio-listening-rooms",
+      "categories": [
+        "Audio Rooms"
+      ]
+    }
+  },
+  {
+    "sourcePage": "sports-infra.json",
+    "item": {
+      "collection": "cards",
+      "sortOrder": 0,
+      "title": "IAAF Certified Synthetic Athletic Tracks & Turf",
+      "slug": "track-and-field-turf",
+      "summary": "All-weather polyurethane running tracks and FIFA-standard shock-pad artificial turf engineered for high durability.",
+      "imageUrl": "/uploads/1776958500100-Gemini_Generated_Image_czxn03czxn03czxn.png",
+      "href": "/sports/track-and-field-turf",
+      "badge": null,
+      "published": true,
+      "data": {},
+      "detail": {},
+      "categoryNames": [
+        "Track & Field"
+      ]
+    },
+    "expectedLegacyNoDetail": {
+      "title": "IAAF Certified Synthetic Athletic Tracks & Turf",
+      "slug": "track-and-field-turf",
+      "description": "All-weather polyurethane running tracks and FIFA-standard shock-pad artificial turf engineered for high durability.",
+      "image": "/uploads/1776958500100-Gemini_Generated_Image_czxn03czxn03czxn.png",
+      "href": "/sports/track-and-field-turf",
+      "categories": [
+        "Track & Field"
+      ]
+    },
+    "expectedLegacyWithDetail": {
+      "title": "IAAF Certified Synthetic Athletic Tracks & Turf",
+      "slug": "track-and-field-turf",
+      "description": "All-weather polyurethane running tracks and FIFA-standard shock-pad artificial turf engineered for high durability.",
+      "image": "/uploads/1776958500100-Gemini_Generated_Image_czxn03czxn03czxn.png",
+      "href": "/sports/track-and-field-turf",
+      "categories": [
+        "Track & Field"
+      ]
+    }
+  },
+  {
+    "sourcePage": "sports-infra.json",
+    "item": {
+      "collection": "cards",
+      "sortOrder": 1,
+      "title": "Dynamic Junior School Playgrounds & Multipurpose Courts",
+      "slug": "junior-playground-courts",
+      "summary": "EPDM rubber safety surfacing, climbing towers, and multi-game markings designed for injury-free recess play.",
+      "imageUrl": "/uploads/1777104652290-SMART SPORTS FOR SCHOOLS.PNG",
+      "href": "/p/smart-sports",
+      "badge": null,
+      "published": true,
+      "data": {},
+      "detail": {},
+      "categoryNames": [
+        "Playground"
+      ]
+    },
+    "expectedLegacyNoDetail": {
+      "title": "Dynamic Junior School Playgrounds & Multipurpose Courts",
+      "slug": "junior-playground-courts",
+      "description": "EPDM rubber safety surfacing, climbing towers, and multi-game markings designed for injury-free recess play.",
+      "image": "/uploads/1777104652290-SMART SPORTS FOR SCHOOLS.PNG",
+      "href": "/p/smart-sports",
+      "categories": [
+        "Playground"
+      ]
+    },
+    "expectedLegacyWithDetail": {
+      "title": "Dynamic Junior School Playgrounds & Multipurpose Courts",
+      "slug": "junior-playground-courts",
+      "description": "EPDM rubber safety surfacing, climbing towers, and multi-game markings designed for injury-free recess play.",
+      "image": "/uploads/1777104652290-SMART SPORTS FOR SCHOOLS.PNG",
+      "href": "/p/smart-sports",
+      "categories": [
+        "Playground"
+      ]
+    }
+  },
+  {
+    "sourcePage": "sports-infra.json",
+    "item": {
+      "collection": "cards",
+      "sortOrder": 2,
+      "title": "FIBA Certified Maple Wood & PU Indoor Sports Courts",
+      "slug": "indoor-sports-courts",
+      "summary": "Cushioned springing system wood courts for basketball, badminton, squash, and volleyball with anti-slip polyurethane coating.",
+      "imageUrl": "/uploads/1776958500100-Gemini_Generated_Image_czxn03czxn03czxn.png",
+      "href": "/sports/indoor-sports-courts",
+      "badge": null,
+      "published": true,
+      "data": {},
+      "detail": {},
+      "categoryNames": [
+        "Indoor Courts"
+      ]
+    },
+    "expectedLegacyNoDetail": {
+      "title": "FIBA Certified Maple Wood & PU Indoor Sports Courts",
+      "slug": "indoor-sports-courts",
+      "description": "Cushioned springing system wood courts for basketball, badminton, squash, and volleyball with anti-slip polyurethane coating.",
+      "image": "/uploads/1776958500100-Gemini_Generated_Image_czxn03czxn03czxn.png",
+      "href": "/sports/indoor-sports-courts",
+      "categories": [
+        "Indoor Courts"
+      ]
+    },
+    "expectedLegacyWithDetail": {
+      "title": "FIBA Certified Maple Wood & PU Indoor Sports Courts",
+      "slug": "indoor-sports-courts",
+      "description": "Cushioned springing system wood courts for basketball, badminton, squash, and volleyball with anti-slip polyurethane coating.",
+      "image": "/uploads/1776958500100-Gemini_Generated_Image_czxn03czxn03czxn.png",
+      "href": "/sports/indoor-sports-courts",
+      "categories": [
+        "Indoor Courts"
+      ]
+    }
+  },
+  {
+    "sourcePage": "sports-infra.json",
+    "item": {
+      "collection": "cards",
+      "sortOrder": 3,
+      "title": "Competition Grade Sports Equipment & Gear",
+      "slug": "sports-equipment-gear",
+      "summary": "Heavy-duty soccer goals, adjustable basketball posts, tournament volleyball poles, and institutional ball storage carts.",
+      "imageUrl": "/uploads/1777104652290-SMART SPORTS FOR SCHOOLS.PNG",
+      "href": "/sports/sports-equipment-gear",
+      "badge": null,
+      "published": true,
+      "data": {},
+      "detail": {},
+      "categoryNames": [
+        "Equipment"
+      ]
+    },
+    "expectedLegacyNoDetail": {
+      "title": "Competition Grade Sports Equipment & Gear",
+      "slug": "sports-equipment-gear",
+      "description": "Heavy-duty soccer goals, adjustable basketball posts, tournament volleyball poles, and institutional ball storage carts.",
+      "image": "/uploads/1777104652290-SMART SPORTS FOR SCHOOLS.PNG",
+      "href": "/sports/sports-equipment-gear",
+      "categories": [
+        "Equipment"
+      ]
+    },
+    "expectedLegacyWithDetail": {
+      "title": "Competition Grade Sports Equipment & Gear",
+      "slug": "sports-equipment-gear",
+      "description": "Heavy-duty soccer goals, adjustable basketball posts, tournament volleyball poles, and institutional ball storage carts.",
+      "image": "/uploads/1777104652290-SMART SPORTS FOR SCHOOLS.PNG",
+      "href": "/sports/sports-equipment-gear",
+      "categories": [
+        "Equipment"
+      ]
+    }
+  },
+  {
+    "sourcePage": "sports-infra.json",
+    "item": {
+      "collection": "cards",
+      "sortOrder": 4,
+      "title": "Smart Athlete Performance & Gym Tech Systems",
+      "slug": "gym-tech-systems",
+      "summary": "Biometric fitness testing consoles, automated timing gates, and resistance training machines configured for adolescent physical education.",
+      "imageUrl": "/uploads/1776958500100-Gemini_Generated_Image_czxn03czxn03czxn.png",
+      "href": "/sports/gym-tech-systems",
+      "badge": null,
+      "published": true,
+      "data": {},
+      "detail": {},
+      "categoryNames": [
+        "Gym Tech"
+      ]
+    },
+    "expectedLegacyNoDetail": {
+      "title": "Smart Athlete Performance & Gym Tech Systems",
+      "slug": "gym-tech-systems",
+      "description": "Biometric fitness testing consoles, automated timing gates, and resistance training machines configured for adolescent physical education.",
+      "image": "/uploads/1776958500100-Gemini_Generated_Image_czxn03czxn03czxn.png",
+      "href": "/sports/gym-tech-systems",
+      "categories": [
+        "Gym Tech"
+      ]
+    },
+    "expectedLegacyWithDetail": {
+      "title": "Smart Athlete Performance & Gym Tech Systems",
+      "slug": "gym-tech-systems",
+      "description": "Biometric fitness testing consoles, automated timing gates, and resistance training machines configured for adolescent physical education.",
+      "image": "/uploads/1776958500100-Gemini_Generated_Image_czxn03czxn03czxn.png",
+      "href": "/sports/gym-tech-systems",
+      "categories": [
+        "Gym Tech"
+      ]
+    }
+  },
+  {
+    "sourcePage": "tech-infra.json",
+    "item": {
+      "collection": "cards",
+      "sortOrder": 0,
+      "title": "Network Infrastructure",
+      "slug": "network-infrastructure",
+      "summary": "High-speed campus-wide Wi-Fi and LAN systems",
+      "imageUrl": "https://images.unsplash.com/photo-1544197150-b99a580bb7a8?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80",
+      "href": null,
+      "badge": null,
+      "published": true,
+      "data": {},
+      "detail": {},
+      "categoryNames": []
+    },
+    "expectedLegacyNoDetail": {
+      "title": "Network Infrastructure",
+      "slug": "network-infrastructure",
+      "description": "High-speed campus-wide Wi-Fi and LAN systems",
+      "image": "https://images.unsplash.com/photo-1544197150-b99a580bb7a8?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80"
+    },
+    "expectedLegacyWithDetail": {
+      "title": "Network Infrastructure",
+      "slug": "network-infrastructure",
+      "description": "High-speed campus-wide Wi-Fi and LAN systems",
+      "image": "https://images.unsplash.com/photo-1544197150-b99a580bb7a8?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80"
+    }
+  },
+  {
+    "sourcePage": "tech-infra.json",
+    "item": {
+      "collection": "cards",
+      "sortOrder": 1,
+      "title": "Smart Classrooms",
+      "slug": "smart-classrooms",
+      "summary": "Interactive boards, projectors, and AV systems",
+      "imageUrl": "https://images.unsplash.com/photo-1509062522246-3755977927d7?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80",
+      "href": null,
+      "badge": null,
+      "published": true,
+      "data": {},
+      "detail": {},
+      "categoryNames": []
+    },
+    "expectedLegacyNoDetail": {
+      "title": "Smart Classrooms",
+      "slug": "smart-classrooms",
+      "description": "Interactive boards, projectors, and AV systems",
+      "image": "https://images.unsplash.com/photo-1509062522246-3755977927d7?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80"
+    },
+    "expectedLegacyWithDetail": {
+      "title": "Smart Classrooms",
+      "slug": "smart-classrooms",
+      "description": "Interactive boards, projectors, and AV systems",
+      "image": "https://images.unsplash.com/photo-1509062522246-3755977927d7?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80"
+    }
+  },
+  {
+    "sourcePage": "tech-infra.json",
+    "item": {
+      "collection": "cards",
+      "sortOrder": 2,
+      "title": "Data Centers",
+      "slug": "data-centers",
+      "summary": "Campus servers, cloud integration and data management",
+      "imageUrl": "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80",
+      "href": null,
+      "badge": null,
+      "published": true,
+      "data": {},
+      "detail": {},
+      "categoryNames": []
+    },
+    "expectedLegacyNoDetail": {
+      "title": "Data Centers",
+      "slug": "data-centers",
+      "description": "Campus servers, cloud integration and data management",
+      "image": "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80"
+    },
+    "expectedLegacyWithDetail": {
+      "title": "Data Centers",
+      "slug": "data-centers",
+      "description": "Campus servers, cloud integration and data management",
+      "image": "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80"
+    }
+  },
+  {
+    "sourcePage": "tech-infra.json",
+    "item": {
+      "collection": "cards",
+      "sortOrder": 3,
+      "title": "Security Systems",
+      "slug": "security-systems",
+      "summary": "CCTV surveillance, access control and safety systems",
+      "imageUrl": "https://images.unsplash.com/photo-1557804506-669a67965ba0?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80",
+      "href": null,
+      "badge": null,
+      "published": true,
+      "data": {},
+      "detail": {},
+      "categoryNames": []
+    },
+    "expectedLegacyNoDetail": {
+      "title": "Security Systems",
+      "slug": "security-systems",
+      "description": "CCTV surveillance, access control and safety systems",
+      "image": "https://images.unsplash.com/photo-1557804506-669a67965ba0?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80"
+    },
+    "expectedLegacyWithDetail": {
+      "title": "Security Systems",
+      "slug": "security-systems",
+      "description": "CCTV surveillance, access control and safety systems",
+      "image": "https://images.unsplash.com/photo-1557804506-669a67965ba0?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80"
+    }
+  }
+]
