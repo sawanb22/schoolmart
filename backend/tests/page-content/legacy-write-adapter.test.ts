@@ -1,5 +1,5 @@
 import request from 'supertest';
-import { describe, it, expect, beforeAll, beforeEach } from 'vitest';
+import { describe, it, expect, beforeAll, afterAll, beforeEach } from 'vitest';
 import app from '../helpers/app';
 import prisma from '../../src/lib/prisma';
 import { resetContentTables } from '../helpers/db';
@@ -10,12 +10,19 @@ import { parsePageData } from '../../src/lib/page-data';
 
 describe('Legacy Write Adapter (PUT /api/pages/:id)', () => {
   let adminToken: string;
+  let originalStrictFlag: string | undefined;
   const fixtures = loadAllPageFixtures();
   const labsFixture = fixtures.filter(f => f.slug === 'labs');
 
   beforeAll(async () => {
+    originalStrictFlag = process.env.CMS_STRICT_STRUCTURED_WRITES;
+    process.env.CMS_STRICT_STRUCTURED_WRITES = 'false';
     adminToken = await getAdminToken();
   }, 30000);
+
+  afterAll(() => {
+    process.env.CMS_STRICT_STRUCTURED_WRITES = originalStrictFlag;
+  });
 
   beforeEach(async () => {
     await resetContentTables();

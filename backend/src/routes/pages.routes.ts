@@ -409,13 +409,21 @@ router.post('/', verifyToken, requireAdmin, async (req: AuthRequest, res: Respon
         createData.slug = targetSlug;
 
         const classification = classifyPage({ slug: targetSlug, template: createData.template, pageData: parsedIncomingPageData });
-        const hasCollectionKeys =
-            COLLECTIONS.some(col => col in parsedIncomingPageData) ||
-            ('categories' in parsedIncomingPageData);
+        const collectionKeysPresent = [...COLLECTIONS, 'categories'].filter(col => col in parsedIncomingPageData);
+        const hasCollectionKeys = collectionKeysPresent.length > 0;
 
+        const isStrictMode = process.env.CMS_STRICT_STRUCTURED_WRITES !== 'false';
         let createdPage: any;
-
         if (classification === 'structured' && hasCollectionKeys) {
+            if (isStrictMode) {
+                res.status(400).json({
+                    error: 'collections_not_allowed',
+                    keys: collectionKeysPresent,
+                    message: 'Collection keys cannot be written via whole-page creation on structured pages. Use the items and categories API.',
+                });
+                return;
+            }
+
             const splitResult = splitLegacyPageData(parsedIncomingPageData);
             createdPage = await prisma.$transaction(async tx => {
                 const page = await tx.page.create({
@@ -525,11 +533,22 @@ router.put('/:id', verifyToken, requireAdmin, async (req: AuthRequest, res: Resp
         }
 
         const isStructured = existing.contentModel === 'structured';
-        const hasCollectionKeys =
-            hasIncomingPageData &&
-            (COLLECTIONS.some(col => col in incomingPageData) || ('categories' in incomingPageData));
+        const collectionKeysPresent = hasIncomingPageData
+            ? [...COLLECTIONS, 'categories'].filter(col => col in incomingPageData)
+            : [];
+        const hasCollectionKeys = collectionKeysPresent.length > 0;
 
+        const isStrictMode = process.env.CMS_STRICT_STRUCTURED_WRITES !== 'false';
         if (isStructured && hasCollectionKeys) {
+            if (isStrictMode) {
+                res.status(400).json({
+                    error: 'collections_not_allowed',
+                    keys: collectionKeysPresent,
+                    message: 'Collection keys cannot be written via whole-page update on structured pages. Use the items and categories API.',
+                });
+                return;
+            }
+
             // Full blob write on structured page: split & writeStructuredPage
             const splitResult = splitLegacyPageData(incomingPageData);
 

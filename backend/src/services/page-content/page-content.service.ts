@@ -8,7 +8,39 @@ import {
 } from './legacy-mapper';
 import { toLegacyPageResponse } from './page-response';
 
-export const DETAIL_DROPPED = new Set<string>();
+export const DETAIL_DROPPED = new Set<string>([
+  'labs',
+  'libraries',
+  'sports-infra',
+  'sports',
+  'tech-infra',
+  'campus-design-execution',
+  'sports-design-execution',
+  'ai-ml',
+  'ai-stations',
+  'campus-master-planning',
+  'collaboration-spaces',
+  'collaboration',
+  'new-environments',
+  'campus-automation',
+  'digital-transformation',
+  'smart-classrooms',
+  'science-tech-labs',
+  'assessment-system',
+  'lms',
+  'catalogues',
+  'faq',
+  'job-openings',
+  'colleges-universities-for-sale',
+  'partner-with-colleges',
+  'furniture-design-supply',
+  'campus-furniture-design',
+  'ar-vr-experiences',
+  'innovation',
+  'library-management',
+  'solutions',
+  'services',
+]);
 
 export const PAGE_SLUG_ALIASES: Record<string, string> = {
   'sports': 'sports-infra',
@@ -191,7 +223,7 @@ export class PageContentService {
 
     // Structured page: reconstruct legacy pageData
     const settings = parsePageData(page.pageData);
-    const includeDetail = HUB_NEEDS_DETAIL.has(page.slug) || !DETAIL_DROPPED.has(page.slug);
+    const includeDetail = Boolean(options?.isAdmin) || HUB_NEEDS_DETAIL.has(page.slug) || !DETAIL_DROPPED.has(page.slug);
     const publicOnly = !options?.isAdmin;
 
     const reconstructed = buildLegacyPageData(settings, page.items, page.categories, {
@@ -439,7 +471,8 @@ export class PageContentService {
       return toLegacyPageResponse(page);
     }
     const settings = parsePageData(page.pageData);
-    const includeDetail = HUB_NEEDS_DETAIL.has(page.slug) || !DETAIL_DROPPED.has(page.slug);
+    const isDetailDropped = (page.contentModel === 'structured' || DETAIL_DROPPED.has(page.slug)) && !HUB_NEEDS_DETAIL.has(page.slug);
+    const includeDetail = Boolean(isAdmin) || !isDetailDropped;
     const publicOnly = !isAdmin;
 
     const reconstructed = buildLegacyPageData(settings, page.items || [], page.categories || [], {

@@ -9,6 +9,9 @@ import JobOpeningsEditorSection from './JobOpeningsEditorSection';
 import CaseStudiesEditorSection from './CaseStudiesEditorSection';
 import BlogEditorSection from './BlogEditorSection';
 import FaqEditorSection from './FaqEditorSection';
+import ItemsManager from './items/ItemsManager';
+import CategoryManager from './items/CategoryManager';
+import ConflictDialog from './items/ConflictDialog';
 import { clearPageDataCache, broadcastCmsInvalidation } from '@/hooks/usePageData';
 import {
     normalizeCardHref as normalizeCardHrefCore,
@@ -182,6 +185,8 @@ export interface Page {
     template: string | null;
     published: boolean;
     pageData: string | null;
+    contentModel?: string;
+    version?: number;
     updatedAt?: string;
 }
 
@@ -558,6 +563,7 @@ export default function UnifiedPageEditor({
     onSaved,
     onSelectPage: _onSelectPage,
     isStandalone = false,
+    targetCardSlug: propTargetCardSlug,
 }: {
     page: Page;
     allPages?: Page[];
@@ -565,7 +571,16 @@ export default function UnifiedPageEditor({
     onSaved?: (updated: Page) => void;
     onSelectPage?: (page: Page) => void;
     isStandalone?: boolean;
+    targetCardSlug?: string;
 }) {
+    const isStructured = page.contentModel === 'structured';
+    const searchParams = new URLSearchParams(typeof window !== 'undefined' ? window.location.search : '');
+    const urlCardSlug = searchParams.get('card') || undefined;
+    const targetCardSlug = propTargetCardSlug || urlCardSlug;
+
+    const [conflictCurrentPage, setConflictCurrentPage] = useState<any>(null);
+    const [showPageConflictDialog, setShowPageConflictDialog] = useState(false);
+
     const isAboutUs = page.slug === 'about-us' || page.slug === 'corporate';
     const isContactUs = page.slug === 'contact-us';
     const isBlog = page.slug === 'blog';
@@ -1458,7 +1473,7 @@ export default function UnifiedPageEditor({
     };
 
 
-    const save = async () => {
+    const save = async (versionOverride?: number) => {
         setSaving(true);
         setSaveError(null);
         try {
@@ -1500,25 +1515,33 @@ export default function UnifiedPageEditor({
                 payloadData.body = data.body || '';
             }
 
-            if (Array.isArray(payloadData.cards)) {
-                payloadData.cards = payloadData.cards
-                    .filter(Boolean)
-                    .map((card: any, idx: number) => {
-                        const existingSlug = typeof card.slug === 'string' && card.slug.trim() ? card.slug.trim() : '';
-                        const titleSlug = card.title ? slugifyCardTitle(card.title) : '';
-                        const normalizedHref = card.href ? normalizeCardHref(card.href) : card.href;
-                        return {
-                            ...card,
-                            href: normalizedHref,
-                            slug: existingSlug || titleSlug || `card-${idx + 1}`,
-                        };
-                    });
-            }
-            if (Array.isArray(payloadData.section2Cards)) {
-                payloadData.section2Cards = payloadData.section2Cards.filter(Boolean);
-            }
-            if (Array.isArray(payloadData.moreCards)) {
-                payloadData.moreCards = payloadData.moreCards.filter(Boolean);
+            if (isStructured) {
+                // Strict Hybrid CMS: Strip all collection arrays and top-level categories from structured page settings
+                const collectionsToStrip = ['cards', 'section2Cards', 'moreCards', 'featured', 'faqs', 'openings', 'caseStudies', 'categories'];
+                for (const col of collectionsToStrip) {
+                    delete (payloadData as any)[col];
+                }
+            } else {
+                if (Array.isArray(payloadData.cards)) {
+                    payloadData.cards = payloadData.cards
+                        .filter(Boolean)
+                        .map((card: any, idx: number) => {
+                            const existingSlug = typeof card.slug === 'string' && card.slug.trim() ? card.slug.trim() : '';
+                            const titleSlug = card.title ? slugifyCardTitle(card.title) : '';
+                            const normalizedHref = card.href ? normalizeCardHref(card.href) : card.href;
+                            return {
+                                ...card,
+                                href: normalizedHref,
+                                slug: existingSlug || titleSlug || `card-${idx + 1}`,
+                            };
+                        });
+                }
+                if (Array.isArray(payloadData.section2Cards)) {
+                    payloadData.section2Cards = payloadData.section2Cards.filter(Boolean);
+                }
+                if (Array.isArray(payloadData.moreCards)) {
+                    payloadData.moreCards = payloadData.moreCards.filter(Boolean);
+                }
             }
             if (Array.isArray(payloadData.sections)) {
                 payloadData.sections = payloadData.sections.filter(Boolean);
@@ -1527,12 +1550,21 @@ export default function UnifiedPageEditor({
                 payloadData.features = payloadData.features.filter(Boolean);
             }
 
-            const { data: updated } = await api.put(`/pages/${page.id}`, {
+            const putPayload: Record<string, any> = {
                 title,
                 published,
                 template: payloadTemplate,
                 pageData: JSON.stringify(payloadData),
-            });
+            };
+            const sendVersion = typeof versionOverride === 'number' ? versionOverride : page.version;
+            if (sendVersion !== undefined) {
+                putPayload.version = sendVersion;
+            }
+
+            const { data: updated } = await api.put(`/pages/${page.id}`, putPayload);
+            if (updated?.version !== undefined) {
+                page.version = updated.version;
+            }
             // Preserve any in-flight keystrokes made while request was in-flight
             setData((prevData) => ({
                 ...payloadData,
@@ -1552,9 +1584,15 @@ export default function UnifiedPageEditor({
             if (onSaved) onSaved(updated);
         } catch (err: any) {
             console.error(`Failed to save page ${page.slug}:`, err);
-            const msg = err?.response?.data?.error || 'Failed to save page changes. Please try again.';
-            setSaveError(msg);
-            alert(`Save failed: ${msg}`);
+            if (err?.response?.status === 409 && err?.response?.data?.error === 'version_conflict') {
+                const currentRemote = err.response.data.current;
+                setConflictCurrentPage(currentRemote);
+                setShowPageConflictDialog(true);
+            } else {
+                const msg = err?.response?.data?.error || 'Failed to save page changes. Please try again.';
+                setSaveError(msg);
+                alert(`Save failed: ${msg}`);
+            }
         } finally {
             setSaving(false);
         }
@@ -1693,7 +1731,7 @@ export default function UnifiedPageEditor({
                         </a>
                         <button
                             type="button"
-                            onClick={save}
+                            onClick={() => save()}
                             disabled={saving}
                             className={`flex items-center gap-2 px-6 py-2.5 rounded-xl text-xs font-black shadow-lg transition-all active:scale-95 ${
                                 saving ? 'bg-gray-400 text-white cursor-not-allowed' : 'bg-blue-600 text-white hover:bg-blue-700'
@@ -3904,39 +3942,57 @@ export default function UnifiedPageEditor({
                         )}
 
                         {page.slug === 'job-openings' && (
-                            <JobOpeningsEditorSection
-                                data={data}
-                                set={set}
-                                onSyncOpenings={async (nextOpenings) => {
-                                    const nextData = { ...data, openings: nextOpenings };
-                                    setData(nextData);
-                                    try {
-                                        const { data: updated } = await api.put(`/pages/${page.id}`, {
-                                            title,
-                                            published,
-                                            pageData: JSON.stringify(nextData),
-                                        });
-                                        clearPageDataCache(page.slug);
-                                        clearPageDataCache();
-                                        broadcastCmsInvalidation({ type: 'INVALIDATE_PAGE', slug: page.slug });
-                                        broadcastCmsInvalidation({ type: 'INVALIDATE_ALL' });
-                                        setSaved(true);
-                                        setTimeout(() => setSaved(false), 2000);
-                                        if (onSaved) onSaved(updated);
-                                    } catch (err: any) {
-                                        console.error('Failed to sync job openings:', err);
-                                        const msg = err?.response?.data?.error || 'Failed to save job openings.';
-                                        setSaveError(msg);
-                                    }
-                                }}
-                            />
+                            isStructured ? (
+                                <ItemsManager
+                                    pageId={page.id}
+                                    pageSlug={page.slug}
+                                    collection="openings"
+                                    label="Job Openings"
+                                />
+                            ) : (
+                                <JobOpeningsEditorSection
+                                    data={data}
+                                    set={set}
+                                    onSyncOpenings={async (nextOpenings) => {
+                                        const nextData = { ...data, openings: nextOpenings };
+                                        setData(nextData);
+                                        try {
+                                            const { data: updated } = await api.put(`/pages/${page.id}`, {
+                                                title,
+                                                published,
+                                                pageData: JSON.stringify(nextData),
+                                            });
+                                            clearPageDataCache(page.slug);
+                                            clearPageDataCache();
+                                            broadcastCmsInvalidation({ type: 'INVALIDATE_PAGE', slug: page.slug });
+                                            broadcastCmsInvalidation({ type: 'INVALIDATE_ALL' });
+                                            setSaved(true);
+                                            setTimeout(() => setSaved(false), 2000);
+                                            if (onSaved) onSaved(updated);
+                                        } catch (err: any) {
+                                            console.error('Failed to sync job openings:', err);
+                                            const msg = err?.response?.data?.error || 'Failed to save job openings.';
+                                            setSaveError(msg);
+                                        }
+                                    }}
+                                />
+                            )
                         )}
 
                         {page.slug === 'faq' && (
-                            <FaqEditorSection
-                                data={data}
-                                set={set}
-                            />
+                            isStructured ? (
+                                <ItemsManager
+                                    pageId={page.id}
+                                    pageSlug={page.slug}
+                                    collection="faqs"
+                                    label="Frequently Asked Questions"
+                                />
+                            ) : (
+                                <FaqEditorSection
+                                    data={data}
+                                    set={set}
+                                />
+                            )
                         )}
 
                         {/* NDA & Mandate documents (colleges-universities-for-sale only) */}
@@ -4031,50 +4087,59 @@ export default function UnifiedPageEditor({
                                     </div>
 
                                     {/* Impact Cards Grid */}
-                                    <div className="space-y-4">
-                                        <h5 className="text-[11px] font-black text-slate-500 uppercase tracking-wider">
-                                            Impact Cards ({(data.section2Cards ?? []).length})
-                                        </h5>
-                                        <div className="grid grid-cols-1 gap-6">
-                                            {(data.section2Cards ?? []).map((card: any, i: number) => (
-                                                <div key={i} id={`section2-card-item-${i}`} className="border border-gray-200 rounded-2xl p-6 bg-gray-50/30 hover:bg-white hover:shadow-lg hover:border-blue-200 transition-all group relative">
-                                                    <div className="flex items-center justify-between mb-6">
-                                                        <div className="flex items-center gap-3">
-                                                            <span className="w-8 h-8 rounded-lg bg-slate-200 text-slate-600 flex items-center justify-center font-bold text-xs">{i + 1}</span>
-                                                            <span className="text-xs font-black text-slate-500 uppercase tracking-widest">{card.title || 'Untitled Card'}</span>
+                                    {isStructured ? (
+                                        <ItemsManager
+                                            pageId={page.id}
+                                            pageSlug={page.slug}
+                                            collection="section2Cards"
+                                            label="Impact Cards"
+                                        />
+                                    ) : (
+                                        <div className="space-y-4">
+                                            <h5 className="text-[11px] font-black text-slate-500 uppercase tracking-wider">
+                                                Impact Cards ({(data.section2Cards ?? []).length})
+                                            </h5>
+                                            <div className="grid grid-cols-1 gap-6">
+                                                {(data.section2Cards ?? []).map((card: any, i: number) => (
+                                                    <div key={i} id={`section2-card-item-${i}`} className="border border-gray-200 rounded-2xl p-6 bg-gray-50/30 hover:bg-white hover:shadow-lg hover:border-blue-200 transition-all group relative">
+                                                        <div className="flex items-center justify-between mb-6">
+                                                            <div className="flex items-center gap-3">
+                                                                <span className="w-8 h-8 rounded-lg bg-slate-200 text-slate-600 flex items-center justify-center font-bold text-xs">{i + 1}</span>
+                                                                <span className="text-xs font-black text-slate-500 uppercase tracking-widest">{card.title || 'Untitled Card'}</span>
+                                                            </div>
+                                                            <div className="flex items-center gap-2">
+                                                                <button
+                                                                    type="button"
+                                                                    onClick={() => setSection2Card(i, 'active', card.active === false ? true : false)}
+                                                                    className={`flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-bold transition-all ${
+                                                                        card.active !== false
+                                                                            ? 'bg-emerald-50 text-emerald-700 border border-emerald-200 hover:bg-emerald-100'
+                                                                            : 'bg-slate-100 text-slate-500 border border-slate-200 hover:bg-slate-200'
+                                                                    }`}
+                                                                >
+                                                                    <span className={`w-1.5 h-1.5 rounded-full ${card.active !== false ? 'bg-emerald-500' : 'bg-slate-400'}`}></span>
+                                                                    <span>{card.active !== false ? 'Live' : 'Hidden'}</span>
+                                                                </button>
+                                                                <button type="button" onClick={() => removeSection2Card(i)} className="flex items-center gap-1.5 text-red-400 hover:text-red-600 text-[10px] font-black uppercase tracking-wider">
+                                                                    <Trash2 className="w-3.5 h-3.5" /> Delete
+                                                                </button>
+                                                            </div>
                                                         </div>
-                                                        <div className="flex items-center gap-2">
-                                                            <button
-                                                                type="button"
-                                                                onClick={() => setSection2Card(i, 'active', card.active === false ? true : false)}
-                                                                className={`flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-bold transition-all ${
-                                                                    card.active !== false
-                                                                        ? 'bg-emerald-50 text-emerald-700 border border-emerald-200 hover:bg-emerald-100'
-                                                                        : 'bg-slate-100 text-slate-500 border border-slate-200 hover:bg-slate-200'
-                                                                }`}
-                                                            >
-                                                                <span className={`w-1.5 h-1.5 rounded-full ${card.active !== false ? 'bg-emerald-500' : 'bg-slate-400'}`}></span>
-                                                                <span>{card.active !== false ? 'Live' : 'Hidden'}</span>
-                                                            </button>
-                                                            <button type="button" onClick={() => removeSection2Card(i)} className="flex items-center gap-1.5 text-red-400 hover:text-red-600 text-[10px] font-black uppercase tracking-wider">
-                                                                <Trash2 className="w-3.5 h-3.5" /> Delete
-                                                            </button>
+                                                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                                            <Field label="Card Title" value={card.title ?? ''} onChange={(v) => setSection2Card(i, 'title', v)} />
+                                                            <Field label="Card Link (Optional)" value={card.href ?? ''} onChange={(v) => setSection2Card(i, 'href', v)} placeholder="/digital-transformation/..." />
+                                                            <div className="md:col-span-2">
+                                                                <Field label="Card Description" value={card.description ?? ''} onChange={(v) => setSection2Card(i, 'description', v)} richText />
+                                                            </div>
+                                                            <div className="md:col-span-2">
+                                                                <MediaImageField label="Image" value={card.image ?? ''} onChange={(v) => setSection2Card(i, 'image', v)} previewClassName="h-24" />
+                                                            </div>
                                                         </div>
                                                     </div>
-                                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                                        <Field label="Card Title" value={card.title ?? ''} onChange={(v) => setSection2Card(i, 'title', v)} />
-                                                        <Field label="Card Link (Optional)" value={card.href ?? ''} onChange={(v) => setSection2Card(i, 'href', v)} placeholder="/digital-transformation/..." />
-                                                        <div className="md:col-span-2">
-                                                            <Field label="Card Description" value={card.description ?? ''} onChange={(v) => setSection2Card(i, 'description', v)} richText />
-                                                        </div>
-                                                        <div className="md:col-span-2">
-                                                            <MediaImageField label="Image" value={card.image ?? ''} onChange={(v) => setSection2Card(i, 'image', v)} previewClassName="h-24" />
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            ))}
+                                                ))}
+                                            </div>
                                         </div>
-                                    </div>
+                                    )}
                                 </section>
 
                                 {/* Section 2 on Live Page: Our Expertise / Digital Services */}
@@ -4383,6 +4448,21 @@ export default function UnifiedPageEditor({
                                     );
                                 }
                                 return null;
+                            }
+                            if (isStructured) {
+                                return (
+                                    <div className="space-y-8 scroll-mt-36">
+                                        <CategoryManager pageId={page.id} pageSlug={page.slug} />
+                                        <ItemsManager
+                                            pageId={page.id}
+                                            pageSlug={page.slug}
+                                            collection="cards"
+                                            label={page.slug === 'ai-guide' ? 'Latest Articles Grid' : page.slug === 'classifieds' ? 'Opportunity Cards' : 'Interactive Cards'}
+                                            availableCategories={allAvailableCategories}
+                                            targetCardSlug={targetCardSlug}
+                                        />
+                                    </div>
+                                );
                             }
                             return (
                                 <section id="sec-cards" className="space-y-6 scroll-mt-36">
@@ -5400,32 +5480,41 @@ export default function UnifiedPageEditor({
 
                         {/* Case Studies / Projects Showcase Section */}
                         {('caseStudies' in data || 'caseStudies' in effectiveDefaults || page.slug === 'catalogues') && !isArticlePage && (
-                            <CaseStudiesEditorSection
-                                data={data}
-                                set={set}
-                                onSyncCaseStudies={async (nextCaseStudies) => {
-                                    const nextData = { ...data, caseStudies: nextCaseStudies };
-                                    setData(nextData);
-                                    try {
-                                        const { data: updated } = await api.put(`/pages/${page.id}`, {
-                                            title,
-                                            published,
-                                            pageData: JSON.stringify(nextData),
-                                        });
-                                        clearPageDataCache(page.slug);
-                                        clearPageDataCache();
-                                        broadcastCmsInvalidation({ type: 'INVALIDATE_PAGE', slug: page.slug });
-                                        broadcastCmsInvalidation({ type: 'INVALIDATE_ALL' });
-                                        setSaved(true);
-                                        setTimeout(() => setSaved(false), 2000);
-                                        if (onSaved) onSaved(updated);
-                                    } catch (err: any) {
-                                        console.error('Failed to sync case studies:', err);
-                                        const msg = err?.response?.data?.error || 'Failed to save case studies.';
-                                        setSaveError(msg);
-                                    }
-                                }}
-                            />
+                            isStructured ? (
+                                <ItemsManager
+                                    pageId={page.id}
+                                    pageSlug={page.slug}
+                                    collection="caseStudies"
+                                    label="Case Studies & Projects Showcase"
+                                />
+                            ) : (
+                                <CaseStudiesEditorSection
+                                    data={data}
+                                    set={set}
+                                    onSyncCaseStudies={async (nextCaseStudies) => {
+                                        const nextData = { ...data, caseStudies: nextCaseStudies };
+                                        setData(nextData);
+                                        try {
+                                            const { data: updated } = await api.put(`/pages/${page.id}`, {
+                                                title,
+                                                published,
+                                                pageData: JSON.stringify(nextData),
+                                            });
+                                            clearPageDataCache(page.slug);
+                                            clearPageDataCache();
+                                            broadcastCmsInvalidation({ type: 'INVALIDATE_PAGE', slug: page.slug });
+                                            broadcastCmsInvalidation({ type: 'INVALIDATE_ALL' });
+                                            setSaved(true);
+                                            setTimeout(() => setSaved(false), 2000);
+                                            if (onSaved) onSaved(updated);
+                                        } catch (err: any) {
+                                            console.error('Failed to sync case studies:', err);
+                                            const msg = err?.response?.data?.error || 'Failed to save case studies.';
+                                            setSaveError(msg);
+                                        }
+                                    }}
+                                />
+                            )
                         )}
 
                     </>
@@ -5446,7 +5535,7 @@ export default function UnifiedPageEditor({
                     )}
                     <button
                         type="button"
-                        onClick={save}
+                        onClick={() => save()}
                         disabled={saving}
                         className="flex items-center gap-2 px-6 py-2.5 bg-blue-600 text-white text-sm font-bold rounded-xl hover:bg-blue-700 transition-colors disabled:opacity-60 shadow-md"
                     >
@@ -5547,6 +5636,38 @@ export default function UnifiedPageEditor({
                     </div>
                 </div>
             )}
+
+            {/* Page-Level Conflict Dialog */}
+            <ConflictDialog
+                isOpen={showPageConflictDialog}
+                onClose={() => setShowPageConflictDialog(false)}
+                onReloadLatest={() => {
+                    if (conflictCurrentPage) {
+                        setTitle(conflictCurrentPage.title);
+                        setPublished(conflictCurrentPage.published);
+                        const parsed = parsePageData(conflictCurrentPage.pageData);
+                        setData(parsed);
+                        if (conflictCurrentPage.version !== undefined) {
+                            page.version = conflictCurrentPage.version;
+                        }
+                    }
+                    setShowPageConflictDialog(false);
+                    setConflictCurrentPage(null);
+                }}
+                onOverwrite={() => {
+                    const targetVersion = conflictCurrentPage?.version;
+                    setShowPageConflictDialog(false);
+                    save(targetVersion);
+                }}
+                localData={{ title, published, ...data }}
+                currentData={conflictCurrentPage ? {
+                    title: conflictCurrentPage.title,
+                    published: conflictCurrentPage.published,
+                    ...parsePageData(conflictCurrentPage.pageData),
+                } : {}}
+                title={`Page Conflict Detected on "${page.title}"`}
+                description="Another administrator or process modified this page while you were editing it. Review the settings differences below to reload latest or overwrite."
+            />
         </div>
     );
 }

@@ -556,3 +556,59 @@
   - None.
 - Found, not fixed:
   - None.
+
+---
+
+## T12 – Admin per-item editing UI and strict structured writes – DONE
+- Date: 2026-11-22
+- Commit: `70759f9` (T12: Admin per-item editing UI and strict structured writes)
+- Review Status: Ready for Review
+- Backup used: N/A (read-only dev DB; tests on isolated Neon branch DATABASE_URL_TEST)
+- Audit of `UnifiedPageEditor.tsx`:
+  - Primary Component: `UnifiedPageEditor` (lines 554–5552)
+  - `cards`: Interactive Cards section (lines 4388–4947), card headers & reorder (lines 4514–4578), card fields editor (lines 4580–4941), expertise cards (lines 4081–4257).
+  - `section2Cards`: Impact cards on `digital-transformation` (lines 4033–4078); handlers (lines 1210–1222).
+  - `moreCards`: Sample data merge and sanitization (lines 146, 792, 1059–1086, 1520–1521).
+  - `featured`: Laboratory featured (lines 3814–3821), Classifieds featured (lines 3878–3902), handler (lines 1157–1162).
+  - `faqs`: FaqEditorSection (lines 3936–3940); synced in `save()` (lines 1478–1482).
+  - `openings`: JobOpeningsEditorSection (lines 3907–3933); `onSyncOpenings` PUT /pages/:id (lines 3914–3918).
+  - `caseStudies`: CaseStudiesEditorSection (lines 5402–5429); `onSyncCaseStudies` PUT /pages/:id (lines 5410–5414).
+  - `categories`: CardCategoriesField (lines 4430–4499, 4921–4929); Classifieds categories (lines 3855–3876).
+  - `save()` handler: Lines 1461–1561 (PUT /pages/:id with serialized pageData).
+- Files changed (summary):
+  - Created `frontend/src/admin/api/pageItems.ts`: typed admin API client for items and category endpoints.
+  - Created `frontend/src/admin/components/items/CardFieldsEditor.tsx`: extracted reusable card fields editor supporting title, slug, href, summary, custom detail, before/after images, CTA strip, cover image, category pills, and PDF downloads.
+  - Created `frontend/src/admin/components/items/ConflictDialog.tsx`: visual diff dialog for HTTP 409 conflict resolution ("Reload Latest", "Yes, Confirm Overwrite").
+  - Created `frontend/src/admin/components/items/ItemEditorDrawer.tsx`: slide-over drawer with dirty tracking, version passing, and conflict handling.
+  - Created `frontend/src/admin/components/items/CategoryManager.tsx`: TanStack Query CRUD + reorder manager for page categories.
+  - Created `frontend/src/admin/components/items/ItemsManager.tsx`: per-item list view with status toggle, up/down reordering, delete confirmation, drawer editing, and deep linking.
+  - Updated `frontend/src/admin/components/UnifiedPageEditor.tsx`: detects structured pages, embeds `CategoryManager` and `ItemsManager`, strips collection keys from whole-page save, passes `version`, handles 409 page conflicts, and wires structured job-openings/faqs/case-studies.
+  - Updated `frontend/src/admin/pages/PagesManager.tsx`: parses `?edit=<slug>&card=<cardSlug>` and forwards `targetCardSlug` to `UnifiedPageEditor`.
+  - Updated `frontend/src/admin/pages/Categories.tsx`: synchronizes categories via category endpoints and updates item categories via items API on structured pages.
+  - Updated `frontend/src/admin/pages/CollegesManager.tsx`: reads cards and categories via items and category APIs, and executes create, update, delete, duplicate, reorder, and toggle-premium directly through items/category APIs.
+  - Updated `backend/src/routes/pages.routes.ts`: enabled `CMS_STRICT_STRUCTURED_WRITES` (default true) rejecting collection keys in `POST /` and `PUT /:id` with 400 `collections_not_allowed`.
+  - Updated `backend/src/services/page-content/page-content.service.ts`: populated `DETAIL_DROPPED` with non-hub-needs-detail slugs and drops detail for public requests while retaining for admin requests.
+  - Created `backend/tests/admin-items/strict-mode.test.ts`: 6 tests verifying rejection of collections in strict mode, settings-only save, document page save, rollback env flag, and public vs admin detail dropping.
+  - Created frontend test suites:
+    - `frontend/src/admin/components/items/__tests__/ItemsManager.test.tsx` (5 tests)
+    - `frontend/src/admin/components/items/__tests__/ItemEditorDrawer.test.tsx` (3 tests)
+    - `frontend/src/admin/components/__tests__/UnifiedPageEditor.save.test.tsx` (2 tests)
+    - `frontend/src/admin/pages/__tests__/CollegesManager.test.tsx` (2 tests)
+  - Created Playwright E2E test `tests/e2e/admin-items.spec.ts`.
+  - Created `docs/plans/sdd/task-12-report.md`.
+- Tests added:
+  - 4 frontend test files (12 tests), 1 backend test file (6 tests), 1 E2E Playwright test.
+- Test results:
+  - `npm test --prefix frontend`: 20 passed / 20 total files, 80 passed / 80 total tests (100% green).
+  - `backend/tests/admin-items/strict-mode.test.ts`: 6 passed / 6 total tests on DATABASE_URL_TEST.
+  - `backend/tests/page-content/legacy-write-adapter.test.ts`: 4 passed / 4 total tests on DATABASE_URL_TEST.
+  - `npm run typecheck --prefix frontend`: 0 errors.
+  - `tsc --noEmit` (backend): 0 errors.
+  - `npm run build --prefix frontend`: Vite production build passed in 28.62s with 0 errors.
+  - `npm run build --prefix backend`: TypeScript & Prisma build passed with 0 errors.
+- Deviations from plan and why:
+  - Fixed `UnifiedPageEditor.tsx` `save()` click handler where synthetic `MouseEvent` was passed as `versionOverride`, causing circular structure serialization failure. Explicitly check `typeof versionOverride === 'number'` and pass `onClick={() => save()}`.
+- Found, not fixed:
+  - None.
+
+

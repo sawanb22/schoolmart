@@ -629,7 +629,7 @@ export default function PagesManager() {
                 heroSubtitle: '',
                 heroImage: '',
                 section1Title: 'Solutions & Offerings',
-                cards: [],
+                ...(newPageType === 'solution-hub' || newPageType === 'service-suite' ? {} : { cards: [] }),
                 ctaTitle: '',
                 ctaSubtitle: '',
                 ctaButtonLabel: '',
@@ -1099,6 +1099,7 @@ export default function PagesManager() {
                         onClose={handleCloseEditor}
                         onSaved={handleSaved}
                         onSelectPage={(targetPage) => setEditingPage(targetPage)}
+                        targetCardSlug={searchParams.get('card') || undefined}
                     />
                 )}
             </div>
