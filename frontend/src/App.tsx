@@ -1,5 +1,7 @@
 import { BrowserRouter, Routes, Route, useLocation, useParams, Navigate } from 'react-router-dom';
 import { Suspense, useEffect, useState } from 'react';
+import { QueryClientProvider } from '@tanstack/react-query';
+import { queryClient } from '@/lib/query-client';
 import { lazy } from '@/lib/lazy-with-retry';
 import { SiteContentProvider } from '@/contexts/SiteContentContext';
 import { WishlistProvider } from '@/contexts/WishlistContext';
@@ -229,12 +231,13 @@ const ExternalRedirect = ({ url }: { url: string }) => {
 
 function App() {
   return (
-    <SiteContentProvider>
-      <WishlistProvider>
-        <BrowserRouter>
-          <ScrollToTop />
-          <Suspense fallback={<PageLoader />}>
-            <Routes>
+    <QueryClientProvider client={queryClient}>
+      <SiteContentProvider>
+        <WishlistProvider>
+          <BrowserRouter>
+            <ScrollToTop />
+            <Suspense fallback={<PageLoader />}>
+              <Routes>
               {/* Core Pages */}
               <Route path="/" element={<Home />} />
               <Route path="/login" element={<Layout><Login /></Layout>} />
@@ -319,6 +322,7 @@ function App() {
         </BrowserRouter>
       </WishlistProvider>
     </SiteContentProvider>
+  </QueryClientProvider>
   );
 }
 

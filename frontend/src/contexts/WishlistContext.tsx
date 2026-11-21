@@ -80,6 +80,33 @@ export function WishlistProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     refresh();
+
+    const handleAuthChange = () => {
+      refresh();
+    };
+
+    const handleStorage = (e: StorageEvent) => {
+      if (
+        e.key === 'cm_token' ||
+        e.key === 'cm_user' ||
+        e.key === 'cm_admin_token' ||
+        e.key === 'cm_admin_user'
+      ) {
+        refresh();
+      }
+    };
+
+    if (typeof window !== 'undefined') {
+      window.addEventListener('storage', handleStorage);
+      window.addEventListener('cm_auth_changed', handleAuthChange);
+    }
+
+    return () => {
+      if (typeof window !== 'undefined') {
+        window.removeEventListener('storage', handleStorage);
+        window.removeEventListener('cm_auth_changed', handleAuthChange);
+      }
+    };
   }, [refresh]);
 
   const productIds = useMemo(() => {
@@ -113,11 +140,12 @@ export function WishlistProvider({ children }: { children: ReactNode }) {
         return exists ? prev.map((i) => (i.productId || i.product?.id) === productId ? data : i) : [data, ...prev];
       });
       return { success: true };
-    } catch (err: any) {
-      if (err.response?.status === 401) {
+    } catch (err: unknown) {
+      const axiosErr = err as { response?: { status?: number; data?: { error?: string } } };
+      if (axiosErr.response?.status === 401) {
         return { success: false, unauthenticated: true, error: 'Please login to add to wishlist' };
       }
-      return { success: false, error: err.response?.data?.error || 'Failed to add to wishlist' };
+      return { success: false, error: axiosErr.response?.data?.error || 'Failed to add to wishlist' };
     }
   }, []);
 
@@ -126,8 +154,9 @@ export function WishlistProvider({ children }: { children: ReactNode }) {
       await api.delete(`/wishlist/${productId}`);
       setItems((prev) => prev.filter((i) => (i.productId || i.product?.id) !== productId));
       return { success: true };
-    } catch (err: any) {
-      return { success: false, error: err.response?.data?.error || 'Failed to remove from wishlist' };
+    } catch (err: unknown) {
+      const axiosErr = err as { response?: { data?: { error?: string } } };
+      return { success: false, error: axiosErr.response?.data?.error || 'Failed to remove from wishlist' };
     }
   }, []);
 
@@ -160,11 +189,12 @@ export function WishlistProvider({ children }: { children: ReactNode }) {
         return exists ? prev.map((i) => i.designKey === designKey ? data : i) : [data, ...prev];
       });
       return { success: true };
-    } catch (err: any) {
-      if (err.response?.status === 401) {
+    } catch (err: unknown) {
+      const axiosErr = err as { response?: { status?: number; data?: { error?: string } } };
+      if (axiosErr.response?.status === 401) {
         return { success: false, unauthenticated: true, error: 'Please login to add to wishlist' };
       }
-      return { success: false, error: err.response?.data?.error || 'Failed to add to wishlist' };
+      return { success: false, error: axiosErr.response?.data?.error || 'Failed to add to wishlist' };
     }
   }, []);
 
@@ -173,8 +203,9 @@ export function WishlistProvider({ children }: { children: ReactNode }) {
       await api.delete(`/wishlist/design/${encodeURIComponent(designKey)}`);
       setItems((prev) => prev.filter((i) => i.designKey !== designKey));
       return { success: true };
-    } catch (err: any) {
-      return { success: false, error: err.response?.data?.error || 'Failed to remove from wishlist' };
+    } catch (err: unknown) {
+      const axiosErr = err as { response?: { data?: { error?: string } } };
+      return { success: false, error: axiosErr.response?.data?.error || 'Failed to remove from wishlist' };
     }
   }, []);
 
@@ -185,8 +216,9 @@ export function WishlistProvider({ children }: { children: ReactNode }) {
     try {
       await api.patch(`/wishlist/${id}/quantity`, { quantity: validQty });
       return { success: true };
-    } catch (err: any) {
-      return { success: false, error: err.response?.data?.error || 'Failed to update quantity' };
+    } catch (err: unknown) {
+      const axiosErr = err as { response?: { data?: { error?: string } } };
+      return { success: false, error: axiosErr.response?.data?.error || 'Failed to update quantity' };
     }
   }, []);
 
@@ -210,6 +242,7 @@ export function WishlistProvider({ children }: { children: ReactNode }) {
   return <WishlistContext.Provider value={value}>{children}</WishlistContext.Provider>;
 }
 
+// eslint-disable-next-line react-refresh/only-export-components
 export function useWishlist() {
   return useContext(WishlistContext);
 }

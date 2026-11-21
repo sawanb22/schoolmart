@@ -361,6 +361,53 @@
 - Found, not fixed:
   - None.
 
+---
+
+## T9 – TanStack Query behind the existing hooks – DONE
+- Date: 2026-11-21
+- Commit: Pending (T9 commit)
+- Review Status: READY FOR REVIEW
+- Backup used (if DB touched): N/A (read-only dev DB queries; backend tests isolated to DATABASE_URL_TEST).
+- Files changed (summary):
+  - Updated `package.json` and `package-lock.json`: added root scripts `"test": "npm run test:backend && npm run test:frontend"` and `"test:frontend": "npm run test --prefix frontend"`.
+  - Updated `frontend/package.json`: pinned exact runtime dependency `@tanstack/react-query: "5.67.2"`; installed `vitest`, `jsdom`, `@testing-library/react`, `@testing-library/jest-dom`, `@testing-library/user-event`, `msw`.
+  - Updated `frontend/tsconfig.app.json`: added `"types": ["vite/client", "@testing-library/jest-dom"]`.
+  - Created `frontend/vitest.config.ts`: configured Vitest with JSDOM, setupFiles, and `@` path alias.
+  - Created `frontend/src/test/setup.ts`, `frontend/src/test/msw/server.ts`, `frontend/src/test/msw/handlers.ts`: MSW v2 mock server with automatic lifecycle hooks.
+  - Created `frontend/src/lib/query-client.ts`: singleton `QueryClient` with `staleTime: 60_000`, `gcTime: 600_000`, `refetchOnWindowFocus: false`, `retry: 1`.
+  - Created `frontend/src/lib/cms-channel.ts`: centralized broadcast channel & invalidation dispatcher/subscriber.
+  - Created `frontend/src/api/cms.ts`: fetchers `fetchPageLegacy`, `fetchHub`, `fetchHubItem`, `fetchResolve`.
+  - Updated `frontend/src/App.tsx`: wrapped `<QueryClientProvider client={queryClient}>` outside `<SiteContentProvider>`.
+  - Updated `frontend/src/hooks/usePageData.ts`: refactored to `useQuery(['page', slug])`, seeds `['pageRecord', slug]`, preserves generic `<T = Record<string, any>>` for 100% backward compatibility, returns `{ data, loading }` with frozen `EMPTY` object.
+  - Created `frontend/src/hooks/useHub.ts`, `frontend/src/hooks/useHubItem.ts`, `frontend/src/hooks/useResolvePath.ts`: query-based implementations with instant cache seeding on path resolve.
+  - Updated `frontend/src/contexts/SiteContentContext.tsx`: `useQuery(['siteContent'])`, memoized value, listens to CMS invalidation.
+  - Updated `frontend/src/contexts/WishlistContext.tsx`: handles storage/auth events cleanly.
+  - Updated `frontend/src/components/layout/topbar.tsx`: removed redundant mount-time wishlist fetch.
+  - Updated `frontend/src/lib/auth-session.ts`: clean error handling in session clearing.
+  - Updated `docs/plans/baseline/requests.md`: logged request reduction metrics.
+  - Created test suites:
+    - `frontend/src/lib/cms-channel.test.ts` (3 tests)
+    - `frontend/src/hooks/useResolvePath.test.tsx` (2 tests)
+    - `frontend/src/contexts/SiteContentContext.test.tsx` (3 tests)
+    - `frontend/src/hooks/usePageData.test.tsx` (5 tests)
+  - Created verification script `tests/e2e/verify-revisit.mjs`.
+  - Created task report `docs/plans/sdd/task-9-report.md`.
+- Tests added:
+  - 4 frontend test files, 13 new unit/integration tests (100% passing).
+- Test results:
+  - `npm run test:frontend`: 13 passed / 13 total (4 test files, 100% green).
+  - `npm run typecheck:frontend`: 0 errors.
+  - `npm run build:frontend`: Vite production build passed in 25.74s with 0 errors.
+  - ESLint: 0 errors, 0 warnings across all modified and created files.
+- Metrics:
+  - Cold load API requests on Home `/`: reduced from 3 to 2 (-33%).
+  - Revisit to `/labs` within 60s: 0 network requests to `/api/pages/labs` (100% cached).
+- Deviations from plan and why:
+  - In `usePageData.ts` and `SiteContentContext.tsx`, retained `Record<string, any>` as default type parameter to prevent breaking dozens of existing page components that access dynamic/untyped CMS properties.
+- Found, not fixed:
+  - None.
+
+
 
 
 

@@ -81,11 +81,7 @@ const TopBar = () => {
   }, [location.pathname]);
 
   const userName = currentUser?.name || (currentUser?.role === 'admin' ? 'Admin' : currentUser?.email || '');
-  const { count: wishlistCount, refresh: refreshWishlist } = useWishlist();
-
-  useEffect(() => {
-    refreshWishlist();
-  }, [isLoggedIn, refreshWishlist]);
+  const { count: wishlistCount } = useWishlist();
 
   const handleLogout = () => {
     clearUserSession();

@@ -6,7 +6,7 @@ export interface UserSession {
   phone?: string | null;
   institution?: string | null;
   emailVerified?: boolean;
-  [key: string]: any;
+  [key: string]: unknown;
 }
 
 const parseUser = (raw: string | null): UserSession | null => {
@@ -85,6 +85,14 @@ export const setUserSession = (token: string, user: UserSession): void => {
     localStorage.removeItem('cm_admin_user');
     sessionStorage.removeItem('cm_admin_user');
   }
+
+  if (typeof window !== 'undefined') {
+    try {
+      window.dispatchEvent(new Event('cm_auth_changed'));
+    } catch {
+      // Ignore errors in non-browser or mock environments
+    }
+  }
 };
 
 /**
@@ -101,4 +109,12 @@ export const clearUserSession = (): void => {
   sessionStorage.removeItem('cm_user');
   sessionStorage.removeItem('cm_admin_token');
   sessionStorage.removeItem('cm_admin_user');
+
+  if (typeof window !== 'undefined') {
+    try {
+      window.dispatchEvent(new Event('cm_auth_changed'));
+    } catch {
+      // Ignore errors in non-browser or mock environments
+    }
+  }
 };
