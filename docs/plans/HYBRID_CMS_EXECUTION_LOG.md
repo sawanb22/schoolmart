@@ -420,8 +420,8 @@
 
 ## T10 – Detail pages and dynamic routing use the item and resolve endpoints – DONE
 - Date: 2026-11-21
-- Commit: `0020eb6`
-- Review Status: PENDING REVIEW
+- Commit: `0020eb6` (T10: Detail pages and dynamic routing use the item and resolve endpoints)
+- Review Status: APPROVED (commits 9df8177..c8f3670, review clean, 0 critical, 0 important)
 - Backup used (if DB touched): N/A (read-only dev DB queries; backend tests isolated to DATABASE_URL_TEST).
 - Files changed (summary):
   - Created `frontend/src/components/cms/article-view-model.ts`: pure extraction of `buildArticleViewModel(card, hub, options)` supporting category resolution, body derivation with lead paragraph formatting, deliverables HTML generation, cta overrides, modern `hub.cta` nested fallbacks, admin edit links, and backLinks.
