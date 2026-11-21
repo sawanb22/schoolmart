@@ -44,3 +44,39 @@
     - `/tech-infra`: missing expected heading matching route expectation.
     - `/digital/16-latetest`: database card slug contains trailing dash (`16-latetest-`), causing normalized detail slug mismatch.
   - In `DynamicPageRoute`, multiple sequential API attempts occur for prefixed dynamic pages (e.g. 6 requests on `/50-global-resources-for-school-excellence`).
+
+---
+
+## T1 – Backend Test Harness and Clean Migration Baseline – DONE
+- Date: 2026-11-21
+- Commit: Pending (T1 commit)
+- Review Status: PENDING
+- Backup used (if DB touched): Verified `backend/prisma/database-export.json` on test database via `npm run db:restore`. Dev database baselined cleanly without data loss.
+- Files changed (summary):
+  - Split `backend/src/index.ts` into `backend/src/app.ts` (Express app configuration) and `backend/src/server.ts` (HTTP listen & solutions indexer boot). Made `index.ts` a one-line forwarder.
+  - Installed `vitest`, `supertest`, `@types/supertest`, and `fast-check` in `backend`.
+  - Created `backend/vitest.config.ts`, `backend/tests/global-setup.ts` with 3-point database safety guard and synchronous test database migration reset.
+  - Added test helpers `backend/tests/helpers/db.ts`, `backend/tests/helpers/auth.ts`, and `backend/tests/helpers/app.ts`.
+  - Added `backend/tests/smoke.test.ts` (7 tests verifying `/health`, `/api/pages/faq`, and the 3-point safety guard suite).
+  - Archived legacy MySQL migrations into `backend/prisma/migrations_archive/`.
+  - Created pure PostgreSQL baseline migration `backend/prisma/migrations/20261121000000_baseline_postgres/migration.sql` (12,308 bytes).
+  - Baselined development database and marked `20261121000000_baseline_postgres` as applied; confirmed 0 schema drift.
+  - Tested database restore against isolated test database (`br-sparkling-morning-bi11w2j6`), hardened `backend/scripts/restore-database.js` with IPv4-first and retry logic.
+  - Added `backend/prisma/sql/README.md`.
+  - Updated `backend/package.json` scripts (`"test": "vitest run"`, `"test:watch": "vitest"`, `"start": "node dist/server.js"`, `"dev": "ts-node-dev --respawn --transpile-only src/server.ts"`).
+  - Updated root `package.json` scripts (`"test": "npm run test:backend"`, `"test:backend": "npm run test --prefix backend"`, `"test:legacy": "node tests/clean-cards-verification.test.cjs"`).
+- Tests added:
+  - `backend/tests/smoke.test.ts` (7 tests: health check, FAQ CMS route, 5 safety guard unit tests)
+- Test results:
+  - `npm run test --prefix backend`: 7 passed / 7 total
+  - `npm test`: 7 passed / 7 total
+  - `npm run test:legacy`: 14 passed / 14 total
+  - `npm run build --prefix backend`: 0 compilation errors
+  - `npx prisma migrate status`: Database schema is up to date!
+- Metrics (if the task has any):
+  - Baseline migration size: 12,308 bytes
+  - Vitest backend suite execution: ~16.7s (including automated test database reset)
+- Deviations from plan and why:
+  - In `backend/scripts/restore-database.js`, added `dns.setDefaultResultOrder('ipv4first')` and `withRetry` around upserts to prevent remote connection drops (`P1001`/`P1017`) during high-frequency bulk restore loops.
+- Found, not fixed:
+  - None.
