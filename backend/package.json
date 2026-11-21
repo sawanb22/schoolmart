@@ -35,12 +35,14 @@
     "@types/node": "^25.3.2",
     "@types/nodemailer": "^7.0.11",
     "bcryptjs": "^3.0.3",
+    "compression": "^1.8.2",
     "cors": "^2.8.6",
     "dotenv": "^17.3.1",
     "express": "^5.2.1",
     "express-rate-limit": "^8.2.1",
     "helmet": "^8.1.0",
     "jsonwebtoken": "^9.0.3",
+    "lru-cache": "^11.5.3",
     "multer": "^2.1.0",
     "nodemailer": "^8.0.1",
     "openai": "^4.52.0",
@@ -51,6 +53,7 @@
     "zod": "3.23.8"
   },
   "devDependencies": {
+    "@types/compression": "^1.8.1",
     "@types/sanitize-html": "2.13.0",
     "@types/supertest": "^7.2.1",
     "fast-check": "^4.10.3",

@@ -90,6 +90,28 @@ export interface HubItemResponse {
 
 export type GetItemResult = HubItemResponse | { redirectTo: string } | null;
 
+export type ResolveResult =
+  | {
+      type: 'page';
+      slug: string;
+      template: string | null;
+      contentModel: string;
+      page: any;
+    }
+  | {
+      type: 'item';
+      hubSlug: string;
+      itemSlug: string | null;
+      hubTemplate: string | null;
+    }
+  | {
+      type: 'redirect';
+      redirectTo: string;
+    }
+  | {
+      type: 'not_found';
+    };
+
 export class PageContentService {
   /**
    * Loads a Page with categories and items in one single Prisma query.
@@ -407,6 +429,279 @@ export class PageContentService {
       },
       item: itemFull,
     };
+  }
+
+  /**
+   * Helper to format a Page into legacy shape with stringified pageData.
+   */
+  formatLegacyPage(page: any, isAdmin = false): any {
+    if (page.contentModel === 'document') {
+      return toLegacyPageResponse(page);
+    }
+    const settings = parsePageData(page.pageData);
+    const includeDetail = !DETAIL_DROPPED.has(page.slug);
+    const publicOnly = !isAdmin;
+
+    const reconstructed = buildLegacyPageData(settings, page.items || [], page.categories || [], {
+      includeDetail,
+      publicOnly,
+    });
+
+    return toLegacyPageResponse({
+      ...page,
+      pageData: reconstructed,
+    });
+  }
+
+  /**
+   * Resolves a path according to Section 3.5.1 of the execution plan:
+   * Guarantees <= 3 database queries per resolution.
+   */
+  async resolvePath(
+    pathStr: string,
+    options?: GetPageOptions
+  ): Promise<ResolveResult> {
+    const isAdmin = Boolean(options?.isAdmin);
+    let path = (pathStr || '').trim().toLowerCase();
+
+    // Strip query parameters if present
+    if (path.includes('?')) {
+      path = path.split('?')[0];
+    }
+
+    // Strip trailing slashes
+    path = path.replace(/\/+$/, '');
+
+    // Handle leading /p/ or /p -> treated as /
+    if (path.startsWith('/p/')) {
+      path = path.slice(2);
+    } else if (path === '/p') {
+      path = '';
+    }
+
+    // Ensure leading slash if not empty
+    if (path && !path.startsWith('/')) {
+      path = `/${path}`;
+    }
+
+    const segments = path.split('/').filter(Boolean);
+
+    if (segments.length === 0) {
+      return { type: 'not_found' };
+    }
+
+    const includeClause = {
+      categories: { orderBy: { sortOrder: 'asc' as const } },
+      items: {
+        where: isAdmin ? undefined : { published: true },
+        orderBy: [{ collection: 'asc' as const }, { sortOrder: 'asc' as const }],
+        include: {
+          categories: { orderBy: { sortOrder: 'asc' as const }, include: { category: true } },
+        },
+      },
+    };
+
+    if (segments.length === 1) {
+      const s = segments[0];
+
+      // Build candidate slugs: exact, alias, and prefix candidates
+      const candidateSlugs = [s];
+      const alias = PAGE_SLUG_ALIASES[s];
+      if (alias) {
+        candidateSlugs.push(alias);
+      }
+      for (const prefix of ['guide-', 'environment-', 'resource-']) {
+        if (!s.startsWith(prefix)) {
+          candidateSlugs.push(`${prefix}${s}`);
+        }
+      }
+
+      // 1 findUnique on SlugRedirect + 1 findMany on Page (2 queries in parallel)
+      const [redirect, pages] = await Promise.all([
+        prisma.slugRedirect.findUnique({
+          where: { fromPath: `/${s}` },
+        }),
+        prisma.page.findMany({
+          where: {
+            slug: { in: candidateSlugs },
+            ...(isAdmin ? {} : { published: true }),
+          },
+          include: includeClause,
+        }),
+      ]);
+
+      // 1. Redirect
+      if (redirect) {
+        return { type: 'redirect', redirectTo: redirect.toPath };
+      }
+
+      // 2. Exact match
+      const exactPage = pages.find((p) => p.slug === s);
+      if (exactPage) {
+        return {
+          type: 'page',
+          slug: exactPage.slug,
+          template: exactPage.template ?? null,
+          contentModel: exactPage.contentModel,
+          page: this.formatLegacyPage(exactPage, isAdmin),
+        };
+      }
+
+      // 3. Alias match
+      if (alias) {
+        const aliasPage = pages.find((p) => p.slug === alias);
+        if (aliasPage) {
+          return {
+            type: 'page',
+            slug: aliasPage.slug,
+            template: aliasPage.template ?? null,
+            contentModel: aliasPage.contentModel,
+            page: this.formatLegacyPage(aliasPage, isAdmin),
+          };
+        }
+      }
+
+      // 4. Prefix candidates: guide-s, then environment-s, then resource-s
+      for (const prefix of ['guide-', 'environment-', 'resource-']) {
+        if (!s.startsWith(prefix)) {
+          const prefixSlug = `${prefix}${s}`;
+          const prefixPage = pages.find((p) => p.slug === prefixSlug);
+          if (prefixPage) {
+            return {
+              type: 'page',
+              slug: prefixPage.slug,
+              template: prefixPage.template ?? null,
+              contentModel: prefixPage.contentModel,
+              page: this.formatLegacyPage(prefixPage, isAdmin),
+            };
+          }
+        }
+      }
+
+      // 5. Otherwise
+      return { type: 'not_found' };
+    }
+
+    if (segments.length === 2) {
+      const h = segments[0];
+      const i = segments[1];
+
+      const hAlias = PAGE_SLUG_ALIASES[h];
+      const candidateSlugs = [`${h}-${i}`, i, h];
+      if (hAlias) {
+        candidateSlugs.push(hAlias);
+      }
+
+      // 1 findUnique on SlugRedirect + 1 findMany on Page (2 queries in parallel)
+      const [redirect, pages] = await Promise.all([
+        prisma.slugRedirect.findUnique({
+          where: { fromPath: `/${h}/${i}` },
+        }),
+        prisma.page.findMany({
+          where: {
+            slug: { in: candidateSlugs },
+            ...(isAdmin ? {} : { published: true }),
+          },
+          include: includeClause,
+        }),
+      ]);
+
+      // 1. Redirect for /h/i
+      if (redirect) {
+        return { type: 'redirect', redirectTo: redirect.toPath };
+      }
+
+      // 2. Standalone page h-i
+      const pageHI = pages.find((p) => p.slug === `${h}-${i}`);
+      if (pageHI) {
+        return {
+          type: 'page',
+          slug: pageHI.slug,
+          template: pageHI.template ?? null,
+          contentModel: pageHI.contentModel,
+          page: this.formatLegacyPage(pageHI, isAdmin),
+        };
+      }
+
+      // 3. Standalone page i (UniversalArticleDetail behaviour)
+      const pageI = pages.find((p) => p.slug === i);
+      if (pageI) {
+        return {
+          type: 'page',
+          slug: pageI.slug,
+          template: pageI.template ?? null,
+          contentModel: pageI.contentModel,
+          page: this.formatLegacyPage(pageI, isAdmin),
+        };
+      }
+
+      // 4. Hub h (alias-aware) with item i
+      const hub = pages.find((p) => p.slug === h) || (hAlias ? pages.find((p) => p.slug === hAlias) : undefined);
+      if (hub) {
+        // Look up item within hub
+        const items = hub.items || [];
+        const exactItem = items.find((it: any) => it.slug.toLowerCase().trim() === i);
+        if (exactItem) {
+          return {
+            type: 'item',
+            hubSlug: hub.slug,
+            itemSlug: exactItem.slug,
+            hubTemplate: hub.template ?? null,
+          };
+        }
+
+        // Check redirect for /<hub.slug>/<i> if hub was accessed via alias
+        if (hub.slug !== h) {
+          const aliasRedirect = await prisma.slugRedirect.findUnique({
+            where: { fromPath: `/${hub.slug}/${i}` },
+          });
+          if (aliasRedirect) {
+            return { type: 'redirect', redirectTo: aliasRedirect.toPath };
+          }
+        }
+
+        // Fallback match on slugify(title) or last segment of href
+        const fallbackItem = items.find((it: any) => {
+          const titleSlug = slugify(it.title || '');
+          if (titleSlug && titleSlug === i) return true;
+          if (it.href) {
+            const leafSlug = normalizeSlug(it.href);
+            if (leafSlug && leafSlug === i) return true;
+          }
+          return false;
+        });
+
+        if (fallbackItem) {
+          return {
+            type: 'item',
+            hubSlug: hub.slug,
+            itemSlug: fallbackItem.slug,
+            hubTemplate: hub.template ?? null,
+          };
+        }
+
+        // Hub exists but no matching item -> return itemSlug: null
+        return {
+          type: 'item',
+          hubSlug: hub.slug,
+          itemSlug: null,
+          hubTemplate: hub.template ?? null,
+        };
+      }
+
+      // 6. Otherwise
+      return { type: 'not_found' };
+    }
+
+    // Path with > 2 segments: check redirect
+    const redirect = await prisma.slugRedirect.findUnique({
+      where: { fromPath: path },
+    });
+    if (redirect) {
+      return { type: 'redirect', redirectTo: redirect.toPath };
+    }
+
+    return { type: 'not_found' };
   }
 }
 

@@ -3,11 +3,12 @@ import prisma from '../lib/prisma';
 import { verifyToken, requireAdmin, AuthRequest } from '../middleware/auth.middleware';
 import { validateTaxonomyPayload, solutionsIndexService } from '../services/solutions-finder';
 import { afterContentWrite } from '../services/page-content/after-content-write';
+import { publicCmsCache } from '../services/cms-cache';
 
 const router = Router();
 
 // GET /api/content - get all site content
-router.get('/', async (_req: Request, res: Response) => {
+router.get('/', publicCmsCache(), async (_req: Request, res: Response) => {
     try {
         const content = await prisma.siteContent.findMany();
         const contentMap = Object.fromEntries(content.map((c) => [c.key, c.value]));

@@ -1,6 +1,7 @@
 import express from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
+import compression from 'compression';
 import fs from 'fs';
 import path from 'path';
 import dotenv from 'dotenv';
@@ -71,6 +72,9 @@ app.use(helmet({
     xContentTypeOptions: true,
     xFrameOptions: { action: 'deny' },
 }));
+
+// HTTP response compression
+app.use(compression());
 // Env vars may hold a single URL or a comma-separated list, sometimes with a
 // stray path, trailing slash, or missing protocol; normalize everything down to bare origins
 // (scheme+host+port) so formatting typos in Render/Vercel env vars don't break traffic.

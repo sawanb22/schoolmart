@@ -326,6 +326,42 @@
 - Found, not fixed:
   - None.
 
+---
+
+## T8 – HTTP performance: compression, caching, ETag, resolve endpoint – DONE
+- Date: 2026-11-21
+- Commit: `7146312` (T8: HTTP performance: compression, caching, ETag, resolve endpoint)
+- Review Status: Pending Review
+- Backup used (if DB touched): N/A (read-only dev DB queries; tests run strictly against isolated test DB DATABASE_URL_TEST).
+- Files changed (summary):
+  - Updated `backend/package.json` and `backend/package-lock.json`: installed `compression`, `lru-cache`, `@types/compression`.
+  - Updated `backend/src/app.ts`: added `app.use(compression())` after `helmet`.
+  - Created `backend/src/services/cms-cache.ts`: multi-process cache manager (`cmsLruCache`, max 500 entries) synchronized via database `CmsState.version` (id: 1) memoized for 1000 ms; deterministic weak ETag `W/"cms-<version>-<sha1(originalUrl).slice(0, 12)>"`; `publicCmsCache()` middleware returning `Cache-Control: public, no-cache`, stripping `Pragma`/`Expires`, returning HTTP 304 on matching `If-None-Match`, and bypassing LRU for requests with `Authorization` headers.
+  - Updated `backend/src/services/page-content/after-content-write.ts`: added `await bumpCmsVersion(tx)` to content mutation lifecycle hook.
+  - Updated `backend/src/services/page-content/page-content.service.ts`: implemented `resolvePath(pathStr, options)` resolving single-segment and two-segment dynamic paths with aliases, redirects, prefixes, and hub item resolution in <= 3 database queries.
+  - Updated `backend/src/routes/content.routes.ts`: applied `publicCmsCache()` to `GET /api/content`.
+  - Updated `backend/src/routes/pages.routes.ts`: mounted `GET /resolve` before `/:idOrSlug`, applied `publicCmsCache()` to `/published`, `/hub/catalog`, `/resolve`, `/:slug/items/:itemSlug`, and `/:idOrSlug`, and removed legacy hardcoded `Cache-Control: public, max-age=60...`.
+  - Non-CMS routes (`/api/auth/*`, `/api/admin/*`, `/api/wishlist`, `/api/orders`, `/api/products`) strictly preserve `Cache-Control: no-store`.
+  - Created test suite `backend/tests/http/compression.test.ts` (1 test: gzip response compression).
+  - Created test suite `backend/tests/http/cache.test.ts` (6 tests: 200 with ETag and `public, no-cache`, 304 on `If-None-Match`, mutation invalidation, multi-process raw SQL version bump + clock advance, auth LRU bypass, non-CMS `no-store`).
+  - Created test suite `backend/tests/pages/resolve.test.ts` (13 tests: single-segment rules, two-segment rules, redirects, draft access, and <= 3 query budget assertion).
+- Tests added:
+  - `backend/tests/http/compression.test.ts` (1 test)
+  - `backend/tests/http/cache.test.ts` (6 tests)
+  - `backend/tests/pages/resolve.test.ts` (13 tests)
+- Test results:
+  - `npm run test --prefix backend`: 221 passed / 221 total (30 test files, 100% green)
+  - `npm run build --prefix backend`: 0 compilation errors
+- Metrics:
+  - New test suites: 3 test files, 20 new tests
+  - Route resolution query budget: verified <= 3 database queries for both 1-segment and 2-segment routes
+  - Cache revalidation: HTTP 304 with 0 database queries beyond version check
+- Deviations from plan and why:
+  - None.
+- Found, not fixed:
+  - None.
+
+
 
 
 

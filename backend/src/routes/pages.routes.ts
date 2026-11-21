@@ -12,6 +12,7 @@ import { writeStructuredPage } from '../services/page-content/structured-writer'
 import { afterContentWrite } from '../services/page-content/after-content-write';
 import { COLLECTIONS, LEGACY_HUB_DEFAULT_CATEGORIES } from '../services/page-content/constants';
 import { sanitizePageData, sanitizeRichHtml } from '../lib/sanitize';
+import { publicCmsCache } from '../services/cms-cache';
 
 const router = Router();
 
@@ -31,7 +32,7 @@ router.get('/', verifyToken, requireAdmin, async (_req: AuthRequest, res: Respon
 });
 
 // GET /api/pages/published - get all published pages (public)
-router.get('/published', async (_req: Request, res: Response) => {
+router.get('/published', publicCmsCache(), async (_req: Request, res: Response) => {
     try {
         const pages = await prisma.page.findMany({
             where: { published: true }
@@ -44,7 +45,7 @@ router.get('/published', async (_req: Request, res: Response) => {
 });
 
 // GET /api/pages/hub/catalog - Master Hub Aggregator for Shop (Option B: On-Demand Hub Loading)
-router.get('/hub/catalog', async (req: Request, res: Response) => {
+router.get('/hub/catalog', publicCmsCache(), async (req: Request, res: Response) => {
     try {
         const requestedHub = typeof req.query.hub === 'string' ? req.query.hub.trim().toLowerCase() : '';
 
@@ -269,7 +270,6 @@ router.get('/hub/catalog', async (req: Request, res: Response) => {
             }
         }
 
-        res.setHeader('Cache-Control', 'public, max-age=60, s-maxage=120, stale-while-revalidate=300');
         res.json({
             activeHub: requestedHub || 'furniture',
             hubs: hubConfigs,
@@ -281,8 +281,25 @@ router.get('/hub/catalog', async (req: Request, res: Response) => {
     }
 });
 
+// GET /api/pages/resolve - path resolution endpoint (guarantees <= 3 database queries)
+router.get('/resolve', publicCmsCache(), optionalAuth, async (req: AuthRequest, res: Response) => {
+    try {
+        const pathParam = typeof req.query.path === 'string' ? req.query.path : '';
+        const isAdmin = req.user?.role === 'admin';
+        const result = await pageContentService.resolvePath(pathParam, { isAdmin });
+
+        if (result.type === 'not_found') {
+            return res.status(404).json(result);
+        }
+        res.json(result);
+    } catch (err) {
+        console.error('Failed to resolve path:', err);
+        res.status(500).json({ error: 'An unexpected internal error occurred. Please try again later.' });
+    }
+});
+
 // GET /api/pages/:slug/items/:itemSlug - get single item within a hub (or redirect)
-router.get('/:slug/items/:itemSlug', optionalAuth, async (req: AuthRequest, res: Response) => {
+router.get('/:slug/items/:itemSlug', publicCmsCache(), optionalAuth, async (req: AuthRequest, res: Response) => {
     try {
         const slug = String(req.params.slug);
         const itemSlug = String(req.params.itemSlug);
@@ -305,7 +322,7 @@ router.get('/:slug/items/:itemSlug', optionalAuth, async (req: AuthRequest, res:
 });
 
 // GET /api/pages/:idOrSlug - get specific page by ID (number) or slug (string)
-router.get('/:idOrSlug', optionalAuth, async (req: AuthRequest, res: Response) => {
+router.get('/:idOrSlug', publicCmsCache(), optionalAuth, async (req: AuthRequest, res: Response) => {
     try {
         const param = req.params.idOrSlug as string;
         const isAdmin = req.user?.role === 'admin';

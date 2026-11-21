@@ -1,4 +1,6 @@
+import { Prisma } from '@prisma/client';
 import prisma from '../../lib/prisma';
+import { bumpCmsVersion } from '../cms-cache';
 import { solutionsIndexService } from '../solutions-finder';
 
 export interface AfterContentWriteParams {
@@ -36,13 +38,9 @@ export function scheduleSolutionsIndexRebuild(delayMs = 2000): void {
  * 1. Atomically bumps CmsState.version by 1 (Invariant I6).
  * 2. Debounces solutions index rebuild by 2000 ms.
  */
-export async function afterContentWrite(params: AfterContentWriteParams): Promise<void> {
+export async function afterContentWrite(params: AfterContentWriteParams, tx?: Prisma.TransactionClient): Promise<void> {
   try {
-    await prisma.cmsState.upsert({
-      where: { id: 1 },
-      create: { id: 1, version: 2 },
-      update: { version: { increment: 1 } },
-    });
+    await bumpCmsVersion(tx);
   } catch (err) {
     console.error('[afterContentWrite] Failed to bump CmsState version:', err);
     throw err;
