@@ -4,7 +4,7 @@
 - **Plan Reference:** `docs/plans/HYBRID_CMS_PRODUCTION_EXECUTION_PLAN.md` (Task T10, Section 3.5.1)
 - **Repo root:** `d:\schoolmart\campusmart-base`
 - **Branch:** `feat/hybrid-cms`
-- **Target Commit:** `T10: Detail pages and dynamic routing use the item and resolve endpoints`
+- **Commit:** `0020eb6` (`T10: Detail pages and dynamic routing use the item and resolve endpoints`)
 - **Status:** DONE
 
 ---

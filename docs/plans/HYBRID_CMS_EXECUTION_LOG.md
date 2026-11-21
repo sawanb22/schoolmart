@@ -420,7 +420,7 @@
 
 ## T10 – Detail pages and dynamic routing use the item and resolve endpoints – DONE
 - Date: 2026-11-21
-- Commit: Pending (T10: Detail pages and dynamic routing use the item and resolve endpoints)
+- Commit: `0020eb6`
 - Review Status: PENDING REVIEW
 - Backup used (if DB touched): N/A (read-only dev DB queries; backend tests isolated to DATABASE_URL_TEST).
 - Files changed (summary):
