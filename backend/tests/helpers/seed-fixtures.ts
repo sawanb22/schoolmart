@@ -34,23 +34,33 @@ export async function seedPagesFromFixtures(fixtures?: PageFixture[]): Promise<v
             ? parsePageData(item.pageData)
             : Prisma.DbNull;
 
-        await prisma.page.upsert({
-            where: { slug: item.slug },
-            update: {
-                title: item.title,
-                template: item.template,
-                published: item.published,
-                content: item.content,
-                pageData: parsedData as any,
-            },
-            create: {
-                title: item.title,
-                slug: item.slug,
-                template: item.template,
-                published: item.published,
-                content: item.content,
-                pageData: parsedData as any,
-            },
-        });
+        let attempts = 0;
+        while (attempts < 3) {
+            try {
+                await prisma.page.upsert({
+                    where: { slug: item.slug },
+                    update: {
+                        title: item.title,
+                        template: item.template,
+                        published: item.published,
+                        content: item.content,
+                        pageData: parsedData as any,
+                    },
+                    create: {
+                        title: item.title,
+                        slug: item.slug,
+                        template: item.template,
+                        published: item.published,
+                        content: item.content,
+                        pageData: parsedData as any,
+                    },
+                });
+                break;
+            } catch (err) {
+                attempts++;
+                if (attempts >= 3) throw err;
+                await new Promise((r) => setTimeout(r, 500));
+            }
+        }
     }
 }

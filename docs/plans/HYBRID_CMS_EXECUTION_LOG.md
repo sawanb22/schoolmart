@@ -152,4 +152,38 @@
 - Found, not fixed:
   - None.
 
+---
+
+## T4 – Migration Script: Blobs to Rows – DONE
+- Date: 2026-11-21
+- Commit: `1c8c88a` (T4: Migration script: blobs to rows)
+- Review Status: APPROVED (commits 654340e..1c8c88a)
+- Backup used (if DB touched): N/A (read-only dev DB queries for dry-run; `--apply` strictly forbidden on dev DB in T4 and executed only against isolated test DB `DATABASE_URL_TEST`).
+- Files changed (summary):
+  - Created `backend/src/services/page-content/constants.ts` defining canonical collections, column keys, detail keys, HTML keys, document slugs, and payload limits.
+  - Created `backend/src/services/page-content/legacy-mapper.ts` implementing `slugify`, `normalizeSlug`, `classifyPage`, `splitItem`, `splitLegacyPageData`, `buildItem`, and `buildLegacyPageData`.
+  - Created `backend/tests/helpers/legacy-equivalence.ts` implementing `assertLegacyEquivalent` enforcing the 5 permitted normalization differences.
+  - Created `backend/src/services/page-content/structured-writer.ts` implementing transactional `writeStructuredPage` with bulk `createMany` joins.
+  - Created `backend/scripts/migrate-page-items.ts` with `--dry-run`, `--apply`, `--page=<slug>`, `--force`, `--output=<path>`, and programmatic `runMigration`.
+  - Executed dev database dry run: output saved to `backend/scripts/output/migrate-page-items-dev-dryrun.json`.
+  - Created unit tests `backend/tests/page-content/legacy-mapper.test.ts` (19 tests: 50 slugify parity samples, edge fixtures, classification).
+  - Created fast-check property test suite `backend/tests/page-content/legacy-mapper.property.test.ts` with 200 runs each for P1 (round-trip I4), P2 (slug uniqueness), P3 (determinism), and P4 (detail isolation).
+  - Created migration CLI integration tests `backend/tests/scripts/migrate-page-items.test.ts` (6 tests: dry-run zero mutations, `--apply` counts, idempotence, pre-migration revision snapshots, `--force` re-migration, document page isolation).
+- Tests added:
+  - `backend/tests/page-content/legacy-mapper.test.ts` (19 tests)
+  - `backend/tests/page-content/legacy-mapper.property.test.ts` (4 property tests, 200 runs each = 800 executions)
+  - `backend/tests/scripts/migrate-page-items.test.ts` (6 tests)
+- Test results:
+  - `npm run test --prefix backend`: 85 passed / 85 total (10 test files)
+  - `npm run build --prefix backend`: 0 compilation errors
+  - Fast-check property runs: 800/800 passed (P1–P4 at 200 runs each)
+- Metrics:
+  - Dev DB dry run: 130 total pages (11 structured, 119 document, 57 items, 49 categories, 0 warnings, 0 errors)
+  - Round-trip Invariant I4 equivalence: verified on all 11 dev structured pages and across 200 arbitrary generated payloads
+- Deviations from plan and why:
+  - Added `{ maxWait: 15000, timeout: 60000 }` to `db.$transaction` in `migrate-page-items.ts` and optimized join insertions to `createMany` to avoid interactive transaction timeouts on Neon across network regions.
+- Found, not fixed:
+  - None.
+
+
 
