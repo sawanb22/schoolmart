@@ -464,8 +464,8 @@
 
 ## T11 – Hub pages use the v2 summary shape – DONE
 - Date: 2026-11-22
-- Commit: `92b7eb5` (T11: Hub pages use the v2 summary shape)
-- Review Status: Pending Review
+- Commit: `f9db3df` (T11: Hub pages use the v2 summary shape)
+- Review Status: APPROVED (commits d6c1b06..f9db3df, review clean, 0 critical, 0 important)
 - Backup used (if DB touched): N/A (read-only dev DB queries; backend tests strictly isolated to DATABASE_URL_TEST).
 - Files changed (summary):
   - Created `frontend/src/hooks/useHubLegacy.ts`: adapter hook mapping v2 summary payload (`useHub(slug)`) into legacy pageData shape with `itemToCard(item, { includeDetail: false })`, single-object `featured`, and memoized reference stability.
