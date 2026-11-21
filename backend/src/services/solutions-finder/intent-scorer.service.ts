@@ -37,15 +37,14 @@ export class IntentScorerService {
 
   async generateProposal(request: SearchRequestDto): Promise<ProposalResponseDto> {
     const startTime = Date.now();
-    let activeCards = this.indexService.getCards();
-    if (activeCards.length === 0) {
+    if (!this.indexService.isReady()) {
       try {
         await this.indexService.rebuild();
       } catch (err: any) {
         console.warn('[IntentScorerService] Auto-rebuild on cold index failed:', err.message);
       }
-      activeCards = this.indexService.getCards();
     }
+    let activeCards = this.indexService.getCards();
     const taxonomy = this.indexService.getTaxonomy();
 
     // ── Call 1: Intent Extraction & Page Discovery ──────────────────────────────

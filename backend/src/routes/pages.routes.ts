@@ -10,7 +10,7 @@ import { pageContentService } from '../services/page-content/page-content.servic
 import { splitLegacyPageData, classifyPage } from '../services/page-content/legacy-mapper';
 import { writeStructuredPage } from '../services/page-content/structured-writer';
 import { afterContentWrite } from '../services/page-content/after-content-write';
-import { COLLECTIONS } from '../services/page-content/constants';
+import { COLLECTIONS, LEGACY_HUB_DEFAULT_CATEGORIES } from '../services/page-content/constants';
 import { sanitizePageData, sanitizeRichHtml } from '../lib/sanitize';
 
 const router = Router();
@@ -48,13 +48,33 @@ router.get('/hub/catalog', async (req: Request, res: Response) => {
     try {
         const requestedHub = typeof req.query.hub === 'string' ? req.query.hub.trim().toLowerCase() : '';
 
-        // 1. Fetch CMS hub pages
+        // 1. Fetch CMS hub pages with relational items & categories
         const hubPages = await prisma.page.findMany({
             where: {
                 slug: { in: ['labs', 'sports-infra', 'tech-infra', 'libraries'] },
                 published: true,
             },
-            select: { id: true, slug: true, title: true, pageData: true },
+            select: {
+                id: true,
+                slug: true,
+                title: true,
+                contentModel: true,
+                pageData: true,
+                categories: {
+                    orderBy: { sortOrder: 'asc' },
+                    select: { id: true, name: true, slug: true, sortOrder: true },
+                },
+                items: {
+                    where: { published: true, collection: 'cards' },
+                    orderBy: { sortOrder: 'asc' },
+                    include: {
+                        categories: {
+                            orderBy: { sortOrder: 'asc' },
+                            include: { category: true },
+                        },
+                    },
+                },
+            },
         });
 
         // 2. Fetch Furniture data
@@ -119,13 +139,13 @@ router.get('/hub/catalog', async (req: Request, res: Response) => {
             }
         }
 
-        // Metadata definitions with robust fallback subcategories
-        const HUB_METADATA: Record<string, { title: string; defaultCategories: string[] }> = {
-            'furniture': { title: 'Campus Furniture', defaultCategories: furnitureCatNames },
-            'labs': { title: 'Science & Tech Labs', defaultCategories: ['Science Labs', 'Skill Labs', 'Tech Labs', 'STEM & Innovation'] },
-            'sports-infra': { title: 'Sports Infrastructure', defaultCategories: ['Consulting', 'Surface Sports', 'Indoor Sports', 'Athletics', 'Water Sports', 'Artificial Turf'] },
-            'tech-infra': { title: 'Tech Infrastructure', defaultCategories: ['Classroom Tech', 'Displays', 'Networking', 'Wi-Fi & Fiber', 'Servers & Cloud', 'Security'] },
-            'libraries': { title: 'Smart Libraries', defaultCategories: ['Seating', 'Shelving & Display', 'Digital & Tech', 'Collaborative'] },
+        // Hub titles metadata (default categories removed - read from relational tables)
+        const HUB_METADATA: Record<string, { title: string }> = {
+            'furniture': { title: 'Campus Furniture' },
+            'labs': { title: 'Science & Tech Labs' },
+            'sports-infra': { title: 'Sports Infrastructure' },
+            'tech-infra': { title: 'Tech Infrastructure' },
+            'libraries': { title: 'Smart Libraries' },
         };
 
         const hubConfigs: Array<{ id: string; title: string; subcategories: string[]; totalCount: number }> = [];
@@ -141,61 +161,112 @@ router.get('/hub/catalog', async (req: Request, res: Response) => {
         // Process CMS page hubs (labs, sports-infra, tech-infra, libraries)
         for (const slug of ['labs', 'sports-infra', 'tech-infra', 'libraries']) {
             const page = hubMap.get(slug);
-            const meta = HUB_METADATA[slug] || { title: slug, defaultCategories: [] };
-            const rawData = parsePageData(page?.pageData);
-
-            const explicitCats: string[] = Array.isArray(rawData.categories)
-                ? (rawData.categories as string[]).filter(Boolean)
-                : meta.defaultCategories;
-
-            const pageCards: any[] = Array.isArray(rawData.cards) ? rawData.cards : [];
-            const cardCatSet = new Set<string>(explicitCats);
-
+            const meta = HUB_METADATA[slug] || { title: slug };
             const needThisHubItems = !requestedHub || requestedHub === 'all' || requestedHub === slug;
 
-            let pageItemCount = 0;
-            for (let i = 0; i < pageCards.length; i++) {
-                const c = pageCards[i];
-                if (!c || !c.title) continue;
+            if (page && page.contentModel === 'structured') {
+                const dbCats = (page.categories || []).map((c: any) => c.name.trim()).filter(Boolean);
+                const fallbackCats = LEGACY_HUB_DEFAULT_CATEGORIES[slug] || [];
+                const explicitCats = dbCats.length > 0 ? dbCats : fallbackCats;
+                const cardCatSet = new Set<string>(explicitCats);
+                const pageItems: any[] = page.items || [];
 
-                const cardCats: string[] = Array.isArray(c.categories)
-                    ? c.categories.filter(Boolean)
-                    : c.category
-                    ? [c.category]
-                    : [];
+                for (let i = 0; i < pageItems.length; i++) {
+                    const item = pageItems[i];
+                    if (!item || !item.title) continue;
 
-                cardCats.forEach(cat => {
-                    if (cat) cardCatSet.add(cat.trim());
-                });
+                    const itemCats: string[] = (item.categories || [])
+                        .map((ic: any) => ic.category?.name?.trim() || ic.name?.trim())
+                        .filter(Boolean);
 
-                if (needThisHubItems) {
-                    const fallbackSlug = String(c.slug || c.title || `card-${i}`)
-                        .toLowerCase()
-                        .trim()
-                        .replace(/[^a-z0-9]+/g, '-')
-                        .replace(/^-+|-+$/g, '') || `item-${i}`;
+                    itemCats.forEach((cat: string) => cardCatSet.add(cat));
 
-                    items.push({
-                        id: `${slug}-${i}`,
-                        title: c.title,
-                        description: c.description || '',
-                        image: c.image || '',
-                        categories: cardCats.length > 0 ? cardCats : [explicitCats[0] || 'General'],
-                        slug: fallbackSlug,
-                        href: c.href || `/${slug}/${fallbackSlug}`,
-                        hubSlug: slug,
-                        hubTitle: page?.title || meta.title,
-                    });
+                    if (needThisHubItems) {
+                        const fallbackSlug = String(item.slug || item.title || `item-${i}`)
+                            .toLowerCase()
+                            .trim()
+                            .replace(/[^a-z0-9]+/g, '-')
+                            .replace(/^-+|-+$/g, '') || `item-${i}`;
+
+                        const resolvedCategories = itemCats.length > 0
+                            ? itemCats
+                            : (explicitCats.length > 0 ? [explicitCats[0]] : ['General']);
+
+                        items.push({
+                            id: `pi-${item.id}`,
+                            title: item.title,
+                            description: item.summary || (item.data as any)?.description || '',
+                            image: item.imageUrl || (item.data as any)?.image || '',
+                            categories: resolvedCategories,
+                            slug: item.slug || fallbackSlug,
+                            href: item.href || `/${slug}/${item.slug || fallbackSlug}`,
+                            hubSlug: slug,
+                            hubTitle: page.title || meta.title,
+                        });
+                    }
                 }
-                pageItemCount++;
-            }
 
-            hubConfigs.push({
-                id: slug,
-                title: page?.title || meta.title,
-                subcategories: Array.from(cardCatSet),
-                totalCount: pageItemCount,
-            });
+                hubConfigs.push({
+                    id: slug,
+                    title: page.title || meta.title,
+                    subcategories: Array.from(cardCatSet),
+                    totalCount: pageItems.length,
+                });
+            } else {
+                // Legacy unmigrated blob fallback
+                const rawData = parsePageData(page?.pageData);
+                const fallbackCats = LEGACY_HUB_DEFAULT_CATEGORIES[slug] || [];
+                const explicitCats: string[] = (Array.isArray(rawData.categories) && rawData.categories.length > 0)
+                    ? (rawData.categories as string[]).filter(Boolean)
+                    : fallbackCats;
+
+                const pageCards: any[] = Array.isArray(rawData.cards) ? rawData.cards : [];
+                const cardCatSet = new Set<string>(explicitCats);
+
+                let pageItemCount = 0;
+                for (let i = 0; i < pageCards.length; i++) {
+                    const c = pageCards[i];
+                    if (!c || !c.title) continue;
+
+                    const cardCats: string[] = Array.isArray(c.categories)
+                        ? c.categories.filter(Boolean)
+                        : c.category
+                        ? [c.category]
+                        : [];
+
+                    cardCats.forEach(cat => {
+                        if (cat) cardCatSet.add(cat.trim());
+                    });
+
+                    if (needThisHubItems) {
+                        const fallbackSlug = String(c.slug || c.title || `card-${i}`)
+                            .toLowerCase()
+                            .trim()
+                            .replace(/[^a-z0-9]+/g, '-')
+                            .replace(/^-+|-+$/g, '') || `item-${i}`;
+
+                        items.push({
+                            id: `${slug}-${i}`,
+                            title: c.title,
+                            description: c.description || '',
+                            image: c.image || '',
+                            categories: cardCats.length > 0 ? cardCats : (explicitCats[0] ? [explicitCats[0]] : ['General']),
+                            slug: fallbackSlug,
+                            href: c.href || `/${slug}/${fallbackSlug}`,
+                            hubSlug: slug,
+                            hubTitle: page?.title || meta.title,
+                        });
+                    }
+                    pageItemCount++;
+                }
+
+                hubConfigs.push({
+                    id: slug,
+                    title: page?.title || meta.title,
+                    subcategories: Array.from(cardCatSet),
+                    totalCount: pageItemCount,
+                });
+            }
         }
 
         res.setHeader('Cache-Control', 'public, max-age=60, s-maxage=120, stale-while-revalidate=300');

@@ -1,0 +1,1505 @@
+[
+  {
+    "cardSlug": "ai-ml--ai-learning-stations",
+    "targetSlug": "ai-ml/ai-learning-stations",
+    "sectionAnchor": null,
+    "categorySlug": "ai-tech",
+    "subcategorySlug": "AI Learning Stations",
+    "secondaryCategorySlugs": [],
+    "title": "AI Learning Stations",
+    "summary": "Interactive AI-powered learning environments",
+    "inclusions": [
+      "Interactive AI-powered learning environments",
+      "Turnkey Hardware & Computing Cluster Procurement",
+      "Specialized Software & API Pipeline Deployment"
+    ],
+    "badge": "Campus Solution",
+    "imageUrl": "https://images.unsplash.com/photo-1677442136019-21780ecad995?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80",
+    "keywords": [
+      "learning",
+      "stations",
+      "interactive",
+      "powered",
+      "environments",
+      "labs"
+    ],
+    "institutionTypes": [
+      "all"
+    ],
+    "relatedCardSlugs": [],
+    "priority": 50,
+    "active": true
+  },
+  {
+    "cardSlug": "ai-ml--coding-platforms",
+    "targetSlug": "ai-ml/coding-platforms",
+    "sectionAnchor": null,
+    "categorySlug": "ai-tech",
+    "subcategorySlug": "AI & Machine Learning Labs",
+    "secondaryCategorySlugs": [],
+    "title": "Coding Platforms",
+    "summary": "Programming and development environments",
+    "inclusions": [
+      "Programming and development environments",
+      "Turnkey Hardware & Computing Cluster Procurement",
+      "Specialized Software & API Pipeline Deployment"
+    ],
+    "badge": "Campus Solution",
+    "imageUrl": "https://images.unsplash.com/photo-1677442136019-21780ecad995?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80",
+    "keywords": [
+      "coding",
+      "platforms",
+      "programming",
+      "development",
+      "environments",
+      "labs"
+    ],
+    "institutionTypes": [
+      "all"
+    ],
+    "relatedCardSlugs": [],
+    "priority": 50,
+    "active": true
+  },
+  {
+    "cardSlug": "ai-ml--computing-infrastructure",
+    "targetSlug": "ai-ml/computing-infrastructure",
+    "sectionAnchor": null,
+    "categorySlug": "ai-tech",
+    "subcategorySlug": "GPU Servers & Computing Infrastructure",
+    "secondaryCategorySlugs": [],
+    "title": "Computing Infrastructure",
+    "summary": "High-performance computing solutions",
+    "inclusions": [
+      "High-performance computing solutions",
+      "Turnkey Hardware & Computing Cluster Procurement",
+      "Specialized Software & API Pipeline Deployment"
+    ],
+    "badge": "Campus Solution",
+    "imageUrl": "https://images.unsplash.com/photo-1677442136019-21780ecad995?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80",
+    "keywords": [
+      "computing",
+      "infrastructure",
+      "high",
+      "performance",
+      "labs"
+    ],
+    "institutionTypes": [
+      "all"
+    ],
+    "relatedCardSlugs": [],
+    "priority": 50,
+    "active": true
+  },
+  {
+    "cardSlug": "ai-ml--ml-labs",
+    "targetSlug": "ai-ml/ml-labs",
+    "sectionAnchor": null,
+    "categorySlug": "ai-tech",
+    "subcategorySlug": "AI HoloTeacher & Holographic Learning",
+    "secondaryCategorySlugs": [],
+    "title": "ML Labs",
+    "summary": "Machine learning experimentation setups",
+    "inclusions": [
+      "Machine learning experimentation setups",
+      "Turnkey Hardware & Computing Cluster Procurement",
+      "Specialized Software & API Pipeline Deployment"
+    ],
+    "badge": "Campus Solution",
+    "imageUrl": "https://images.unsplash.com/photo-1677442136019-21780ecad995?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80",
+    "keywords": [
+      "labs",
+      "machine",
+      "learning",
+      "experimentation",
+      "setups"
+    ],
+    "institutionTypes": [
+      "all"
+    ],
+    "relatedCardSlugs": [],
+    "priority": 50,
+    "active": true
+  },
+  {
+    "cardSlug": "edge-category-mix--card-multi-category",
+    "targetSlug": "edge-category-mix/card-multi-category",
+    "sectionAnchor": null,
+    "categorySlug": "robotics",
+    "subcategorySlug": "General Campus Solutions",
+    "secondaryCategorySlugs": [],
+    "title": "Card Multi Category",
+    "summary": "Array categories",
+    "inclusions": [
+      "Array categories",
+      "Architectural Planning & Technical Blueprint",
+      "Turnkey Equipment Procurement & Integration"
+    ],
+    "badge": "Campus Solution",
+    "imageUrl": null,
+    "keywords": [
+      "card",
+      "multi",
+      "category",
+      "array",
+      "categories",
+      "edge",
+      "mix"
+    ],
+    "institutionTypes": [
+      "all"
+    ],
+    "relatedCardSlugs": [],
+    "priority": 50,
+    "active": true
+  },
+  {
+    "cardSlug": "edge-category-mix--card-single-category",
+    "targetSlug": "edge-category-mix/card-single-category",
+    "sectionAnchor": null,
+    "categorySlug": "robotics",
+    "subcategorySlug": "General Campus Solutions",
+    "secondaryCategorySlugs": [],
+    "title": "Card Single Category",
+    "summary": "String category",
+    "inclusions": [
+      "String category",
+      "Architectural Planning & Technical Blueprint",
+      "Turnkey Equipment Procurement & Integration"
+    ],
+    "badge": "Campus Solution",
+    "imageUrl": null,
+    "keywords": [
+      "card",
+      "single",
+      "category",
+      "string",
+      "edge",
+      "mix"
+    ],
+    "institutionTypes": [
+      "all"
+    ],
+    "relatedCardSlugs": [],
+    "priority": 50,
+    "active": true
+  },
+  {
+    "cardSlug": "edge-duplicate-titles--robotics-lab",
+    "targetSlug": "edge-duplicate-titles/robotics-lab",
+    "sectionAnchor": null,
+    "categorySlug": "campus-design",
+    "subcategorySlug": "Architectural Design",
+    "secondaryCategorySlugs": [],
+    "title": "Robotics Lab",
+    "summary": "Robotics Lab turnkey solutions, technical design and infrastructure setup for educational institutions.",
+    "inclusions": [
+      "Comprehensive Architectural & Master Planning Blueprint",
+      "Zoning, Circulation & Regulatory Compliance Layout",
+      "Detailed Bill of Quantities (BOQ) & Tender Specifications"
+    ],
+    "badge": "Campus Solution",
+    "imageUrl": null,
+    "keywords": [
+      "robotics",
+      "lab",
+      "turnkey",
+      "technical",
+      "design",
+      "infrastructure",
+      "setup",
+      "educational",
+      "institutions",
+      "edge",
+      "duplicate",
+      "titles"
+    ],
+    "institutionTypes": [
+      "all"
+    ],
+    "relatedCardSlugs": [],
+    "priority": 50,
+    "active": true
+  },
+  {
+    "cardSlug": "edge-duplicate-titles--robotics-lab--2",
+    "targetSlug": "edge-duplicate-titles/robotics-lab-2",
+    "sectionAnchor": null,
+    "categorySlug": "campus-design",
+    "subcategorySlug": "Architectural Design",
+    "secondaryCategorySlugs": [],
+    "title": "Robotics Lab",
+    "summary": "Second lab with same title",
+    "inclusions": [
+      "Second lab with same title",
+      "Comprehensive Architectural & Master Planning Blueprint",
+      "Zoning, Circulation & Regulatory Compliance Layout"
+    ],
+    "badge": "Campus Solution",
+    "imageUrl": null,
+    "keywords": [
+      "robotics",
+      "lab",
+      "second",
+      "same",
+      "title",
+      "edge",
+      "duplicate",
+      "titles"
+    ],
+    "institutionTypes": [
+      "all"
+    ],
+    "relatedCardSlugs": [],
+    "priority": 50,
+    "active": true
+  },
+  {
+    "cardSlug": "edge-featured-duplicate--flagship-stem-center",
+    "targetSlug": "edge-featured-duplicate/flagship-stem",
+    "sectionAnchor": null,
+    "categorySlug": "campus-design",
+    "subcategorySlug": "Architectural Design",
+    "secondaryCategorySlugs": [],
+    "title": "Flagship STEM Center",
+    "summary": "Flagship card description",
+    "inclusions": [
+      "Flagship card description",
+      "Comprehensive Architectural & Master Planning Blueprint",
+      "Zoning, Circulation & Regulatory Compliance Layout"
+    ],
+    "badge": "Campus Solution",
+    "imageUrl": null,
+    "keywords": [
+      "flagship",
+      "stem",
+      "center",
+      "card",
+      "description",
+      "edge",
+      "featured",
+      "duplicate"
+    ],
+    "institutionTypes": [
+      "all"
+    ],
+    "relatedCardSlugs": [],
+    "priority": 50,
+    "active": true
+  },
+  {
+    "cardSlug": "edge-featured-duplicate--secondary-lab",
+    "targetSlug": "edge-featured-duplicate/secondary-lab",
+    "sectionAnchor": null,
+    "categorySlug": "campus-design",
+    "subcategorySlug": "Architectural Design",
+    "secondaryCategorySlugs": [],
+    "title": "Secondary Lab",
+    "summary": "Other card",
+    "inclusions": [
+      "Other card",
+      "Comprehensive Architectural & Master Planning Blueprint",
+      "Zoning, Circulation & Regulatory Compliance Layout"
+    ],
+    "badge": "Campus Solution",
+    "imageUrl": null,
+    "keywords": [
+      "secondary",
+      "lab",
+      "other",
+      "card",
+      "edge",
+      "featured",
+      "duplicate"
+    ],
+    "institutionTypes": [
+      "all"
+    ],
+    "relatedCardSlugs": [],
+    "priority": 50,
+    "active": true
+  },
+  {
+    "cardSlug": "edge-featured-empty--standard-lab",
+    "targetSlug": "edge-featured-empty/standard-lab",
+    "sectionAnchor": null,
+    "categorySlug": "campus-design",
+    "subcategorySlug": "Architectural Design",
+    "secondaryCategorySlugs": [],
+    "title": "Standard Lab",
+    "summary": "Standard card",
+    "inclusions": [
+      "Standard card",
+      "Comprehensive Architectural & Master Planning Blueprint",
+      "Zoning, Circulation & Regulatory Compliance Layout"
+    ],
+    "badge": "Campus Solution",
+    "imageUrl": null,
+    "keywords": [
+      "standard",
+      "lab",
+      "card",
+      "edge",
+      "featured",
+      "empty"
+    ],
+    "institutionTypes": [
+      "all"
+    ],
+    "relatedCardSlugs": [],
+    "priority": 50,
+    "active": true
+  },
+  {
+    "cardSlug": "edge-no-card-slugs--advanced-physics-studio",
+    "targetSlug": "edge-no-card-slugs/advanced-physics-studio",
+    "sectionAnchor": null,
+    "categorySlug": "campus-design",
+    "subcategorySlug": "Architectural Design",
+    "secondaryCategorySlugs": [],
+    "title": "Advanced Physics Studio",
+    "summary": "No slug property here",
+    "inclusions": [
+      "No slug property here",
+      "Comprehensive Architectural & Master Planning Blueprint",
+      "Zoning, Circulation & Regulatory Compliance Layout"
+    ],
+    "badge": "Campus Solution",
+    "imageUrl": null,
+    "keywords": [
+      "advanced",
+      "physics",
+      "studio",
+      "slug",
+      "property",
+      "here",
+      "edge",
+      "card",
+      "slugs"
+    ],
+    "institutionTypes": [
+      "all"
+    ],
+    "relatedCardSlugs": [],
+    "priority": 50,
+    "active": true
+  },
+  {
+    "cardSlug": "edge-no-card-slugs--bio-research-facility",
+    "targetSlug": "edge-no-card-slugs/bio-research-facility",
+    "sectionAnchor": null,
+    "categorySlug": "campus-design",
+    "subcategorySlug": "Architectural Design",
+    "secondaryCategorySlugs": [],
+    "title": "Bio Research Facility",
+    "summary": "Also missing slug",
+    "inclusions": [
+      "Also missing slug",
+      "Comprehensive Architectural & Master Planning Blueprint",
+      "Zoning, Circulation & Regulatory Compliance Layout"
+    ],
+    "badge": "Campus Solution",
+    "imageUrl": null,
+    "keywords": [
+      "bio",
+      "research",
+      "facility",
+      "also",
+      "missing",
+      "slug",
+      "edge",
+      "card",
+      "slugs"
+    ],
+    "institutionTypes": [
+      "all"
+    ],
+    "relatedCardSlugs": [],
+    "priority": 50,
+    "active": true
+  },
+  {
+    "cardSlug": "edge-null-entries--valid-first-card",
+    "targetSlug": "edge-null-entries/valid-first-card",
+    "sectionAnchor": null,
+    "categorySlug": "campus-design",
+    "subcategorySlug": "Architectural Design",
+    "secondaryCategorySlugs": [],
+    "title": "Valid First Card",
+    "summary": "After null entry",
+    "inclusions": [
+      "After null entry",
+      "Comprehensive Architectural & Master Planning Blueprint",
+      "Zoning, Circulation & Regulatory Compliance Layout"
+    ],
+    "badge": "Campus Solution",
+    "imageUrl": null,
+    "keywords": [
+      "valid",
+      "first",
+      "card",
+      "after",
+      "null",
+      "entry",
+      "edge",
+      "entries"
+    ],
+    "institutionTypes": [
+      "all"
+    ],
+    "relatedCardSlugs": [],
+    "priority": 50,
+    "active": true
+  },
+  {
+    "cardSlug": "edge-null-entries--valid-second-card",
+    "targetSlug": "edge-null-entries/valid-second-card",
+    "sectionAnchor": null,
+    "categorySlug": "campus-design",
+    "subcategorySlug": "Architectural Design",
+    "secondaryCategorySlugs": [],
+    "title": "Valid Second Card",
+    "summary": "After another null",
+    "inclusions": [
+      "After another null",
+      "Comprehensive Architectural & Master Planning Blueprint",
+      "Zoning, Circulation & Regulatory Compliance Layout"
+    ],
+    "badge": "Campus Solution",
+    "imageUrl": null,
+    "keywords": [
+      "valid",
+      "second",
+      "card",
+      "after",
+      "another",
+      "null",
+      "edge",
+      "entries"
+    ],
+    "institutionTypes": [
+      "all"
+    ],
+    "relatedCardSlugs": [],
+    "priority": 50,
+    "active": true
+  },
+  {
+    "cardSlug": "edge-script-injection--vulnerable-html-card",
+    "targetSlug": "edge-script-injection/vulnerable-card",
+    "sectionAnchor": null,
+    "categorySlug": "campus-design",
+    "subcategorySlug": "Architectural Design",
+    "secondaryCategorySlugs": [],
+    "title": "Vulnerable HTML Card",
+    "summary": "Contains script tags alert(1)",
+    "inclusions": [
+      "Contains script tags alert(1)",
+      "Comprehensive Architectural & Master Planning Blueprint",
+      "Zoning, Circulation & Regulatory Compliance Layout"
+    ],
+    "badge": "Campus Solution",
+    "imageUrl": null,
+    "keywords": [
+      "vulnerable",
+      "html",
+      "card",
+      "contains",
+      "script",
+      "tags",
+      "alert",
+      "edge",
+      "injection"
+    ],
+    "institutionTypes": [
+      "all"
+    ],
+    "relatedCardSlugs": [],
+    "priority": 50,
+    "active": true
+  },
+  {
+    "cardSlug": "edge-section2-only--sensor-calibration-station",
+    "targetSlug": "edge-section2-only/sensor-station",
+    "sectionAnchor": null,
+    "categorySlug": "campus-design",
+    "subcategorySlug": "Architectural Design",
+    "secondaryCategorySlugs": [],
+    "title": "Sensor Calibration Station",
+    "summary": "Secondary section card",
+    "inclusions": [
+      "Secondary section card",
+      "Comprehensive Architectural & Master Planning Blueprint",
+      "Zoning, Circulation & Regulatory Compliance Layout"
+    ],
+    "badge": "Strategic Focus",
+    "imageUrl": null,
+    "keywords": [
+      "sensor",
+      "calibration",
+      "station",
+      "secondary",
+      "section",
+      "card",
+      "edge",
+      "only"
+    ],
+    "institutionTypes": [
+      "all"
+    ],
+    "relatedCardSlugs": [],
+    "priority": 50,
+    "active": true
+  },
+  {
+    "cardSlug": "edge-section2-only--specialized-testing-unit",
+    "targetSlug": "edge-section2-only/testing-unit",
+    "sectionAnchor": null,
+    "categorySlug": "campus-design",
+    "subcategorySlug": "Architectural Design",
+    "secondaryCategorySlugs": [],
+    "title": "Specialized Testing Unit",
+    "summary": "Only in section2",
+    "inclusions": [
+      "Only in section2",
+      "Comprehensive Architectural & Master Planning Blueprint",
+      "Zoning, Circulation & Regulatory Compliance Layout"
+    ],
+    "badge": "Strategic Focus",
+    "imageUrl": null,
+    "keywords": [
+      "specialized",
+      "testing",
+      "unit",
+      "only",
+      "section2",
+      "edge",
+      "section"
+    ],
+    "institutionTypes": [
+      "all"
+    ],
+    "relatedCardSlugs": [],
+    "priority": 50,
+    "active": true
+  },
+  {
+    "cardSlug": "edge-unicode-titles--",
+    "targetSlug": "edge-unicode-titles/vidyalaya-lab",
+    "sectionAnchor": null,
+    "categorySlug": "campus-design",
+    "subcategorySlug": "Architectural Design",
+    "secondaryCategorySlugs": [],
+    "title": "विद्यालय प्रयोगशाला 🇮🇳",
+    "summary": "Hindi script and flag emoji",
+    "inclusions": [
+      "Hindi script and flag emoji",
+      "Comprehensive Architectural & Master Planning Blueprint",
+      "Zoning, Circulation & Regulatory Compliance Layout"
+    ],
+    "badge": "Campus Solution",
+    "imageUrl": null,
+    "keywords": [
+      "hindi",
+      "script",
+      "flag",
+      "emoji",
+      "edge",
+      "unicode",
+      "titles",
+      "dition",
+      "fran",
+      "aise"
+    ],
+    "institutionTypes": [
+      "all"
+    ],
+    "relatedCardSlugs": [],
+    "priority": 50,
+    "active": true
+  },
+  {
+    "cardSlug": "edge-unicode-titles--ai-lab",
+    "targetSlug": "edge-unicode-titles/ai-lab-chinese",
+    "sectionAnchor": null,
+    "categorySlug": "campus-design",
+    "subcategorySlug": "Architectural Design",
+    "secondaryCategorySlugs": [],
+    "title": "人工智能实验室 (AI Lab) 🤖",
+    "summary": "Chinese and emoji characters in title",
+    "inclusions": [
+      "Chinese and emoji characters in title",
+      "Comprehensive Architectural & Master Planning Blueprint",
+      "Zoning, Circulation & Regulatory Compliance Layout"
+    ],
+    "badge": "Campus Solution",
+    "imageUrl": null,
+    "keywords": [
+      "lab",
+      "chinese",
+      "emoji",
+      "characters",
+      "title",
+      "edge",
+      "unicode",
+      "titles",
+      "dition",
+      "fran",
+      "aise"
+    ],
+    "institutionTypes": [
+      "all"
+    ],
+    "relatedCardSlugs": [],
+    "priority": 50,
+    "active": true
+  },
+  {
+    "cardSlug": "edge-unicode-titles--laboratoire-d-innovation",
+    "targetSlug": "edge-unicode-titles/laboratoire-innovation",
+    "sectionAnchor": null,
+    "categorySlug": "campus-design",
+    "subcategorySlug": "Architectural Design",
+    "secondaryCategorySlugs": [],
+    "title": "Laboratoire d'Innovation 🧪",
+    "summary": "Laboratoire avec caractères accentués",
+    "inclusions": [
+      "Laboratoire avec caractères accentués",
+      "Comprehensive Architectural & Master Planning Blueprint",
+      "Zoning, Circulation & Regulatory Compliance Layout"
+    ],
+    "badge": "Campus Solution",
+    "imageUrl": null,
+    "keywords": [
+      "laboratoire",
+      "innovation",
+      "avec",
+      "caract",
+      "res",
+      "accentu",
+      "edge",
+      "unicode",
+      "titles",
+      "dition",
+      "fran",
+      "aise"
+    ],
+    "institutionTypes": [
+      "all"
+    ],
+    "relatedCardSlugs": [],
+    "priority": 50,
+    "active": true
+  },
+  {
+    "cardSlug": "labs--composite-skill-lab-technical-workshop",
+    "targetSlug": "p/composite-skill-lab",
+    "sectionAnchor": null,
+    "categorySlug": "composite-skills-lab",
+    "subcategorySlug": "General Campus Solutions",
+    "secondaryCategorySlugs": [],
+    "title": "Composite Skill Lab & Technical Workshop",
+    "summary": "Multidisciplinary vocational learning spaces with carpentry, electronics workbench, IoT prototyping stations, and 3D printing.",
+    "inclusions": [
+      "Multidisciplinary vocational learning spaces with carpentry, electronics workbench, IoT prototyping stations, and 3D printing.",
+      "Architectural Planning & Technical Blueprint",
+      "Turnkey Equipment Procurement & Integration"
+    ],
+    "badge": "Campus Solution",
+    "imageUrl": "/uploads/1777103755353-COMPOSITE SKILL LAB.PNG",
+    "keywords": [
+      "composite",
+      "skill",
+      "lab",
+      "technical",
+      "workshop",
+      "multidisciplinary",
+      "vocational",
+      "learning",
+      "spaces",
+      "carpentry",
+      "electronics",
+      "workbench",
+      "iot",
+      "prototyping",
+      "stations",
+      "printing",
+      "labs"
+    ],
+    "institutionTypes": [
+      "all"
+    ],
+    "relatedCardSlugs": [],
+    "priority": 50,
+    "active": true
+  },
+  {
+    "cardSlug": "labs--integrated-stem-discovery-robotics-studio",
+    "targetSlug": "labs/stem-discovery-studio",
+    "sectionAnchor": null,
+    "categorySlug": "stem-lab",
+    "subcategorySlug": "General Campus Solutions",
+    "secondaryCategorySlugs": [],
+    "title": "Integrated STEM Discovery & Robotics Studio",
+    "summary": "Hands-on maker station equipped with modular robotics test tracks, microcontroller kits, sensor matrices, and rapid prototyping tools.",
+    "inclusions": [
+      "Hands-on maker station equipped with modular robotics test tracks, microcontroller kits, sensor matrices, and rapid prototyping tools.",
+      "Architectural Planning & Technical Blueprint",
+      "Turnkey Equipment Procurement & Integration"
+    ],
+    "badge": "Campus Solution",
+    "imageUrl": "/uploads/1777104618774-GAMIFIED SCIENCE LAB.PNG",
+    "keywords": [
+      "integrated",
+      "stem",
+      "discovery",
+      "robotics",
+      "studio",
+      "hands",
+      "maker",
+      "station",
+      "equipped",
+      "modular",
+      "test",
+      "tracks",
+      "microcontroller",
+      "kits",
+      "sensor",
+      "matrices",
+      "rapid",
+      "prototyping",
+      "tools",
+      "composite",
+      "skill",
+      "labs"
+    ],
+    "institutionTypes": [
+      "all"
+    ],
+    "relatedCardSlugs": [],
+    "priority": 50,
+    "active": true
+  },
+  {
+    "cardSlug": "labs--next-gen-ai-high-performance-computer-lab",
+    "targetSlug": "labs/ai-computer-lab",
+    "sectionAnchor": null,
+    "categorySlug": "computer-lab",
+    "subcategorySlug": "General Campus Solutions",
+    "secondaryCategorySlugs": [],
+    "title": "Next-Gen AI & High-Performance Computer Lab",
+    "summary": "Ergonomic networked computing workstations configured for computational thinking, graphic coding, and CBSE cyber security curriculums.",
+    "inclusions": [
+      "Ergonomic networked computing workstations configured for computational thinking, graphic coding, and CBSE cyber security curriculums.",
+      "Architectural Planning & Technical Blueprint",
+      "Turnkey Equipment Procurement & Integration"
+    ],
+    "badge": "Campus Solution",
+    "imageUrl": "/uploads/1776969406388-Gemini_Generated_Image_nathq4nathq4nath.png",
+    "keywords": [
+      "next",
+      "gen",
+      "high",
+      "performance",
+      "computer",
+      "lab",
+      "ergonomic",
+      "networked",
+      "computing",
+      "workstations",
+      "configured",
+      "computational",
+      "thinking",
+      "graphic",
+      "coding",
+      "cbse",
+      "cyber",
+      "security",
+      "curriculums",
+      "composite",
+      "skill",
+      "labs"
+    ],
+    "institutionTypes": [
+      "all"
+    ],
+    "relatedCardSlugs": [],
+    "priority": 50,
+    "active": true
+  },
+  {
+    "cardSlug": "libraries--acoustic-focus-individual-study-pods",
+    "targetSlug": "libraries/acoustic-study-pods",
+    "sectionAnchor": null,
+    "categorySlug": "study-pods",
+    "subcategorySlug": "General Campus Solutions",
+    "secondaryCategorySlugs": [],
+    "title": "Acoustic Focus & Individual Study Pods",
+    "summary": "Sound-dampening single and dual study pods equipped with task lighting, universal power sockets, and ergonomic seating.",
+    "inclusions": [
+      "Sound-dampening single and dual study pods equipped with task lighting, universal power sockets, and ergonomic seating.",
+      "Architectural Planning & Technical Blueprint",
+      "Turnkey Equipment Procurement & Integration"
+    ],
+    "badge": "Campus Solution",
+    "imageUrl": "/uploads/1777012622668-Gemini_Generated_Image_ngcuvengcuvengcu.png",
+    "keywords": [
+      "acoustic",
+      "focus",
+      "individual",
+      "study",
+      "pods",
+      "sound",
+      "dampening",
+      "single",
+      "dual",
+      "equipped",
+      "task",
+      "lighting",
+      "universal",
+      "power",
+      "sockets",
+      "ergonomic",
+      "seating",
+      "libraries"
+    ],
+    "institutionTypes": [
+      "all"
+    ],
+    "relatedCardSlugs": [],
+    "priority": 50,
+    "active": true
+  },
+  {
+    "cardSlug": "libraries--audio-recording-audiobook-studio-rooms",
+    "targetSlug": "libraries/audio-listening-rooms",
+    "sectionAnchor": null,
+    "categorySlug": "audio-rooms",
+    "subcategorySlug": "General Campus Solutions",
+    "secondaryCategorySlugs": [],
+    "title": "Audio Recording & Audiobook Studio Rooms",
+    "summary": "Soundproofed media listening booths and podcast recording stations designed for student storytelling and language acquisition.",
+    "inclusions": [
+      "Soundproofed media listening booths and podcast recording stations designed for student storytelling and language acquisition.",
+      "Architectural Planning & Technical Blueprint",
+      "Turnkey Equipment Procurement & Integration"
+    ],
+    "badge": "Campus Solution",
+    "imageUrl": "/uploads/1777272882057-SMART MUSIC ROOMS [ PROFESSIONAL ].PNG",
+    "keywords": [
+      "audio",
+      "recording",
+      "audiobook",
+      "studio",
+      "rooms",
+      "soundproofed",
+      "media",
+      "listening",
+      "booths",
+      "podcast",
+      "stations",
+      "designed",
+      "student",
+      "storytelling",
+      "language",
+      "acquisition",
+      "libraries"
+    ],
+    "institutionTypes": [
+      "all"
+    ],
+    "relatedCardSlugs": [],
+    "priority": 50,
+    "active": true
+  },
+  {
+    "cardSlug": "libraries--augmented-reality-immersive-book-stations",
+    "targetSlug": "libraries/ar-libraries-experience",
+    "sectionAnchor": null,
+    "categorySlug": "ar-libraries",
+    "subcategorySlug": "General Campus Solutions",
+    "secondaryCategorySlugs": [],
+    "title": "Augmented Reality Immersive Book Stations",
+    "summary": "Interactive 3D visual projection desks where physical picture books trigger immersive animated educational models.",
+    "inclusions": [
+      "Interactive 3D visual projection desks where physical picture books trigger immersive animated educational models.",
+      "Architectural Planning & Technical Blueprint",
+      "Turnkey Equipment Procurement & Integration"
+    ],
+    "badge": "Campus Solution",
+    "imageUrl": "/uploads/1777104808239-IMMERSIVE LEARNING.PNG",
+    "keywords": [
+      "augmented",
+      "reality",
+      "immersive",
+      "book",
+      "stations",
+      "interactive",
+      "visual",
+      "projection",
+      "desks",
+      "where",
+      "physical",
+      "picture",
+      "books",
+      "trigger",
+      "animated",
+      "educational",
+      "models",
+      "libraries"
+    ],
+    "institutionTypes": [
+      "all"
+    ],
+    "relatedCardSlugs": [],
+    "priority": 50,
+    "active": true
+  },
+  {
+    "cardSlug": "libraries--cloud-digital-catalogs-touch-terminals",
+    "targetSlug": "libraries/digital-catalogs-terminals",
+    "sectionAnchor": null,
+    "categorySlug": "digital-catalogs",
+    "subcategorySlug": "General Campus Solutions",
+    "secondaryCategorySlugs": [],
+    "title": "Cloud Digital Catalogs & Touch Terminals",
+    "summary": "OPAC touch consoles enabling instant book lookup, cross-campus inter-library reservations, and digital eBook previews.",
+    "inclusions": [
+      "OPAC touch consoles enabling instant book lookup, cross-campus inter-library reservations, and digital eBook previews.",
+      "Architectural Planning & Technical Blueprint",
+      "Turnkey Equipment Procurement & Integration"
+    ],
+    "badge": "Campus Solution",
+    "imageUrl": "/uploads/1777012622668-Gemini_Generated_Image_ngcuvengcuvengcu.png",
+    "keywords": [
+      "cloud",
+      "digital",
+      "catalogs",
+      "touch",
+      "terminals",
+      "opac",
+      "consoles",
+      "enabling",
+      "instant",
+      "book",
+      "lookup",
+      "cross",
+      "inter",
+      "library",
+      "reservations",
+      "ebook",
+      "previews",
+      "libraries"
+    ],
+    "institutionTypes": [
+      "all"
+    ],
+    "relatedCardSlugs": [],
+    "priority": 50,
+    "active": true
+  },
+  {
+    "cardSlug": "libraries--collaborative-reading-amphitheatres",
+    "targetSlug": "libraries/collaborative-reading-zones",
+    "sectionAnchor": null,
+    "categorySlug": "reading-zones",
+    "subcategorySlug": "General Campus Solutions",
+    "secondaryCategorySlugs": [],
+    "title": "Collaborative Reading Amphitheatres",
+    "summary": "Tiered upholstered amphitheater seating and ergonomic reading nooks designed to foster quiet immersion and group discussions.",
+    "inclusions": [
+      "Tiered upholstered amphitheater seating and ergonomic reading nooks designed to foster quiet immersion and group discussions.",
+      "Architectural Planning & Technical Blueprint",
+      "Turnkey Equipment Procurement & Integration"
+    ],
+    "badge": "Campus Solution",
+    "imageUrl": "/uploads/1777012622668-Gemini_Generated_Image_ngcuvengcuvengcu.png",
+    "keywords": [
+      "collaborative",
+      "reading",
+      "amphitheatres",
+      "tiered",
+      "upholstered",
+      "amphitheater",
+      "seating",
+      "ergonomic",
+      "nooks",
+      "designed",
+      "foster",
+      "quiet",
+      "immersion",
+      "group",
+      "discussions",
+      "libraries"
+    ],
+    "institutionTypes": [
+      "all"
+    ],
+    "relatedCardSlugs": [],
+    "priority": 50,
+    "active": true
+  },
+  {
+    "cardSlug": "libraries--curved-modular-open-shelving-displays",
+    "targetSlug": "libraries/curved-open-shelving",
+    "sectionAnchor": null,
+    "categorySlug": "open-shelving",
+    "subcategorySlug": "General Campus Solutions",
+    "secondaryCategorySlugs": [],
+    "title": "Curved Modular Open Shelving Displays",
+    "summary": "Double-sided powder-coated metal book stacks with beechwood end panels and child-height accessible curved perimeter display runs.",
+    "inclusions": [
+      "Double-sided powder-coated metal book stacks with beechwood end panels and child-height accessible curved perimeter display runs.",
+      "Architectural Planning & Technical Blueprint",
+      "Turnkey Equipment Procurement & Integration"
+    ],
+    "badge": "Campus Solution",
+    "imageUrl": "/uploads/1777012622668-Gemini_Generated_Image_ngcuvengcuvengcu.png",
+    "keywords": [
+      "curved",
+      "modular",
+      "open",
+      "shelving",
+      "displays",
+      "double",
+      "sided",
+      "powder",
+      "coated",
+      "metal",
+      "book",
+      "stacks",
+      "beechwood",
+      "end",
+      "panels",
+      "child",
+      "height",
+      "accessible",
+      "perimeter",
+      "display",
+      "runs",
+      "libraries"
+    ],
+    "institutionTypes": [
+      "all"
+    ],
+    "relatedCardSlugs": [],
+    "priority": 50,
+    "active": true
+  },
+  {
+    "cardSlug": "libraries--phygital-smart-library-rfid-automation",
+    "targetSlug": "p/library-innovations",
+    "sectionAnchor": null,
+    "categorySlug": "phygital-libraries",
+    "subcategorySlug": "General Campus Solutions",
+    "secondaryCategorySlugs": [],
+    "title": "Phygital Smart Library & RFID Automation",
+    "summary": "Automated RFID check-in/check-out kiosks, anti-theft security gates, and digital catalog kiosks connected to school LMS.",
+    "inclusions": [
+      "Automated RFID check-in/check-out kiosks, anti-theft security gates, and digital catalog kiosks connected to school LMS.",
+      "Architectural Planning & Technical Blueprint",
+      "Turnkey Equipment Procurement & Integration"
+    ],
+    "badge": "Campus Solution",
+    "imageUrl": "/uploads/1777103789495-LIBRARY INNOVATIONS.PNG",
+    "keywords": [
+      "phygital",
+      "smart",
+      "library",
+      "rfid",
+      "automation",
+      "automated",
+      "check",
+      "out",
+      "kiosks",
+      "anti",
+      "theft",
+      "security",
+      "gates",
+      "digital",
+      "catalog",
+      "connected",
+      "school",
+      "lms",
+      "libraries"
+    ],
+    "institutionTypes": [
+      "all"
+    ],
+    "relatedCardSlugs": [],
+    "priority": 50,
+    "active": true
+  },
+  {
+    "cardSlug": "sports-infra--competition-grade-sports-equipment-gear",
+    "targetSlug": "sports/sports-equipment-gear",
+    "sectionAnchor": null,
+    "categorySlug": "equipment",
+    "subcategorySlug": "General Campus Solutions",
+    "secondaryCategorySlugs": [],
+    "title": "Competition Grade Sports Equipment & Gear",
+    "summary": "Heavy-duty soccer goals, adjustable basketball posts, tournament volleyball poles, and institutional ball storage carts.",
+    "inclusions": [
+      "Heavy-duty soccer goals, adjustable basketball posts, tournament volleyball poles, and institutional ball storage carts.",
+      "Architectural Planning & Technical Blueprint",
+      "Turnkey Equipment Procurement & Integration"
+    ],
+    "badge": "Campus Solution",
+    "imageUrl": "/uploads/1777104652290-SMART SPORTS FOR SCHOOLS.PNG",
+    "keywords": [
+      "competition",
+      "grade",
+      "sports",
+      "equipment",
+      "gear",
+      "heavy",
+      "duty",
+      "soccer",
+      "goals",
+      "adjustable",
+      "basketball",
+      "court",
+      "hoop",
+      "fiba",
+      "indoor",
+      "posts",
+      "tournament",
+      "volleyball",
+      "net",
+      "poles",
+      "institutional",
+      "ball",
+      "storage",
+      "carts",
+      "infrastructure"
+    ],
+    "institutionTypes": [
+      "all"
+    ],
+    "relatedCardSlugs": [],
+    "priority": 50,
+    "active": true
+  },
+  {
+    "cardSlug": "sports-infra--dynamic-junior-school-playgrounds-multipurpose-courts",
+    "targetSlug": "p/smart-sports",
+    "sectionAnchor": null,
+    "categorySlug": "playground",
+    "subcategorySlug": "General Campus Solutions",
+    "secondaryCategorySlugs": [],
+    "title": "Dynamic Junior School Playgrounds & Multipurpose Courts",
+    "summary": "EPDM rubber safety surfacing, climbing towers, and multi-game markings designed for injury-free recess play.",
+    "inclusions": [
+      "EPDM rubber safety surfacing, climbing towers, and multi-game markings designed for injury-free recess play.",
+      "Architectural Planning & Technical Blueprint",
+      "Turnkey Equipment Procurement & Integration"
+    ],
+    "badge": "Campus Solution",
+    "imageUrl": "/uploads/1777104652290-SMART SPORTS FOR SCHOOLS.PNG",
+    "keywords": [
+      "dynamic",
+      "junior",
+      "school",
+      "playgrounds",
+      "multipurpose",
+      "courts",
+      "epdm",
+      "rubber",
+      "safety",
+      "surfacing",
+      "climbing",
+      "towers",
+      "multi",
+      "game",
+      "markings",
+      "designed",
+      "injury",
+      "free",
+      "recess",
+      "play",
+      "sports",
+      "infrastructure"
+    ],
+    "institutionTypes": [
+      "all"
+    ],
+    "relatedCardSlugs": [],
+    "priority": 50,
+    "active": true
+  },
+  {
+    "cardSlug": "sports-infra--fiba-certified-maple-wood-pu-indoor-sports-courts",
+    "targetSlug": "sports/indoor-sports-courts",
+    "sectionAnchor": null,
+    "categorySlug": "indoor-courts",
+    "subcategorySlug": "General Campus Solutions",
+    "secondaryCategorySlugs": [],
+    "title": "FIBA Certified Maple Wood & PU Indoor Sports Courts",
+    "summary": "Cushioned springing system wood courts for basketball, badminton, squash, and volleyball with anti-slip polyurethane coating.",
+    "inclusions": [
+      "Cushioned springing system wood courts for basketball, badminton, squash, and volleyball with anti-slip polyurethane coating.",
+      "Architectural Planning & Technical Blueprint",
+      "Turnkey Equipment Procurement & Integration"
+    ],
+    "badge": "Campus Solution",
+    "imageUrl": "/uploads/1776958500100-Gemini_Generated_Image_czxn03czxn03czxn.png",
+    "keywords": [
+      "fiba",
+      "certified",
+      "maple",
+      "wood",
+      "indoor",
+      "sports",
+      "courts",
+      "cushioned",
+      "springing",
+      "system",
+      "basketball",
+      "court",
+      "hoop",
+      "badminton",
+      "arena",
+      "racket",
+      "bwf",
+      "squash",
+      "volleyball",
+      "net",
+      "anti",
+      "slip",
+      "polyurethane",
+      "coating",
+      "infrastructure"
+    ],
+    "institutionTypes": [
+      "all"
+    ],
+    "relatedCardSlugs": [],
+    "priority": 50,
+    "active": true
+  },
+  {
+    "cardSlug": "sports-infra--iaaf-certified-synthetic-athletic-tracks-turf",
+    "targetSlug": "sports/track-and-field-turf",
+    "sectionAnchor": null,
+    "categorySlug": "track-field",
+    "subcategorySlug": "General Campus Solutions",
+    "secondaryCategorySlugs": [],
+    "title": "IAAF Certified Synthetic Athletic Tracks & Turf",
+    "summary": "All-weather polyurethane running tracks and FIFA-standard shock-pad artificial turf engineered for high durability.",
+    "inclusions": [
+      "All-weather polyurethane running tracks and FIFA-standard shock-pad artificial turf engineered for high durability.",
+      "Architectural Planning & Technical Blueprint",
+      "Turnkey Equipment Procurement & Integration"
+    ],
+    "badge": "Campus Solution",
+    "imageUrl": "/uploads/1776958500100-Gemini_Generated_Image_czxn03czxn03czxn.png",
+    "keywords": [
+      "iaaf",
+      "certified",
+      "synthetic",
+      "athletic",
+      "tracks",
+      "turf",
+      "all",
+      "weather",
+      "polyurethane",
+      "running",
+      "fifa",
+      "standard",
+      "shock",
+      "pad",
+      "artificial",
+      "engineered",
+      "high",
+      "durability",
+      "sports",
+      "infrastructure"
+    ],
+    "institutionTypes": [
+      "all"
+    ],
+    "relatedCardSlugs": [],
+    "priority": 50,
+    "active": true
+  },
+  {
+    "cardSlug": "sports-infra--smart-athlete-performance-gym-tech-systems",
+    "targetSlug": "sports/gym-tech-systems",
+    "sectionAnchor": null,
+    "categorySlug": "gym-tech",
+    "subcategorySlug": "General Campus Solutions",
+    "secondaryCategorySlugs": [],
+    "title": "Smart Athlete Performance & Gym Tech Systems",
+    "summary": "Biometric fitness testing consoles, automated timing gates, and resistance training machines configured for adolescent physical education.",
+    "inclusions": [
+      "Biometric fitness testing consoles, automated timing gates, and resistance training machines configured for adolescent physical education.",
+      "Architectural Planning & Technical Blueprint",
+      "Turnkey Equipment Procurement & Integration"
+    ],
+    "badge": "Campus Solution",
+    "imageUrl": "/uploads/1776958500100-Gemini_Generated_Image_czxn03czxn03czxn.png",
+    "keywords": [
+      "smart",
+      "athlete",
+      "performance",
+      "gym",
+      "tech",
+      "systems",
+      "biometric",
+      "fitness",
+      "testing",
+      "consoles",
+      "automated",
+      "timing",
+      "gates",
+      "resistance",
+      "training",
+      "machines",
+      "configured",
+      "adolescent",
+      "physical",
+      "education",
+      "sports",
+      "infrastructure"
+    ],
+    "institutionTypes": [
+      "all"
+    ],
+    "relatedCardSlugs": [],
+    "priority": 50,
+    "active": true
+  },
+  {
+    "cardSlug": "tech-infra--data-centers",
+    "targetSlug": "tech-infra/data-centers",
+    "sectionAnchor": null,
+    "categorySlug": "ai-tech",
+    "subcategorySlug": "GPU Servers & Computing Infrastructure",
+    "secondaryCategorySlugs": [],
+    "title": "Data Centers",
+    "summary": "Campus servers, cloud integration and data management",
+    "inclusions": [
+      "Campus servers, cloud integration and data management",
+      "Turnkey Hardware & Computing Cluster Procurement",
+      "Specialized Software & API Pipeline Deployment"
+    ],
+    "badge": "Campus Solution",
+    "imageUrl": "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80",
+    "keywords": [
+      "data",
+      "centers",
+      "servers",
+      "cloud",
+      "integration",
+      "management",
+      "tech",
+      "infrastructure"
+    ],
+    "institutionTypes": [
+      "all"
+    ],
+    "relatedCardSlugs": [],
+    "priority": 50,
+    "active": true
+  },
+  {
+    "cardSlug": "tech-infra--network-infrastructure",
+    "targetSlug": "tech-infra/network-infrastructure",
+    "sectionAnchor": null,
+    "categorySlug": "ai-tech",
+    "subcategorySlug": "AI & Machine Learning Labs",
+    "secondaryCategorySlugs": [],
+    "title": "Network Infrastructure",
+    "summary": "High-speed campus-wide Wi-Fi and LAN systems",
+    "inclusions": [
+      "High-speed campus-wide Wi-Fi and LAN systems",
+      "Turnkey Hardware & Computing Cluster Procurement",
+      "Specialized Software & API Pipeline Deployment"
+    ],
+    "badge": "Campus Solution",
+    "imageUrl": "https://images.unsplash.com/photo-1544197150-b99a580bb7a8?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80",
+    "keywords": [
+      "network",
+      "infrastructure",
+      "high",
+      "speed",
+      "wide",
+      "lan",
+      "systems",
+      "tech"
+    ],
+    "institutionTypes": [
+      "all"
+    ],
+    "relatedCardSlugs": [],
+    "priority": 50,
+    "active": true
+  },
+  {
+    "cardSlug": "tech-infra--security-systems",
+    "targetSlug": "tech-infra/security-systems",
+    "sectionAnchor": null,
+    "categorySlug": "ai-tech",
+    "subcategorySlug": "AI & Machine Learning Labs",
+    "secondaryCategorySlugs": [],
+    "title": "Security Systems",
+    "summary": "CCTV surveillance, access control and safety systems",
+    "inclusions": [
+      "CCTV surveillance, access control and safety systems",
+      "Turnkey Hardware & Computing Cluster Procurement",
+      "Specialized Software & API Pipeline Deployment"
+    ],
+    "badge": "Campus Solution",
+    "imageUrl": "https://images.unsplash.com/photo-1557804506-669a67965ba0?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80",
+    "keywords": [
+      "security",
+      "systems",
+      "cctv",
+      "surveillance",
+      "access",
+      "control",
+      "safety",
+      "tech",
+      "infrastructure"
+    ],
+    "institutionTypes": [
+      "all"
+    ],
+    "relatedCardSlugs": [],
+    "priority": 50,
+    "active": true
+  },
+  {
+    "cardSlug": "tech-infra--smart-classrooms",
+    "targetSlug": "tech-infra/smart-classrooms",
+    "sectionAnchor": null,
+    "categorySlug": "ai-tech",
+    "subcategorySlug": "AI HoloTeacher & Holographic Learning",
+    "secondaryCategorySlugs": [],
+    "title": "Smart Classrooms",
+    "summary": "Interactive boards, projectors, and AV systems",
+    "inclusions": [
+      "Interactive boards, projectors, and AV systems",
+      "Turnkey Hardware & Computing Cluster Procurement",
+      "Specialized Software & API Pipeline Deployment"
+    ],
+    "badge": "Campus Solution",
+    "imageUrl": "https://images.unsplash.com/photo-1509062522246-3755977927d7?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80",
+    "keywords": [
+      "smart",
+      "classrooms",
+      "interactive",
+      "boards",
+      "projectors",
+      "systems",
+      "tech",
+      "infrastructure"
+    ],
+    "institutionTypes": [
+      "all"
+    ],
+    "relatedCardSlugs": [],
+    "priority": 50,
+    "active": true
+  }
+]

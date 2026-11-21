@@ -80,3 +80,7 @@ export const HTML_KEYS = [
 export const MAX_PAGEDATA_BYTES = 512 * 1024;
 export const MAX_ITEM_JSON_BYTES = 256 * 1024;
 export const REVISIONS_KEPT_PER_PAGE = 30;
+
+export const LEGACY_HUB_DEFAULT_CATEGORIES: Record<string, string[]> = {
+  'tech-infra': ['Classroom Tech', 'Displays', 'Networking', 'Wi-Fi & Fiber', 'Servers & Cloud', 'Security'],
+};

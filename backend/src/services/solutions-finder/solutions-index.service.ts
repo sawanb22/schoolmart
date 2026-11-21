@@ -14,6 +14,9 @@ export class SolutionsIndexService {
 
   private initialNightlyTimer: NodeJS.Timeout | null = null;
   private heartbeatTimer: NodeJS.Timeout | null = null;
+  private lastCmsVersion = 0;
+  private memoizedCmsVersion: { version: number; expiresAt: number } | null = null;
+  private clock: () => number = () => Date.now();
   private syncedWatermark: DataWatermarks = {
     pageMax: 0,
     pageCount: 0,
@@ -22,6 +25,7 @@ export class SolutionsIndexService {
     taxonomyMax: 0,
     caseMax: 0,
     caseCount: 0,
+    cmsVersion: 0,
   };
 
   constructor(private readonly repository: ISolutionsRepository) {}
@@ -52,7 +56,8 @@ export class SolutionsIndexService {
       typeof w.cardCount === 'number' && !isNaN(w.cardCount) && isFinite(w.cardCount) && w.cardCount >= 0 &&
       typeof w.taxonomyMax === 'number' && !isNaN(w.taxonomyMax) && isFinite(w.taxonomyMax) && w.taxonomyMax >= 0 &&
       (w.caseMax === undefined || (typeof w.caseMax === 'number' && !isNaN(w.caseMax) && isFinite(w.caseMax) && w.caseMax >= 0)) &&
-      (w.caseCount === undefined || (typeof w.caseCount === 'number' && !isNaN(w.caseCount) && isFinite(w.caseCount) && w.caseCount >= 0))
+      (w.caseCount === undefined || (typeof w.caseCount === 'number' && !isNaN(w.caseCount) && isFinite(w.caseCount) && w.caseCount >= 0)) &&
+      (w.cmsVersion === undefined || (typeof w.cmsVersion === 'number' && !isNaN(w.cmsVersion) && isFinite(w.cmsVersion) && w.cmsVersion >= 0))
     );
   }
 
@@ -85,11 +90,14 @@ export class SolutionsIndexService {
   }
 
   private async compileIndex(): Promise<void> {
-    const [rawCards, publishedSlugs, taxonomy, rawCaseStudies] = await Promise.all([
+    const [rawCards, publishedSlugs, taxonomy, rawCaseStudies, currentCmsVersion] = await Promise.all([
       this.repository.fetchActiveCards(),
       this.repository.fetchPublishedSlugs(),
       this.repository.fetchTaxonomy(),
       this.repository.fetchCaseStudies(),
+      this.repository.fetchCmsVersion
+        ? this.repository.fetchCmsVersion()
+        : this.repository.fetchDataWatermarks().then(w => w.cmsVersion ?? 1),
     ]);
 
     // 1. Filter cards whose target page (or root parent hub) is published
@@ -143,6 +151,7 @@ export class SolutionsIndexService {
     this.taxonomy = taxonomy ? Object.freeze(taxonomy) : null;
     this.caseStudies = frozenCaseStudies;
     this.version = nextVersion;
+    this.lastCmsVersion = currentCmsVersion;
     this.isInitialized = true;
   }
 
@@ -177,7 +186,8 @@ export class SolutionsIndexService {
       current.cardCount !== synced.cardCount ||
       current.taxonomyMax > synced.taxonomyMax ||
       (current.caseMax ?? 0) > (synced.caseMax ?? 0) ||
-      (current.caseCount ?? 0) !== (synced.caseCount ?? 0)
+      (current.caseCount ?? 0) !== (synced.caseCount ?? 0) ||
+      (current.cmsVersion !== undefined && synced.cmsVersion !== undefined && current.cmsVersion > synced.cmsVersion)
     );
   }
 
@@ -261,5 +271,47 @@ export class SolutionsIndexService {
 
   isReady(): boolean {
     return this.isInitialized;
+  }
+
+  setClock(fn: () => number): void {
+    this.clock = fn;
+  }
+
+  resetFreshnessMemo(): void {
+    this.memoizedCmsVersion = null;
+  }
+
+  getLastCmsVersion(): number {
+    return this.lastCmsVersion;
+  }
+
+  /**
+   * Ensures the index reflects current CmsState.version across processes.
+   * Compares lastCmsVersion with CmsState.version (memoized in-process for up to 5s).
+   * If changed or index not ready, triggers rebuild() behind the mutex lock.
+   */
+  async ensureFresh(): Promise<void> {
+    const now = this.clock();
+    let currentVersion: number;
+
+    if (this.memoizedCmsVersion && this.memoizedCmsVersion.expiresAt > now) {
+      currentVersion = this.memoizedCmsVersion.version;
+    } else {
+      currentVersion = this.repository.fetchCmsVersion
+        ? await this.repository.fetchCmsVersion()
+        : ((await this.repository.fetchDataWatermarks()).cmsVersion ?? 1);
+      this.memoizedCmsVersion = {
+        version: currentVersion,
+        expiresAt: now + 5000,
+      };
+    }
+
+    if (!this.isInitialized || this.lastCmsVersion !== currentVersion) {
+      await this.rebuild();
+      this.memoizedCmsVersion = {
+        version: this.lastCmsVersion,
+        expiresAt: this.clock() + 5000,
+      };
+    }
   }
 }

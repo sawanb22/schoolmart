@@ -269,6 +269,64 @@
 - Found, not fixed:
   - None.
 
+---
+
+## T7 – Backend Consumers Read from Tables – DONE
+- Date: 2026-11-21
+- Commit: `0a7dba5` (T7: Backend consumers read from tables)
+- Review Status: Self-verified (T7 complete, 0 critical, 0 important)
+- Backup used (if DB touched): N/A (read-only queries and tests strictly against isolated test DB DATABASE_URL_TEST).
+- Files changed (summary):
+  - Updated `backend/src/services/solutions-finder/types/solutions-card.types.ts`: added `cmsVersion?: number` to `DataWatermarks`.
+  - Updated `backend/src/services/solutions-finder/solutions-repository.interface.ts`: added `fetchCmsVersion?(): Promise<number>`.
+  - Updated `backend/src/services/solutions-finder/in-memory-solutions.repository.ts`: implemented `cmsVersion` tracking, `setCmsVersion()`, `fetchCmsVersion()`, and updated `fetchDataWatermarks()`.
+  - Updated `backend/src/services/solutions-finder/prisma-solutions.repository.ts`:
+    - Updated `fetchActiveCards()` to query structured pages with `categories` and `items` (with join categories) and synthesize legacy blob inputs via `buildLegacyPageData`.
+    - Added `withDbRetry` helper around all remote PostgreSQL queries for network resilience.
+    - Updated `fetchDataWatermarks()` to include `cmsVersion` from `CmsState` singleton `id: 1`.
+    - Added `fetchCmsVersion()`.
+  - Updated `backend/src/services/solutions-finder/solutions-index.service.ts`:
+    - Added `lastCmsVersion`, `memoizedCmsVersion`, and customizable clock.
+    - Added `cmsVersion` validation and advancement to `isValidWatermarks` and `hasWatermarkAdvanced`.
+    - Implemented `ensureFresh()` with 5000 ms in-process memoization behind the rebuild mutex lock.
+    - Added `getLastCmsVersion()`, `setClock()`, `resetFreshnessMemo()`.
+  - Updated `backend/src/routes/solutions-finder.routes.ts`:
+    - Added `await solutionsIndexService.ensureFresh()` at start of search handlers (`handleSolutionsSearch`).
+  - Updated `backend/src/services/solutions-finder/intent-scorer.service.ts`:
+    - Optimized auto-rebuild check to inspect `!this.indexService.isReady()` rather than empty card array, preventing redundant rebuilds on empty datasets.
+  - Updated `backend/src/services/solutions-finder/page-solutions-extractor.ts`:
+    - Enhanced `resolvePageCategory` to inspect `rawCard.categories` array in addition to `rawCard.category`, guaranteeing 100% output parity between pre-migration JSON blobs and post-migration relational rows.
+  - Modernized `backend/src/routes/pages.routes.ts`:
+    - Rewrote `/hub/catalog` to fetch items and categories from `PageItem` and `PageCategory` for structured hubs (`labs`, `sports-infra`, `tech-infra`, `libraries`), and format item IDs as `pi-${item.id}` (while preserving `prod-${id}` for furniture).
+    - Removed hardcoded `HUB_METADATA.defaultCategories` lists (verified 0 matches for `defaultCategories: \[`).
+  - Updated `backend/src/services/page-content/constants.ts`:
+    - Added `LEGACY_HUB_DEFAULT_CATEGORIES` for fallback hub category mapping.
+  - Verified debounced index rebuild in `backend/src/services/page-content/after-content-write.ts` (2000 ms module timer using `setTimeout` with `unref()`).
+  - Updated `backend/tests/helpers/auth.ts`: wrapped `prisma.user.upsert` with `withRetry` for remote Neon connection resilience.
+  - Created test suite `backend/tests/solutions/extractor-golden.test.ts` (2 tests: unmigrated snapshot freeze + post-migration 100% parity verification against `backend/tests/solutions/__snapshots__/extractor-golden.json`).
+  - Created test suite `backend/tests/pages/hub-catalog.test.ts` (2 tests: verified full catalog and hub=labs match T2 contract snapshots).
+  - Created test suite `backend/tests/solutions/debounce.test.ts` (2 tests: fake-timers debouncing 5 writes in 1s into 1 rebuild after 2000ms, and cancelPendingSolutionsRebuild).
+  - Created test suite `backend/tests/solutions/ensure-fresh.test.ts` (2 tests: 5s memoized serving without rebuild, and rebuild trigger on SQL version bump after memo window expires).
+- Tests added:
+  - `backend/tests/solutions/extractor-golden.test.ts` (2 tests)
+  - `backend/tests/pages/hub-catalog.test.ts` (2 tests)
+  - `backend/tests/solutions/debounce.test.ts` (2 tests)
+  - `backend/tests/solutions/ensure-fresh.test.ts` (2 tests)
+- Test results:
+  - `npm run test --prefix backend`: 201 passed / 201 total (27 test files, 100% green)
+  - `npm run build --prefix backend`: 0 compilation errors
+  - Search for `defaultCategories: \[` in `backend/src/routes/pages.routes.ts`: 0 matches
+- Metrics:
+  - New test suites: 4 test files, 8 new tests
+  - Extractor golden snapshot parity: 100% deep equality across all 24 page fixtures
+  - Solutions Finder sample queries: "stem lab" (5 solutions, conf 0.85), "synthetic turf" (3 solutions, conf 0.85), "digital library" (3 solutions, conf 0.85)
+- Deviations from plan and why:
+  - Added check for `rawCard.categories` in `PageSolutionsExtractor.resolvePageCategory` so that cards reconstructed from relational tables where categories are normalized into arrays retain the exact same category resolution and deliverables as pre-migration fixtures.
+  - Wrapped remote Neon database queries in `PrismaSolutionsRepository` and `tests/helpers/auth.ts` with retry wrappers (`withDbRetry`) to handle transient TCP drops on remote Neon Postgres connections.
+- Found, not fixed:
+  - None.
+
+
 
 
 

@@ -8,17 +8,25 @@ export class InMemorySolutionsRepository implements ISolutionsRepository {
   private caseStudies: CaseStudyDto[] = [];
   private failNextFetch = false;
   private lastModified = 1000;
+  private cmsVersion = 1;
 
   constructor(
     initialCards: SolutionCardDto[] = [],
     initialSlugs: string[] = [],
     initialTaxonomy?: SolutionsTaxonomy,
-    initialCaseStudies: CaseStudyDto[] = []
+    initialCaseStudies: CaseStudyDto[] = [],
+    initialCmsVersion = 1
   ) {
     this.cards = [...initialCards];
     this.publishedSlugs = new Set(initialSlugs);
     this.taxonomy = initialTaxonomy || null;
     this.caseStudies = [...initialCaseStudies];
+    this.cmsVersion = initialCmsVersion;
+  }
+
+  setCmsVersion(version: number): void {
+    this.cmsVersion = version;
+    this.lastModified++;
   }
 
   setCards(cards: SolutionCardDto[]): void {
@@ -81,7 +89,15 @@ export class InMemorySolutionsRepository implements ISolutionsRepository {
       cardMax: this.lastModified,
       cardCount: this.cards.length,
       taxonomyMax: this.taxonomy ? this.lastModified : 0,
+      cmsVersion: this.cmsVersion,
     };
+  }
+
+  async fetchCmsVersion(): Promise<number> {
+    if (this.failNextFetch) {
+      throw new Error('Simulated repository fetch failure');
+    }
+    return this.cmsVersion;
   }
 
   async fetchCaseStudies(): Promise<CaseStudyDto[]> {
