@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import { Heart, Check, Trash2, ArrowRight } from 'lucide-react';
 import { usePagination } from '@/hooks/usePagination';
 import PaginationControl from '@/components/common/PaginationControl';
-import { usePageData } from '@/hooks/usePageData';
+import { useHubLegacy } from '@/hooks/useHubLegacy';
 import { useDesignWishlist } from '@/hooks/useDesignWishlist';
 import LoginPromptModal from '@/components/login-prompt-modal';
 import { MediaImage } from '@/components/ui/media-image';
@@ -161,7 +161,7 @@ const PAGE_SIZE = 12;
 const SolutionPageRenderer = ({ slug = '' }: SolutionPageRendererProps) => {
   const heroRef = useRef<HTMLDivElement>(null);
   const cardsRef = useRef<HTMLDivElement>(null);
-  const { data, loading } = usePageData(slug);
+  const { data, loading } = useHubLegacy(slug);
   const { isSaved, isPending, add, remove, showLoginPrompt, setShowLoginPrompt } = useDesignWishlist(slug);
   const [selectedCategory, setSelectedCategory] = useState('');
 

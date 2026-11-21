@@ -1,6 +1,6 @@
 import prisma from '../../lib/prisma';
 import { parsePageData } from '../../lib/page-data';
-import { COLLECTIONS, Collection } from './constants';
+import { COLLECTIONS, Collection, HUB_NEEDS_DETAIL } from './constants';
 import {
   slugify,
   normalizeSlug,
@@ -191,7 +191,7 @@ export class PageContentService {
 
     // Structured page: reconstruct legacy pageData
     const settings = parsePageData(page.pageData);
-    const includeDetail = !DETAIL_DROPPED.has(page.slug);
+    const includeDetail = HUB_NEEDS_DETAIL.has(page.slug) || !DETAIL_DROPPED.has(page.slug);
     const publicOnly = !options?.isAdmin;
 
     const reconstructed = buildLegacyPageData(settings, page.items, page.categories, {
@@ -439,7 +439,7 @@ export class PageContentService {
       return toLegacyPageResponse(page);
     }
     const settings = parsePageData(page.pageData);
-    const includeDetail = !DETAIL_DROPPED.has(page.slug);
+    const includeDetail = HUB_NEEDS_DETAIL.has(page.slug) || !DETAIL_DROPPED.has(page.slug);
     const publicOnly = !isAdmin;
 
     const reconstructed = buildLegacyPageData(settings, page.items || [], page.categories || [], {

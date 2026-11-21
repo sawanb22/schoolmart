@@ -15,6 +15,7 @@ import { afterContentWrite } from '../services/page-content/after-content-write'
 import { ItemFull } from '../services/page-content/page-content.service';
 
 const router = Router();
+const TX_OPTIONS = { maxWait: 10000, timeout: 20000 };
 
 function parseParamInt(param: string | string[] | undefined): number {
   if (!param) return NaN;
@@ -307,7 +308,7 @@ router.post('/:pageId/items', async (req: AuthRequest, res: Response) => {
       });
 
       return itemRow;
-    });
+    }, TX_OPTIONS);
 
     // Invoke write hook
     await afterContentWrite({ pageId, reason: 'item-create', authorId: req.user?.id });
@@ -556,7 +557,7 @@ router.patch('/:pageId/items/:itemId', async (req: AuthRequest, res: Response) =
       });
 
       return { conflict: false };
-    });
+    }, TX_OPTIONS);
 
     if (transactionResult.conflict) {
       // Re-read current database representation
@@ -668,7 +669,7 @@ router.delete('/:pageId/items/:itemId', async (req: AuthRequest, res: Response) 
           authorId: req.user?.id ?? null,
         },
       });
-    });
+    }, TX_OPTIONS);
 
     await afterContentWrite({ pageId, reason: 'item-delete', authorId: req.user?.id });
 
@@ -758,7 +759,7 @@ router.put('/:pageId/items/reorder', async (req: AuthRequest, res: Response) => 
           authorId: req.user?.id ?? null,
         },
       });
-    });
+    }, TX_OPTIONS);
 
     await afterContentWrite({ pageId, reason: 'reorder', authorId: req.user?.id });
 
@@ -908,7 +909,7 @@ router.post('/:pageId/categories', async (req: AuthRequest, res: Response) => {
       });
 
       return cat;
-    });
+    }, TX_OPTIONS);
 
     await afterContentWrite({ pageId, reason: 'category-create', authorId: req.user?.id });
 
@@ -1017,7 +1018,7 @@ router.patch('/:pageId/categories/:id', async (req: AuthRequest, res: Response) 
       });
 
       return cat;
-    });
+    }, TX_OPTIONS);
 
     await afterContentWrite({ pageId, reason: 'category-update', authorId: req.user?.id });
 
@@ -1077,7 +1078,7 @@ router.delete('/:pageId/categories/:id', async (req: AuthRequest, res: Response)
           authorId: req.user?.id ?? null,
         },
       });
-    });
+    }, TX_OPTIONS);
 
     await afterContentWrite({ pageId, reason: 'category-delete', authorId: req.user?.id });
 
@@ -1163,7 +1164,7 @@ router.put('/:pageId/categories/reorder', async (req: AuthRequest, res: Response
           authorId: req.user?.id ?? null,
         },
       });
-    });
+    }, TX_OPTIONS);
 
     await afterContentWrite({ pageId, reason: 'category-reorder', authorId: req.user?.id });
 

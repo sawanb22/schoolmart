@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import { ArrowRight, BarChart3, Brain, Radio, Zap } from 'lucide-react';
 import { usePagination } from '@/hooks/usePagination';
 import PaginationControl from '@/components/common/PaginationControl';
-import { usePageData } from '@/hooks/usePageData';
+import { useHubLegacy } from '@/hooks/useHubLegacy';
 import MediaImage from '@/components/ui/media-image';
 import { PageCardGridSkeleton } from '@/components/ui/page-skeleton';
 import { AI_STATIONS_PAGE_SLUG, slugifyAIStationTitle, type AIStationCard } from './ai-stations.data';
@@ -14,7 +14,7 @@ const PAGE_SIZE = 12;
 
 const AIStations = () => {
   const cardsRef = useRef<HTMLDivElement>(null);
-  const { data, loading } = usePageData(AI_STATIONS_PAGE_SLUG);
+  const { data, loading } = useHubLegacy(AI_STATIONS_PAGE_SLUG);
 
   const heroBadge = data.heroBadge || '';
   const heroTitle = data.heroTitle || '';

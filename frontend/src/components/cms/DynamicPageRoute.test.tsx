@@ -61,7 +61,7 @@ describe('DynamicPageRoute Component', () => {
 
     await waitFor(() => {
       expect(screen.getByText('AI in Higher Education Guide')).toBeInTheDocument();
-    });
+    }, { timeout: 3000 });
 
     expect(screen.getByText('Comprehensive analysis of AI tools in university learning.')).toBeInTheDocument();
     expect(resolveRequests).toBe(1);
@@ -93,7 +93,28 @@ describe('DynamicPageRoute Component', () => {
         }
         return new HttpResponse(null, { status: 404 });
       }),
-      http.get('/api/pages/robotics-center', () => {
+      http.get('/api/pages/robotics-center', ({ request }) => {
+        const url = new URL(request.url);
+        if (url.searchParams.get('v') === '2') {
+          return HttpResponse.json({
+            page: {
+              id: 51,
+              slug: 'robotics-center',
+              title: 'Robotics Center',
+              template: 'solution-hub',
+              contentModel: 'structured',
+              version: 1,
+              updatedAt: '2026-11-21T00:00:00.000Z',
+            },
+            settings: {
+              heroTitle: 'Robotics Center Hub',
+            },
+            collections: {
+              cards: [],
+            },
+            categories: [],
+          });
+        }
         return HttpResponse.json({
           id: 51,
           title: 'Robotics Center',

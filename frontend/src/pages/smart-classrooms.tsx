@@ -4,7 +4,7 @@ import { ArrowRight, CheckCircle, Send, Sparkles } from 'lucide-react';
 import { usePagination } from '@/hooks/usePagination';
 import PaginationControl from '@/components/common/PaginationControl';
 import api from '@/api/client';
-import { usePageData } from '@/hooks/usePageData';
+import { useHubLegacy } from '@/hooks/useHubLegacy';
 import { MediaImage } from '@/components/ui/media-image';
 import { PageCardGridSkeleton } from '@/components/ui/page-skeleton';
 import { SafeRichText } from '@/components/common/RichTextContent';
@@ -20,7 +20,7 @@ interface CardItem {
 const PAGE_SIZE = 12;
 
 const SmartClassrooms = () => {
-  const { data, loading } = usePageData('smart-classrooms');
+  const { data, loading } = useHubLegacy('smart-classrooms');
 
   const heroTitle = data.heroTitle || 'Smart Classrooms';
   const heroSubtitle = data.heroSubtitle || '';

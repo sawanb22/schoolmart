@@ -2,7 +2,7 @@ import { useMemo, useState } from 'react';
 import type { FormEvent } from 'react';
 import { ArrowRight, Check, Heart, Trash2 } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import { usePageData } from '@/hooks/usePageData';
+import { useHubLegacy } from '@/hooks/useHubLegacy';
 import { useDesignWishlist } from '@/hooks/useDesignWishlist';
 import LoginPromptModal from '@/components/login-prompt-modal';
 import MediaImage from '@/components/ui/media-image';
@@ -16,7 +16,7 @@ import {
 } from './science-tech-labs.data';
 
 const ScienceTechLabs = () => {
-  const { data, loading } = usePageData<any>(SCIENCE_TECH_LABS_PAGE_SLUG);
+  const { data, loading } = useHubLegacy<any>(SCIENCE_TECH_LABS_PAGE_SLUG);
   const { isSaved, isPending, add, remove, showLoginPrompt, setShowLoginPrompt } =
     useDesignWishlist('science-tech-labs');
 

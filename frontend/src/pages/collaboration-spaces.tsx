@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { ArrowRight } from 'lucide-react';
 import { usePagination } from '@/hooks/usePagination';
 import PaginationControl from '@/components/common/PaginationControl';
-import { usePageData } from '@/hooks/usePageData';
+import { useHubLegacy } from '@/hooks/useHubLegacy';
 import { getCardCover } from '@/lib/card-covers';
 import MediaImage from '@/components/ui/media-image';
 import { PageCardGridSkeleton } from '@/components/ui/page-skeleton';
@@ -31,7 +31,7 @@ export function slugifyCollaborationSpaceTitle(title: string): string {
 const PAGE_SIZE = 12;
 
 const CollaborationSpaces = () => {
-  const { data, loading } = usePageData(COLLABORATION_SPACES_PAGE_SLUG);
+  const { data, loading } = useHubLegacy(COLLABORATION_SPACES_PAGE_SLUG);
   const [activeCategory, setActiveCategory] = useState('All');
 
   const section1Title = data.section1Title || '';

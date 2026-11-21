@@ -459,3 +459,100 @@
   - Added standard `window.matchMedia` stub to `frontend/src/test/setup.ts` to support GSAP ScrollTrigger in headless JSDOM test environments.
 - Found, not fixed:
   - None.
+
+---
+
+## T11 – Hub pages use the v2 summary shape – DONE
+- Date: 2026-11-22
+- Commit: `92b7eb5` (T11: Hub pages use the v2 summary shape)
+- Review Status: Pending Review
+- Backup used (if DB touched): N/A (read-only dev DB queries; backend tests strictly isolated to DATABASE_URL_TEST).
+- Files changed (summary):
+  - Created `frontend/src/hooks/useHubLegacy.ts`: adapter hook mapping v2 summary payload (`useHub(slug)`) into legacy pageData shape with `itemToCard(item, { includeDetail: false })`, single-object `featured`, and memoized reference stability.
+  - Defined `HUB_NEEDS_DETAIL` in `backend/src/services/page-content/constants.ts` (currently empty `new Set<string>([])` since all hub listings consume summary cards and detail views fetch via `useHubItem`).
+  - Updated `backend/src/services/page-content/page-content.service.ts` to include `HUB_NEEDS_DETAIL`.
+  - Updated `backend/src/routes/admin-page-items.routes.ts` with `{ maxWait: 10000, timeout: 20000 }` on Prisma transactions to prevent timeouts over remote Neon connections.
+  - Created `backend/tests/fixtures/generate-hub-fixtures.test.ts` & generated `frontend/src/test/fixtures/hubs/hubs.json` (24 fixtures).
+  - Migrated 22 components/pages from `usePageData` to `useHubLegacy`:
+    - `frontend/src/components/cms/SolutionPageRenderer.tsx` (covers `labs`, `libraries`, `sports-infra`, `tech-infra`)
+    - `frontend/src/components/cms/ServicePageRenderer.tsx` (covers `campus-design-execution`, `sports-design-execution`, `campus-furniture-design`, `ar-vr-experiences`, `ai-digital-design-supply`, `campus-design`)
+    - `frontend/src/pages/ai-ml.tsx`
+    - `frontend/src/pages/ai-stations.tsx`
+    - `frontend/src/pages/campus-master-planning.tsx`
+    - `frontend/src/pages/collaboration-spaces.tsx`
+    - `frontend/src/pages/new-environments.tsx`
+    - `frontend/src/pages/campus-automation.tsx`
+    - `frontend/src/pages/digital-transformation.tsx`
+    - `frontend/src/pages/smart-classrooms.tsx`
+    - `frontend/src/pages/science-tech-labs.tsx`
+    - `frontend/src/pages/assessment-system.tsx`
+    - `frontend/src/pages/lms.tsx`
+    - `frontend/src/pages/catalogues.tsx`
+    - `frontend/src/pages/faq.tsx`
+    - `frontend/src/pages/job-openings.tsx`
+    - `frontend/src/pages/colleges-universities-for-sale.tsx`
+    - `frontend/src/pages/partner-with-colleges.tsx`
+    - `frontend/src/pages/furniture-design-supply.tsx`
+    - `frontend/src/pages/library-management.tsx`
+    - `frontend/src/pages/solutions.tsx`
+    - `frontend/src/pages/services.tsx`
+  - Kept document pages on `usePageData`: `about-us`, `contact-us`, `furniture`, `blog`, `classifieds`, `partnership`, `product-catalog`.
+  - Created test suites:
+    - `frontend/src/hooks/useHubLegacy.test.tsx` (12 tests)
+    - `frontend/src/components/cms/SolutionPageRenderer.test.tsx` (3 tests)
+    - `frontend/src/pages/campus-master-planning.test.tsx` (2 tests)
+    - `frontend/src/pages/faq.test.tsx` (2 tests)
+    - `frontend/src/pages/job-openings.test.tsx` (1 test)
+    - `frontend/src/pages/colleges-universities-for-sale.test.tsx` (1 test)
+    - `frontend/src/pages/catalogues.test.tsx` (1 test)
+    - `backend/tests/page-content/payload-comparison.test.ts` (1 test)
+  - Created task report `docs/plans/sdd/task-11-report.md`.
+- Checklist Table:
+  | Page / Component | Switched / Kept | Reason |
+  | :--- | :--- | :--- |
+  | `SolutionPageRenderer.tsx` (`labs`, `libraries`, `sports-infra`, `tech-infra`) | Switched | No detail keys used on hub view; cards use summary, tags, badge. |
+  | `ServicePageRenderer.tsx` (`campus-design-execution`, `sports-design-execution`, etc.) | Switched | No detail keys used on hub view; tabbed cards use summary, tags. |
+  | `ai-ml.tsx` | Switched | Renders cards summary, image, title, badge; no detail keys. |
+  | `ai-stations.tsx` | Switched | Renders cards summary, image, title, badge; no detail keys. |
+  | `campus-master-planning.tsx` | Switched | Step hub uses cards summary and href links; no detail keys. |
+  | `collaboration-spaces.tsx` | Switched | Renders cards summary, image, title, badge; no detail keys. |
+  | `new-environments.tsx` | Switched | Renders cards summary, image, title; no detail keys. |
+  | `campus-automation.tsx` | Switched | Renders cards summary, image, title, badge; no detail keys. |
+  | `digital-transformation.tsx` | Switched | Renders cards summary, image, title, badge; no detail keys. |
+  | `smart-classrooms.tsx` | Switched | Renders cards summary, image, title, badge; no detail keys. |
+  | `science-tech-labs.tsx` | Switched | Renders cards summary, image, title, badge; no detail keys. |
+  | `assessment-system.tsx` | Switched | Renders cards summary, image, title, badge; no detail keys. |
+  | `lms.tsx` | Switched | Renders cards summary, image, title, badge; no detail keys. |
+  | `catalogues.tsx` | Switched | Renders catalogue cards and case studies summaries; no detail keys. |
+  | `faq.tsx` | Switched | Renders faqs collection (question, answer in data); no detail keys. |
+  | `job-openings.tsx` | Switched | Renders openings collection (role, department, location); no detail keys. |
+  | `colleges-universities-for-sale.tsx` | Switched | Renders cards (location, askingPrice in data); no detail keys. |
+  | `partner-with-colleges.tsx` | Switched | Renders partner cards summary, badge; no detail keys. |
+  | `furniture-design-supply.tsx` | Switched | Renders cards summary, image, title; no detail keys. |
+  | `library-management.tsx` | Switched | Renders cards summary, image, title; no detail keys. |
+  | `solutions.tsx` | Switched | Renders solution cards summary, title; no detail keys. |
+  | `services.tsx` | Switched | Renders service cards summary, title; no detail keys. |
+  | `about-us.tsx` | Kept | Document page (classified as document in T4 report). |
+  | `contact-us.tsx` | Kept | Document page (classified as document in T4 report). |
+  | `furniture.tsx` | Kept | Document page (classified as document in T4 report). |
+  | `blog.tsx` | Kept | Document page (classified as document in T4 report). |
+  | `classifieds.tsx` | Kept | Document page (classified as document in T4 report). |
+  | `partnership.tsx` | Kept | Document page (classified as document in T4 report). |
+  | `product-catalog.tsx` | Kept | Document page (classified as document in T4 report). |
+- Tests added:
+  - 7 frontend test files (22 tests), 2 backend test files (2 tests).
+- Test results:
+  - `npm test --prefix frontend`: 16 passed / 16 total files, 68 passed / 68 total tests (100% green).
+  - `npm test --prefix backend`: `hub-v2.test.ts` (7 passed), `items-lifecycle.test.ts` (9 passed), `payload-comparison.test.ts` (1 passed) on DATABASE_URL_TEST.
+  - `npm run typecheck:frontend`: 0 errors.
+  - `npm run build:frontend`: Vite production build passed in 28.16s with 0 errors.
+  - Playwright smoke test (`npx playwright test tests/e2e/smoke.spec.ts`): 206 passed / 206 executed (3 known baseline failures skipped), 0 regressions.
+- Metrics:
+  - Payload size comparison:
+    - `labs`: 5,789 B (legacy) -> 5,619 B (v2), saving 170 B (-2.9%).
+    - `campus-design-execution`: 278 B (legacy) -> 247 B (v2), saving 31 B (-11.2%).
+    - `campus-master-planning`: 273 B (legacy) -> 242 B (v2), saving 31 B (-11.4%).
+- Deviations from plan and why:
+  - None.
+- Found, not fixed:
+  - None.

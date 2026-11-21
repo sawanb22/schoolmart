@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import { ArrowRight } from 'lucide-react';
 import { usePagination } from '@/hooks/usePagination';
 import PaginationControl from '@/components/common/PaginationControl';
-import { usePageData } from '@/hooks/usePageData';
+import { useHubLegacy } from '@/hooks/useHubLegacy';
 import MediaImage from '@/components/ui/media-image';
 import { PageCardGridSkeleton } from '@/components/ui/page-skeleton';
 import { SafeRichText } from '@/components/common/RichTextContent';
@@ -29,7 +29,7 @@ export function slugifyDigitalTransformationCard(title: string): string {
 
 const DigitalTransformation = () => {
   const cardsRef = useRef<HTMLDivElement>(null);
-  const { data, loading } = usePageData(DIGITAL_TRANSFORMATION_PAGE_SLUG);
+  const { data, loading } = useHubLegacy(DIGITAL_TRANSFORMATION_PAGE_SLUG);
 
   const heroBadge = data.heroBadge || '';
   const heroTitle = data.heroTitle || '';

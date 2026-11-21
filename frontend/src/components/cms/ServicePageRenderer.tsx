@@ -14,7 +14,7 @@ import {
 } from 'lucide-react';
 import { usePagination } from '@/hooks/usePagination';
 import PaginationControl from '@/components/common/PaginationControl';
-import { usePageData } from '@/hooks/usePageData';
+import { useHubLegacy } from '@/hooks/useHubLegacy';
 import MediaImage from '@/components/ui/media-image';
 import { CampusDesignExecutionSkeleton } from '@/components/ui/page-skeleton';
 import { SafeRichText } from '@/components/common/RichTextContent';
@@ -168,7 +168,7 @@ export function getStepBadge(card: { title?: string; category?: string; categori
 const PAGE_SIZE = 12;
 
 const ServicePageRenderer = ({ slug = '' }: ServicePageRendererProps) => {
-  const { data, loading } = usePageData(slug);
+  const { data, loading } = useHubLegacy(slug);
   const [activeCategory, setActiveCategory] = useState('All');
 
   const styles: ServicePageStyles = {

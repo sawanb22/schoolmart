@@ -17,7 +17,7 @@ import {
   Send,
   type LucideIcon,
 } from 'lucide-react';
-import { usePageData } from '@/hooks/usePageData';
+import { useHubLegacy } from '@/hooks/useHubLegacy';
 import api from '@/api/client';
 import { resolveMediaUrl } from '@/lib/media-url';
 import MediaImage from '@/components/ui/media-image';
@@ -39,7 +39,7 @@ const EMPTY_FORM = {
 const PartnerWithColleges = () => {
   const heroRef = useRef<HTMLDivElement>(null);
   const cardsRef = useRef<HTMLDivElement>(null);
-  const { data } = usePageData(PARTNER_PAGE_SLUG);
+  const { data } = useHubLegacy(PARTNER_PAGE_SLUG);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedModel, setSelectedModel] = useState<string>('');

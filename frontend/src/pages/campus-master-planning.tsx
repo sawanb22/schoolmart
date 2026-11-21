@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { ArrowRight, Check, Heart, Trash2 } from 'lucide-react';
 import { usePagination } from '@/hooks/usePagination';
 import PaginationControl from '@/components/common/PaginationControl';
-import { usePageData } from '@/hooks/usePageData';
+import { useHubLegacy } from '@/hooks/useHubLegacy';
 import { useDesignWishlist } from '@/hooks/useDesignWishlist';
 import LoginPromptModal from '@/components/login-prompt-modal';
 import MediaImage from '@/components/ui/media-image';
@@ -33,7 +33,7 @@ export interface CampusMasterPlanningStyles {
 const PAGE_SIZE = 12;
 
 const CampusMasterPlanning = () => {
-  const { data, loading } = usePageData(MASTER_PLANNING_PAGE_SLUG);
+  const { data, loading } = useHubLegacy(MASTER_PLANNING_PAGE_SLUG);
   const { isSaved, isPending, add, remove, showLoginPrompt, setShowLoginPrompt } =
     useDesignWishlist('campus-master-planning');
 

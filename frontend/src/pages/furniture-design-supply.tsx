@@ -3,7 +3,7 @@ import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { Link } from 'react-router-dom';
 import { ArrowRight, ArrowUpRight } from 'lucide-react';
-import { usePageData } from '@/hooks/usePageData';
+import { useHubLegacy } from '@/hooks/useHubLegacy';
 import { resolveMediaUrl } from '@/lib/media-url';
 import { getWarmCardCover } from '@/lib/card-covers';
 import MediaImage from '@/components/ui/media-image';
@@ -81,7 +81,7 @@ gsap.registerPlugin(ScrollTrigger);
 const FurnitureDesignSupply = () => {
   const heroRef = useRef<HTMLDivElement>(null);
   const gridRef = useRef<HTMLDivElement>(null);
-  const { data } = usePageData(FURNITURE_SUPPLY_PAGE_SLUG);
+  const { data } = useHubLegacy(FURNITURE_SUPPLY_PAGE_SLUG);
   const [activeCategory, setActiveCategory] = useState('All');
 
   useEffect(() => {

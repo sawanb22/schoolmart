@@ -3,7 +3,7 @@ import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { Link } from 'react-router-dom';
 import { Sparkles, Users, Palette, Music, Microscope, Zap } from 'lucide-react';
-import { usePageData } from '@/hooks/usePageData';
+import { useHubLegacy } from '@/hooks/useHubLegacy';
 import MediaImage from '@/components/ui/media-image';
 import { PageCardGridSkeleton } from '@/components/ui/page-skeleton';
 
@@ -73,7 +73,7 @@ const ICONS = [Sparkles, Users, Palette, Music, Microscope, Zap];
 const NewEnvironments = () => {
   const heroRef = useRef<HTMLDivElement>(null);
   const cardsRef = useRef<HTMLDivElement>(null);
-  const { data, loading } = usePageData(NEW_ENVIRONMENTS_PAGE_SLUG);
+  const { data, loading } = useHubLegacy(NEW_ENVIRONMENTS_PAGE_SLUG);
 
   useEffect(() => {
     const ctx = gsap.context(() => {

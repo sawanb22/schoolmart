@@ -3,7 +3,7 @@ import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { Link } from 'react-router-dom';
 import { ArrowRight } from 'lucide-react';
-import { usePageData } from '@/hooks/usePageData';
+import { useHubLegacy } from '@/hooks/useHubLegacy';
 import { resolveMediaUrl } from '@/lib/media-url';
 import { LIBRARY_MGMT_PAGE_SLUG, LIBRARY_MGMT_DEFAULTS, slugifyLibraryModuleTitle, type LibraryManagementCard } from './library-management.data';
 
@@ -11,7 +11,7 @@ gsap.registerPlugin(ScrollTrigger);
 
 const LibraryManagement = () => {
   const gridRef = useRef<HTMLDivElement>(null);
-  const { data } = usePageData(LIBRARY_MGMT_PAGE_SLUG);
+  const { data } = useHubLegacy(LIBRARY_MGMT_PAGE_SLUG);
   const [activeCategory, setActiveCategory] = useState('All');
 
   useEffect(() => {

@@ -2,7 +2,7 @@ import { useState, useMemo } from 'react';
 import { Search, HelpCircle, Phone, Mail, ArrowRight, MessageSquare, CheckCircle2 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useSiteContent } from '@/contexts/SiteContentContext';
-import { usePageData } from '@/hooks/usePageData';
+import { useHubLegacy } from '@/hooks/useHubLegacy';
 import { FaqPageSkeleton } from '@/components/ui/page-skeleton';
 import { SafeRichText } from '@/components/common/RichTextContent';
 import { resolveCtaButtonStyles } from '@/lib/ctaStyles';
@@ -19,7 +19,7 @@ export interface EditableFaqItem extends FaqItem {
 }
 
 export default function FaqPage() {
-  const { data, loading } = usePageData('faq');
+  const { data, loading } = useHubLegacy('faq');
   const { content } = useSiteContent();
   const [searchQuery, setSearchQuery] = useState('');
 
