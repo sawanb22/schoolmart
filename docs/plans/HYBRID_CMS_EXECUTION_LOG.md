@@ -9,7 +9,8 @@
 
 ## T0 – Baseline capture and safety net – DONE
 - Date: 2026-11-21
-- Commit: `4cb956c3315bea688a9c1cda5531e6a61926e06d`
+- Commit: `0604f48b4ec8747144549b39a9e0c8dde74f00b0`
+- Review Status: APPROVED (commits 0389522..0604f48, review clean, 0 critical, 0 important)
 - Backup used (if DB touched): N/A (read-only dev DB queries). Dev DB backed up to `backend/prisma/database-export.json` (1,306,510 bytes, 1275.89 KB, 130 pages, 33 sitecontent rows, 17 categories, 129 products).
 - Files changed (summary):
   - Created baseline reports in `docs/plans/baseline/`: `legacy-tests.md`, `bundle.md`, `requests.md`, `lighthouse.md`.
