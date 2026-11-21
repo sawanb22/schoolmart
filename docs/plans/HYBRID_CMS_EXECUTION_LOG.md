@@ -365,8 +365,8 @@
 
 ## T9 – TanStack Query behind the existing hooks – DONE
 - Date: 2026-11-21
-- Commit: Pending (T9 commit)
-- Review Status: READY FOR REVIEW
+- Commit: `f70dbe40879fbeb710a12258d5a2dd2d353fb070` (T9: TanStack Query behind the existing hooks)
+- Review Status: APPROVED (commits bca11bb..f70dbe4, review clean, 0 critical, 0 important)
 - Backup used (if DB touched): N/A (read-only dev DB queries; backend tests isolated to DATABASE_URL_TEST).
 - Files changed (summary):
   - Updated `package.json` and `package-lock.json`: added root scripts `"test": "npm run test:backend && npm run test:frontend"` and `"test:frontend": "npm run test --prefix frontend"`.
