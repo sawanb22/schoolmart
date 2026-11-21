@@ -79,7 +79,8 @@ Thumbs.db
 # Documents, office files, and temporary scratch (Strict Zero-Docs Policy)
 /scratch/
 scratch/
-docs/
+docs/*
+!docs/plans/
 reports/
 *.docx
 *.doc
@@ -93,6 +94,12 @@ reports/
 
 # Markdown documentation (Zero docs policy - user will add custom README later)
 *.md
+!docs/plans/**
+!backend/prisma/sql/README.md
+
+# Playwright artifacts
+test-results/
+playwright-report/
 
 # Tooling, IDE & AI agent metadata
 .commandcode/

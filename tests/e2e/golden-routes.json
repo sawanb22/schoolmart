@@ -1,0 +1,1047 @@
+[
+  {
+    "path": "/",
+    "kind": "static",
+    "expectTitle": "CampusMart"
+  },
+  {
+    "path": "/login",
+    "kind": "static",
+    "expectTitle": "Login"
+  },
+  {
+    "path": "/register",
+    "kind": "static",
+    "expectTitle": "Register"
+  },
+  {
+    "path": "/registration",
+    "kind": "static",
+    "expectTitle": "Register"
+  },
+  {
+    "path": "/smart-classrooms",
+    "kind": "static",
+    "expectTitle": "Smart Classrooms"
+  },
+  {
+    "path": "/find-solutions",
+    "kind": "static",
+    "expectTitle": "Find Solutions"
+  },
+  {
+    "path": "/ai-digital-design-supply",
+    "kind": "static",
+    "expectTitle": "AI Digital Design"
+  },
+  {
+    "path": "/ai-ml",
+    "kind": "static",
+    "expectTitle": "AI & Machine Learning"
+  },
+  {
+    "path": "/ai-stations",
+    "kind": "static",
+    "expectTitle": "AI Stations"
+  },
+  {
+    "path": "/assessment-system",
+    "kind": "static",
+    "expectTitle": "Assessment"
+  },
+  {
+    "path": "/blog",
+    "kind": "static",
+    "expectTitle": "Blog"
+  },
+  {
+    "path": "/ar-vr-experiences",
+    "kind": "static",
+    "expectTitle": "AR/VR"
+  },
+  {
+    "path": "/campus-automation",
+    "kind": "static",
+    "expectTitle": "Campus Automation"
+  },
+  {
+    "path": "/campus-design-execution",
+    "kind": "static",
+    "expectTitle": "Campus Design"
+  },
+  {
+    "path": "/campus-master-planning",
+    "kind": "static",
+    "expectTitle": "Master Planning"
+  },
+  {
+    "path": "/campus-furniture-design",
+    "kind": "static",
+    "expectTitle": "Campus Furniture"
+  },
+  {
+    "path": "/campus-design",
+    "kind": "static",
+    "expectTitle": "Campus Design"
+  },
+  {
+    "path": "/catalogues",
+    "kind": "static",
+    "expectTitle": "Catalogues"
+  },
+  {
+    "path": "/classifieds",
+    "kind": "static",
+    "expectTitle": "Classifieds"
+  },
+  {
+    "path": "/colleges-universities-for-sale",
+    "kind": "static",
+    "expectTitle": "Colleges"
+  },
+  {
+    "path": "/collaboration-spaces",
+    "kind": "static",
+    "expectTitle": "Collaboration Spaces"
+  },
+  {
+    "path": "/contact-us",
+    "kind": "static",
+    "expectTitle": "Contact"
+  },
+  {
+    "path": "/about-us",
+    "kind": "static",
+    "expectTitle": "About"
+  },
+  {
+    "path": "/digital-transformation",
+    "kind": "static",
+    "expectTitle": "Digital Transformation"
+  },
+  {
+    "path": "/faq",
+    "kind": "static",
+    "expectTitle": "FAQ"
+  },
+  {
+    "path": "/furniture",
+    "kind": "static",
+    "expectTitle": "Furniture"
+  },
+  {
+    "path": "/science-tech-labs",
+    "kind": "static",
+    "expectTitle": "Science & Tech Labs"
+  },
+  {
+    "path": "/job-openings",
+    "kind": "static",
+    "expectTitle": "Careers"
+  },
+  {
+    "path": "/labs",
+    "kind": "static",
+    "expectTitle": "Labs"
+  },
+  {
+    "path": "/libraries",
+    "kind": "static",
+    "expectTitle": "Libraries"
+  },
+  {
+    "path": "/library-management",
+    "kind": "static",
+    "expectTitle": "Library Management"
+  },
+  {
+    "path": "/lms",
+    "kind": "static",
+    "expectTitle": "Learning Management"
+  },
+  {
+    "path": "/lookbook",
+    "kind": "static",
+    "expectTitle": "Lookbook"
+  },
+  {
+    "path": "/my-account",
+    "kind": "static",
+    "expectTitle": "Account"
+  },
+  {
+    "path": "/new-environments",
+    "kind": "static",
+    "expectTitle": "New Environments"
+  },
+  {
+    "path": "/partnership",
+    "kind": "static",
+    "expectTitle": "Partnership"
+  },
+  {
+    "path": "/partner-with-colleges",
+    "kind": "static",
+    "expectTitle": "Partner with Colleges"
+  },
+  {
+    "path": "/product-catalog",
+    "kind": "static",
+    "expectTitle": "Product Catalog"
+  },
+  {
+    "path": "/request-quote",
+    "kind": "static",
+    "expectTitle": "Request Quote"
+  },
+  {
+    "path": "/sports-design-execution",
+    "kind": "static",
+    "expectTitle": "Sports Design"
+  },
+  {
+    "path": "/sports-infra",
+    "kind": "static",
+    "expectTitle": "Sports Infrastructure"
+  },
+  {
+    "path": "/tech-infra",
+    "kind": "static",
+    "expectTitle": "Tech Infrastructure"
+  },
+  {
+    "path": "/home",
+    "kind": "page",
+    "expectTitle": "Home Page"
+  },
+  {
+    "path": "/colleges-universities-for-sale/school-for-sale-in-bahraich-india",
+    "kind": "detail",
+    "expectTitle": "School for Sale in Bahraich, India"
+  },
+  {
+    "path": "/colleges-universities-for-sale/playschool-seeking-loan-in-haryana-india",
+    "kind": "detail",
+    "expectTitle": "Playschool Seeking Loan in Haryana, India"
+  },
+  {
+    "path": "/colleges-universities-for-sale/school-for-sale-in-thiruvananthapuram-india",
+    "kind": "detail",
+    "expectTitle": "School for Sale in Thiruvananthapuram, India"
+  },
+  {
+    "path": "/how-it-works",
+    "kind": "page",
+    "expectTitle": "How It Works: Turnkey School Execution from Blueprint to Handover"
+  },
+  {
+    "path": "/brand-help",
+    "kind": "page",
+    "expectTitle": "Brand Help"
+  },
+  {
+    "path": "/sell-on-campusmart",
+    "kind": "page",
+    "expectTitle": "Sell on CampusMart"
+  },
+  {
+    "path": "/20-stunning-college-buildings",
+    "kind": "page",
+    "expectTitle": "20 Stunning College Buildings"
+  },
+  {
+    "path": "/academic-buildings",
+    "kind": "page",
+    "expectTitle": "Academic Buildings"
+  },
+  {
+    "path": "/research-facilities",
+    "kind": "page",
+    "expectTitle": "Research Facilities"
+  },
+  {
+    "path": "/student-life-centers",
+    "kind": "page",
+    "expectTitle": "Student Life Centers"
+  },
+  {
+    "path": "/privacy-policy",
+    "kind": "page",
+    "expectTitle": "Privacy Policy"
+  },
+  {
+    "path": "/terms-of-use",
+    "kind": "page",
+    "expectTitle": "Terms of Use"
+  },
+  {
+    "path": "/payment-policy",
+    "kind": "page",
+    "expectTitle": "Payment Policy"
+  },
+  {
+    "path": "/replacement-return",
+    "kind": "page",
+    "expectTitle": "Institutional Returns, Replacements & Warranty Claims"
+  },
+  {
+    "path": "/order-rejection",
+    "kind": "page",
+    "expectTitle": "Order Rejection Policy"
+  },
+  {
+    "path": "/ai-guide",
+    "kind": "page",
+    "expectTitle": "AI Implementation Guide"
+  },
+  {
+    "path": "/setup-college",
+    "kind": "page",
+    "expectTitle": "Setup Your College"
+  },
+  {
+    "path": "/ugc-guidelines",
+    "kind": "page",
+    "expectTitle": "UGC Guidelines"
+  },
+  {
+    "path": "/innovation",
+    "kind": "page",
+    "expectTitle": "Innovation"
+  },
+  {
+    "path": "/resources",
+    "kind": "page",
+    "expectTitle": "Resources & Guides"
+  },
+  {
+    "path": "/collaboration",
+    "kind": "page",
+    "expectTitle": "Collaboration Spaces"
+  },
+  {
+    "path": "/immersive-learning",
+    "kind": "page",
+    "expectTitle": "Immersive Learning"
+  },
+  {
+    "path": "/resource-immersive-learning",
+    "kind": "page",
+    "expectTitle": "Immersive Learning"
+  },
+  {
+    "path": "/kindergarten-design",
+    "kind": "page",
+    "expectTitle": "Kindergarten Design"
+  },
+  {
+    "path": "/resource-kindergarten-design",
+    "kind": "page",
+    "expectTitle": "Kindergarten Design"
+  },
+  {
+    "path": "/composite-skill-lab",
+    "kind": "page",
+    "expectTitle": "Composite Skill Lab"
+  },
+  {
+    "path": "/resource-composite-skill-lab",
+    "kind": "page",
+    "expectTitle": "Composite Skill Lab"
+  },
+  {
+    "path": "/library-innovations",
+    "kind": "page",
+    "expectTitle": "Library Innovations"
+  },
+  {
+    "path": "/resource-library-innovations",
+    "kind": "page",
+    "expectTitle": "Library Innovations"
+  },
+  {
+    "path": "/furniture-design-planning-",
+    "kind": "page",
+    "expectTitle": "Furniture & Design Planning"
+  },
+  {
+    "path": "/resource-furniture-design-planning-",
+    "kind": "page",
+    "expectTitle": "Furniture & Design Planning"
+  },
+  {
+    "path": "/sellning-or-buying-a-school",
+    "kind": "page",
+    "expectTitle": "Selling or Buying a School"
+  },
+  {
+    "path": "/resource-sellning-or-buying-a-school",
+    "kind": "page",
+    "expectTitle": "Selling or Buying a School"
+  },
+  {
+    "path": "/gamified-math-lab",
+    "kind": "page",
+    "expectTitle": "Gamified Math Lab"
+  },
+  {
+    "path": "/resource-gamified-math-lab",
+    "kind": "page",
+    "expectTitle": "Gamified Math Lab"
+  },
+  {
+    "path": "/interactivities-walls",
+    "kind": "page",
+    "expectTitle": "Interactive Walls"
+  },
+  {
+    "path": "/resource-interactivities-walls",
+    "kind": "page",
+    "expectTitle": "Interactive Walls"
+  },
+  {
+    "path": "/16-latetest-",
+    "kind": "page",
+    "expectTitle": "16 Latest Interactive Panels for Classrooms"
+  },
+  {
+    "path": "/resource-16-latetest-",
+    "kind": "page",
+    "expectTitle": "16 Latest Interactive Panels for Classrooms"
+  },
+  {
+    "path": "/20-ai-tools",
+    "kind": "page",
+    "expectTitle": "20 AI Tools for Classroom"
+  },
+  {
+    "path": "/resource-20-ai-tools",
+    "kind": "page",
+    "expectTitle": "20 AI Tools for Classroom"
+  },
+  {
+    "path": "/the-best-",
+    "kind": "page",
+    "expectTitle": "The Best Curriculums for Your Kindergarten"
+  },
+  {
+    "path": "/resource-the-best-",
+    "kind": "page",
+    "expectTitle": "The Best Curriculums for Your Kindergarten"
+  },
+  {
+    "path": "/gamified-science-lab",
+    "kind": "page",
+    "expectTitle": "Gamified Science Lab"
+  },
+  {
+    "path": "/resource-gamified-science-lab",
+    "kind": "page",
+    "expectTitle": "Gamified Science Lab"
+  },
+  {
+    "path": "/smart-sports",
+    "kind": "page",
+    "expectTitle": "Smart Sports for Schools"
+  },
+  {
+    "path": "/resource-smart-sports",
+    "kind": "page",
+    "expectTitle": "Smart Sports for Schools"
+  },
+  {
+    "path": "/complete-school-setup",
+    "kind": "page",
+    "expectTitle": "Complete School Setup Guide"
+  },
+  {
+    "path": "/resource-complete-school-setup",
+    "kind": "page",
+    "expectTitle": "Complete School Setup Guide"
+  },
+  {
+    "path": "/talks-to-us",
+    "kind": "page",
+    "expectTitle": "Talk to Us: Digital Transformation"
+  },
+  {
+    "path": "/resource-talks-to-us",
+    "kind": "page",
+    "expectTitle": "Talk to Us: Digital Transformation"
+  },
+  {
+    "path": "/wondergartens",
+    "kind": "page",
+    "expectTitle": "Wondergartens"
+  },
+  {
+    "path": "/resource-wondergartens",
+    "kind": "page",
+    "expectTitle": "Wondergartens"
+  },
+  {
+    "path": "/school-building-design",
+    "kind": "page",
+    "expectTitle": "Architecture"
+  },
+  {
+    "path": "/school-building-design/traditional-campus-architecture",
+    "kind": "detail",
+    "expectTitle": "Traditional School Campus Architecture"
+  },
+  {
+    "path": "/school-building-design/futuristic-campus-building",
+    "kind": "detail",
+    "expectTitle": "Futuristic High-Tech Campus Building"
+  },
+  {
+    "path": "/school-building-design/sustainable-school-design",
+    "kind": "detail",
+    "expectTitle": "Sustainable Vernacular School Design"
+  },
+  {
+    "path": "/school-building-design/new-age-modular-pods",
+    "kind": "detail",
+    "expectTitle": "New Age Modular Educational Pods"
+  },
+  {
+    "path": "/digital",
+    "kind": "page",
+    "expectTitle": "Digital Infra"
+  },
+  {
+    "path": "/digital/16-latetest",
+    "kind": "detail",
+    "expectTitle": "16 Latest Interactive Panels for Classrooms"
+  },
+  {
+    "path": "/digital/20-ai-tools",
+    "kind": "detail",
+    "expectTitle": "Curated AI Tablets for Interactive Classrooms"
+  },
+  {
+    "path": "/digital/talks-to-us",
+    "kind": "detail",
+    "expectTitle": "Smart Hybrid Digital Boards"
+  },
+  {
+    "path": "/environments",
+    "kind": "page",
+    "expectTitle": "Environments Hub"
+  },
+  {
+    "path": "/environments/dining-hall-design-to-execution",
+    "kind": "detail",
+    "expectTitle": "DINING HALL DESIGN TO EXECUTION"
+  },
+  {
+    "path": "/environments/rumpus-rooms",
+    "kind": "detail",
+    "expectTitle": "RUMPUS ROOMS"
+  },
+  {
+    "path": "/environments/smart-music-rooms-professional",
+    "kind": "detail",
+    "expectTitle": "SMART MUSIC ROOMS [ PROFESSIONAL ]"
+  },
+  {
+    "path": "/environments/art-craft-rooms",
+    "kind": "detail",
+    "expectTitle": "ART & CRAFT ROOMS"
+  },
+  {
+    "path": "/environments/smart-stem-labs-design-to-execution",
+    "kind": "detail",
+    "expectTitle": "SMART STEM LABS DESIGN TO EXECUTION"
+  },
+  {
+    "path": "/environments/home-science-room",
+    "kind": "detail",
+    "expectTitle": "HOME SCIENCE ROOM"
+  },
+  {
+    "path": "/environments/interactive-kids-library",
+    "kind": "detail",
+    "expectTitle": "INTERACTIVE KIDS LIBRARY"
+  },
+  {
+    "path": "/environments/kindergarten-primary-physical-activity-room",
+    "kind": "detail",
+    "expectTitle": "KINDERGARTEN/ PRIMARY PHYSICAL ACTIVITY ROOM"
+  },
+  {
+    "path": "/environments/jungle-room-features",
+    "kind": "detail",
+    "expectTitle": "JUNGLE ROOM FEATURES"
+  },
+  {
+    "path": "/environments/indoor-play-n-activity-rooms",
+    "kind": "detail",
+    "expectTitle": "INDOOR PLAY N ACTIVITY ROOMS"
+  },
+  {
+    "path": "/environments/mini-auditoriums-for-schools",
+    "kind": "detail",
+    "expectTitle": "MINI AUDITORIUMS FOR SCHOOLS"
+  },
+  {
+    "path": "/environments/the-importance-of-daylight-in-classrooms",
+    "kind": "detail",
+    "expectTitle": "The Importance of Daylight in Classrooms"
+  },
+  {
+    "path": "/environments/why-should-classroom-walls-be-more-than-just-whiteboards",
+    "kind": "detail",
+    "expectTitle": "Why should classroom walls be more than just whiteboards?"
+  },
+  {
+    "path": "/environments/creating-dynamic-learning-spaces-with-furniture-and-storage",
+    "kind": "detail",
+    "expectTitle": "Creating Dynamic Learning Spaces with Furniture and Storage"
+  },
+  {
+    "path": "/environments/creating-safe-learning-environments-comprehensive-health-and-safety-resources",
+    "kind": "detail",
+    "expectTitle": "Creating Safe Learning Environments: Comprehensive Health and Safety Resources"
+  },
+  {
+    "path": "/labs/composite-skill-lab",
+    "kind": "detail",
+    "expectTitle": "Composite Skill Lab & Technical Workshop"
+  },
+  {
+    "path": "/labs/ai-computer-lab",
+    "kind": "detail",
+    "expectTitle": "Next-Gen AI & High-Performance Computer Lab"
+  },
+  {
+    "path": "/labs/stem-discovery-studio",
+    "kind": "detail",
+    "expectTitle": "Integrated STEM Discovery & Robotics Studio"
+  },
+  {
+    "path": "/libraries/library-innovations",
+    "kind": "detail",
+    "expectTitle": "Phygital Smart Library & RFID Automation"
+  },
+  {
+    "path": "/libraries/collaborative-reading-zones",
+    "kind": "detail",
+    "expectTitle": "Collaborative Reading Amphitheatres"
+  },
+  {
+    "path": "/libraries/digital-catalogs-terminals",
+    "kind": "detail",
+    "expectTitle": "Cloud Digital Catalogs & Touch Terminals"
+  },
+  {
+    "path": "/libraries/ar-libraries-experience",
+    "kind": "detail",
+    "expectTitle": "Augmented Reality Immersive Book Stations"
+  },
+  {
+    "path": "/libraries/acoustic-study-pods",
+    "kind": "detail",
+    "expectTitle": "Acoustic Focus & Individual Study Pods"
+  },
+  {
+    "path": "/libraries/curved-open-shelving",
+    "kind": "detail",
+    "expectTitle": "Curved Modular Open Shelving Displays"
+  },
+  {
+    "path": "/libraries/audio-listening-rooms",
+    "kind": "detail",
+    "expectTitle": "Audio Recording & Audiobook Studio Rooms"
+  },
+  {
+    "path": "/mathematics",
+    "kind": "page",
+    "expectTitle": "Mathematics"
+  },
+  {
+    "path": "/mathematics/gamified-math-lab",
+    "kind": "detail",
+    "expectTitle": "Mathematica: Universally Mapped Gamified Math Lab"
+  },
+  {
+    "path": "/design",
+    "kind": "page",
+    "expectTitle": "School Designs"
+  },
+  {
+    "path": "/design/kindergarten-design",
+    "kind": "detail",
+    "expectTitle": "Holistic Kindergarten Architecture & Interiors"
+  },
+  {
+    "path": "/design/wondergartens",
+    "kind": "detail",
+    "expectTitle": "Wondergartens Outdoor & Natural Playgrounds"
+  },
+  {
+    "path": "/design/design-libraries",
+    "kind": "detail",
+    "expectTitle": "Modern Library Architectural Interiors"
+  },
+  {
+    "path": "/design/design-art-craft",
+    "kind": "detail",
+    "expectTitle": "Creative Art & Craft Innovation Studios"
+  },
+  {
+    "path": "/design/design-corridors",
+    "kind": "detail",
+    "expectTitle": "Active Interactive Corridors & Hallways"
+  },
+  {
+    "path": "/design/design-stem-innovation",
+    "kind": "detail",
+    "expectTitle": "Integrated STEM & Robotics Innovation Center"
+  },
+  {
+    "path": "/design/design-sports",
+    "kind": "detail",
+    "expectTitle": "Campus Sports Arenas & Multipurpose Pavilions"
+  },
+  {
+    "path": "/design/design-activity-sensory",
+    "kind": "detail",
+    "expectTitle": "Sensory Rooms & Gross Motor Activity Hubs"
+  },
+  {
+    "path": "/science",
+    "kind": "page",
+    "expectTitle": "Science"
+  },
+  {
+    "path": "/science/gamified-science-lab",
+    "kind": "detail",
+    "expectTitle": "Physics Discovery & Mechanics Lab"
+  },
+  {
+    "path": "/science/chemistry-workstation-lab",
+    "kind": "detail",
+    "expectTitle": "Advanced Chemistry & Reagent Workstation Lab"
+  },
+  {
+    "path": "/science/biology-microscopy-lab",
+    "kind": "detail",
+    "expectTitle": "Bio-Sciences, Microscopy & Specimen Lab"
+  },
+  {
+    "path": "/sports",
+    "kind": "page",
+    "expectTitle": "Sports"
+  },
+  {
+    "path": "/sports/track-and-field-turf",
+    "kind": "detail",
+    "expectTitle": "IAAF Certified Synthetic Athletic Tracks & Turf"
+  },
+  {
+    "path": "/sports/junior-playground-courts",
+    "kind": "detail",
+    "expectTitle": "Dynamic Junior School Playgrounds & Multipurpose Courts"
+  },
+  {
+    "path": "/sports/indoor-sports-courts",
+    "kind": "detail",
+    "expectTitle": "FIBA Certified Maple Wood & PU Indoor Sports Courts"
+  },
+  {
+    "path": "/sports/sports-equipment-gear",
+    "kind": "detail",
+    "expectTitle": "Competition Grade Sports Equipment & Gear"
+  },
+  {
+    "path": "/sports/gym-tech-systems",
+    "kind": "detail",
+    "expectTitle": "Smart Athlete Performance & Gym Tech Systems"
+  },
+  {
+    "path": "/sports-infra/track-and-field-turf",
+    "kind": "detail",
+    "expectTitle": "IAAF Certified Synthetic Athletic Tracks & Turf"
+  },
+  {
+    "path": "/sports-infra/junior-playground-courts",
+    "kind": "detail",
+    "expectTitle": "Dynamic Junior School Playgrounds & Multipurpose Courts"
+  },
+  {
+    "path": "/sports-infra/indoor-sports-courts",
+    "kind": "detail",
+    "expectTitle": "FIBA Certified Maple Wood & PU Indoor Sports Courts"
+  },
+  {
+    "path": "/sports-infra/sports-equipment-gear",
+    "kind": "detail",
+    "expectTitle": "Competition Grade Sports Equipment & Gear"
+  },
+  {
+    "path": "/sports-infra/gym-tech-systems",
+    "kind": "detail",
+    "expectTitle": "Smart Athlete Performance & Gym Tech Systems"
+  },
+  {
+    "path": "/environment-art-craft-rooms",
+    "kind": "page",
+    "expectTitle": "Art & Craft Studios & Creative Workspaces"
+  },
+  {
+    "path": "/art-craft-rooms",
+    "kind": "page",
+    "expectTitle": "Art & Craft Studios & Creative Workspaces"
+  },
+  {
+    "path": "/environment-creating-dynamic-learning-spaces-with-furniture-and-storage",
+    "kind": "page",
+    "expectTitle": "Creating Dynamic Learning Spaces with Agile Furniture and Storage"
+  },
+  {
+    "path": "/creating-dynamic-learning-spaces-with-furniture-and-storage",
+    "kind": "page",
+    "expectTitle": "Creating Dynamic Learning Spaces with Agile Furniture and Storage"
+  },
+  {
+    "path": "/environment-creating-safe-learning-environments-comprehensive-health-and-safety-resources",
+    "kind": "page",
+    "expectTitle": "Creating Safe Learning Environments: Comprehensive Health & Safety Standards"
+  },
+  {
+    "path": "/creating-safe-learning-environments-comprehensive-health-and-safety-resources",
+    "kind": "page",
+    "expectTitle": "Creating Safe Learning Environments: Comprehensive Health & Safety Standards"
+  },
+  {
+    "path": "/environment-dining-hall-design-to-execution",
+    "kind": "page",
+    "expectTitle": "School Dining Hall Architecture: Design to Turnkey Execution"
+  },
+  {
+    "path": "/dining-hall-design-to-execution",
+    "kind": "page",
+    "expectTitle": "School Dining Hall Architecture: Design to Turnkey Execution"
+  },
+  {
+    "path": "/environment-home-science-room",
+    "kind": "page",
+    "expectTitle": "Home Science & Culinary Arts Laboratory Design"
+  },
+  {
+    "path": "/home-science-room",
+    "kind": "page",
+    "expectTitle": "Home Science & Culinary Arts Laboratory Design"
+  },
+  {
+    "path": "/environment-indoor-play-n-activity-rooms",
+    "kind": "page",
+    "expectTitle": "Indoor Play & Multi-Activity Rooms for Early Childhood"
+  },
+  {
+    "path": "/indoor-play-n-activity-rooms",
+    "kind": "page",
+    "expectTitle": "Indoor Play & Multi-Activity Rooms for Early Childhood"
+  },
+  {
+    "path": "/environment-interactive-kids-library",
+    "kind": "page",
+    "expectTitle": "Interactive Kids Library & Digital Discovery Commons"
+  },
+  {
+    "path": "/interactive-kids-library",
+    "kind": "page",
+    "expectTitle": "Interactive Kids Library & Digital Discovery Commons"
+  },
+  {
+    "path": "/environment-jungle-room-features",
+    "kind": "page",
+    "expectTitle": "Jungle-Themed Immersive Early Learning Environments"
+  },
+  {
+    "path": "/jungle-room-features",
+    "kind": "page",
+    "expectTitle": "Jungle-Themed Immersive Early Learning Environments"
+  },
+  {
+    "path": "/environment-kindergarten-primary-physical-activity-room",
+    "kind": "page",
+    "expectTitle": "Kindergarten & Primary Physical Activity & Gross Motor Studio"
+  },
+  {
+    "path": "/kindergarten-primary-physical-activity-room",
+    "kind": "page",
+    "expectTitle": "Kindergarten & Primary Physical Activity & Gross Motor Studio"
+  },
+  {
+    "path": "/environment-mini-auditoriums-for-schools",
+    "kind": "page",
+    "expectTitle": "Mini Auditoriums & Multi-Purpose Performance Theaters for Schools"
+  },
+  {
+    "path": "/mini-auditoriums-for-schools",
+    "kind": "page",
+    "expectTitle": "Mini Auditoriums & Multi-Purpose Performance Theaters for Schools"
+  },
+  {
+    "path": "/environment-rumpus-rooms",
+    "kind": "page",
+    "expectTitle": "Early Childhood Rumpus Rooms & Active Playrooms"
+  },
+  {
+    "path": "/rumpus-rooms",
+    "kind": "page",
+    "expectTitle": "Early Childhood Rumpus Rooms & Active Playrooms"
+  },
+  {
+    "path": "/environment-smart-music-rooms-professional-",
+    "kind": "page",
+    "expectTitle": "Smart Music Studios & Professional Acoustic Recording Suites"
+  },
+  {
+    "path": "/smart-music-rooms-professional",
+    "kind": "page",
+    "expectTitle": "Smart Music Studios & Professional Acoustic Recording Suites"
+  },
+  {
+    "path": "/environment-smart-stem-labs-design-to-execution",
+    "kind": "page",
+    "expectTitle": "Smart STEM & STEAM Laboratories: Concept to Turnkey Execution"
+  },
+  {
+    "path": "/smart-stem-labs-design-to-execution",
+    "kind": "page",
+    "expectTitle": "Smart STEM & STEAM Laboratories: Concept to Turnkey Execution"
+  },
+  {
+    "path": "/environment-the-importance-of-daylight-in-classrooms",
+    "kind": "page",
+    "expectTitle": "The Importance of Daylight in Classrooms: Architectural Strategies & Biophilic Design"
+  },
+  {
+    "path": "/the-importance-of-daylight-in-classrooms",
+    "kind": "page",
+    "expectTitle": "The Importance of Daylight in Classrooms: Architectural Strategies & Biophilic Design"
+  },
+  {
+    "path": "/environment-why-should-classroom-walls-be-more-than-just-whiteboards-",
+    "kind": "page",
+    "expectTitle": "Dynamic Classroom Walls: Transforming Vertical Surfaces into Active Learning Landscapes"
+  },
+  {
+    "path": "/why-should-classroom-walls-be-more-than-just-whiteboards",
+    "kind": "page",
+    "expectTitle": "Dynamic Classroom Walls: Transforming Vertical Surfaces into Active Learning Landscapes"
+  },
+  {
+    "path": "/guide-50-global-resources-for-school-excellence",
+    "kind": "page",
+    "expectTitle": "50 Global Resources for School Excellence"
+  },
+  {
+    "path": "/50-global-resources-for-school-excellence",
+    "kind": "page",
+    "expectTitle": "50 Global Resources for School Excellence"
+  },
+  {
+    "path": "/guide-ultimate-guide-to-building-a-legendary-school-brand-in-india",
+    "kind": "page",
+    "expectTitle": "Ultimate Guide to Building a Legendary School Brand in India"
+  },
+  {
+    "path": "/ultimate-guide-to-building-a-legendary-school-brand-in-india",
+    "kind": "page",
+    "expectTitle": "Ultimate Guide to Building a Legendary School Brand in India"
+  },
+  {
+    "path": "/setup-guide",
+    "kind": "page",
+    "expectTitle": "School Setup Guide: End-to-End Turnkey Launch Manual"
+  },
+  {
+    "path": "/guides",
+    "kind": "page",
+    "expectTitle": "Institutional Knowledge & Architectural Guides Hub"
+  },
+  {
+    "path": "/aboutus",
+    "kind": "page",
+    "expectTitle": "About SchoolMart Consortium"
+  },
+  {
+    "path": "/corporate",
+    "kind": "page",
+    "expectTitle": "Corporate Solutions & Consortium Services"
+  },
+  {
+    "path": "/partnerships",
+    "kind": "page",
+    "expectTitle": "Strategic Partnerships & Educational Alliances"
+  },
+  {
+    "path": "/fundraising",
+    "kind": "page",
+    "expectTitle": "School Capital Advisory & Infrastructure Fundraising"
+  },
+  {
+    "path": "/school-sale",
+    "kind": "page",
+    "expectTitle": "School Buy, Sell & Built-to-Suit (BTS) Lease Exchange"
+  },
+  {
+    "path": "/manufacturing",
+    "kind": "page",
+    "expectTitle": "In-House Precision Manufacturing & Production Facilities"
+  },
+  {
+    "path": "/workshops",
+    "kind": "page",
+    "expectTitle": "Educator Training, Spatial Workshops & Capacity Building"
+  },
+  {
+    "path": "/sell-on-schoolmart",
+    "kind": "page",
+    "expectTitle": "Sell on SchoolMart: India's Premier Educational Supplier Marketplace"
+  },
+  {
+    "path": "/pricing",
+    "kind": "page",
+    "expectTitle": "Institutional Pricing, Package Tiers & Procurement Economics"
+  },
+  {
+    "path": "/payments",
+    "kind": "page",
+    "expectTitle": "Institutional Payment Methods, Terms & Escrow Protocols"
+  },
+  {
+    "path": "/shipping-policy",
+    "kind": "page",
+    "expectTitle": "Institutional Shipping, Freight & Transit Logistics Policy"
+  },
+  {
+    "path": "/cancellation-policy",
+    "kind": "page",
+    "expectTitle": "Order Cancellation & Project Modification Policy"
+  },
+  {
+    "path": "/order-rejection-policy",
+    "kind": "page",
+    "expectTitle": "Order Rejection & Non-Conformance Protocols"
+  },
+  {
+    "path": "/delivery-locations",
+    "kind": "page",
+    "expectTitle": "Pan-India Delivery Locations & Regional Logistics Network"
+  },
+  {
+    "path": "/report-issue",
+    "kind": "page",
+    "expectTitle": "Report an Issue: Institutional Service Desk & Ticket Resolution"
+  },
+  {
+    "path": "/seller-help",
+    "kind": "page",
+    "expectTitle": "Seller Help Center, Marketplace FAQs & Supplier Guidelines"
+  }
+]
