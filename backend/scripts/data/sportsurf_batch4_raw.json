@@ -1,0 +1,1156 @@
+{
+  "guide-50-global-resources-for-school-excellence": {
+    "slug": "guide-50-global-resources-for-school-excellence",
+    "page": {
+      "id": "eefcb03e-6b0a-42a1-8d61-a62f86b4cbfa",
+      "slug": "guide-50-global-resources-for-school-excellence",
+      "title": "50 global resources for school excellence",
+      "createdAt": "2026-04-27T08:21:55.463Z",
+      "updatedAt": "2026-04-27T08:21:55.463Z"
+    },
+    "blocks": {}
+  },
+  "guide-ultimate-guide-to-building-a-legendary-school-brand-in-india": {
+    "slug": "guide-ultimate-guide-to-building-a-legendary-school-brand-in-india",
+    "page": {
+      "id": "2dac8d1d-b9b2-4b00-9a9b-997d902adb12",
+      "slug": "guide-ultimate-guide-to-building-a-legendary-school-brand-in-india",
+      "title": "Ultimate Guide to Building a Legendary School Brand in India",
+      "createdAt": "2026-04-27T08:09:19.766Z",
+      "updatedAt": "2026-04-27T08:09:19.766Z"
+    },
+    "blocks": {}
+  },
+  "setup-guide": {
+    "slug": "setup-guide",
+    "page": {
+      "id": "795e9ef6-85a1-482c-af76-f94b85e31af4",
+      "slug": "setup-guide",
+      "title": "Setup Guide",
+      "createdAt": "2026-04-12T22:04:54.009Z",
+      "updatedAt": "2026-04-13T06:52:31.516Z"
+    },
+    "blocks": {
+      "page_hero": {
+        "id": "74848ddf-85c5-451d-a178-c7aaa13b8d7d",
+        "key": "page_hero",
+        "type": "page_hero",
+        "data": {
+          "badge": "Step by Step",
+          "subtitle": "Everything you need to start a new school in India",
+          "titleHtml": "School<br/><span class=\"text-sm-blue\">Setup Guide</span>"
+        },
+        "isVisible": true
+      },
+      "setup_phases": {
+        "id": "874f31ea-1350-431f-9bac-b8840e967ea5",
+        "key": "setup_phases",
+        "type": "setup_phases",
+        "data": {
+          "items": []
+        },
+        "isVisible": true
+      }
+    }
+  },
+  "guides": {
+    "slug": "guides",
+    "page": {
+      "id": "96b5a3e3-2b55-4e0e-8255-ad2f853bb69e",
+      "slug": "guides",
+      "title": "Guides",
+      "createdAt": "2026-04-12T21:54:27.577Z",
+      "updatedAt": "2026-04-13T06:52:31.513Z"
+    },
+    "blocks": {
+      "guides_page_content": {
+        "id": "f60e50bc-a305-481c-9c3e-ea5512d534a1",
+        "key": "guides_page_content",
+        "type": "guides_page_content",
+        "data": {
+          "badge": "fef",
+          "caseStudies": [
+            {
+              "c": "",
+              "t": "50 global resources for school excellence",
+              "img": "",
+              "badge": "Strategic Guide 2025",
+              "intro": "",
+              "steps": [],
+              "mainImg": "",
+              "summaryPoints": []
+            }
+          ]
+        },
+        "isVisible": true
+      }
+    }
+  },
+  "blog": {
+    "slug": "blog",
+    "page": {
+      "id": "d62156a3-81cc-498a-bebd-e6ff8e6232cf",
+      "slug": "blog",
+      "title": "Blog",
+      "createdAt": "2026-04-12T22:04:54.025Z",
+      "updatedAt": "2026-04-13T06:52:31.496Z"
+    },
+    "blocks": {
+      "page_hero": {
+        "id": "85df89f2-f2d2-45fc-ae0a-928d414bc29a",
+        "key": "page_hero",
+        "type": "page_hero",
+        "data": {
+          "badge": "Insights",
+          "subtitle": "Latest news and insights from the education sector",
+          "titleHtml": "Our<br/><span class=\"text-sm-blue\">Blog</span>"
+        },
+        "isVisible": true
+      },
+      "blog_posts": {
+        "id": "94e33662-1ba0-48aa-8a5a-e468c502492f",
+        "key": "blog_posts",
+        "type": "blog_posts",
+        "data": {
+          "items": []
+        },
+        "isVisible": true
+      }
+    }
+  },
+  "aboutus": {
+    "slug": "aboutus",
+    "page": {
+      "id": "4aaeca6c-34b8-4c77-8ab2-30619f9c81d0",
+      "slug": "aboutus",
+      "title": "About Us",
+      "createdAt": "2026-04-12T22:04:53.982Z",
+      "updatedAt": "2026-04-13T06:52:31.505Z"
+    },
+    "blocks": {
+      "page_hero": {
+        "id": "221b7c11-a1a0-451e-9ee9-4a7cf2c3f736",
+        "key": "page_hero",
+        "type": "page_hero",
+        "data": {
+          "badge": "Our Story",
+          "subtitle": "India's leading school infrastructure partner",
+          "titleHtml": "About<br/><span class=\"text-sm-blue\">SchoolMart</span>",
+          "description": ""
+        },
+        "isVisible": true
+      },
+      "page_content": {
+        "id": "da76e722-e2bd-479a-97a9-97802c84a441",
+        "key": "page_content",
+        "type": "page_content",
+        "data": {
+          "image": "http://schoolmart-production.up.railway.app/uploads/1776496955858-images.jpg",
+          "content": "",
+          "heading": "Our Mission"
+        },
+        "isVisible": true
+      },
+      "page_stats": {
+        "id": "6dd94168-bd19-4cff-8a54-cf233aeb68be",
+        "key": "page_stats",
+        "type": "page_stats",
+        "data": {
+          "stats": [
+            {
+              "label": "Partner Schools",
+              "value": "4000+"
+            },
+            {
+              "label": "Years",
+              "value": "7+"
+            },
+            {
+              "label": "Products",
+              "value": "1200+"
+            },
+            {
+              "label": "Architects",
+              "value": "16+"
+            }
+          ]
+        },
+        "isVisible": true
+      }
+    }
+  },
+  "corporate": {
+    "slug": "corporate",
+    "page": {
+      "id": "d8d86d20-b530-4154-8a16-47e588948d97",
+      "slug": "corporate",
+      "title": "Corporate",
+      "createdAt": "2026-04-12T22:04:53.989Z",
+      "updatedAt": "2026-04-13T06:52:31.511Z"
+    },
+    "blocks": {
+      "corporate_hero": {
+        "id": "a9f9c2b2-feb0-4f3d-9fbf-78af34e437eb",
+        "key": "corporate_hero",
+        "type": "inner_page_hero",
+        "data": {
+          "cta1": {
+            "path": "/",
+            "label": "Request Pitch Deck"
+          },
+          "cta2": {
+            "path": "/",
+            "label": "WhatsApp"
+          },
+          "badge": "Foundational Intelligence",
+          "subtitle": "SCHOOL MART IS A ONE STOP FOR ALL SCHOOL INFRASTRUCTURE NEEDS. A CONSORTIUM OF 16 PANEL ARCHITECTS, 20+ DESIGNERS, SCHOOL INNOVATORS, & EDTECH MAJORS WORKING FROM 4 COUNTRIES.",
+          "titleHtml": "All About <br/> <span class=\"text-[#004a8e] italic font-serif lowercase tracking-normal\">Schoolmart</span> <br/> Consortium."
+        },
+        "isVisible": true
+      },
+      "page_features": {
+        "id": "85162e27-72d4-48b2-b5a8-d515806a7daa",
+        "key": "page_features",
+        "type": "page_features",
+        "data": {
+          "heading": "Our Capabilities",
+          "features": []
+        },
+        "isVisible": true
+      }
+    }
+  },
+  "partnerships": {
+    "slug": "partnerships",
+    "page": {
+      "id": "7851c862-7572-4192-8245-1f246ea30e52",
+      "slug": "partnerships",
+      "title": "Partnerships",
+      "createdAt": "2026-04-12T22:04:53.990Z",
+      "updatedAt": "2026-04-13T06:52:31.515Z"
+    },
+    "blocks": {
+      "page_hero": {
+        "id": "c298ac10-30f8-467c-9778-74b60707feec",
+        "key": "page_hero",
+        "type": "page_hero",
+        "data": {
+          "badge": "Collaborate",
+          "subtitle": "Join our growing network of education partners",
+          "titleHtml": "Strategic<br/><span class=\"text-sm-blue\">Partnerships</span>"
+        },
+        "isVisible": true
+      }
+    }
+  },
+  "fundraising": {
+    "slug": "fundraising",
+    "page": {
+      "id": "6bbd0332-e2be-4b91-982a-11c735926ac0",
+      "slug": "fundraising",
+      "title": "Fundraising",
+      "createdAt": "2026-04-12T22:04:54.012Z",
+      "updatedAt": "2026-04-13T06:52:31.478Z"
+    },
+    "blocks": {
+      "inner_page_hero": {
+        "id": "9908949b-32f4-40e8-bb40-b050263c7c2b",
+        "key": "inner_page_hero",
+        "type": "inner_page_hero",
+        "data": {
+          "badge": "Growth Capital",
+          "mediaUrl": "http://schoolmart-production.up.railway.app/uploads/1776491141144-images.jpg",
+          "subtitle": "Funding solutions for school infrastructure",
+          "titleHtml": "School<br/><span class=\"text-sm-blue\">Fundraising</span>"
+        },
+        "isVisible": true
+      },
+      "advisory_items": {
+        "id": "a93e1507-ebd4-4a0a-ade5-748596c8d4e7",
+        "key": "advisory_items",
+        "type": "advisory_items",
+        "data": {
+          "items": []
+        },
+        "isVisible": true
+      },
+      "case_studies": {
+        "id": "7d818584-5e0f-4c76-8616-7b99315d5b30",
+        "key": "case_studies",
+        "type": "case_studies",
+        "data": {
+          "items": []
+        },
+        "isVisible": true
+      }
+    }
+  },
+  "school-sale": {
+    "slug": "school-sale",
+    "page": {
+      "id": "10a6229f-9bcb-49f0-9ae3-d7cfb5d4d9f8",
+      "slug": "school-sale",
+      "title": "School Sale",
+      "createdAt": "2026-04-12T22:04:54.008Z",
+      "updatedAt": "2026-04-13T06:52:31.514Z"
+    },
+    "blocks": {
+      "advisory_items": {
+        "id": "d9af76b4-6b04-4edf-b769-f564e0b50fa5",
+        "key": "advisory_items",
+        "type": "advisory_items",
+        "data": {},
+        "isVisible": true
+      },
+      "sidebar_categories": {
+        "id": "3c0443f2-2dce-46f3-b137-8837de4acd23",
+        "key": "sidebar_categories",
+        "type": "sidebar_categories",
+        "data": {
+          "categories": [
+            "HYDERABAD",
+            "CHENNAI",
+            "GUJARAT",
+            "ANDHRA PRADESH ",
+            "ODISHA",
+            "BANGALORE",
+            "UTTAR PRADESH"
+          ]
+        },
+        "isVisible": true
+      },
+      "school_sale_listings": {
+        "id": "146a63ce-9333-451e-a44b-5b76d2962208",
+        "key": "school_sale_listings",
+        "type": "school_sale_listings",
+        "data": {
+          "items": [
+            {
+              "type": "SALE",
+              "price": "",
+              "title": "BTS lease / prime location in attapur hyderabad",
+              "margin": "",
+              "rating": "4.8",
+              "ctaLink": "/contact-us",
+              "runRate": "",
+              "ctaLabel": "Contact Us",
+              "location": "HYDERABAD",
+              "description": "BTS in attapur 4000sqyds / 80000sft to be built / super prime location / lease as per CBSE norms "
+            },
+            {
+              "type": "SALE",
+              "price": "",
+              "title": "BTS lease / in kukatpally region",
+              "margin": "",
+              "rating": "4.8",
+              "ctaLink": "/contact-us",
+              "runRate": "",
+              "ctaLabel": "Contact Us",
+              "location": "HYDERABAD",
+              "description": "built to suit /4000sqyds / suitable for CBSE / 60000 sft to be built/ 20 years lease "
+            },
+            {
+              "type": "SALE",
+              "price": "",
+              "title": "BTS lease / 1.5 ACRE WEST HYDERABAD",
+              "margin": "",
+              "rating": "4.8",
+              "ctaLink": "/contact-us",
+              "runRate": "",
+              "ctaLabel": "Contact Us",
+              "location": "HYDERABAD",
+              "description": "BUILT TO SUIT 100000 SFT on the high way towards airport in prime location of city. for lease for CBSE schools"
+            },
+            {
+              "type": "SALE",
+              "price": "",
+              "title": "BTS / 3 ACRE LAND PRIME LOCATION / HYDERABAD",
+              "margin": "",
+              "rating": "4.8",
+              "ctaLink": "/contact-us",
+              "runRate": "",
+              "ctaLabel": "Contact Us",
+              "location": "HYDERABAD",
+              "description": "BUILT TO SUIT FOR SCHOOL . EAST HYDERABAD . SORRROUNDED BY 4 CBSE SCHOOLS. 1 INTERNATIONAL SCHOOL. SEC A,A+ LOCATION. 3 ACRES. LEASE TERMS AS PER CBSE NORMS. PREFER REPUTED BRANDS"
+            },
+            {
+              "type": "SALE",
+              "price": "",
+              "title": "LEASE BUILDING FOR CBSE SCHOOL AT HYDERBAD NR RAMOJI FILM CITY",
+              "margin": "",
+              "rating": "4.8",
+              "ctaLink": "/contact-us",
+              "runRate": "",
+              "ctaLabel": "Contact Us",
+              "location": "HYDERABAD",
+              "description": "22000 SFT BUILT . 2 ACRES LAND. LEASE FOR CBSE SCHOOLS ONLY. "
+            },
+            {
+              "type": "SALE",
+              "price": "",
+              "title": "CBSE SCHOOL BUILDING FOR LEASE IN PRIME LOCATION",
+              "margin": "",
+              "rating": "4.8",
+              "ctaLink": "/contact-us",
+              "runRate": "",
+              "ctaLabel": "Contact Us",
+              "location": "HYDERABAD",
+              "description": "60000 SFT BUILDING . 3 ACRES WITH SPORTS FACILITIES. CLASSROOM FURNITURE. FOR LEASE  AS PER CBSE NORMS."
+            },
+            {
+              "type": "SALE",
+              "price": "",
+              "title": "LAND FOR CBSE SCHOOLS @ HYDERABAD",
+              "margin": "",
+              "rating": "4.8",
+              "ctaLink": "/contact-us",
+              "runRate": "",
+              "ctaLabel": "Contact Us",
+              "location": "HYDERABAD",
+              "description": "BTS OPPORTUNITY . TENANT SHOULD CONSTRUCT THE BUILDING. LAND LEASE AS PER CBSE NORMS. "
+            },
+            {
+              "type": "SALE",
+              "price": "",
+              "title": "LAND FOR BTS IN HYDERABAD",
+              "margin": "",
+              "rating": "4.8",
+              "ctaLink": "/contact-us",
+              "runRate": "",
+              "ctaLabel": "Contact Us",
+              "location": "HYDERABAD",
+              "description": "BELOW 1 ACRE LAND . SUITABLE FOR CBSE NORMS. TENANT SHOULD TAKE UP THE CONSTRUCTION . NEGOTIABLE RENT AND INTEREST ON THE INVESTMENT. PRIME LOCATION "
+            },
+            {
+              "type": "SALE",
+              "price": "",
+              "title": "LEASE : 1,20,000 SFT SCHOOL BUILDING / 6 ACRES WITH SPORTS FACILTIES",
+              "margin": "",
+              "rating": "4.8",
+              "ctaLink": "/contact-us",
+              "runRate": "",
+              "ctaLabel": "Contact Us",
+              "location": "HYDERABAD",
+              "description": "MULTIPLE BLOCKS FOR ACADEMIC / BOARDING/ SPORTS / PANTRY / MAJOR SPORTS WITH POOL/ FACILITIES / LEASE AS PER CBSE NORMS / APT FOR DEFENCE SCHOOLS / BOARDING SCHOOLS"
+            },
+            {
+              "type": "SALE",
+              "price": "",
+              "title": "CBSE BUILDING WIHTOUT STUDENT [ 160KM FROM HYDERABAD",
+              "margin": "",
+              "rating": "4.8",
+              "ctaLink": "/contact-us",
+              "runRate": "",
+              "ctaLabel": "Contact Us",
+              "location": "HYDERABAD",
+              "description": "CBSE school near hyderabad. excellent opportunity. no cbse schools around. agriculturally and economically rich region.\n\nlocation\t100km from hyderabad\nbuiltup area\t1,20,000 sft\nland area\t2 acres\nno of blocks\t2\nreason\texit from education industry\nlaons\tyes"
+            },
+            {
+              "type": "SALE",
+              "price": "",
+              "title": "HYDERBAD CITY : LEASE : REPUTED BRAND : HIGH VALUE",
+              "margin": "",
+              "rating": "4.8",
+              "ctaLink": "/contact-us",
+              "runRate": "",
+              "ctaLabel": "Contact Us",
+              "location": "HYDERABAD",
+              "description": "4 acres /. 2600 students / 1.8lkh fee / 14-16cr PROFIT AFTER ALL EXPENSES  /\n\n2 lakh sft built / lease transfer/ 25 yrs lease period remaining /"
+            },
+            {
+              "type": "SALE",
+              "price": "",
+              "title": "HYDERABAD CITY : REPUTED CBSE SCHOOL PARTNERSHIP",
+              "margin": "",
+              "rating": "4.8",
+              "ctaLink": "/contact-us",
+              "runRate": "",
+              "ctaLabel": "Contact Us",
+              "location": "HYDERABAD",
+              "description": "6 acres /. 700 students / 1.4lkh fee /1.3 lakh sft built / looking for new partner as existing partner exits /partnership share  15-25cr approax "
+            },
+            {
+              "type": "SALE",
+              "price": "",
+              "title": "SCHOOL MANAGEMENT OPPORTUNITY OF A REPUTED BRAND",
+              "margin": "",
+              "rating": "4.8",
+              "ctaLink": "/contact-us",
+              "runRate": "",
+              "ctaLabel": "Contact Us",
+              "location": "HYDERABAD",
+              "description": "a reputed brand school in 4 to 8 acres can be up for lease . 500 plus "
+            },
+            {
+              "type": "SALE",
+              "price": "",
+              "title": "AHMEDABAD SW : PREMIUM CBSE SCHOOL",
+              "margin": "",
+              "rating": "4.8",
+              "ctaLink": "/contact-us",
+              "runRate": "",
+              "ctaLabel": "Contact Us",
+              "location": "GUJARAT",
+              "description": "Location\tSOUTH WEST, Ahmedabad\t \nBoard\tCBSE\t \nStudents\t1300–1500\t \nClasses\tNursery to 12th\t \nTotal Land\t10,000 sq. yards\t \nConstructed Area\t6,000 sq. yards\t \nBuses\t13\t \nAnnual Income\tRs. 9–10 crore\t \nAnnual Salary Expense\tRs. 2–2.5 crore\t \nLight Bill (Annual)\tRs. 6 lakh\t \nTax (Annual)\tRs. 3 lakh\t \nClassrooms\t50-60\t \n \t \t \nReason for Sale\tOwner shifting to USA\nTotal\t1420 students,\t \nTOTAL REVENUE\t Rs. 95139000"
+            },
+            {
+              "type": "SALE",
+              "price": "",
+              "title": "AHMEDABAD : PREMIUM CBSE SCHOOL",
+              "margin": "",
+              "rating": "4.8",
+              "ctaLink": "/contact-us",
+              "runRate": "",
+              "ctaLabel": "Contact Us",
+              "location": "GUJARAT",
+              "description": "REVENUE FROM TUITION FEE 24,23,21,019 \nOTHER INCOME (Transport, Books, Uniform, Activity) 18,88,735 \nPROFIT AFTER EXPENSES 55,72,240 \nNO OF STUDENTS 2,890 \nAFFILIATION cbse +2 CBSE, NIOS\nCBSE ESTD YEAR 2014\nBUILTUP AREA 7236.9\nLAND AREA IN SQ YDS 5282\nVALUE OF FURNITURE / LABS/ OFFICE/ FITMENTS/LICENCE 1,66,42,850 \nRENT PER ANNUM 5,66,40,000 \nSALARIES PER ANNUM 12,00,82,806 "
+            },
+            {
+              "type": "SALE",
+              "price": "",
+              "title": "AHMEDABAD :GSEB TO CBSE CONVERTIBLE SCHOOL",
+              "margin": "",
+              "rating": "4.8",
+              "ctaLink": "/contact-us",
+              "runRate": "",
+              "ctaLabel": "Contact Us",
+              "location": "HYDERABAD",
+              "description": "PLOT SIZE  32850 SFT \n\nBUILT UP 90K SFT \n\n65 CLASSROOMS\n\n1500 STUDENTS IN GSEB"
+            },
+            {
+              "type": "SALE",
+              "price": "",
+              "title": "AHMEDABAD SUBURBS : NEW CBSE SCHOOL",
+              "margin": "",
+              "rating": "4.8",
+              "ctaLink": "/contact-us",
+              "runRate": "",
+              "ctaLabel": "Contact Us",
+              "location": "GUJARAT",
+              "description": "Total Area : 30 Acrs\nClass : 1 to 10th.\n\nStudents. 250 approx.\n\nNumber of students in hostel – 100\n\nLab : Computer lab, Maths Lab and Science Lab.\nBuilding : School Building including AV Room & Library. Canteen.\nIndoor Sports Complex.  Staff Quarters, Hostel, Bunglows, Admin Block\nOne Building under constructions.\n\nInfrastructure :-\nSwimming Pool,  Cricket,  Ground,  Football Ground  Mini Golf Course,  Basketball Court, Volleyball,  Lawn Tennis.  Skating Ring, Horse Riding\nWater Body Fountain.\n\nTransport :- 03 School Bus 65 Seater AC.\n\nInfra Maintenance : Approx 1L per month.\n\nAverage. Fee 75000 /-. Hostel charge – 225000\n\nSchool with no profit no loss condition."
+            },
+            {
+              "type": "SALE",
+              "price": "",
+              "title": "2 SCHOOLS WITH 1000+ STUDENTS @ EAST GUJARAT",
+              "margin": "",
+              "rating": "4.8",
+              "ctaLink": "/contact-us",
+              "runRate": "",
+              "ctaLabel": "Contact Us",
+              "location": "GUJARAT",
+              "description": "both schools can be converted to CBSE. property as per CBSE norms. at present GSEB approved schools running . well built property . Present financials will be provided on request.\n\nSCHOOL1 LAND\t3400 SQ. MTR\nSCHOOL 2 LAND\t3400 SQ. MTR\nSCHOOL 1 BUILT\t75000 SFT G + 4 FLOOR\nSCHOOL 2 BUILT\t64000 SFT G + 4 FLOOR\nAFFILIATION\tGSEB [ BOTH ]\nAFFILIATION SEGMENT\tK.G., PRIMARY, SECONDARY,HIGHER SECONDARY )\n"
+            },
+            {
+              "type": "SALE",
+              "price": "",
+              "title": "CBSE SCHOOL FOR SALE @AHMEDABAD",
+              "margin": "",
+              "rating": "4.8",
+              "ctaLink": "/contact-us",
+              "runRate": "",
+              "ctaLabel": "Contact Us",
+              "location": "GUJARAT",
+              "description": "lucrative school located in densely populated ahmedabad city . day cum boarding school. immediate sale\n\nCurriculum\tCBSE\nLand extent\t10000 VAR\nBUILTUP\t6000 VAR\nNO OF CLASSROOMS\t50\nTYPE OF SCHOOL\tDAY + RESIDENTIAL\nSEGMENT\t10+2 [K12 ]\nCURRENT STRENGTH\t1400+\nFEE RANGE\t50K TO 75K\nOWNER SHIP OF PROPERTY\tSINGLE OWNER"
+            },
+            {
+              "type": "SALE",
+              "price": "",
+              "title": "CBSE SCHOOL @ SOUTH GUJARAT",
+              "margin": "",
+              "rating": "4.8",
+              "ctaLink": "/contact-us",
+              "runRate": "",
+              "ctaLabel": "Contact Us",
+              "location": "GUJARAT",
+              "description": "130KM from mumbai airport. situated in a fast growing township . new port , railway container hub,\n\nland\t12000 sq mts\nbuilt up\t27000 sft\nstudents\t700+\nrevenue toppline\t3.10cr\nnet income\t1.5 cr\naverage fee\t38000"
+            },
+            {
+              "type": "SALE",
+              "price": "",
+              "title": "SCHOOL FOR SALE @ RAJKOT",
+              "margin": "",
+              "rating": "4.8",
+              "ctaLink": "/contact-us",
+              "runRate": "",
+              "ctaLabel": "Contact Us",
+              "location": "GUJARAT",
+              "description": "boarding cum day school are rajkot . situated at prime location and fast growing region of the city.\n\nLAND\t2 acres\nBUILT AREA\t50000 SFT\nHOSTEL\t100 students capacity\nPresent strength\t300+ students\naverage fee\t60000 +\nask price\t13.5 cr"
+            },
+            {
+              "type": "SALE",
+              "price": "",
+              "title": "SCHOOL @ GANDHINAGAR",
+              "margin": "",
+              "rating": "4.8",
+              "ctaLink": "/contact-us",
+              "runRate": "",
+              "ctaLabel": "Contact Us",
+              "location": "GUJARAT",
+              "description": "amazing and beautiful campus , well built . profitable school in the most promising city of gujarat\n\nLAND\t5.2 acres\nBUILT AREA\t94000 sft\nNo of students\t700+\nSports\tswimming pool, horse riding, basketball court, cricket skaitng rink\naverage feee\t50000 +"
+            },
+            {
+              "type": "SALE",
+              "price": "",
+              "title": "SCHOOL @ AHMEDABAD",
+              "margin": "",
+              "rating": "4.8",
+              "ctaLink": "/contact-us",
+              "runRate": "",
+              "ctaLabel": "Contact Us",
+              "location": "GUJARAT",
+              "description": "LAND45500 SQ YDS BUILT AREA160000 sft NO OF STUDENTS1400+ ACADEMIC BLOCKS 3 HOSTEL BLOCKS 2 NO OF BUSES 34  AMENITIES N  SPORTS swimming pool, basket ball, rifle shooting, skating rink, DINING 700+ capacity"
+            },
+            {
+              "type": "SALE",
+              "price": "",
+              "title": "REPUTED BRAND SCHOOL AT ANAND GUJARAT",
+              "margin": "",
+              "rating": "4.8",
+              "ctaLink": "/contact-us",
+              "runRate": "",
+              "ctaLabel": "Contact Us",
+              "location": "GUJARAT",
+              "description": "one of leading brand school franchise is up for sale in anand. newly installed school. growing rapidly.\n\nLAND 4 acres. BUILT AREA 40000 sft AMENITIES  Swimming pool, primary play, indoor games, Tennis courts, International size foot ball field, shooting range, basket ball"
+            },
+            {
+              "type": "SALE",
+              "price": "",
+              "title": "REPUTED BRAND CBSE SCHOOL@COASTAL AP",
+              "margin": "",
+              "rating": "4.8",
+              "ctaLink": "/contact-us",
+              "runRate": "",
+              "ctaLabel": "Contact Us",
+              "location": "ANDHRA PRADESH ",
+              "description": "REPUTED BRAND LOCATED IN RICH AREA / 4yr old  school / 5 TO 10 acre land / 1.5 lkh fee / 500+ students / 2lakh sft built / all major sports/ swimming pool /tennis/ athletics ."
+            },
+            {
+              "type": "SALE",
+              "price": "",
+              "title": "LEASE CBSE SCHOOL BUILDING @ VIJAYAWADA",
+              "margin": "",
+              "rating": "4.8",
+              "ctaLink": "/contact-us",
+              "runRate": "",
+              "ctaLabel": "Contact Us",
+              "location": "ANDHRA PRADESH ",
+              "description": "BUILT TO SUIT BY LAND OWNER . 2ND PLOT FROM HIGHWAY . 3 ACRES. LEASE AS PER CBSE NORMS. 2 MAJOR CBSE SCHOOLS NEAR BY."
+            },
+            {
+              "type": "SALE",
+              "price": "",
+              "title": "BTS : 4 ACRES IN PRIME LOCATION IN VIZAG CITY.",
+              "margin": "",
+              "rating": "4.8",
+              "ctaLink": "/contact-us",
+              "runRate": "",
+              "ctaLabel": "Contact Us",
+              "location": "ANDHRA PRADESH ",
+              "description": "LOCATED ON BEACHROAD. PRIME LOCATION WITH MULTIPLE PREMIUM CBSE SCHOOLS AROUND. HIGH VALUE REAL ESTATE . SUITABLE FOR ONLY PREMIUM INTL SCHOOLS OR SPORTS . SCHOOLS. LEASE AS PER CBSE NORMS.  "
+            },
+            {
+              "type": "SALE",
+              "price": "",
+              "title": "BUILDING CONVERTABLE TO CBSE SCHOOL IN VIJAYAWADA",
+              "margin": "",
+              "rating": "4.8",
+              "ctaLink": "/contact-us",
+              "runRate": "",
+              "ctaLabel": "Contact Us",
+              "location": "ANDHRA PRADESH ",
+              "description": "A DEGREE COLLEGE BUILDING , CAN BE CONVERTED TO CBSE. 2 ACRES LAND. TENANT SHOULD TAKE UP THE RENOVATION. 20 YEAR LEASE . "
+            },
+            {
+              "type": "SALE",
+              "price": "",
+              "title": "CHENNAI : ASSIGNED LAND FOR SCHOOLS /BTS OPPORTUNITY",
+              "margin": "",
+              "rating": "4.8",
+              "ctaLink": "/contact-us",
+              "runRate": "",
+              "ctaLabel": "Contact Us",
+              "location": "CHENNAI",
+              "description": "2 ACRE LAND LOCATED NEAR PREMIUM VILLAS . INTERNATIONAL HOTELS. SEC A+ AREA. LAND OWNER IS WILLING TO BUILD TO SUIT ENGAGEMENT. LEASE NORMS AS PER CBSE TERMS. "
+            },
+            {
+              "type": "SALE",
+              "price": "",
+              "title": "REPUTED FRANCHISE SCHOOL @COASTAL AP",
+              "margin": "",
+              "rating": "4.8",
+              "ctaLink": "/contact-us",
+              "runRate": "",
+              "ctaLabel": "Contact Us",
+              "location": "ANDHRA PRADESH ",
+              "description": "8 acre land / 1.2 lkh fee / 800+ students / 1.2lakh sft built / all major sports/ swimming pool /tennis/ athletics ."
+            },
+            {
+              "type": "SALE",
+              "price": "",
+              "title": "CBSE SCHOOL IN VIZAG /SALE OR PARTNERSHIP",
+              "margin": "",
+              "rating": "4.8",
+              "ctaLink": "/contact-us",
+              "runRate": "",
+              "ctaLabel": "Contact Us",
+              "location": "ANDHRA PRADESH ",
+              "description": "5 acre land / 1-1.3 lkh fee / 400+ students / 60,000 sft built"
+            },
+            {
+              "type": "SALE",
+              "price": "",
+              "title": "CBSE SCHOOL IN PRIME CITY IN ORISSA / SALE OR PARTNER",
+              "margin": "",
+              "rating": "4.8",
+              "ctaLink": "/contact-us",
+              "runRate": "",
+              "ctaLabel": "Contact Us",
+              "location": "ODISHA",
+              "description": "4 lkh sft built / 4 blocks / 22 acres / 1600 students / 1lkh fee / partnership or sale /  can split and sell to suit the buyers budget "
+            },
+            {
+              "type": "SALE",
+              "price": "",
+              "title": " CHAIN SCHOOLS FOR SALE @ BANGALORE [ PROCESSING ]",
+              "margin": "",
+              "rating": "4.8",
+              "ctaLink": "/contact-us",
+              "runRate": "",
+              "ctaLabel": "Contact Us",
+              "location": "BANGALORE",
+              "description": "A group of reputed school brand is up for acquisition. looking for large groups or PE or fund managers to look into this super star opportunity .\n\nBUILT UP AREA\t2,75,000 SFT IN ALL\nNO OF STUDENTS\t7000+ IN ALL\nCURRICULUM\tICSE\nSEGMENT\tPRE KG TO 10TH GRADE\nFEE\t1,13,000 TO 2,20,000\nTOTAL REVENUE\t85 CRORES PER ANNUM\nBOTTOM LINE\t50 CRORESA group of reputed school brand is up for acquisition. looking for large groups or PE or fund managers to look into this super star opportunity .\n\nBUILT UP AREA\t2,75,000 SFT IN ALL\nNO OF STUDENTS\t7000+ IN ALL\nCURRICULUM\tICSE\nSEGMENT\tPRE KG TO 10TH GRADE\nFEE\t1,13,000 TO 2,20,000\nTOTAL REVENUE\t85 CRORES PER ANNUM\nBOTTOM LINE\t50 CRORES"
+            },
+            {
+              "type": "SALE",
+              "price": "",
+              "title": "CBSE school for sale in west UP",
+              "margin": "",
+              "rating": "4.8",
+              "ctaLink": "/contact-us",
+              "runRate": "",
+              "ctaLabel": "Contact Us",
+              "location": "UTTAR PRADESH",
+              "description": "Land area 4 acres  revenue 3.3 cr   no of students 1000+  built up area 50000 sft buildingG+3 "
+            },
+            {
+              "type": "SALE",
+              "price": "",
+              "title": "BUILDING CONVERTABLE TO CBSE SCHOOL IN VIJAYAWADA",
+              "margin": "",
+              "rating": "4.8",
+              "ctaLink": "/contact-us",
+              "runRate": "",
+              "ctaLabel": "Contact Us",
+              "location": "ANDHRA PRADESH ",
+              "description": "A DEGREE COLLEGE BUILDING , CAN BE CONVERTED TO CBSE. 2 ACRES LAND. TENANT SHOULD TAKE UP THE RENOVATION. 20 YEAR LEASE"
+            }
+          ]
+        },
+        "isVisible": true
+      },
+      "page_hero": {
+        "id": "7426f701-c965-4a76-8409-78ac77bef442",
+        "key": "page_hero",
+        "type": "page_hero",
+        "data": {
+          "badge": "Opportunities",
+          "subtitle": "Explore school acquisition and partnership opportunities",
+          "titleHtml": "School<br/><span class=\"text-sm-blue\">Buy & Sell</span>"
+        },
+        "isVisible": true
+      }
+    }
+  },
+  "manufacturing": {
+    "slug": "manufacturing",
+    "page": {
+      "id": "e2102f53-2457-4e5f-b644-17ad5e47e0d6",
+      "slug": "manufacturing",
+      "title": "Manufacturing",
+      "createdAt": "2026-04-12T21:54:27.574Z",
+      "updatedAt": "2026-04-13T06:52:31.510Z"
+    },
+    "blocks": {
+      "manufacturing_hero": {
+        "id": "cefc4547-1b52-4111-829a-e882b58088d3",
+        "key": "manufacturing_hero",
+        "type": "manufacturing_hero",
+        "data": {
+          "badge": "In-House Precision",
+          "images": [
+            "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=800&q=80",
+            "https://images.unsplash.com/photo-1565034946487-077786996e27?w=600&q=80"
+          ],
+          "titleHtml": "Look At <br/> <span class=\"text-[#004a8e]\">Schoolmart's</span> <br/> Manufacturing.",
+          "description": "WE TAKE PRIDE IN OUR IN-HOUSE MANUFACTURING FACILITIES, WHICH ENCOMPASS MODULAR FURNITURE MACHINERY, SOLID WOOD MANUFACTURING, METAL WORKS, AND POWDER COATING.",
+          "partnerStat": "4K+",
+          "partnerLabel": "Partner Schools"
+        },
+        "isVisible": true
+      }
+    }
+  },
+  "workshops": {
+    "slug": "workshops",
+    "page": {
+      "id": "5a73e99e-c3d0-4025-9ac6-19278f8324f2",
+      "slug": "workshops",
+      "title": "Workshops",
+      "createdAt": "2026-04-12T22:04:54.010Z",
+      "updatedAt": "2026-04-13T06:52:31.477Z"
+    },
+    "blocks": {
+      "inner_page_hero": {
+        "id": "1e846136-a71b-4758-bd82-f4afa34a2adc",
+        "key": "inner_page_hero",
+        "type": "inner_page_hero",
+        "data": {
+          "badge": "Events",
+          "subtitle": "Training and development programs for educators",
+          "titleHtml": "Professional<br/><span class=\"text-sm-blue\">Workshops</span>"
+        },
+        "isVisible": true
+      },
+      "workshops_list": {
+        "id": "b88a643d-cf6a-4997-a2d8-40a3a4da363f",
+        "key": "workshops_list",
+        "type": "workshops_list",
+        "data": {
+          "items": []
+        },
+        "isVisible": true
+      }
+    }
+  },
+  "sell-on-schoolmart": {
+    "slug": "sell-on-schoolmart",
+    "page": {
+      "id": "c2548a84-0c63-4b8e-86df-0be4d76d4a9a",
+      "slug": "sell-on-schoolmart",
+      "title": "Sell on SchoolMart",
+      "createdAt": "2026-04-12T22:04:54.023Z",
+      "updatedAt": "2026-04-12T22:04:54.023Z"
+    },
+    "blocks": {
+      "page_content": {
+        "id": "5612e380-5a99-4490-94fd-8c22cd554e43",
+        "key": "page_content",
+        "type": "page_content",
+        "data": {
+          "content": "",
+          "heading": "Sell on SchoolMart"
+        },
+        "isVisible": true
+      }
+    }
+  },
+  "catalogues": {
+    "slug": "catalogues",
+    "page": {
+      "id": "faaa1c1d-05b4-4217-92c7-bc7af3479427",
+      "slug": "catalogues",
+      "title": "Catalogues",
+      "createdAt": "2026-04-12T22:04:54.004Z",
+      "updatedAt": "2026-04-13T06:52:31.512Z"
+    },
+    "blocks": {
+      "page_hero": {
+        "id": "fcdd4fec-d75b-4d20-9225-824dcd8b9cf3",
+        "key": "page_hero",
+        "type": "page_hero",
+        "data": {
+          "badge": "Downloads",
+          "subtitle": "Download our complete product catalogues",
+          "titleHtml": "Product<br/><span class=\"text-sm-blue\">Catalogues</span>"
+        },
+        "isVisible": true
+      },
+      "pdf_resource": {
+        "id": "8f27b014-7f87-4f00-b897-f019c592a77b",
+        "key": "pdf_resource",
+        "type": "pdf_resource",
+        "data": {
+          "title": "Product Catalogue 2025",
+          "fileUrl": "",
+          "description": "Complete range of school furniture and infrastructure",
+          "registeredOnly": true
+        },
+        "isVisible": true
+      }
+    }
+  },
+  "contact-us": {
+    "slug": "contact-us",
+    "page": {
+      "id": "bb57ecee-576c-4ceb-b83c-b9a19b855023",
+      "slug": "contact-us",
+      "title": "Contact Us",
+      "createdAt": "2026-04-12T22:04:53.985Z",
+      "updatedAt": "2026-04-13T06:52:31.506Z"
+    },
+    "blocks": {
+      "page_hero": {
+        "id": "49565ca2-85fb-4c69-9251-45eeb21ada34",
+        "key": "page_hero",
+        "type": "page_hero",
+        "data": {
+          "badge": "Get in Touch",
+          "subtitle": "From architectural blueprints to furniture installations, we assist you in every step.",
+          "titleHtml": "Contact<br/><span class=\"text-sm-blue\">Us</span>"
+        },
+        "isVisible": true
+      },
+      "page_faq": {
+        "id": "71d7d5e1-6473-46c5-bca9-e4f1a46a4cde",
+        "key": "page_faq",
+        "type": "page_faq",
+        "data": {
+          "items": [],
+          "heading": "Frequently Asked Questions"
+        },
+        "isVisible": true
+      }
+    }
+  },
+  "how-it-works": {
+    "slug": "how-it-works",
+    "page": {
+      "id": "7cd96c35-0c2e-426e-81bb-a537075a2325",
+      "slug": "how-it-works",
+      "title": "How It Works",
+      "createdAt": "2026-04-12T22:04:54.016Z",
+      "updatedAt": "2026-04-13T06:52:31.484Z"
+    },
+    "blocks": {
+      "page_hero": {
+        "id": "9ff88d59-337b-4e95-890f-5fd85a5e956e",
+        "key": "page_hero",
+        "type": "page_hero",
+        "data": {
+          "badge": "Process",
+          "subtitle": "Our end-to-end school infrastructure process",
+          "titleHtml": "How It<br/><span class=\"text-sm-blue\">Works</span>"
+        },
+        "isVisible": true
+      },
+      "how_steps": {
+        "id": "d2464628-7f18-493d-b601-6424392b1ec0",
+        "key": "how_steps",
+        "type": "how_steps",
+        "data": {
+          "items": []
+        },
+        "isVisible": true
+      }
+    }
+  },
+  "pricing": {
+    "slug": "pricing",
+    "page": {
+      "id": "b891a8c8-95c3-40be-b812-7ed1412c9d1f",
+      "slug": "pricing",
+      "title": "Pricing",
+      "createdAt": "2026-04-12T22:04:54.017Z",
+      "updatedAt": "2026-04-13T06:52:31.485Z"
+    },
+    "blocks": {
+      "page_hero": {
+        "id": "77248c0f-d22c-4d2f-9b27-832b01e1691e",
+        "key": "page_hero",
+        "type": "page_hero",
+        "data": {
+          "badge": "Transparent",
+          "subtitle": "Competitive institutional pricing",
+          "titleHtml": "Our<br/><span class=\"text-sm-blue\">Pricing</span>"
+        },
+        "isVisible": true
+      },
+      "pricing_plans": {
+        "id": "d5133ff2-1718-4fe6-a41a-ce7d87a65ccd",
+        "key": "pricing_plans",
+        "type": "pricing_plans",
+        "data": {
+          "items": []
+        },
+        "isVisible": true
+      }
+    }
+  },
+  "payments": {
+    "slug": "payments",
+    "page": {
+      "id": "b8beabe2-bf64-4ac0-bded-0447ee731915",
+      "slug": "payments",
+      "title": "Payments",
+      "createdAt": "2026-04-12T22:04:54.020Z",
+      "updatedAt": "2026-04-13T06:52:31.489Z"
+    },
+    "blocks": {
+      "page_content": {
+        "id": "72073b94-a98c-411d-89cb-e41a0eadc7e0",
+        "key": "page_content",
+        "type": "page_content",
+        "data": {
+          "content": "",
+          "heading": "Payment Methods"
+        },
+        "isVisible": true
+      }
+    }
+  },
+  "shipping-policy": {
+    "slug": "shipping-policy",
+    "page": {
+      "id": "2087bc53-5978-4017-86de-8713dae38f79",
+      "slug": "shipping-policy",
+      "title": "Shipping Policy",
+      "createdAt": "2026-04-12T22:04:54.018Z",
+      "updatedAt": "2026-04-13T06:52:31.487Z"
+    },
+    "blocks": {
+      "page_content": {
+        "id": "626dc1c5-8b66-401a-91a3-6b95a27d10b5",
+        "key": "page_content",
+        "type": "page_content",
+        "data": {
+          "content": "",
+          "heading": "Shipping Policy"
+        },
+        "isVisible": true
+      }
+    }
+  },
+  "cancellation-policy": {
+    "slug": "cancellation-policy",
+    "page": {
+      "id": "c2dec11d-1bd3-4c7e-94cb-6d39bff86f59",
+      "slug": "cancellation-policy",
+      "title": "Cancellation Policy",
+      "createdAt": "2026-04-12T22:04:54.019Z",
+      "updatedAt": "2026-04-13T06:52:31.488Z"
+    },
+    "blocks": {
+      "page_content": {
+        "id": "7a007c33-2cb7-4067-9a5d-7353ea291067",
+        "key": "page_content",
+        "type": "page_content",
+        "data": {
+          "content": "",
+          "heading": "Cancellation Policy"
+        },
+        "isVisible": true
+      }
+    }
+  },
+  "replacement-return": {
+    "slug": "replacement-return",
+    "page": {
+      "id": "a15c78d6-7000-45ea-9111-0e4b62650202",
+      "slug": "replacement-return",
+      "title": "Returns & Refunds",
+      "createdAt": "2026-04-12T22:04:54.020Z",
+      "updatedAt": "2026-04-13T06:52:31.489Z"
+    },
+    "blocks": {
+      "page_content": {
+        "id": "2ef3ab9b-8dbc-4b14-8fde-251c6513ead7",
+        "key": "page_content",
+        "type": "page_content",
+        "data": {
+          "content": "",
+          "heading": "Returns & Refund Policy"
+        },
+        "isVisible": true
+      }
+    }
+  },
+  "order-rejection-policy": {
+    "slug": "order-rejection-policy",
+    "page": {
+      "id": "6c783317-cdc1-47cf-8c56-8c497b5f49e8",
+      "slug": "order-rejection-policy",
+      "title": "Order Rejection",
+      "createdAt": "2026-04-12T22:04:54.021Z",
+      "updatedAt": "2026-04-13T06:52:31.490Z"
+    },
+    "blocks": {
+      "page_content": {
+        "id": "2762494c-6666-4c1e-8e58-017b1b6c1ba5",
+        "key": "page_content",
+        "type": "page_content",
+        "data": {
+          "content": "",
+          "heading": "Order Rejection Policy"
+        },
+        "isVisible": true
+      }
+    }
+  },
+  "delivery-locations": {
+    "slug": "delivery-locations",
+    "page": {
+      "id": "e5988fe3-1f39-4963-9694-69bada32f818",
+      "slug": "delivery-locations",
+      "title": "Delivery Locations",
+      "createdAt": "2026-04-12T22:04:54.026Z",
+      "updatedAt": "2026-04-13T06:52:31.497Z"
+    },
+    "blocks": {
+      "page_content": {
+        "id": "0d67827f-34cd-4f51-ace9-26087fb4ce81",
+        "key": "page_content",
+        "type": "page_content",
+        "data": {
+          "content": "",
+          "heading": "Delivery Locations"
+        },
+        "isVisible": true
+      }
+    }
+  },
+  "report-issue": {
+    "slug": "report-issue",
+    "page": {
+      "id": "12689de5-9ff1-4a23-ac27-3510e49ac3ae",
+      "slug": "report-issue",
+      "title": "Report Issue",
+      "createdAt": "2026-04-12T22:04:54.024Z",
+      "updatedAt": "2026-04-13T06:52:31.494Z"
+    },
+    "blocks": {
+      "page_content": {
+        "id": "888c1a42-263e-4432-ab8d-22b88731319c",
+        "key": "page_content",
+        "type": "page_content",
+        "data": {
+          "content": "",
+          "heading": "Report an Issue"
+        },
+        "isVisible": true
+      }
+    }
+  },
+  "seller-help": {
+    "slug": "seller-help",
+    "page": {
+      "id": "8e0e5243-0f7d-41e7-a14e-103afaac8a7a",
+      "slug": "seller-help",
+      "title": "Seller Help",
+      "createdAt": "2026-04-12T22:04:54.022Z",
+      "updatedAt": "2026-04-13T06:52:31.492Z"
+    },
+    "blocks": {
+      "page_content": {
+        "id": "63e24015-7e0d-4135-9f10-39a49a1dcdb0",
+        "key": "page_content",
+        "type": "page_content",
+        "data": {
+          "content": "",
+          "heading": "Seller Help Center"
+        },
+        "isVisible": true
+      }
+    }
+  }
+}

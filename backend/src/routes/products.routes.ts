@@ -1,0 +1,535 @@
+import { Router, Request, Response } from 'express';
+import prisma from '../lib/prisma';
+import { verifyToken, requireAdmin, optionalAuth, AuthRequest } from '../middleware/auth.middleware';
+import { uploadImage } from '../middleware/upload.middleware';
+import path from 'path';
+
+const router = Router();
+export const CATEGORY_PAGES = new Set(['furniture', 'libraries', 'labs', 'sports', 'ai-ml', 'tech-infra', 'renovation']);
+
+export async function isValidCategoryPage(page: string): Promise<boolean> {
+    if (!page || typeof page !== 'string') return false;
+    const normalized = page.trim().toLowerCase();
+    if (CATEGORY_PAGES.has(normalized)) return true;
+    try {
+        const pageExists = await prisma.page.findUnique({
+            where: { slug: page },
+            select: { id: true }
+        });
+        return Boolean(pageExists);
+    } catch {
+        return false;
+    }
+}
+
+
+// GET /api/products
+router.get('/', optionalAuth, async (req: AuthRequest, res: Response) => {
+    try {
+        const { category, search, featured, sort = 'newest', page = '1', limit, active, inStock, minPrice, maxPrice } = req.query;
+        const isAdmin = req.user?.role === 'admin';
+        const pageNum = Math.max(1, Number(page) || 1);
+        const defaultLimit = isAdmin ? 12 : 20;
+        const limitNum = Math.min(100, Math.max(1, Number(limit) || defaultLimit));
+        const skip = (pageNum - 1) * limitNum;
+        const where: Record<string, unknown> = {};
+
+        // Active filter: Only admins can view inactive or all products. Public users always receive active: true.
+        if (isAdmin && active === 'all') {
+            // No active constraint
+        } else if (isAdmin && active === 'false') {
+            where.active = false;
+        } else {
+            where.active = true;
+        }
+
+        const storePage = String(req.query.storePage || req.query.categoryPage || '').trim();
+        if (storePage && storePage !== 'all') {
+            where.category = {
+                ...(where.category as any || {}),
+                page: storePage
+            };
+        }
+
+        if (category && category !== 'all') {
+            const catStr = String(category).trim();
+            if (/^\d+$/.test(catStr)) {
+                where.categoryId = Number(catStr);
+            } else {
+                const categorySlugs = catStr.split(',').map((slug) => slug.trim().toLowerCase()).filter(Boolean);
+                if (categorySlugs.length === 1) {
+                    where.category = {
+                        ...(where.category as any || {}),
+                        slug: categorySlugs[0]
+                    };
+                } else if (categorySlugs.length > 1) {
+                    where.category = {
+                        ...(where.category as any || {}),
+                        slug: { in: categorySlugs }
+                    };
+                }
+            }
+        }
+
+        if (search) {
+            const q = String(search).trim();
+            where.OR = [
+                { name: { contains: q, mode: 'insensitive' } },
+                { description: { contains: q, mode: 'insensitive' } },
+                { sku: { contains: q, mode: 'insensitive' } },
+            ];
+        }
+
+        if (featured === 'true') where.featured = true;
+
+        if (inStock === 'true') {
+            where.stock = { gt: 0 };
+        }
+
+        if (minPrice || maxPrice) {
+            const priceFilter: { gte?: number; lte?: number } = {};
+            if (minPrice && !isNaN(Number(minPrice))) priceFilter.gte = Number(minPrice);
+            if (maxPrice && !isNaN(Number(maxPrice))) priceFilter.lte = Number(maxPrice);
+            where.price = priceFilter;
+        }
+
+        const orderBy = sort === 'price-asc'
+            ? { price: 'asc' as const }
+            : sort === 'price-desc'
+                ? { price: 'desc' as const }
+                : sort === 'name-asc'
+                    ? { name: 'asc' as const }
+                    : sort === 'popularity'
+                        ? { reviewCount: 'desc' as const }
+                        : { createdAt: 'desc' as const };
+
+        const isLean = !isAdmin && active !== 'all';
+        const queryOptions: any = { where, skip, take: limitNum, orderBy };
+
+        if (isLean) {
+            queryOptions.select = {
+                id: true,
+                name: true,
+                slug: true,
+                price: true,
+                imageUrl: true,
+                stock: true,
+                rating: true,
+                reviewCount: true,
+                category: { select: { id: true, name: true, slug: true } },
+            };
+        } else {
+            queryOptions.include = { category: true };
+        }
+
+        const [products, total, activeGroups] = await Promise.all([
+            prisma.product.findMany(queryOptions),
+            prisma.product.count({ where }),
+            isAdmin ? prisma.product.groupBy({
+                by: ['active'],
+                _count: { _all: true },
+            }) : Promise.resolve([]),
+        ]);
+        const totalPages = Math.ceil(total / limitNum) || 1;
+
+        let counts: { all: number; active: number; inactive: number } | undefined;
+        if (isAdmin) {
+            let activeCount = 0;
+            let inactiveCount = 0;
+            for (const g of activeGroups) {
+                if (g.active) activeCount = g._count._all;
+                else inactiveCount = g._count._all;
+            }
+            counts = {
+                all: activeCount + inactiveCount,
+                active: activeCount,
+                inactive: inactiveCount,
+            };
+        }
+
+        if (isLean) {
+            res.setHeader('Cache-Control', 'public, max-age=60, s-maxage=120, stale-while-revalidate=300');
+        }
+
+        res.json({ products, total, page: pageNum, limit: limitNum, totalPages, counts });
+    } catch (err) {
+        console.error('Failed to fetch products:', err);
+        res.status(500).json({ error: 'An unexpected internal error occurred. Please try again later.' });
+    }
+});
+
+// GET /api/products/categories
+router.get('/categories', optionalAuth, async (req: AuthRequest, res: Response) => {
+    try {
+        const page = String(req.query.page || '').trim();
+        const isAdmin = req.user?.role === 'admin';
+        const categories = await prisma.category.findMany({
+            where: page ? { page } : undefined,
+            orderBy: [{ page: 'asc' }, { name: 'asc' }],
+            include: {
+                _count: {
+                    select: {
+                        product: isAdmin ? true : { where: { active: true } },
+                    },
+                },
+            },
+        });
+        if (!isAdmin && !req.query._t) {
+            res.setHeader('Cache-Control', 'public, max-age=60, s-maxage=120, stale-while-revalidate=300');
+        } else {
+            res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
+        }
+        res.json(categories.map(({ _count, ...category }) => ({ ...category, _count: { products: _count.product } })));
+    } catch (err) {
+        console.error('Failed to fetch categories:', err);
+        res.status(500).json({ error: 'An unexpected internal error occurred. Please try again later.' });
+    }
+});
+
+// POST /api/products/categories (admin)
+router.post('/categories', verifyToken, requireAdmin, async (req: AuthRequest, res: Response) => {
+    try {
+        const { name, slug, page } = req.body;
+        const validPage = await isValidCategoryPage(page);
+        if (!name || !page || !validPage) {
+            return res.status(400).json({ error: 'Category name and a valid page are required' });
+        }
+        const finalSlug = (slug || name).toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+        const category = await prisma.category.create({
+            data: { name: name.trim(), slug: finalSlug, page }
+        });
+        res.status(201).json(category);
+    } catch (err: any) {
+        if (err?.code === 'P2002') {
+            return res.status(409).json({ error: 'A category with this slug already exists' });
+        }
+        console.error('Failed to create category:', err);
+        res.status(500).json({ error: 'An unexpected internal error occurred. Please try again later.' });
+    }
+});
+
+// PUT /api/products/categories/:id (admin)
+router.put('/categories/:id', verifyToken, requireAdmin, async (req: AuthRequest, res: Response) => {
+    try {
+        const { name, slug, page } = req.body;
+        if (page !== undefined) {
+            const validPage = await isValidCategoryPage(page);
+            if (!validPage) {
+                return res.status(400).json({ error: 'Invalid category page' });
+            }
+        }
+        const updateData: Record<string, unknown> = {};
+        if (name) updateData.name = name.trim();
+        if (slug) updateData.slug = slug.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+        if (page) updateData.page = page;
+
+        const category = await prisma.category.update({
+            where: { id: Number(req.params.id) },
+            data: updateData
+        });
+        res.json(category);
+    } catch (err: any) {
+        if (err?.code === 'P2002') {
+            return res.status(409).json({ error: 'A category with this slug already exists' });
+        }
+        console.error('Failed to update category:', err);
+        res.status(500).json({ error: 'An unexpected internal error occurred. Please try again later.' });
+    }
+});
+
+// DELETE /api/products/categories/:id (admin)
+router.delete('/categories/:id', verifyToken, requireAdmin, async (req: AuthRequest, res: Response) => {
+    try {
+        const id = Number(req.params.id);
+        if (!Number.isInteger(id) || id <= 0) {
+            return res.status(400).json({ error: 'Invalid category id' });
+        }
+
+        await prisma.$transaction(async (tx) => {
+            const category = await tx.category.findUnique({
+                where: { id },
+                select: { id: true, _count: { select: { product: true } } },
+            });
+            if (!category) {
+                throw new Error('Category not found');
+            }
+            // Deleting a category that still has products would either violate the
+            // product-category foreign key or (previously) silently spawn a fresh
+            // "Uncategorized" category on every delete. Require the admin to move or
+            // delete those products first, so a delete either removes the category
+            // for good or fails with a clear reason.
+            if (category._count.product > 0) {
+                throw new Error(`Cannot delete: ${category._count.product} product(s) still use this category. Move or delete them first.`);
+            }
+            await tx.category.delete({ where: { id } });
+        });
+        res.json({ message: 'Category deleted' });
+    } catch (err: any) {
+        const message = err?.message || '';
+        if (message === 'Category not found') {
+            return res.status(404).json({ error: 'Category not found' });
+        }
+        if (message.startsWith('Cannot delete')) {
+            return res.status(409).json({ error: message });
+        }
+        console.error('Failed to delete category:', err);
+        res.status(500).json({ error: 'An unexpected internal error occurred. Please try again later.' });
+    }
+});
+
+// POST /api/products/bulk (admin)
+router.post('/bulk', verifyToken, requireAdmin, async (req: AuthRequest, res: Response) => {
+    try {
+        const { products, categoryId } = req.body;
+        
+        if (!Array.isArray(products)) {
+            return res.status(400).json({ error: 'Products must be an array' });
+        }
+
+        const results = await Promise.all(products.map(async (p: any) => {
+            const slug = p.slug || p.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+            
+            // If categoryId is provided in body, use it. Otherwise try to find category by slug if available in product data
+            let targetCategoryId = categoryId;
+            if (!targetCategoryId && p.categorySlug) {
+                let cat = await prisma.category.findUnique({ where: { slug: p.categorySlug } });
+                if (!cat) {
+                    // Create category on-the-fly when processing bulk uploads so CSVs using new category names still import.
+                    const name = String(p.categorySlug).split('-').map(s => s.charAt(0).toUpperCase() + s.slice(1)).join(' ');
+                    try {
+                        cat = await prisma.category.create({ data: { name, slug: p.categorySlug } });
+                    } catch (e) {
+                        // Race or constraint error: try to find again
+                        cat = await prisma.category.findUnique({ where: { slug: p.categorySlug } });
+                    }
+                }
+                if (cat) targetCategoryId = cat.id;
+            }
+
+            if (!targetCategoryId) {
+                throw new Error(`Category not found for product: ${p.name}`);
+            }
+
+            // Auto-generate SKU from Slug if empty
+            const finalSku = p.sku && p.sku.trim() !== '' ? p.sku.trim() : slug.toUpperCase();
+
+            // Fallback massage for Bulk string lists to JSON
+            let formattedImages = p.images || null;
+            if (formattedImages && typeof formattedImages === 'string' && !formattedImages.trim().startsWith('[')) {
+                formattedImages = JSON.stringify(formattedImages.split(',').map((s: string) => s.trim()).filter(Boolean));
+            }
+
+            let formattedSpecs = p.specifications || null;
+            if (formattedSpecs && typeof formattedSpecs === 'string' && !formattedSpecs.trim().startsWith('{')) {
+                const obj: Record<string, string> = {};
+                const rows = formattedSpecs.includes('\n') ? formattedSpecs.split('\n') : formattedSpecs.split(';');
+                rows.forEach((line: string) => {
+                    const parts = line.split(':');
+                    if (parts.length >= 2) {
+                        const key = parts[0].trim();
+                        const value = parts.slice(1).join(':').trim();
+                        if (key) obj[key] = value;
+                    }
+                });
+                // Defensive fallback: If no colons were found, save it as a "Details" row instead of empty object
+                if (Object.keys(obj).length === 0 && formattedSpecs.trim() !== '') {
+                    obj['Details'] = formattedSpecs.trim();
+                }
+                formattedSpecs = JSON.stringify(obj);
+            }
+
+            return prisma.product.upsert({
+                where: { slug },
+                update: {
+                    name: p.name,
+                    sku: finalSku,
+                    description: p.description,
+                    price: Number(p.price),
+                    categoryId: Number(targetCategoryId),
+                    imageUrl: p.imageUrl,
+                    images: formattedImages,
+                    specifications: formattedSpecs,
+                    rating: Number(p.rating) || 0,
+                    reviewCount: Number(p.reviewCount) || 0,
+                    stock: p.stock !== undefined && p.stock !== '' && !isNaN(Number(p.stock)) && Number(p.stock) > 0 ? Math.max(1, parseInt(String(p.stock), 10)) : 1,
+                    active: p.active !== 'false' && p.active !== false,
+                    featured: p.featured === 'true' || p.featured === true
+                },
+                create: {
+                    name: p.name,
+                    slug,
+                    sku: finalSku,
+                    description: p.description,
+                    price: Number(p.price),
+                    categoryId: Number(targetCategoryId),
+                    imageUrl: p.imageUrl,
+                    images: formattedImages,
+                    specifications: formattedSpecs,
+                    rating: Number(p.rating) || 0,
+                    reviewCount: Number(p.reviewCount) || 0,
+                    stock: p.stock !== undefined && p.stock !== '' && !isNaN(Number(p.stock)) && Number(p.stock) > 0 ? Math.max(1, parseInt(String(p.stock), 10)) : 1,
+                    active: p.active !== 'false' && p.active !== false,
+                    featured: p.featured === 'true' || p.featured === true
+                }
+            });
+        }));
+
+        res.json({ message: `Successfully processed ${results.length} products`, count: results.length });
+    } catch (err: any) {
+        console.error('Failed to bulk-load products:', err);
+        res.status(500).json({ error: 'An unexpected internal error occurred. Please try again later.' });
+    }
+});
+
+// GET /api/products/:id
+router.get('/:id', optionalAuth, async (req: AuthRequest, res: Response) => {
+    try {
+        const isAdmin = req.user?.role === 'admin';
+        const product = await prisma.product.findFirst({
+            where: {
+                OR: [{ id: Number(req.params.id) || 0 }, { slug: String(req.params.id) }],
+                ...(isAdmin ? {} : { active: true }),
+            },
+            include: { category: true },
+        });
+        if (!product) { res.status(404).json({ error: 'Product not found' }); return; }
+        res.json(product);
+    } catch (err) {
+        console.error('Failed to fetch product:', err);
+        res.status(500).json({ error: 'An unexpected internal error occurred. Please try again later.' });
+    }
+});
+
+// POST /api/products (admin)
+router.post('/', verifyToken, requireAdmin, uploadImage.single('image'), async (req: AuthRequest, res: Response) => {
+    try {
+        const { name, description, price, categoryId, rating, reviewCount, stock, active, featured, sku, images, specifications } = req.body;
+        
+        // Strict production validation
+        if (!name || !String(name).trim()) {
+            res.status(400).json({ error: 'Product name is required' });
+            return;
+        }
+        if (!categoryId || isNaN(Number(categoryId))) {
+            res.status(400).json({ error: 'Valid category selection is required' });
+            return;
+        }
+        if (price === undefined || price === null || price === '' || isNaN(Number(price)) || Number(price) <= 0) {
+            res.status(400).json({ error: 'Listing price must be a valid number greater than 0' });
+            return;
+        }
+        // B2B Direct Model: Stock is optional and defaulted to 1 behind the scenes
+        const numericStock = (stock !== undefined && stock !== null && stock !== '' && !isNaN(Number(stock)))
+            ? Math.max(1, parseInt(String(stock), 10))
+            : 1;
+        const slug = name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+        const finalSku = sku && sku.trim() !== '' ? sku.trim() : slug.toUpperCase();
+        const imageUrl = req.file ? `/uploads/images/${req.file.filename}` : req.body.imageUrl;
+        const product = await prisma.product.create({
+            data: {
+                name: name.trim(), slug, sku: finalSku, description: description || null, price: Number(price), categoryId: Number(categoryId),
+                imageUrl: imageUrl || null, images: images || null, specifications: specifications || null,
+                rating: Number(rating) || 0, reviewCount: Number(reviewCount) || 0,
+                stock: numericStock, active: active !== 'false' && active !== false, featured: featured === 'true' || featured === true,
+            },
+            include: { category: true },
+        });
+        res.status(201).json(product);
+    } catch (err: unknown) {
+        if ((err as any)?.code === 'P2002') {
+            res.status(409).json({ error: 'A product with this name, slug, or SKU already exists' });
+            return;
+        }
+        console.error('Failed to create product:', err);
+        res.status(500).json({ error: 'An unexpected internal error occurred. Please try again later.' });
+    }
+});
+
+// PUT /api/products/:id (admin)
+router.put('/:id', verifyToken, requireAdmin, uploadImage.single('image'), async (req: AuthRequest, res: Response) => {
+    try {
+        const { name, description, price, categoryId, rating, reviewCount, stock, active, featured, imageUrl: bodyImageUrl, sku, images, specifications } = req.body;
+        
+        // Strict validation on fields when provided
+        if (name !== undefined && !String(name).trim()) {
+            res.status(400).json({ error: 'Product name cannot be empty' });
+            return;
+        }
+        if (price !== undefined && price !== '' && (isNaN(Number(price)) || Number(price) <= 0)) {
+            res.status(400).json({ error: 'Listing price must be greater than 0' });
+            return;
+        }
+        if (stock !== undefined && stock !== '' && (isNaN(Number(stock)) || Number(stock) < 0)) {
+            res.status(400).json({ error: 'Units in stock must be 0 or greater' });
+            return;
+        }
+        if (categoryId !== undefined && categoryId !== '' && (isNaN(Number(categoryId)) || Number(categoryId) <= 0)) {
+            res.status(400).json({ error: 'Valid category selection is required' });
+            return;
+        }
+
+        const imageUrl = req.file ? `/uploads/images/${req.file.filename}` : bodyImageUrl;
+        const updateData: Record<string, unknown> = {};
+
+        if (description !== undefined) updateData.description = description || null;
+        if (price !== undefined && price !== '') updateData.price = Number(price);
+        if (categoryId !== undefined && categoryId !== '') updateData.categoryId = Number(categoryId);
+        if (rating !== undefined && rating !== '') updateData.rating = Number(rating);
+        if (reviewCount !== undefined && reviewCount !== '') updateData.reviewCount = Number(reviewCount);
+        if (stock !== undefined && stock !== '' && !isNaN(Number(stock))) {
+            updateData.stock = Math.max(1, parseInt(String(stock), 10));
+        }
+        if (active !== undefined) updateData.active = active !== 'false' && active !== false;
+        if (featured !== undefined) updateData.featured = featured === 'true' || featured === true;
+        if (sku !== undefined) updateData.sku = sku || null;
+        if (images !== undefined) updateData.images = images || null;
+        if (specifications !== undefined) updateData.specifications = specifications || null;
+        
+        if (name) {
+            updateData.name = name.trim();
+            updateData.slug = name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+        }
+        if (imageUrl) updateData.imageUrl = imageUrl;
+        const product = await prisma.product.update({
+            where: { id: Number(req.params.id) },
+            data: updateData,
+            include: { category: true },
+        });
+        res.json(product);
+    } catch (err: unknown) {
+        if ((err as any)?.code === 'P2002') {
+            res.status(409).json({ error: 'A product with this name, slug, or SKU already exists' });
+            return;
+        }
+        console.error('Failed to update product:', err);
+        res.status(500).json({ error: 'An unexpected internal error occurred. Please try again later.' });
+    }
+});
+
+// DELETE /api/products/:id (admin deactivate)
+router.delete('/:id', verifyToken, requireAdmin, async (req: AuthRequest, res: Response) => {
+    try {
+        const product = await prisma.product.update({ where: { id: Number(req.params.id) }, data: { active: false } });
+        res.json({ message: 'Product deactivated', product });
+    } catch (err) {
+        console.error('Failed to delete product:', err);
+        res.status(500).json({ error: 'An unexpected internal error occurred. Please try again later.' });
+    }
+});
+
+// PATCH /api/products/:id/restore (admin reactivate)
+router.patch('/:id/restore', verifyToken, requireAdmin, async (req: AuthRequest, res: Response) => {
+    try {
+        const product = await prisma.product.update({
+            where: { id: Number(req.params.id) },
+            data: { active: true },
+            include: { category: true }
+        });
+        res.json({ message: 'Product reactivated', product });
+    } catch (err) {
+        console.error('Failed to reactivate product:', err);
+        res.status(500).json({ error: 'An unexpected internal error occurred. Please try again later.' });
+    }
+});
+
+export default router;

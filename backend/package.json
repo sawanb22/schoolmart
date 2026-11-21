@@ -1,0 +1,52 @@
+{
+  "name": "schoolmart-backend",
+  "version": "1.0.0",
+  "description": "SchoolMart Backend API",
+  "main": "dist/index.js",
+  "scripts": {
+    "predev": "npx prisma generate",
+    "dev": "ts-node-dev --respawn --transpile-only src/index.ts",
+    "build": "prisma generate && tsc",
+    "postinstall": "npx prisma generate",
+    "start": "node dist/index.js",
+    "db:migrate": "npx prisma migrate dev --name init",
+    "db:seed": "npx ts-node --transpile-only prisma/seed.ts",
+    "db:export": "node scripts/export-database.js",
+    "db:restore": "node scripts/restore-database.js",
+    "db:reset": "npx prisma migrate reset --force",
+    "db:studio": "npx prisma studio",
+    "db:generate": "npx prisma generate"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "prisma": {
+    "seed": "ts-node-dev --transpile-only prisma/seed.ts"
+  },
+  "dependencies": {
+    "@prisma/client": "^6.19.2",
+    "@types/bcryptjs": "^2.4.6",
+    "@types/cors": "^2.8.19",
+    "@types/express": "^5.0.6",
+    "@types/jsonwebtoken": "^9.0.10",
+    "@types/multer": "^2.0.0",
+    "@types/node": "^25.3.2",
+    "@types/nodemailer": "^7.0.11",
+    "bcryptjs": "^3.0.3",
+    "cors": "^2.8.6",
+    "dotenv": "^17.3.1",
+    "express": "^5.2.1",
+    "express-rate-limit": "^8.2.1",
+    "helmet": "^8.1.0",
+    "jsonwebtoken": "^9.0.3",
+    "multer": "^2.1.0",
+    "nodemailer": "^8.0.1",
+    "openai": "^4.52.0",
+    "prisma": "^6.19.2",
+    "puppeteer-core": "^25.18.1",
+    "typescript": "^5.9.3"
+  },
+  "devDependencies": {
+    "ts-node-dev": "^2.0.0"
+  }
+}

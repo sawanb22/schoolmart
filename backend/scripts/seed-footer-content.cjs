@@ -1,0 +1,177 @@
+/**
+ * Dynamic Footer Content Seed & Migration Script
+ * Upserts key: 'footer_settings' in sitecontent table via PrismaClient
+ * and generates standalone SQL script for production deployment.
+ */
+
+const { PrismaClient } = require('@prisma/client');
+const fs = require('fs');
+const path = require('path');
+
+const DEFAULT_FOOTER_SETTINGS = {
+  aboutText: "campusmart.in is a consortium of architects, designers, and campus innovators who strive to bring learning outcomes through the latest infrastructure and edtech.",
+  aboutLinks: [
+    { label: 'How it works', href: '/how-it-works' },
+    { label: 'Brand Help', href: '/brand-help' },
+    { label: 'Sell on campusmart', href: '/sell-on-campusmart' },
+  ],
+  businessLinks: [
+    { label: 'About Us', href: '/about-us' },
+    { label: 'Careers & Job Openings', href: '/job-openings' },
+    { label: 'Contact Us', href: '/contact-us' },
+    { label: 'FAQs', href: '/faq' },
+    { label: 'Report Issue', href: '/contact-us' },
+    { label: 'Blog', href: '/blog' },
+    { label: 'Delivery Locations', href: '/contact-us' },
+  ],
+  categories: [
+    {
+      title: 'Furniture',
+      items: [
+        { label: 'Primary & High School', href: '/furniture' },
+        { label: 'Kindergarten', href: '/furniture' },
+        { label: 'Office Furniture', href: '/furniture' },
+        { label: 'Hostel Furniture', href: '/furniture' },
+        { label: 'Premium Furniture', href: '/furniture' },
+      ],
+    },
+    {
+      title: 'Labs & Libraries',
+      items: [
+        { label: 'Chemistry Labs', href: '/labs' },
+        { label: 'Biology Lab', href: '/labs' },
+        { label: 'STEM Labs', href: '/labs' },
+        { label: 'Computer Labs', href: '/labs' },
+        { label: 'Library', href: '/libraries' },
+      ],
+    },
+    {
+      title: 'Sports',
+      items: [
+        { label: 'Sports Surfaces', href: '/sports-infra' },
+        { label: 'Water Surfaces', href: '/sports-infra' },
+      ],
+    },
+    {
+      title: 'Technology',
+      items: [
+        { label: 'Interactive Boards', href: '/tech-infra' },
+        { label: 'School Management', href: '/campus-automation' },
+        { label: 'Tablets', href: '/tech-infra' },
+        { label: 'COVID Ready Products', href: '/tech-infra' },
+      ],
+    },
+  ],
+  brands: [
+    { label: 'European Educational Group', href: '/shop' },
+    { label: 'MAXHUB', href: '/shop' },
+    { label: 'Nike', href: '/shop' },
+    { label: 'ViewSonic', href: '/shop' },
+    { label: 'Kidken', href: '/shop' },
+    { label: 'Little Tikes', href: '/shop' },
+    { label: 'ButterflyFields', href: '/shop' },
+    { label: 'ALTOP', href: '/shop' },
+  ],
+  trending: [
+    { label: 'NEP Ready Ultra Modern Labs', href: '/labs' },
+    { label: 'STEM Lab Design', href: '/labs' },
+    { label: 'Futuristic School Architecture', href: '/campus-design' },
+    { label: 'Digitisation of Entire Campus', href: '/digital-transformation' },
+    { label: 'Smart STEM Labs Design', href: '/labs' },
+    { label: 'Interactive Math Walls', href: '/tech-infra' },
+    { label: 'AR/VR Content', href: '/digital-transformation' },
+    { label: 'Digital Math Simulations', href: '/digital-transformation' },
+  ],
+  copyright: "© 2016-2025, Third Eye Retail Pvt. Ltd.",
+  policyLinks: [
+    { label: 'Replacement & Return', href: '/replacement-return' },
+    { label: 'Order Rejection', href: '/order-rejection' },
+    { label: 'Payment Policy', href: '/payment-policy' },
+    { label: 'Privacy Policy', href: '/privacy-policy' },
+    { label: 'Terms of Use', href: '/terms-of-use' },
+  ],
+};
+
+function generateSqlFile() {
+  const sqlPath = path.join(__dirname, 'seed-footer-content.sql');
+  const jsonString = JSON.stringify(DEFAULT_FOOTER_SETTINGS);
+  const escapedJson = jsonString.replace(/'/g, "''");
+
+  const sqlContent = `-- ======================================================================================
+-- Dynamic Footer Settings Seed / Migration Script
+-- Target Database: ideascom_campusmart (PostgreSQL on cPanel / Render / Neon)
+-- Table: sitecontent
+-- Key: footer_settings
+-- ======================================================================================
+
+-- PostgreSQL Upsert Syntax (Primary for CampusMart production):
+INSERT INTO "sitecontent" ("key", "value", "updatedAt")
+VALUES (
+  'footer_settings',
+  '${escapedJson}',
+  NOW()
+)
+ON CONFLICT ("key") DO UPDATE
+SET "value" = EXCLUDED."value",
+    "updatedAt" = EXCLUDED."updatedAt";
+
+-- MySQL / MariaDB Upsert Alternative (if running on standard cPanel MySQL / phpMyAdmin):
+-- INSERT INTO \`sitecontent\` (\`key\`, \`value\`, \`updatedAt\`)
+-- VALUES (
+--   'footer_settings',
+--   '${escapedJson}',
+--   NOW()
+-- )
+-- ON DUPLICATE KEY UPDATE
+--   \`value\` = VALUES(\`value\`),
+--   \`updatedAt\` = NOW();
+`;
+
+  fs.writeFileSync(sqlPath, sqlContent, 'utf8');
+  console.log('✅ Generated standalone SQL script at:', sqlPath);
+  return sqlPath;
+}
+
+async function main() {
+  console.log('--- Generating standalone seed-footer-content.sql script ---');
+  generateSqlFile();
+
+  console.log('--- Seeding footer_settings into database via Prisma ---');
+  const prisma = new PrismaClient();
+  try {
+    const value = JSON.stringify(DEFAULT_FOOTER_SETTINGS);
+    const result = await prisma.siteContent.upsert({
+      where: { key: 'footer_settings' },
+      update: { value },
+      create: { key: 'footer_settings', value },
+    });
+    console.log(`✅ Successfully seeded footer_settings into database (Record ID: ${result.id})`);
+  } catch (err) {
+    console.warn(`⚠️ Notice: Could not connect to remote/local database via Prisma: ${err.message}`);
+    console.log(`ℹ️ The standalone SQL migration file 'backend/scripts/seed-footer-content.sql' has been created and can be executed directly in cPanel phpMyAdmin / psql.`);
+  } finally {
+    try {
+      await prisma.$disconnect();
+    } catch {
+      // Ignore disconnect errors
+    }
+  }
+}
+
+if (require.main === module) {
+  main()
+    .then(() => {
+      console.log('✅ Seed execution completed.');
+      process.exit(0);
+    })
+    .catch((err) => {
+      console.error('Fatal error during seed execution:', err);
+      process.exit(1);
+    });
+}
+
+module.exports = {
+  DEFAULT_FOOTER_SETTINGS,
+  generateSqlFile,
+  main,
+};

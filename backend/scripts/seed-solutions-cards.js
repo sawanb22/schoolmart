@@ -1,0 +1,256 @@
+const { PrismaClient } = require('@prisma/client');
+const prisma = new PrismaClient();
+
+const INITIAL_TAXONOMY = {
+  categories: [
+    { id: 'campus-design', label: 'Campus Design & Architecture', shortLabel: 'Campus Design', letterCode: 'A', iconName: 'Compass' },
+    { id: 'furniture', label: 'Furniture & Ergonomics', shortLabel: 'Furniture', letterCode: 'B', iconName: 'Armchair' },
+    { id: 'sports-infra', label: 'Sports Infrastructure', shortLabel: 'Sports Infra', letterCode: 'C', iconName: 'Trophy' },
+    { id: 'ai-tech', label: 'AI & Technology Infrastructure', shortLabel: 'AI & Tech', letterCode: 'D', iconName: 'Cpu' },
+    { id: 'renovation', label: 'Renovation & Modernisation', shortLabel: 'Renovation', letterCode: 'E', iconName: 'Wrench' },
+    { id: 'libraries', label: 'Libraries & Knowledge Centers', shortLabel: 'Libraries', letterCode: 'F', iconName: 'BookOpen' },
+    { id: 'labs', label: 'Laboratories & Research Infrastructure', shortLabel: 'Laboratories', letterCode: 'G', iconName: 'FlaskConical' },
+    { id: 'hr-placements', label: 'HR, Placements & Corporate Ties', shortLabel: 'HR & Placements', letterCode: 'H', iconName: 'Briefcase' },
+    { id: 'innovation', label: 'Innovation & Incubation Hubs', shortLabel: 'Innovation', letterCode: 'I', iconName: 'Lightbulb' },
+    { id: 'additional-infra', label: 'Additional Campus Amenities', shortLabel: 'Campus Amenities', letterCode: 'J', iconName: 'Building' },
+  ],
+  institutions: [
+    { id: 'all', label: 'All Educational Institutions', shortLabel: 'All' },
+    { id: 'universities', label: 'Universities (State & Private)', shortLabel: 'Universities' },
+    { id: 'engineering', label: 'Engineering & Technical Colleges', shortLabel: 'Engineering' },
+    { id: 'degree', label: 'Degree & Management Colleges', shortLabel: 'Degree Colleges' },
+    { id: 'vocational', label: 'Vocational & Polytechnic Institutes', shortLabel: 'Vocational' },
+    { id: 'skill', label: 'Skill Development & Training Centers', shortLabel: 'Skill Centers' },
+  ],
+  popularSearchPrompts: [
+    '25-acre campus master plan with modern sports arena',
+    'Turnkey AI and GPU research cluster for 500 students',
+    'Classroom furniture and digital smart boards for engineering college',
+    'Automated digital library with RFID self-checkout kiosks',
+    'Upgrading 15-year old academic buildings and labs',
+  ],
+};
+
+const INITIAL_CARDS = [
+  {
+    cardSlug: 'turnkey-campus-master-planning',
+    targetSlug: 'campus-master-planning',
+    categorySlug: 'campus-design',
+    secondaryCategorySlugs: ['renovation'],
+    title: 'Turnkey Campus Master Planning & Architectural Execution',
+    summary: 'Comprehensive 25-100 acre institutional master planning, structural architecture, zoning, and phased campus civil execution.',
+    inclusions: ['Zoning & Phased Master Plan', '3D Architectural Renders & CAD', 'Turnkey Construction Supervision'],
+    badge: 'Turnkey Suite',
+    imageUrl: '/uploads/media/1b61f37e89db691d071c5adec8db1264.jpg',
+    keywords: ['master planning', 'architecture', 'civil', 'campus layout', 'building', 'land development'],
+    institutionTypes: ['universities', 'engineering', 'degree', 'all'],
+    relatedCardSlugs: ['campus-renovation-modernisation', 'turnkey-sports-infrastructure'],
+    priority: 100,
+    active: true,
+  },
+  {
+    cardSlug: 'campus-renovation-modernisation',
+    targetSlug: 'campus-design-execution',
+    categorySlug: 'renovation',
+    secondaryCategorySlugs: ['campus-design'],
+    title: 'Campus Structural Modernisation & Academic Renovation',
+    summary: 'Upgrading existing academic buildings, retrofitting outdated facilities with modern acoustics, lighting, and energy-efficient infrastructure.',
+    inclusions: ['Structural Facility Audit', 'Phased Building Modernisation', 'Acoustic & Energy Retrofits'],
+    badge: 'Fast Track',
+    imageUrl: '/uploads/media/re1.jpeg',
+    keywords: ['renovation', 'upgrade', 'modernisation', 'retrofitting', 'infrastructure upgrade', 'facade'],
+    institutionTypes: ['universities', 'engineering', 'degree', 'all'],
+    relatedCardSlugs: ['turnkey-campus-master-planning', 'modular-campus-furniture'],
+    priority: 90,
+    active: true,
+  },
+  {
+    cardSlug: 'modular-campus-furniture',
+    targetSlug: 'furniture',
+    categorySlug: 'furniture',
+    secondaryCategorySlugs: ['libraries'],
+    title: 'Institutional Classrooms & Ergonomic Campus Furniture',
+    summary: 'Heavy-duty modular classroom desks, ergonomic auditorium seating, and flexible collaborative work tables built for high-traffic institutions.',
+    inclusions: ['Modular Classroom Desks', 'Tiered Auditorium Seating', 'Faculty & Executive Desks'],
+    badge: 'High Demand',
+    imageUrl: 'https://images.unsplash.com/photo-1580582932707-520aed937b7b?auto=format&fit=crop&w=800&q=80',
+    keywords: ['furniture', 'desks', 'benches', 'chairs', 'classroom seating', 'auditorium chairs'],
+    institutionTypes: ['engineering', 'universities', 'degree', 'vocational', 'all'],
+    relatedCardSlugs: ['nextgen-smart-classrooms', 'turnkey-digital-knowledge-hub'],
+    priority: 95,
+    active: true,
+  },
+  {
+    cardSlug: 'turnkey-sports-infrastructure',
+    targetSlug: 'sports-infra',
+    categorySlug: 'sports-infra',
+    secondaryCategorySlugs: ['campus-design'],
+    title: 'Turnkey Outdoor & Indoor Campus Sports Infrastructure',
+    summary: 'Olympic-specification synthetic running tracks, multi-sport indoor courts, football turf, and floodlight illumination systems.',
+    inclusions: ['Synthetic Athletic Running Tracks', 'Multi-Sport Wooden Indoor Courts', 'FIFA-Standard Turf & Lighting'],
+    badge: 'Turnkey Suite',
+    imageUrl: 'https://images.unsplash.com/photo-1534438327276-14e5300c3a48?auto=format&fit=crop&w=800&q=80',
+    keywords: ['sports', 'synthetic track', 'badminton court', 'football turf', 'indoor stadium', 'cricket ground'],
+    institutionTypes: ['universities', 'engineering', 'degree', 'all'],
+    relatedCardSlugs: ['turnkey-campus-master-planning'],
+    priority: 95,
+    active: true,
+  },
+  {
+    cardSlug: 'turnkey-ai-coe',
+    targetSlug: 'ai-ml',
+    categorySlug: 'ai-tech',
+    secondaryCategorySlugs: ['labs'],
+    title: 'Turnkey AI Centre of Excellence & High-Density GPU Pods',
+    summary: 'Enterprise AI computing clusters, dedicated deep-learning workstations, edge IoT development hardware, and industry-aligned AI curriculum platforms.',
+    inclusions: ['High-Density GPU Compute Cluster', '30x AI Developer Workstations', 'Edge AI & Robotics Toolkits'],
+    badge: 'Flagship Tech',
+    imageUrl: '/uploads/media/1791729950520-882861772.jpg',
+    keywords: ['ai', 'gpu cluster', 'machine learning', 'centre of excellence', 'deep learning', 'supercomputing'],
+    institutionTypes: ['engineering', 'universities', 'degree', 'all'],
+    relatedCardSlugs: ['nextgen-smart-classrooms', 'advanced-stem-research-labs'],
+    priority: 100,
+    active: true,
+  },
+  {
+    cardSlug: 'nextgen-smart-classrooms',
+    targetSlug: 'smart-classrooms',
+    categorySlug: 'ai-tech',
+    secondaryCategorySlugs: ['furniture'],
+    title: 'Next-Gen Interactive Digital Smart Classrooms',
+    summary: '4K interactive touch panels, dual-camera acoustic auto-tracking lecture capture, and seamless hybrid LMS streaming podiums.',
+    inclusions: ['86-inch 4K Touch Displays', 'Auto-Tracking PTZ Lecture Cameras', 'Integrated Hybrid LMS Podiums'],
+    badge: 'Most Popular',
+    imageUrl: 'https://images.unsplash.com/photo-1509062522246-3755977927d7?auto=format&fit=crop&w=800&q=80',
+    keywords: ['smart classrooms', 'interactive panels', 'lecture capture', 'digital boards', 'hybrid teaching'],
+    institutionTypes: ['universities', 'engineering', 'degree', 'vocational', 'skill', 'all'],
+    relatedCardSlugs: ['modular-campus-furniture', 'turnkey-ai-coe'],
+    priority: 90,
+    active: true,
+  },
+  {
+    cardSlug: 'turnkey-digital-knowledge-hub',
+    targetSlug: 'libraries',
+    categorySlug: 'libraries',
+    secondaryCategorySlugs: ['furniture'],
+    title: 'Digital Knowledge Centers & Modern Library Infrastructure',
+    summary: 'Automated RFID circulation kiosks, digital e-resource reading carrels, compact book storage stacks, and quiet collaborative study pods.',
+    inclusions: ['RFID Self-Checkout Kiosks', 'Digital E-Resource Carrels', 'High-Density Compact Stacks'],
+    badge: 'Turnkey Suite',
+    imageUrl: 'https://images.unsplash.com/photo-1521587760476-6c12a4b040da?auto=format&fit=crop&w=800&q=80',
+    keywords: ['library', 'rfid', 'digital library', 'e-resources', 'reading pods', 'book stacks'],
+    institutionTypes: ['universities', 'engineering', 'degree', 'all'],
+    relatedCardSlugs: ['modular-campus-furniture'],
+    priority: 85,
+    active: true,
+  },
+  {
+    cardSlug: 'advanced-stem-research-labs',
+    targetSlug: 'science-tech-labs',
+    categorySlug: 'labs',
+    secondaryCategorySlugs: ['ai-tech'],
+    title: 'Advanced STEM, Robotics & Multidisciplinary Research Labs',
+    summary: 'Chemical-resistant lab workbenches, centralised fume hoods, precision sensor rigs, and modular testing worktables for STEM coursework.',
+    inclusions: ['Anti-Corrosion Modular Benches', 'Fume Extraction & Safety Systems', 'Advanced Sensors & Precision Rigs'],
+    badge: 'Industry Standard',
+    imageUrl: 'https://images.unsplash.com/photo-1532094349884-543bc11b234d?auto=format&fit=crop&w=800&q=80',
+    keywords: ['labs', 'stem', 'robotics lab', 'physics lab', 'chemistry lab', 'research workbenches'],
+    institutionTypes: ['engineering', 'universities', 'degree', 'all'],
+    relatedCardSlugs: ['turnkey-ai-coe'],
+    priority: 90,
+    active: true,
+  },
+  {
+    cardSlug: 'industry-placement-consortium',
+    targetSlug: 'partner-with-colleges',
+    categorySlug: 'hr-placements',
+    title: 'Industry Placement Consortium & Corporate Recruiting Hub',
+    summary: 'Corporate tie-up frameworks, campus placement drive infrastructure, executive interview suites, and corporate-sponsored apprenticeship pipelines.',
+    inclusions: ['Executive Interview Suites', 'Placement Drive Infrastructure', 'Industry Partner MoUs'],
+    badge: 'Career Hub',
+    imageUrl: 'https://images.unsplash.com/photo-1521737711867-e3b97375f902?auto=format&fit=crop&w=800&q=80',
+    keywords: ['placements', 'hr', 'recruitment', 'corporate tie-ups', 'campus drives', 'internships'],
+    institutionTypes: ['universities', 'engineering', 'degree', 'all'],
+    relatedCardSlugs: ['campus-startup-incubation-hub'],
+    priority: 85,
+    active: true,
+  },
+  {
+    cardSlug: 'campus-startup-incubation-hub',
+    targetSlug: 'innovation',
+    categorySlug: 'innovation',
+    secondaryCategorySlugs: ['labs'],
+    title: 'Campus Startup Incubator & Maker Space Ecosystem',
+    summary: 'Rapid prototyping maker facilities, 3D printing equipment, agile startup venture bays, and interdisciplinary ideation studios.',
+    inclusions: ['3D Rapid Prototyping Maker Space', 'Agile Venture Incubation Bays', 'Seed Pitch Presentation Studio'],
+    badge: 'NEP 2020 Ready',
+    imageUrl: 'https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=800&q=80',
+    keywords: ['innovation', 'maker space', 'incubator', 'startup', 'prototyping', 'entrepreneurship'],
+    institutionTypes: ['universities', 'engineering', 'degree', 'all'],
+    relatedCardSlugs: ['advanced-stem-research-labs', 'industry-placement-consortium'],
+    priority: 85,
+    active: true,
+  },
+];
+
+async function seedSolutions() {
+  console.log('🌱 Seeding Solutions Finder taxonomy & initial verified cards...');
+
+  // 1. Seed or Upsert solutions_finder_taxonomy
+  await prisma.siteContent.upsert({
+    where: { key: 'solutions_finder_taxonomy' },
+    update: { value: JSON.stringify(INITIAL_TAXONOMY) },
+    create: { key: 'solutions_finder_taxonomy', value: JSON.stringify(INITIAL_TAXONOMY) },
+  });
+  console.log('✓ Solutions Finder taxonomy stored in SiteContent');
+
+  // 2. Upsert initial SearchCards (100% idempotent by cardSlug)
+  for (const card of INITIAL_CARDS) {
+    await prisma.searchCard.upsert({
+      where: { cardSlug: card.cardSlug },
+      update: {
+        targetSlug: card.targetSlug,
+        categorySlug: card.categorySlug,
+        secondaryCategorySlugs: card.secondaryCategorySlugs || [],
+        title: card.title,
+        summary: card.summary,
+        inclusions: card.inclusions,
+        badge: card.badge,
+        imageUrl: card.imageUrl,
+        keywords: card.keywords,
+        institutionTypes: card.institutionTypes,
+        relatedCardSlugs: card.relatedCardSlugs,
+        priority: card.priority,
+        active: card.active,
+      },
+      create: {
+        cardSlug: card.cardSlug,
+        targetSlug: card.targetSlug,
+        categorySlug: card.categorySlug,
+        secondaryCategorySlugs: card.secondaryCategorySlugs || [],
+        title: card.title,
+        summary: card.summary,
+        inclusions: card.inclusions,
+        badge: card.badge,
+        imageUrl: card.imageUrl,
+        keywords: card.keywords,
+        institutionTypes: card.institutionTypes,
+        relatedCardSlugs: card.relatedCardSlugs,
+        priority: card.priority,
+        active: card.active,
+      },
+    });
+    console.log(`✓ Seeded card: ${card.cardSlug} -> /${card.targetSlug}`);
+  }
+
+  console.log(`\n🎉 Successfully seeded ${INITIAL_CARDS.length} verified solutions cards!`);
+}
+
+seedSolutions()
+  .catch(err => {
+    console.error('Fatal seeding error:', err);
+    process.exit(1);
+  })
+  .finally(async () => {
+    await prisma.$disconnect();
+  });

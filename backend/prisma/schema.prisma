@@ -1,0 +1,330 @@
+generator client {
+  provider      = "prisma-client-js"
+  binaryTargets = ["native", "debian-openssl-3.0.x", "linux-musl-openssl-3.0.x"]
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DATABASE_URL_UNPOOLED")
+}
+
+model Address {
+  id        Int     @id @default(autoincrement())
+  userId    Int
+  type      String  @default("Home")
+  line1     String
+  line2     String?
+  city      String
+  state     String
+  pincode   String
+  isDefault Boolean @default(false)
+  user      User    @relation(fields: [userId], references: [id], map: "Address_user_fkey")
+
+  @@index([userId], map: "Address_userId_idx")
+  @@map("address")
+}
+
+model BlogCategory {
+  id       Int        @id @default(autoincrement())
+  name     String
+  slug     String     @unique(map: "BlogCategory_slug_key")
+  blogpost BlogPost[]
+
+  @@map("blogcategory")
+}
+
+model BlogPost {
+  id           Int           @id @default(autoincrement())
+  title        String
+  slug         String        @unique(map: "BlogPost_slug_key")
+  excerpt      String
+  body         String
+  categoryId   Int?
+  imageUrl     String?
+  published    Boolean       @default(false)
+  publishedAt  DateTime?
+  authorId     Int?
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+  blogcategory BlogCategory? @relation(fields: [categoryId], references: [id], map: "BlogPost_category_fkey")
+
+  @@index([categoryId], map: "BlogPost_categoryId_idx")
+  @@map("blogpost")
+}
+
+model Catalogue {
+  id           Int      @id @default(autoincrement())
+  title        String
+  description  String?
+  fileUrl      String
+  thumbnailUrl String?
+  active       Boolean  @default(true)
+  createdAt    DateTime @default(now())
+
+  @@map("catalogue")
+}
+
+model CaseStudy {
+  id          Int      @id @default(autoincrement())
+  title       String
+  slug        String   @unique(map: "CaseStudy_slug_key")
+  description String?
+  body        String?
+  imageUrl    String?
+  active      Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("casestudy")
+}
+
+model Category {
+  id      Int       @id @default(autoincrement())
+  name    String
+  slug    String    @unique(map: "Category_slug_key")
+  page    String    @default("furniture")
+  product Product[]
+
+  @@index([page], map: "Category_page_idx")
+  @@map("category")
+}
+
+model ChatMessage {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  role      String
+  content   String
+  intent    String?
+  metadata  String?
+  createdAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade, map: "ChatMessage_userId_fkey")
+
+  @@index([userId, createdAt], map: "ChatMessage_userId_createdAt_idx")
+  @@map("chatmessage")
+}
+
+model Classified {
+  id          Int      @id @default(autoincrement())
+  userId      Int
+  title       String
+  description String
+  price       Float?
+  imageUrl    String?
+  status      String   @default("pending")
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  user        User     @relation(fields: [userId], references: [id], map: "Classified_user_fkey")
+
+  @@index([userId], map: "Classified_userId_idx")
+  @@map("classified")
+}
+
+model ContactEnquiry {
+  id        Int      @id @default(autoincrement())
+  name      String
+  email     String
+  phone     String?
+  subject   String?
+  role      String?
+  message   String
+  resumeFilename     String?
+  resumeOriginalName String?
+  resumeMimeType     String?
+  resumeSize         Int?
+  read      Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  @@map("contactenquiry")
+}
+
+model Order {
+  id        Int         @id @default(autoincrement())
+  userId    Int
+  total     Float
+  status    String      @default("pending")
+  notes     String?
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
+  user      User        @relation(fields: [userId], references: [id], map: "Order_user_fkey")
+  orderitem OrderItem[]
+
+  @@index([userId], map: "Order_userId_idx")
+  @@map("order")
+}
+
+model OrderItem {
+  id        Int     @id @default(autoincrement())
+  orderId   Int
+  productId Int
+  qty       Int
+  unitPrice Float
+  order     Order   @relation(fields: [orderId], references: [id], map: "OrderItem_order_fkey")
+  product   Product @relation(fields: [productId], references: [id], map: "OrderItem_product_fkey")
+
+  @@index([orderId], map: "OrderItem_orderId_idx")
+  @@index([productId], map: "OrderItem_productId_idx")
+  @@map("orderitem")
+}
+
+model OtpCode {
+  id        Int      @id @default(autoincrement())
+  email     String
+  code      String
+  purpose   String   @default("verify")
+  expiresAt DateTime
+  used      Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  @@index([email], map: "OtpCode_email_idx")
+  @@map("otpcode")
+}
+
+model Page {
+  id        Int      @id @default(autoincrement())
+  title     String
+  slug      String   @unique(map: "Page_slug_key")
+  content   String?
+  template  String?
+  pageData  String?
+  published Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("page")
+}
+
+model Product {
+  id             Int            @id @default(autoincrement())
+  name           String
+  slug           String         @unique(map: "Product_slug_key")
+  sku            String?        @unique(map: "Product_sku_key")
+  description    String?
+  price          Float
+  categoryId     Int
+  imageUrl       String?
+  images         String?
+  specifications String?
+  rating         Float          @default(0)
+  reviewCount    Int            @default(0)
+  stock          Int            @default(0)
+  active         Boolean        @default(true)
+  featured       Boolean        @default(false)
+  createdAt      DateTime       @default(now())
+  updatedAt      DateTime       @updatedAt
+  orderitem      OrderItem[]
+  category       Category       @relation(fields: [categoryId], references: [id], map: "Product_category_fkey")
+  wishlistitem   WishlistItem[]
+
+  @@index([categoryId], map: "Product_categoryId_idx")
+  @@map("product")
+}
+
+model QuoteRequest {
+  id          Int      @id @default(autoincrement())
+  name        String
+  email       String
+  phone       String?
+  institution String?
+  items       String?
+  message     String
+  read        Boolean  @default(false)
+  createdAt   DateTime @default(now())
+
+  @@map("quoterequest")
+}
+
+model SiteContent {
+  id        Int      @id @default(autoincrement())
+  key       String   @unique(map: "SiteContent_key_key")
+  value     String
+  updatedAt DateTime @updatedAt
+
+  @@map("sitecontent")
+}
+
+model User {
+  id            Int            @id @default(autoincrement())
+  name          String
+  email         String         @unique(map: "User_email_key")
+  passwordHash  String
+  phone         String?
+  institution   String?
+  role          String         @default("user")
+  emailVerified Boolean        @default(false)
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+  address       Address[]
+  chatmessage   ChatMessage[]
+  classified    Classified[]
+  order         Order[]
+  wishlistitem  WishlistItem[]
+
+  @@map("user")
+}
+
+model WishlistItem {
+  id          Int      @id @default(autoincrement())
+  userId      Int
+  productId   Int?
+  designImage String?
+  designKey   String?
+  designTitle String?
+  pageSlug    String?
+  quantity    Int      @default(1)
+  createdAt   DateTime @default(now())
+  product     Product? @relation(fields: [productId], references: [id], map: "WishlistItem_product_fkey")
+  user        User     @relation(fields: [userId], references: [id], map: "WishlistItem_user_fkey")
+
+  @@unique([userId, productId], map: "WishlistItem_userId_productId_key")
+  @@unique([userId, designKey], map: "WishlistItem_userId_designKey_key")
+  @@index([productId], map: "WishlistItem_productId_idx")
+  @@map("wishlistitem")
+}
+
+model SearchCard {
+  id                     Int      @id @default(autoincrement())
+  cardSlug               String   @unique(map: "SearchCard_cardSlug_key")
+  targetSlug             String
+  sectionAnchor          String?
+  categorySlug           String
+  subcategorySlug        String?
+  secondaryCategorySlugs String[] @default([])
+  title                  String
+  summary                String
+  inclusions             String[]
+  badge                  String?
+  imageUrl               String?
+  keywords               String[] @default([])
+  institutionTypes       String[] @default([])
+  relatedCardSlugs       String[] @default([])
+  priority               Int      @default(0)
+  active                 Boolean  @default(true)
+  createdAt              DateTime @default(now())
+  updatedAt              DateTime @default(now()) @updatedAt
+
+  @@index([categorySlug], map: "SearchCard_categorySlug_idx")
+  @@index([targetSlug], map: "SearchCard_targetSlug_idx")
+  @@index([active], map: "SearchCard_active_idx")
+  @@map("searchcard")
+}
+
+model SearchQueryLog {
+  id               Int      @id @default(autoincrement())
+  queryText        String
+  institutionType  String?
+  categorySlug     String?
+  matchedCardSlugs String[] @default([])
+  matchedCount     Int      @default(0)
+  confidenceScore  Float?
+  userIp           String?
+  converted        Boolean  @default(false)
+  createdAt        DateTime @default(now())
+
+  @@index([createdAt], map: "SearchQueryLog_createdAt_idx")
+  @@index([categorySlug], map: "SearchQueryLog_categorySlug_idx")
+  @@index([converted], map: "SearchQueryLog_converted_idx")
+  @@index([matchedCount], map: "SearchQueryLog_matchedCount_idx")
+  @@map("searchquerylog")
+}
+

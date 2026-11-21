@@ -1,0 +1,213 @@
+import { useEffect, useRef, useMemo } from 'react';
+import gsap from 'gsap';
+import { Link } from 'react-router-dom';
+import { ArrowRight, BarChart3, Brain, Radio, Zap } from 'lucide-react';
+import { usePagination } from '@/hooks/usePagination';
+import PaginationControl from '@/components/common/PaginationControl';
+import { usePageData } from '@/hooks/usePageData';
+import MediaImage from '@/components/ui/media-image';
+import { PageCardGridSkeleton } from '@/components/ui/page-skeleton';
+import { AI_STATIONS_PAGE_SLUG, slugifyAIStationTitle, type AIStationCard } from './ai-stations.data';
+
+const ICONS = [Brain, Zap, BarChart3, Radio];
+const PAGE_SIZE = 12;
+
+const AIStations = () => {
+  const cardsRef = useRef<HTMLDivElement>(null);
+  const { data, loading } = usePageData(AI_STATIONS_PAGE_SLUG);
+
+  const heroBadge = data.heroBadge || '';
+  const heroTitle = data.heroTitle || '';
+  const heroSubtitle = data.heroSubtitle || '';
+  const heroImage = data.heroImage || '';
+  const heroButtonLabel = data.heroButtonLabel !== undefined ? data.heroButtonLabel : 'Get Started';
+  const heroButtonHref = data.heroButtonHref || '/contact-us';
+  const section1Title = data.section1Title || '';
+  const cards: AIStationCard[] = Array.isArray(data.cards) ? data.cards : [];
+  const ctaTitle = data.ctaTitle || '';
+  const ctaSubtitle = data.ctaSubtitle || '';
+  const ctaButtonLabel = data.ctaButtonLabel !== undefined ? data.ctaButtonLabel : 'Contact Us';
+  const ctaHref = data.ctaHref || '/contact-us';
+
+  const styles = data.styles || {};
+  const headingFontClass =
+    styles.headingFont === 'playfair' ? 'font-playfair' :
+    styles.headingFont === 'grotesk' ? 'font-grotesk' :
+    styles.headingFont === 'opensans' ? 'font-opensans' :
+    styles.headingFont === 'system' ? 'font-sans' : 'font-poppins';
+
+  const bodyFontClass =
+    styles.bodyFont === 'playfair' ? 'font-playfair' :
+    styles.bodyFont === 'grotesk' ? 'font-grotesk' :
+    styles.bodyFont === 'system' ? 'font-sans' :
+    styles.bodyFont === 'poppins' ? 'font-poppins' : 'font-opensans';
+
+  const primaryColor = styles.primaryColor || '#0047ab';
+  const heroBg = styles.heroBg || 'blue';
+  const heroLayout = styles.heroLayout || 'split-right';
+
+  const heroBgClass =
+    heroBg === 'paper' ? 'bg-[#fbfaf8] text-slate-900 border border-stone-200' :
+    heroBg === 'amber' ? 'bg-[#451a03] text-white' :
+    heroBg === 'slate' ? 'bg-slate-900 text-white' :
+    heroBg === 'stone' ? 'bg-stone-900 text-white' :
+    heroBg === 'white' ? 'bg-white text-slate-900 border border-slate-200 shadow-sm' : 'bg-cm-blue text-white shadow-inner';
+
+  const heroTextColor = heroBg === 'paper' || heroBg === 'white' ? 'text-slate-900' : 'text-white';
+  const heroSubtextColor = heroBg === 'paper' || heroBg === 'white' ? 'text-slate-600' : 'text-white/85';
+
+  const cardGridCols =
+    styles.cardColumns === '2' ? 'md:grid-cols-2 lg:grid-cols-2' :
+    styles.cardColumns === '3' ? 'md:grid-cols-2 lg:grid-cols-3' : 'md:grid-cols-2 lg:grid-cols-4';
+
+  const activeCards = useMemo(() => cards.filter((c: any) => c.active !== false), [cards]);
+  const {
+    page: safePage,
+    totalPages,
+    paginatedItems: paginatedCards,
+    setPage,
+  } = usePagination(activeCards, PAGE_SIZE);
+
+  useEffect(() => {
+    const ctx = gsap.context(() => {
+      const cardEls = cardsRef.current?.children;
+      if (cardEls && cardEls.length > 0) {
+        gsap.fromTo(cardEls,
+          { opacity: 0, y: 30 },
+          {
+            opacity: 1, y: 0,
+            duration: 0.6,
+            stagger: 0.1,
+            scrollTrigger: {
+              trigger: cardsRef.current,
+              start: 'top 85%',
+            }
+          }
+        );
+      }
+    });
+    return () => ctx.revert();
+  }, [paginatedCards]);
+
+  const cardLink = (card: AIStationCard) => card.href?.trim() || `/${AI_STATIONS_PAGE_SLUG}/${slugifyAIStationTitle(card.title)}`;
+
+  if (loading) {
+    return <PageCardGridSkeleton cardCount={4} />;
+  }
+
+  return (
+    <main
+      className={`min-h-screen bg-white ${bodyFontClass} ${headingFontClass}`}
+      style={{ '--primary-color': primaryColor } as React.CSSProperties}
+    >
+      {/* Dynamic Hero Section */}
+      {!styles.hideHero && !data.hideHero && (
+        <section className={`mx-3 sm:mx-6 lg:mx-8 rounded-[2rem] py-6 md:py-8 overflow-hidden relative mt-4 mb-4 ${heroBgClass}`}>
+          <div className={`max-w-6xl mx-auto flex flex-col gap-8 relative z-10 px-4 ${
+            heroLayout === 'minimal' ? 'items-center text-center' :
+            heroLayout === 'split-left' ? 'lg:flex-row-reverse items-center' :
+            heroLayout === 'centered' ? 'items-center text-center' : 'lg:flex-row items-center'
+          }`}>
+            <div className={`${heroLayout === 'minimal' || heroLayout === 'centered' ? 'max-w-2xl text-center' : 'lg:w-1/2 text-left'} ${heroTextColor}`}>
+              {heroBadge && (
+                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 text-blue-200 text-xs font-bold uppercase tracking-wider mb-3">
+                  <span>{heroBadge}</span>
+                </div>
+              )}
+              <h1 className={`text-2xl sm:text-3xl lg:text-4xl font-black mb-3 tracking-tight leading-tight ${heroTextColor}`}>
+                {heroTitle}
+              </h1>
+              <p className={`text-sm md:text-base leading-relaxed ${heroLayout === 'minimal' || heroLayout === 'centered' ? 'mx-auto' : 'max-w-xl'} ${heroSubtextColor}`}>
+                {heroSubtitle}
+              </p>
+              {heroButtonLabel && (
+                <div className={`mt-5 flex flex-wrap gap-4 ${heroLayout === 'minimal' || heroLayout === 'centered' ? 'justify-center' : ''}`}>
+                  <Link to={heroButtonHref} className="btn-secondary px-6 py-2.5 text-sm font-bold shadow-md">
+                    {heroButtonLabel}
+                  </Link>
+                </div>
+              )}
+            </div>
+            {heroImage && heroLayout !== 'minimal' && (
+              <div className={`${heroLayout === 'centered' ? 'w-full max-w-xl' : 'lg:w-1/2'} relative w-full`}>
+                <MediaImage
+                  src={heroImage}
+                  alt={heroTitle}
+                  className="rounded-2xl shadow-xl w-full h-[240px] sm:h-[260px] object-cover border-2 border-cm-blue-dark relative z-10"
+                />
+              </div>
+            )}
+          </div>
+        </section>
+      )}
+
+      {/* Learning stations grid */}
+      {!styles.hideCards && !data.hideCards && (
+        <section id="stations" className="bg-cm-gray py-6 md:py-8">
+          <div className="mx-auto max-w-6xl px-4">
+            <div className="mb-5 flex items-center justify-between">
+              <h2 className="text-2xl font-bold tracking-tighter text-cm-blue-dark md:text-3xl">{section1Title}</h2>
+              <div className="hidden h-1 w-24 rounded-full bg-cm-yellow md:block" />
+            </div>
+
+            <div ref={cardsRef} className={`grid grid-cols-1 gap-6 ${cardGridCols}`}>
+              {paginatedCards.map((station, i) => {
+                const Icon = ICONS[i % ICONS.length];
+                return (
+                  <Link
+                    key={station.title}
+                    to={cardLink(station)}
+                    className="group flex min-h-[360px] flex-col overflow-hidden rounded-[2rem] border border-slate-200/70 bg-white shadow-[0_20px_60px_-30px_rgba(15,23,42,0.35)] transition duration-300 hover:-translate-y-1 hover:shadow-[0_30px_80px_-20px_rgba(15,23,42,0.28)]"
+                  >
+                    <div className="relative aspect-[4/5] overflow-hidden">
+                      <MediaImage src={station.image} alt={station.title} className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-105" />
+                      <div className="absolute inset-0 bg-gradient-to-t from-slate-950/70 via-slate-950/30 to-transparent" />
+                      <div className="absolute top-4 right-4 flex h-10 w-10 items-center justify-center rounded-xl border border-white/20 bg-white/10 backdrop-blur-md transition-all duration-500 group-hover:scale-110 group-hover:bg-cm-blue">
+                        <Icon className="h-5 w-5 text-white" />
+                      </div>
+                    </div>
+                    <div className="flex flex-grow flex-col px-6 pb-6 pt-5">
+                      <h3 className="mb-3 text-xl font-semibold tracking-tight text-slate-900 group-hover:text-cm-blue">{station.title}</h3>
+                      <p className="mb-4 flex-grow text-sm leading-relaxed text-slate-600">{station.description || 'Advanced AI-powered learning solutions.'}</p>
+                      <span className="text-xs uppercase tracking-[0.28em] text-slate-400">AI Module</span>
+                    </div>
+                  </Link>
+                );
+              })}
+            </div>
+
+            <PaginationControl
+              page={safePage}
+              totalPages={totalPages}
+              onPageChange={(p) => {
+                setPage(p);
+                cardsRef.current?.scrollIntoView({ behavior: 'smooth' });
+              }}
+              scrollToTop={false}
+              className="mt-10 border-transparent"
+            />
+          </div>
+        </section>
+      )}
+
+      {/* CTA */}
+      {!styles.hideCta && !data.hideCta && (
+        <section id="contact" className="px-4 py-6 sm:px-6 lg:px-8">
+          <div className="mx-auto max-w-6xl overflow-hidden rounded-[28px] bg-gradient-to-br from-cm-blue-dark to-cm-blue px-8 py-8 sm:px-12 sm:py-10">
+            <div className="flex flex-col items-start justify-between gap-8 lg:flex-row lg:items-center">
+              <div>
+                <h2 className="max-w-lg text-2xl font-bold text-white sm:text-3xl">{ctaTitle}</h2>
+                <p className="mt-3 max-w-lg text-sm leading-relaxed text-white/75 sm:text-base">{ctaSubtitle}</p>
+              </div>
+              <Link to={ctaHref} className="inline-flex flex-shrink-0 items-center gap-2 rounded-full bg-cm-yellow px-7 py-3 text-sm font-bold text-cm-blue-dark shadow-lg">
+                {ctaButtonLabel} <ArrowRight className="h-4 w-4" />
+              </Link>
+            </div>
+          </div>
+        </section>
+      )}
+    </main>
+  );
+};
+
+export default AIStations;

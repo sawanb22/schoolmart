@@ -1,0 +1,702 @@
+[
+  {
+    "title": "Immersive Learning",
+    "clientSlug": "immersive-learning",
+    "apiSlug": "resource-immersive-learning",
+    "image": "/uploads/1777103670266-IMMERSIVE LEARNING.PNG",
+    "badge": "Institutional Insight",
+    "innerData": {
+      "content": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut elit tellus, luctus nec ullamcorper mattis, pulvinar dapibus leo.\n\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Ut elit tellus, luctus nec ullamcorper mattis, pulvinar dapibus leo.\n\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Ut elit tellus, luctus nec ullamcorper mattis, pulvinar dapibus leo.\n\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Ut elit tellus, luctus nec ullamcorper mattis, pulvinar dapibus leo.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut elit tellus, luctus nec ullamcorper mattis, pulvinar dapibus leo.\n\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Ut elit tellus, luctus nec ullamcorper mattis, pulvinar dapibus leo.\n\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Ut elit tellus, luctus nec ullamcorper mattis, pulvinar dapibus leo.\n\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Ut elit tellus, luctus nec ullamcorper mattis, pulvinar dapibus leo.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut elit tellus, luctus nec ullamcorper mattis, pulvinar dapibus leo.\n\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Ut elit tellus, luctus nec ullamcorper mattis, pulvinar dapibus leo.\n\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Ut elit tellus, luctus nec ullamcorper mattis, pulvinar dapibus leo.\n\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Ut elit tellus, luctus nec ullamcorper mattis, pulvinar dapibus leo.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut elit tellus, luctus nec ullamcorper mattis, pulvinar dapibus leo.\n\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Ut elit tellus, luctus nec ullamcorper mattis, pulvinar dapibus leo.\n\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Ut elit tellus, luctus nec ullamcorper mattis, pulvinar dapibus leo.\n\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Ut elit tellus, luctus nec ullamcorper mattis, pulvinar dapibus leo.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut elit tellus, luctus nec ullamcorper mattis, pulvinar dapibus leo.\n\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Ut elit tellus, luctus nec ullamcorper mattis, pulvinar dapibus leo.\n\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Ut elit tellus, luctus nec ullamcorper mattis, pulvinar dapibus leo.\n\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Ut elit tellus, luctus nec ullamcorper mattis, pulvinar dapibus leo.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut elit tellus, luctus nec ullamcorper mattis, pulvinar dapibus leo.\n\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Ut elit tellus, luctus nec ullamcorper mattis, pulvinar dapibus leo.\n\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Ut elit tellus, luctus nec ullamcorper mattis, pulvinar dapibus leo.\n\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Ut elit tellus, luctus nec ullamcorper mattis, pulvinar dapibus leo.",
+      "description": "",
+      "specs": [],
+      "tags": [],
+      "heading": "IMMERSIVE LEARNING",
+      "originalHeading": "IMMERSIVE LEARNING",
+      "heroImg": "/uploads/1777104808239-IMMERSIVE LEARNING.PNG",
+      "btn1Label": "Request Institutional Proposal",
+      "btn1Path": "/contact-us",
+      "btn2Label": "SHARE",
+      "btn2Path": "",
+      "blocks": {},
+      "livePage": {
+        "id": "2df8af38-5c1e-4f1c-ab9d-11572e3493c4",
+        "slug": "resource-immersive-learning",
+        "title": "IMMERSIVE LEARNING",
+        "createdAt": "2026-04-25T06:44:28.919Z",
+        "updatedAt": "2026-04-25T06:44:28.919Z"
+      },
+      "apiFetchStatus": {
+        "resource-immersive-learning": 200,
+        "immersive-learning": 404
+      },
+      "ctaTitle": "Ready to Deploy Immersive Learning at Your School?",
+      "ctaSubtitle": "Connect with our campus infrastructure specialists for turnkey equipment sizing, immersive VR/AR room design, and institutional procurement proposals.",
+      "ctaButtonLabel": "Request Institutional Proposal",
+      "ctaHref": "/contact-us"
+    },
+    "ctaTitle": "Ready to Deploy Immersive Learning at Your School?",
+    "ctaSubtitle": "Connect with our campus infrastructure specialists for turnkey equipment sizing, immersive VR/AR room design, and institutional procurement proposals.",
+    "ctaButtonLabel": "Request Institutional Proposal",
+    "ctaHref": "/contact-us"
+  },
+  {
+    "title": "Kindergarten Design",
+    "clientSlug": "kindergarten-design",
+    "apiSlug": "resource-kindergarten-design",
+    "image": "/uploads/1777103714201-KINDERGARTEN DESIGN.PNG",
+    "badge": "Institutional Insight",
+    "innerData": {
+      "content": "",
+      "description": "",
+      "specs": [],
+      "tags": [],
+      "heading": "KINDERGARTEN DESIGN",
+      "originalHeading": "KINDERGARTEN DESIGN",
+      "heroImg": "/uploads/1777104819841-KINDERGARTEN DESIGN.PNG",
+      "btn1Label": "Schedule Design Consultation",
+      "btn1Path": "/contact-us",
+      "btn2Label": "SHARE",
+      "btn2Path": "",
+      "blocks": {},
+      "livePage": {
+        "id": "0c3df329-0429-46e3-afc8-3b90a4bde4a7",
+        "slug": "resource-kindergarten-design",
+        "title": "KINDERGARTEN DESIGN",
+        "createdAt": "2026-04-25T07:55:01.759Z",
+        "updatedAt": "2026-04-25T07:55:01.759Z"
+      },
+      "apiFetchStatus": {
+        "resource-kindergarten-design": 200,
+        "kindergarten-design": 404
+      },
+      "ctaTitle": "Designing an Inspiring Early Childhood Learning Space?",
+      "ctaSubtitle": "Speak with our educational architects for child-safe spatial planning, biophilic kindergarten layouts, and turnkey institutional equipment packages.",
+      "ctaButtonLabel": "Schedule Design Consultation",
+      "ctaHref": "/contact-us"
+    },
+    "ctaTitle": "Designing an Inspiring Early Childhood Learning Space?",
+    "ctaSubtitle": "Speak with our educational architects for child-safe spatial planning, biophilic kindergarten layouts, and turnkey institutional equipment packages.",
+    "ctaButtonLabel": "Schedule Design Consultation",
+    "ctaHref": "/contact-us"
+  },
+  {
+    "title": "Composite Skill Lab",
+    "clientSlug": "composite-skill-lab",
+    "apiSlug": "resource-composite-skill-lab",
+    "image": "/uploads/1777103820798-COMPOSITE SKILL LAB.PNG",
+    "badge": "Institutional Insight",
+    "innerData": {
+      "content": "",
+      "description": "",
+      "specs": [],
+      "tags": [],
+      "heading": "COMPOSITE SKILL LAB",
+      "originalHeading": "COMPOSITE SKILL LAB",
+      "heroImg": "/uploads/1777104828489-COMPOSITE SKILL LAB.PNG",
+      "btn1Label": "Request Lab Setup Guide",
+      "btn1Path": "/contact-us",
+      "btn2Label": "SHARE",
+      "btn2Path": "",
+      "blocks": {
+        "action_stack": {
+          "id": "3d6911d9-32b8-417b-9653-3f34a07d4dae",
+          "key": "action_stack",
+          "type": "action_stack",
+          "data": {},
+          "isVisible": true
+        }
+      },
+      "livePage": {
+        "id": "40c60885-b18e-4a79-a861-428399f8a53a",
+        "slug": "resource-composite-skill-lab",
+        "title": "COMPOSITE SKILL LAB",
+        "createdAt": "2026-04-25T07:56:47.139Z",
+        "updatedAt": "2026-04-25T07:56:47.139Z"
+      },
+      "apiFetchStatus": {
+        "resource-composite-skill-lab": 200,
+        "composite-skill-lab": 404
+      },
+      "ctaTitle": "Set Up NEP 2020 Compliant Composite Skill Labs",
+      "ctaSubtitle": "Equip your campus with multidisciplinary vocational equipment, robotics benches, and industrial-grade workbenches mapped to national curriculum standards.",
+      "ctaButtonLabel": "Request Lab Setup Guide",
+      "ctaHref": "/contact-us"
+    },
+    "ctaTitle": "Set Up NEP 2020 Compliant Composite Skill Labs",
+    "ctaSubtitle": "Equip your campus with multidisciplinary vocational equipment, robotics benches, and industrial-grade workbenches mapped to national curriculum standards.",
+    "ctaButtonLabel": "Request Lab Setup Guide",
+    "ctaHref": "/contact-us"
+  },
+  {
+    "title": "Library Innovations",
+    "clientSlug": "library-innovations",
+    "apiSlug": "resource-library-innovations",
+    "image": "/uploads/1777104096006-LIBRARY.PNG",
+    "badge": "Institutional Insight",
+    "innerData": {
+      "content": "",
+      "description": "",
+      "specs": [],
+      "tags": [],
+      "heading": "LIBRARY INNOVATIONS",
+      "originalHeading": "LIBRARY INNOVATIONS",
+      "heroImg": "/uploads/1777104867939-LIBRARY.PNG",
+      "btn1Label": "Consult Library Specialists",
+      "btn1Path": "/contact-us",
+      "btn2Label": "SHARE",
+      "btn2Path": "",
+      "blocks": {},
+      "livePage": {
+        "id": "1818019c-f052-44a0-bace-4df70d6e16d0",
+        "slug": "resource-library-innovations",
+        "title": "LIBRARY INNOVATIONS",
+        "createdAt": "2026-04-25T08:01:15.329Z",
+        "updatedAt": "2026-04-25T08:01:15.329Z"
+      },
+      "apiFetchStatus": {
+        "resource-library-innovations": 200,
+        "library-innovations": 404
+      },
+      "ctaTitle": "Transform Your Campus Library into a Dynamic Media Hub",
+      "ctaSubtitle": "Integrate automated RFID book management, acoustic focus pods, collaborative study commons, and modern ergonomic library furniture.",
+      "ctaButtonLabel": "Consult Library Specialists",
+      "ctaHref": "/contact-us"
+    },
+    "ctaTitle": "Transform Your Campus Library into a Dynamic Media Hub",
+    "ctaSubtitle": "Integrate automated RFID book management, acoustic focus pods, collaborative study commons, and modern ergonomic library furniture.",
+    "ctaButtonLabel": "Consult Library Specialists",
+    "ctaHref": "/contact-us"
+  },
+  {
+    "title": "Furniture & Design Planning",
+    "clientSlug": "furniture-design-planning-",
+    "apiSlug": "resource-furniture-design-planning-",
+    "image": "/uploads/1777104336251-FURNITURE.PNG",
+    "badge": "Institutional Insight",
+    "innerData": {
+      "content": "",
+      "description": "",
+      "specs": [],
+      "tags": [],
+      "heading": "FURNITURE&DESIGN PLANNING",
+      "originalHeading": "FURNITURE&DESIGN PLANNING ",
+      "heroImg": "/uploads/1777104463465-FURNITURE.PNG",
+      "btn1Label": "Get Furniture Sizing Plan",
+      "btn1Path": "/contact-us",
+      "btn2Label": "SHARE",
+      "btn2Path": "",
+      "blocks": {
+        "action_stack": {
+          "id": "9ce173b7-fba2-4388-9503-42699d6c3216",
+          "key": "action_stack",
+          "type": "action_stack",
+          "data": {},
+          "isVisible": true
+        }
+      },
+      "livePage": {
+        "id": "073cad07-02a9-4e1f-bf49-989a7b2e6595",
+        "slug": "resource-furniture-design-planning-",
+        "title": "FURNITURE&DESIGN PLANNING ",
+        "createdAt": "2026-04-25T08:05:20.595Z",
+        "updatedAt": "2026-04-25T08:05:20.595Z"
+      },
+      "apiFetchStatus": {
+        "resource-furniture-design-planning-": 200,
+        "furniture-design-planning-": 404
+      },
+      "ctaTitle": "Plan Ergonomic & Modular Campus Furniture",
+      "ctaSubtitle": "Work with our classroom interior planning specialists for density optimization, durable BIFMA-certified furniture, and factory-direct institutional supply.",
+      "ctaButtonLabel": "Get Furniture Sizing Plan",
+      "ctaHref": "/contact-us"
+    },
+    "ctaTitle": "Plan Ergonomic & Modular Campus Furniture",
+    "ctaSubtitle": "Work with our classroom interior planning specialists for density optimization, durable BIFMA-certified furniture, and factory-direct institutional supply.",
+    "ctaButtonLabel": "Get Furniture Sizing Plan",
+    "ctaHref": "/contact-us"
+  },
+  {
+    "title": "Selling or Buying a School",
+    "clientSlug": "sellning-or-buying-a-school",
+    "apiSlug": "resource-sellning-or-buying-a-school",
+    "image": "/uploads/1777104949558-SELLING OR BUYERS SCHOOL.PNG",
+    "badge": "Institutional Insight",
+    "innerData": {
+      "content": "",
+      "description": "",
+      "specs": [],
+      "tags": [],
+      "heading": "SELLNING OR BUYING A SCHOOL",
+      "originalHeading": "SELLNING OR BUYING A SCHOOL",
+      "heroImg": "/uploads/1777104972258-SELLING OR BUYERS SCHOOL.PNG",
+      "btn1Label": "Book Confidential Advisory",
+      "btn1Path": "/contact-us",
+      "btn2Label": "SHARE",
+      "btn2Path": "",
+      "blocks": {},
+      "livePage": {
+        "id": "39748e12-ed5d-43ca-9958-5732d903db9a",
+        "slug": "resource-sellning-or-buying-a-school",
+        "title": "SELLNING OR BUYING A SCHOOL",
+        "createdAt": "2026-04-25T08:15:37.493Z",
+        "updatedAt": "2026-04-25T08:15:37.493Z"
+      },
+      "apiFetchStatus": {
+        "resource-sellning-or-buying-a-school": 200,
+        "sellning-or-buying-a-school": 404
+      },
+      "ctaTitle": "Confidential Campus Acquisition & Divestment Advisory",
+      "ctaSubtitle": "Consult senior institutional transaction advisors for compliant infrastructure valuation, regulatory due diligence, and verified trust matchmaking.",
+      "ctaButtonLabel": "Book Confidential Advisory",
+      "ctaHref": "/contact-us"
+    },
+    "ctaTitle": "Confidential Campus Acquisition & Divestment Advisory",
+    "ctaSubtitle": "Consult senior institutional transaction advisors for compliant infrastructure valuation, regulatory due diligence, and verified trust matchmaking.",
+    "ctaButtonLabel": "Book Confidential Advisory",
+    "ctaHref": "/contact-us"
+  },
+  {
+    "title": "Gamified Math Lab",
+    "clientSlug": "gamified-math-lab",
+    "apiSlug": "resource-gamified-math-lab",
+    "image": "/uploads/1777109654075-GAMIFIED MATH LAB.PNG",
+    "badge": "Institutional Insight 2026",
+    "innerData": {
+      "content": "",
+      "description": "",
+      "specs": [],
+      "tags": [],
+      "heading": "GAMIFIED MATH LAB",
+      "originalHeading": "GAMIFIED MATH LAB",
+      "heroImg": "/uploads/1777109679869-GAMIFIED MATH LAB.PNG",
+      "btn1Label": "Request Math Lab Proposal",
+      "btn1Path": "/contact-us",
+      "btn2Label": "SHARE",
+      "btn2Path": "",
+      "blocks": {},
+      "livePage": {
+        "id": "40a14553-aab6-475b-a6a0-ebad046426f6",
+        "slug": "resource-gamified-math-lab",
+        "title": "GAMIFIED MATH LAB",
+        "createdAt": "2026-04-25T09:34:01.156Z",
+        "updatedAt": "2026-04-25T09:34:01.156Z"
+      },
+      "apiFetchStatus": {
+        "resource-gamified-math-lab": 200,
+        "gamified-math-lab": 404
+      },
+      "ctaTitle": "Transform Abstract Math into Hands-On Discovery",
+      "ctaSubtitle": "Equip your institution with experiential mathematical manipulatives, interactive problem-solving kits, and syllabus-mapped lab modules.",
+      "ctaButtonLabel": "Request Math Lab Proposal",
+      "ctaHref": "/contact-us"
+    },
+    "ctaTitle": "Transform Abstract Math into Hands-On Discovery",
+    "ctaSubtitle": "Equip your institution with experiential mathematical manipulatives, interactive problem-solving kits, and syllabus-mapped lab modules.",
+    "ctaButtonLabel": "Request Math Lab Proposal",
+    "ctaHref": "/contact-us"
+  },
+  {
+    "title": "Interactive Walls",
+    "clientSlug": "interactivities-walls",
+    "apiSlug": "resource-interactivities-walls",
+    "image": "/uploads/1777109744925-INTERACTIVE WALLS.PNG",
+    "badge": "Institutional Insight",
+    "innerData": {
+      "content": "",
+      "description": "",
+      "specs": [],
+      "tags": [],
+      "heading": "INTERACTIVITIES WALLS",
+      "originalHeading": "INTERACTIVITIES WALLS",
+      "heroImg": "/uploads/1777109756972-INTERACTIVE WALLS.PNG",
+      "btn1Label": "Explore Wall Systems",
+      "btn1Path": "/contact-us",
+      "btn2Label": "SHARE",
+      "btn2Path": "",
+      "blocks": {},
+      "livePage": {
+        "id": "5c5741cc-e768-457c-a21e-d41be5883a3b",
+        "slug": "resource-interactivities-walls",
+        "title": "INTERACTIVITIES WALLS",
+        "createdAt": "2026-04-25T09:35:33.425Z",
+        "updatedAt": "2026-04-25T09:35:33.425Z"
+      },
+      "apiFetchStatus": {
+        "resource-interactivities-walls": 200,
+        "interactivities-walls": 404
+      },
+      "ctaTitle": "Turn Empty Campus Corridors into Interactive Learning Walls",
+      "ctaSubtitle": "Explore durable tactile sensory surfaces, magnetic STEM discovery panels, and active touch-responsive installations engineered for heavy school traffic.",
+      "ctaButtonLabel": "Explore Wall Systems",
+      "ctaHref": "/contact-us"
+    },
+    "ctaTitle": "Turn Empty Campus Corridors into Interactive Learning Walls",
+    "ctaSubtitle": "Explore durable tactile sensory surfaces, magnetic STEM discovery panels, and active touch-responsive installations engineered for heavy school traffic.",
+    "ctaButtonLabel": "Explore Wall Systems",
+    "ctaHref": "/contact-us"
+  },
+  {
+    "title": "16 Latest Interactive Panels for Classrooms",
+    "clientSlug": "16-latetest-",
+    "apiSlug": "resource-16-latetest-",
+    "image": "/uploads/1777109925495-16 INTERACTIVE PANELS  FOR CLASSROOMS.PNG",
+    "badge": "Institutional Insight",
+    "innerData": {
+      "content": "",
+      "description": "",
+      "specs": [],
+      "tags": [],
+      "heading": "16 LATETEST",
+      "originalHeading": "16 LATETEST ",
+      "heroImg": "/uploads/1777109941911-16 INTERACTIVE PANELS  FOR CLASSROOMS.PNG",
+      "btn1Label": "Compare Panel Specs & Quotes",
+      "btn1Path": "/contact-us",
+      "btn2Label": "SHARE",
+      "btn2Path": "",
+      "blocks": {
+        "hero": {
+          "id": "a473cf5c-94aa-4897-b957-566c3c594043",
+          "key": "hero",
+          "type": "hero",
+          "data": {
+            "cta1": {
+              "label": "AI ENABLED "
+            },
+            "badge": "BEST IFP IN INDIA ",
+            "mediaUrl": "/uploads/1784358367341-ifp.png",
+            "headline1": "AI ENABLED ",
+            "mediaType": "image"
+          },
+          "isVisible": true
+        }
+      },
+      "livePage": {
+        "id": "fd599e6e-e3d7-4135-bca7-f50a3b8e85d1",
+        "slug": "resource-16-latetest-",
+        "title": "16 LATETEST ",
+        "createdAt": "2026-04-25T09:38:24.151Z",
+        "updatedAt": "2026-04-25T09:38:24.151Z"
+      },
+      "apiFetchStatus": {
+        "resource-16-latetest-": 200,
+        "16-latetest-": 404
+      },
+      "ctaTitle": "Upgrade Classrooms with Next-Gen Interactive Flat Panels",
+      "ctaSubtitle": "Compare 65\"-86\" 4K touch displays, dual-OS Android/Windows capabilities, anti-glare toughened glass specs, and bulk institutional pricing.",
+      "ctaButtonLabel": "Compare Panel Specs & Quotes",
+      "ctaHref": "/contact-us"
+    },
+    "ctaTitle": "Upgrade Classrooms with Next-Gen Interactive Flat Panels",
+    "ctaSubtitle": "Compare 65\"-86\" 4K touch displays, dual-OS Android/Windows capabilities, anti-glare toughened glass specs, and bulk institutional pricing.",
+    "ctaButtonLabel": "Compare Panel Specs & Quotes",
+    "ctaHref": "/contact-us"
+  },
+  {
+    "title": "20 AI Tools for Classroom",
+    "clientSlug": "20-ai-tools",
+    "apiSlug": "resource-20-ai-tools",
+    "image": "/uploads/1777110144115-20 AI TOOLS FOR CLASSROOM.PNG",
+    "badge": "Institutional Insight",
+    "innerData": {
+      "content": "",
+      "description": "",
+      "specs": [],
+      "tags": [],
+      "heading": "20 AI TOOLS",
+      "originalHeading": "20 AI TOOLS",
+      "heroImg": "/uploads/1777110164011-20 AI TOOLS FOR CLASSROOM.PNG",
+      "btn1Label": "Schedule AI Strategy Call",
+      "btn1Path": "/contact-us",
+      "btn2Label": "SHARE",
+      "btn2Path": "",
+      "blocks": {
+        "action_stack": {
+          "id": "1eb0c379-9a1f-4196-813a-94373000eb73",
+          "key": "action_stack",
+          "type": "action_stack",
+          "data": {},
+          "isVisible": true
+        },
+        "hero": {
+          "id": "5c01bb50-38bc-4099-bcd9-5e5f8f04ce49",
+          "key": "hero",
+          "type": "hero",
+          "data": {
+            "badge": "20+ Ai tools for classroom",
+            "mediaUrl": "/uploads/1784358973758-AI+Tools+for+Teachers+blog+-+Vivify+STEM.webp",
+            "headline1": "Ai enabled",
+            "mediaType": "image"
+          },
+          "isVisible": true
+        }
+      },
+      "livePage": {
+        "id": "44c1b1d0-c610-4168-87fa-a3c1abbf2bb2",
+        "slug": "resource-20-ai-tools",
+        "title": "20 AI TOOLS",
+        "createdAt": "2026-04-25T09:42:13.523Z",
+        "updatedAt": "2026-04-25T09:42:13.523Z"
+      },
+      "apiFetchStatus": {
+        "resource-20-ai-tools": 200,
+        "20-ai-tools": 404
+      },
+      "ctaTitle": "Integrate Safe & Pedagogically Vetted AI in Classrooms",
+      "ctaSubtitle": "Receive an institutional AI readiness assessment, teacher empowerment roadmaps, and enterprise-grade privacy-safe AI tool deployment.",
+      "ctaButtonLabel": "Schedule AI Strategy Call",
+      "ctaHref": "/contact-us"
+    },
+    "ctaTitle": "Integrate Safe & Pedagogically Vetted AI in Classrooms",
+    "ctaSubtitle": "Receive an institutional AI readiness assessment, teacher empowerment roadmaps, and enterprise-grade privacy-safe AI tool deployment.",
+    "ctaButtonLabel": "Schedule AI Strategy Call",
+    "ctaHref": "/contact-us"
+  },
+  {
+    "title": "The Best Curriculums for Your Kindergarten",
+    "clientSlug": "the-best-",
+    "apiSlug": "resource-the-best-",
+    "image": "/uploads/1777110274160-THE BEST CURRICULUMS FOR YOUR KINDERGARTEN.PNG",
+    "badge": "Institutional Insight",
+    "innerData": {
+      "content": "",
+      "description": "",
+      "specs": [],
+      "tags": [],
+      "heading": "THE BEST",
+      "originalHeading": "THE BEST ",
+      "heroImg": "/uploads/1777110295750-THE BEST CURRICULUMS FOR YOUR KINDERGARTEN.PNG",
+      "btn1Label": "Consult Early Years Advisor",
+      "btn1Path": "/contact-us",
+      "btn2Label": "SHARE",
+      "btn2Path": "",
+      "blocks": {},
+      "livePage": {
+        "id": "d4bff901-cf31-419e-81f2-148ad41d7ce4",
+        "slug": "resource-the-best-",
+        "title": "THE BEST ",
+        "createdAt": "2026-04-25T09:44:10.947Z",
+        "updatedAt": "2026-04-25T09:44:10.947Z"
+      },
+      "apiFetchStatus": {
+        "resource-the-best-": 200,
+        "the-best-": 404
+      },
+      "ctaTitle": "Select & Implement the Ideal Early Years Curriculum",
+      "ctaSubtitle": "Access expert curriculum mapping across NEP Foundational Stage, Montessori, and Reggio Emilia frameworks, paired with classroom teaching aids.",
+      "ctaButtonLabel": "Consult Early Years Advisor",
+      "ctaHref": "/contact-us"
+    },
+    "ctaTitle": "Select & Implement the Ideal Early Years Curriculum",
+    "ctaSubtitle": "Access expert curriculum mapping across NEP Foundational Stage, Montessori, and Reggio Emilia frameworks, paired with classroom teaching aids.",
+    "ctaButtonLabel": "Consult Early Years Advisor",
+    "ctaHref": "/contact-us"
+  },
+  {
+    "title": "Gamified Science Lab",
+    "clientSlug": "gamified-science-lab",
+    "apiSlug": "resource-gamified-science-lab",
+    "image": "/uploads/1777110367611-GAMIFIED SCIENCE LABS.PNG",
+    "badge": "Institutional Insight",
+    "innerData": {
+      "content": "",
+      "description": "",
+      "specs": [],
+      "tags": [],
+      "heading": "GAMIFIED SCIENCE LAB",
+      "originalHeading": "GAMIFIED SCIENCE LAB",
+      "heroImg": "/uploads/1777110376262-GAMIFIED SCIENCE LABS.PNG",
+      "btn1Label": "Request Science Lab Catalog",
+      "btn1Path": "/contact-us",
+      "btn2Label": "SHARE",
+      "btn2Path": "",
+      "blocks": {},
+      "livePage": {
+        "id": "bd366613-404f-4651-a574-aa572ffc2c73",
+        "slug": "resource-gamified-science-lab",
+        "title": "GAMIFIED SCIENCE LAB",
+        "createdAt": "2026-04-25T09:45:47.773Z",
+        "updatedAt": "2026-04-25T09:45:47.773Z"
+      },
+      "apiFetchStatus": {
+        "resource-gamified-science-lab": 200,
+        "gamified-science-lab": 404
+      },
+      "ctaTitle": "Ignite Scientific Curiosity with Hands-On Science Labs",
+      "ctaSubtitle": "Deploy safety-compliant student experimentation benches, digital data-logger probes, and modular experiment kits mapped to CBSE, ICSE, and IB.",
+      "ctaButtonLabel": "Request Science Lab Catalog",
+      "ctaHref": "/contact-us"
+    },
+    "ctaTitle": "Ignite Scientific Curiosity with Hands-On Science Labs",
+    "ctaSubtitle": "Deploy safety-compliant student experimentation benches, digital data-logger probes, and modular experiment kits mapped to CBSE, ICSE, and IB.",
+    "ctaButtonLabel": "Request Science Lab Catalog",
+    "ctaHref": "/contact-us"
+  },
+  {
+    "title": "Smart Sports for Schools",
+    "clientSlug": "smart-sports",
+    "apiSlug": "resource-smart-sports",
+    "image": "/uploads/1777110423310-SMART SPORTS FOR SCHOOOLS.PNG",
+    "badge": "Institutional Insight",
+    "innerData": {
+      "content": "",
+      "description": "",
+      "specs": [],
+      "tags": [],
+      "heading": "SMART SPORTS",
+      "originalHeading": "SMART SPORTS",
+      "heroImg": "/uploads/1777110436252-SMART SPORTS FOR SCHOOOLS.PNG",
+      "btn1Label": "Book Sports Facility Audit",
+      "btn1Path": "/contact-us",
+      "btn2Label": "SHARE",
+      "btn2Path": "",
+      "blocks": {},
+      "livePage": {
+        "id": "bac0f40a-8829-41ef-b127-714bc96f9617",
+        "slug": "resource-smart-sports",
+        "title": "SMART SPORTS",
+        "createdAt": "2026-04-25T09:46:54.267Z",
+        "updatedAt": "2026-04-25T09:46:54.267Z"
+      },
+      "apiFetchStatus": {
+        "resource-smart-sports": 200,
+        "smart-sports": 404
+      },
+      "ctaTitle": "Build World-Class Athletic Infrastructure on Campus",
+      "ctaSubtitle": "Partner with SportSurf for FIFA/ITF-certified synthetic turf, shock-absorbing indoor athletic floors, multi-sport courts, and turnkey maintenance.",
+      "ctaButtonLabel": "Book Sports Facility Audit",
+      "ctaHref": "/contact-us"
+    },
+    "ctaTitle": "Build World-Class Athletic Infrastructure on Campus",
+    "ctaSubtitle": "Partner with SportSurf for FIFA/ITF-certified synthetic turf, shock-absorbing indoor athletic floors, multi-sport courts, and turnkey maintenance.",
+    "ctaButtonLabel": "Book Sports Facility Audit",
+    "ctaHref": "/contact-us"
+  },
+  {
+    "title": "Complete School Setup Guide",
+    "clientSlug": "complete-school-setup",
+    "apiSlug": "resource-complete-school-setup",
+    "image": "/uploads/1777110472863-COMPLETE SCHOOL SETUP GUIDE.PNG",
+    "badge": "Institutional Insight",
+    "innerData": {
+      "content": "",
+      "description": "",
+      "specs": [],
+      "tags": [],
+      "heading": "COMPLETE SCHOOL SETUP",
+      "originalHeading": "COMPLETE SCHOOL SETUP",
+      "heroImg": "/uploads/1777110496400-COMPLETE SCHOOL SETUP GUIDE.PNG",
+      "btn1Label": "Schedule Master Advisory",
+      "btn1Path": "/contact-us",
+      "btn2Label": "SHARE",
+      "btn2Path": "",
+      "blocks": {},
+      "livePage": {
+        "id": "a4628f81-3adb-4868-8f0d-34c2c316e7cd",
+        "slug": "resource-complete-school-setup",
+        "title": "COMPLETE SCHOOL SETUP",
+        "createdAt": "2026-04-25T09:47:42.364Z",
+        "updatedAt": "2026-04-25T09:47:42.364Z"
+      },
+      "apiFetchStatus": {
+        "resource-complete-school-setup": 200,
+        "complete-school-setup": 404
+      },
+      "ctaTitle": "Planning a Greenfield School or Large Campus Expansion?",
+      "ctaSubtitle": "Leverage SchoolMart's 360° setup advisory covering statutory norms, master planning, lab & library fit-outs, and factory-direct procurement.",
+      "ctaButtonLabel": "Schedule Master Advisory",
+      "ctaHref": "/contact-us"
+    },
+    "ctaTitle": "Planning a Greenfield School or Large Campus Expansion?",
+    "ctaSubtitle": "Leverage SchoolMart's 360° setup advisory covering statutory norms, master planning, lab & library fit-outs, and factory-direct procurement.",
+    "ctaButtonLabel": "Schedule Master Advisory",
+    "ctaHref": "/contact-us"
+  },
+  {
+    "title": "Talk to Us: Digital Transformation",
+    "clientSlug": "talks-to-us",
+    "apiSlug": "resource-talks-to-us",
+    "image": "/uploads/1777110609039-DIGTAL TRANSFORMATION.PNG",
+    "badge": "Institutional Insight",
+    "innerData": {
+      "content": "",
+      "description": "",
+      "specs": [],
+      "tags": [],
+      "heading": "TALKS TO US",
+      "originalHeading": "TALKS TO US",
+      "heroImg": "/uploads/1777110619419-DIGTAL TRANSFORMATION.PNG",
+      "btn1Label": "Book 1-on-1 Strategy Session",
+      "btn1Path": "/contact-us",
+      "btn2Label": "SHARE",
+      "btn2Path": "",
+      "blocks": {},
+      "livePage": {
+        "id": "d77e6d0c-171d-4abe-a30e-5a1f5a2a7262",
+        "slug": "resource-talks-to-us",
+        "title": "TALKS TO US",
+        "createdAt": "2026-04-25T09:49:37.723Z",
+        "updatedAt": "2026-04-25T09:49:37.723Z"
+      },
+      "apiFetchStatus": {
+        "resource-talks-to-us": 200,
+        "talks-to-us": 404
+      },
+      "ctaTitle": "Accelerate Your Campus Digital Transformation",
+      "ctaSubtitle": "Speak directly with senior educational technologists to design an integrated digital master plan for campus Wi-Fi, smart displays, and blended classrooms.",
+      "ctaButtonLabel": "Book 1-on-1 Strategy Session",
+      "ctaHref": "/contact-us"
+    },
+    "ctaTitle": "Accelerate Your Campus Digital Transformation",
+    "ctaSubtitle": "Speak directly with senior educational technologists to design an integrated digital master plan for campus Wi-Fi, smart displays, and blended classrooms.",
+    "ctaButtonLabel": "Book 1-on-1 Strategy Session",
+    "ctaHref": "/contact-us"
+  },
+  {
+    "title": "Wondergartens",
+    "clientSlug": "wondergartens",
+    "apiSlug": "resource-wondergartens",
+    "image": "/uploads/1777110683153-WONDERGARTENS.PNG",
+    "badge": "Institutional Insight",
+    "innerData": {
+      "content": "",
+      "description": "",
+      "specs": [],
+      "tags": [],
+      "heading": "WONDERGARTENS",
+      "originalHeading": "WONDERGARTENS",
+      "heroImg": "/uploads/1777110693942-WONDERGARTENS.PNG",
+      "btn1Label": "Plan Wondergarten Concept",
+      "btn1Path": "/contact-us",
+      "btn2Label": "SHARE",
+      "btn2Path": "",
+      "blocks": {
+        "action_stack": {
+          "id": "eeb33d67-259f-49c5-9c38-2918fa56caa8",
+          "key": "action_stack",
+          "type": "action_stack",
+          "data": {},
+          "isVisible": true
+        }
+      },
+      "livePage": {
+        "id": "f7f42dd4-aa0f-460d-ad55-c14fe2b91ecb",
+        "slug": "resource-wondergartens",
+        "title": "WONDERGARTENS",
+        "createdAt": "2026-04-25T09:51:02.328Z",
+        "updatedAt": "2026-04-25T09:51:02.328Z"
+      },
+      "apiFetchStatus": {
+        "resource-wondergartens": 200,
+        "wondergartens": 404
+      },
+      "ctaTitle": "Bring Wondergartens Nature-Inspired Spaces to Your Campus",
+      "ctaSubtitle": "Design biophilic play landscapes, natural timber gross-motor structures, and sensory exploration zones that nurture holistic early childhood growth.",
+      "ctaButtonLabel": "Plan Wondergarten Concept",
+      "ctaHref": "/contact-us"
+    },
+    "ctaTitle": "Bring Wondergartens Nature-Inspired Spaces to Your Campus",
+    "ctaSubtitle": "Design biophilic play landscapes, natural timber gross-motor structures, and sensory exploration zones that nurture holistic early childhood growth.",
+    "ctaButtonLabel": "Plan Wondergarten Concept",
+    "ctaHref": "/contact-us"
+  }
+]

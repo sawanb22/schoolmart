@@ -1,0 +1,631 @@
+{
+  "design": {
+    "title": "School Designs",
+    "slug": "design",
+    "blockKeys": [
+      "inner_page_hero",
+      "sidebar_categories"
+    ],
+    "blocks": {
+      "inner_page_hero": {
+        "id": "5a47f773-a8a9-4af2-aeae-dc6dda3ef493",
+        "key": "inner_page_hero",
+        "type": "inner_page_hero",
+        "data": {
+          "img": "https://images.unsplash.com/photo-1546519638-68e109498ffc?w=800&q=80",
+          "badge": "DESIGN 2025",
+          "mediaUrl": "/uploads/1776946604087-Gemini_Generated_Image_9utmuk9utmuk9utm.png",
+          "subtitle": "Configure your DESIGN parameters.",
+          "mediaType": "image",
+          "titleHtml": "Advanced <br/> DESIGN.",
+          "pageDescription": "schoolmart is a professional design company specializing in educational facilities. we focus on creating and constructing schools, particularly kindergartens, middle schools, high schools with an emphasis on aesthetic, safe, and child-friendly environments. our services include: Architectural Design for schools, Interior Design for Kindergartens Interior Construction for schools Brand Identity Design for Schools and School Construction",
+          "pageDescriptionBgColor": "#96e24f",
+          "pageDescriptionTextColor": "#ffffff"
+        },
+        "isVisible": true
+      },
+      "sidebar_categories": {
+        "id": "6b0d161e-111c-4489-a1ca-a82674b7a8da",
+        "key": "sidebar_categories",
+        "type": "sidebar_categories",
+        "data": {
+          "categories": [
+            "kindergartens",
+            "wondergartens",
+            "libraries",
+            "art craft ",
+            "corridors ",
+            "stem/ innovation ",
+            "sports",
+            "activity /sensory"
+          ]
+        },
+        "isVisible": true
+      }
+    }
+  },
+  "school-building-design": {
+    "title": "Architecture",
+    "slug": "school-building-design",
+    "blockKeys": [
+      "sidebar_categories",
+      "inner_page_hero"
+    ],
+    "blocks": {
+      "sidebar_categories": {
+        "id": "bf275eee-7e21-44d2-869f-987f47227d5a",
+        "key": "sidebar_categories",
+        "type": "sidebar_categories",
+        "data": {
+          "categories": [
+            "TRADITIONAL",
+            "FUTURISTIC",
+            "SUSTAINABLE",
+            "NEW AGE"
+          ]
+        },
+        "isVisible": true
+      },
+      "inner_page_hero": {
+        "id": "59206ccf-a515-47ee-823d-fd197eacc1fb",
+        "key": "inner_page_hero",
+        "type": "inner_page_hero",
+        "data": {
+          "img": "https://images.unsplash.com/photo-1546519638-68e109498ffc?w=800&q=80",
+          "badge": "SCHOOL DESIGN 2025",
+          "bgColor": "#f5f0e8",
+          "mediaUrl": "/uploads/1776932637991-Gemini_Generated_Image_625qno625qno625q.png",
+          "subtitle": "Configure your SCHOOL DESIGN parameters.",
+          "mediaType": "image",
+          "textColor": "#003dcc",
+          "titleHtml": "SCHOOL DESIGN<br/>  ARCHITECTURE",
+          "pageDescription": "Various architects with over 20 years of experience, focusing on sustainable and vernacular architecture, contemporary school design, experimental and curriculum-aligned concepts, and modular or portable building solutions",
+          "pageDescriptionBgColor": "#1e1bda",
+          "pageDescriptionTextColor": "#FFC501"
+        },
+        "isVisible": true
+      }
+    }
+  },
+  "mathematics": {
+    "title": "Mathematics",
+    "slug": "mathematics",
+    "blockKeys": [
+      "inner_page_hero",
+      "sidebar_categories"
+    ],
+    "blocks": {
+      "inner_page_hero": {
+        "id": "b0c2a6f4-1a9f-488a-a431-d8e7523330fb",
+        "key": "inner_page_hero",
+        "type": "inner_page_hero",
+        "data": {
+          "img": "https://images.unsplash.com/photo-1546519638-68e109498ffc?w=800&q=80",
+          "badge": "MATHEMATICS 2025",
+          "mediaUrl": "/uploads/1776966623783-Gemini_Generated_Image_yc5gyc5gyc5gyc5g.png",
+          "subtitle": "Configure your MATHEMATICS parameters.",
+          "mediaType": "image",
+          "textColor": "#f7f7f7",
+          "titleHtml": "Advanced <br/> MATHEMATICS",
+          "pageDescription": "Mathematica is the first ever gamified math lab thats universally mapped to curriculum with the help of 200+ Subject matter experts from across 16 countries.",
+          "pageDescriptionBgColor": "#ffc501",
+          "pageDescriptionTextColor": "#0501f9"
+        },
+        "isVisible": true
+      },
+      "sidebar_categories": {
+        "id": "3737cb01-1e29-4e79-8a56-070aabb38bbb",
+        "key": "sidebar_categories",
+        "type": "sidebar_categories",
+        "data": {
+          "categories": [
+            "MathEMATICA"
+          ]
+        },
+        "isVisible": true
+      }
+    }
+  },
+  "labs": {
+    "title": "Labs",
+    "slug": "labs",
+    "blockKeys": [
+      "inner_page_hero",
+      "sidebar_categories"
+    ],
+    "blocks": {
+      "inner_page_hero": {
+        "id": "2616af3e-138d-4118-a86a-33ce8cdb7846",
+        "key": "inner_page_hero",
+        "type": "inner_page_hero",
+        "data": {
+          "img": "https://images.unsplash.com/photo-1546519638-68e109498ffc?w=800&q=80",
+          "badge": "LABS 2025",
+          "bgColor": "#fcdb03",
+          "mediaUrl": "/uploads/1776969406388-Gemini_Generated_Image_nathq4nathq4nath.png",
+          "subtitle": "Configure your LABS parameters.",
+          "mediaType": "image",
+          "textColor": "#fcdb03",
+          "titleHtml": "Advanced <br/> LABS.",
+          "pageDescription": "At Schoolmart, we manufacture and supply NEP-compliant STEM, science, and math labs, offering fully engineered, end-to-end solutions that make modern lab setup effortless for schools across India.",
+          "pageDescriptionBgColor": "#313d91",
+          "pageDescriptionTextColor": "#fafafa"
+        },
+        "isVisible": true
+      },
+      "sidebar_categories": {
+        "id": "3e7de399-6edd-4e6f-8e64-17f8f9b218d0",
+        "key": "sidebar_categories",
+        "type": "sidebar_categories",
+        "data": {
+          "categories": [
+            "COMPUTER LAB",
+            "COMPOSITE SKILLS LAB",
+            "STEM LAB"
+          ]
+        },
+        "isVisible": true
+      }
+    }
+  },
+  "sports": {
+    "title": "Sports",
+    "slug": "sports",
+    "blockKeys": [
+      "inner_page_hero",
+      "sidebar_categories",
+      "action_stack",
+      "info_split_grid"
+    ],
+    "blocks": {
+      "inner_page_hero": {
+        "id": "5c5d35fc-1797-48a4-8a30-ee90c041f7d1",
+        "key": "inner_page_hero",
+        "type": "inner_page_hero",
+        "data": {
+          "img": "https://images.unsplash.com/photo-1546519638-68e109498ffc?w=800&q=80",
+          "badge": "Performance 2025",
+          "mediaUrl": "/uploads/1776958500100-Gemini_Generated_Image_czxn03czxn03czxn.png",
+          "subtitle": "Engineering high-performance athletic surfaces for the next generation of athletes.",
+          "mediaType": "image",
+          "titleHtml": "Built <br/> <span class=\"text-sm-blue italic font-serif lowercase tracking-normal\">for</span> <br/> Champions.",
+          "pageDescription": "At SportSurf [ schoolmart's subsidiary] , we believe sports aren’t just games We design, engineer, and deliver turnkey sports facilities that meet international federation standards and are built to inspire future champions.",
+          "pageDescriptionBgColor": "#fbff00",
+          "pageDescriptionTextColor": "#0011ff"
+        },
+        "isVisible": true
+      },
+      "sidebar_categories": {
+        "id": "9bacea9e-5150-4f98-bd56-d1c5039aab27",
+        "key": "sidebar_categories",
+        "type": "sidebar_categories",
+        "data": {
+          "categories": [
+            "Track & Field",
+            "Playground",
+            "Indoor Courts",
+            "Equipment",
+            "Gym Tech"
+          ]
+        },
+        "isVisible": true
+      },
+      "action_stack": {
+        "id": "90ee0b36-46b2-4a95-ad05-ba1fa4dde107",
+        "key": "action_stack",
+        "type": "action_stack",
+        "data": {
+          "cards": [
+            {
+              "link": "/contact-us",
+              "title": "Schedule Your \nSurvey\n(click here)",
+              "bgColor": "#cffbc6",
+              "textColor": "#0f0000"
+            },
+            {
+              "link": "https://sportsurf.in/",
+              "title": "Safety Compliance <br/> Gold Certified.",
+              "bgColor": "#4580f7",
+              "textColor": "#0f0000"
+            }
+          ]
+        },
+        "isVisible": true
+      },
+      "info_split_grid": {
+        "id": "c32fd6a3-f680-4c74-bd5d-2afa51e859dd",
+        "key": "info_split_grid",
+        "type": "info_split_grid",
+        "data": {
+          "image": "https://images.unsplash.com/photo-1546519638-68e109498ffc?w=1000&q=80",
+          "points": [
+            "FIBA Compliant",
+            "Anti-Skid",
+            "Heat Proof",
+            "10 Yr Warranty"
+          ],
+          "ctaPath": "/registration",
+          "heading": "High <span class=\"text-sm-blue italic font-serif lowercase tracking-normal\">Impact</span> Performance.",
+          "ctaLabel": "Start Project",
+          "description": "Shock-absorption technology for elite safety and performance. Our surfaces are tested in professional athletic labs to ensure long-term durability."
+        },
+        "isVisible": true
+      }
+    }
+  },
+  "libraries": {
+    "title": "Libraries",
+    "slug": "libraries",
+    "blockKeys": [
+      "inner_page_hero",
+      "sidebar_categories"
+    ],
+    "blocks": {
+      "inner_page_hero": {
+        "id": "e3e70316-1da0-4e87-8448-c9ce83ba237a",
+        "key": "inner_page_hero",
+        "type": "inner_page_hero",
+        "data": {
+          "img": "https://images.unsplash.com/photo-1546519638-68e109498ffc?w=800&q=80",
+          "badge": "LIBRARIES 2025",
+          "bgColor": "#efe1e1",
+          "mediaUrl": "/uploads/1777012622668-Gemini_Generated_Image_ngcuvengcuvengcu.png",
+          "subtitle": "Configure your LIBRARIES parameters.",
+          "mediaType": "image",
+          "titleHtml": "Advanced <br/> LIBRARIES.",
+          "pageDescription": "we are experts in setting up TRADITIONAL LIBRARIES, DIGITAL LIBRARIES, SUSTAINABLE LIBRARIES, AR LIBRARIES, KINDERGARTEN LIBRARIES, MULTI STORIED LIBRARIES, IB SCHOOL LIBRARIES",
+          "pageDescriptionBgColor": "#ffcd09",
+          "pageDescriptionTextColor": "#0f172a"
+        },
+        "isVisible": true
+      },
+      "sidebar_categories": {
+        "id": "b821bffa-23dd-446a-8129-2f4f86a0051f",
+        "key": "sidebar_categories",
+        "type": "sidebar_categories",
+        "data": {
+          "categories": [
+            "Phygital Libraries",
+            "Reading Zones",
+            "Digital Catalogs",
+            "AR Libraries",
+            "Study Pods",
+            "Open Shelving",
+            "Audio Rooms"
+          ]
+        },
+        "isVisible": true
+      }
+    }
+  },
+  "science": {
+    "title": "Science",
+    "slug": "science",
+    "blockKeys": [
+      "action_stack",
+      "action_strip",
+      "inner_page_hero",
+      "sidebar_categories"
+    ],
+    "blocks": {
+      "action_stack": {
+        "id": "cd4c112a-2250-4365-84d0-4329531c6fa5",
+        "key": "action_stack",
+        "type": "action_stack",
+        "data": {
+          "cards": [
+            {
+              "link": "/",
+              "title": "",
+              "bgColor": "#8c0808"
+            }
+          ]
+        },
+        "isVisible": true
+      },
+      "action_strip": {
+        "id": "1d5a7ec3-8abc-4d61-8478-9abdedd58d3e",
+        "key": "action_strip",
+        "type": "action_strip",
+        "data": {
+          "bgColor": "#04865f",
+          "textColor": "#fcfcfc"
+        },
+        "isVisible": true
+      },
+      "inner_page_hero": {
+        "id": "267a670a-52af-499b-8ed5-fa760d3b16c5",
+        "key": "inner_page_hero",
+        "type": "inner_page_hero",
+        "data": {
+          "img": "https://images.unsplash.com/photo-1546519638-68e109498ffc?w=800&q=80",
+          "badge": "SCIENCE 2025",
+          "bgColor": "#f5f0e8",
+          "mediaUrl": "/uploads/1776967655970-Gemini_Generated_Image_rtijkfrtijkfrtij.png",
+          "subtitle": "Configure your SCIENCE parameters.",
+          "mediaType": "image",
+          "titleHtml": "Advanced <br/> SCIENCE.",
+          "pageDescription": "We deliver end-to-end educational solutions—from curated kindergarten design and innovative school spaces to AI-integrated libraries and labs, in-house design and manufacturing, and complete technology-driven classroom development.",
+          "pageDescriptionBgColor": "#ffc501",
+          "pageDescriptionTextColor": "#0501f9"
+        },
+        "isVisible": true
+      },
+      "sidebar_categories": {
+        "id": "0457044f-f90d-4ccf-a866-432189e7c747",
+        "key": "sidebar_categories",
+        "type": "sidebar_categories",
+        "data": {
+          "categories": [
+            "PHYSICS LAB",
+            "CHEMISTRY LAB",
+            "BIOLOGY LAB"
+          ]
+        },
+        "isVisible": true
+      }
+    }
+  },
+  "digital": {
+    "title": "Digital Infra",
+    "slug": "digital",
+    "blockKeys": [
+      "inner_page_hero",
+      "sidebar_categories",
+      "action_strip"
+    ],
+    "blocks": {
+      "inner_page_hero": {
+        "id": "af5a8c36-0b57-4cc0-a554-2c60d26ab06a",
+        "key": "inner_page_hero",
+        "type": "inner_page_hero",
+        "data": {
+          "img": "/images/hero_digital.png",
+          "badge": "Digital Transformation 2025",
+          "bgColor": "#ffffff",
+          "mediaUrl": "/uploads/1776939381814-Gemini_Generated_Image_oodsvcoodsvcoods.png",
+          "subtitle": "Cutting-edge Ed-Tech and campus-wide smart infrastructure.",
+          "mediaType": "image",
+          "textColor": "#030303",
+          "titleHtml": "Future <br/> Digital.",
+          "pageDescription": "AI-Enabled Tablets for Schools We curate classroom-ready interactive flat panels—designed for teaching, not boardroom demos. Each panel is sourced from trusted manufacturers and configured with education-focused software, AI-assisted teaching tools, multi-user touch, and curriculum-aligned content. ",
+          "pageDescriptionBgColor": "#ffc501",
+          "pageDescriptionTextColor": "#0501f9"
+        },
+        "isVisible": true
+      },
+      "sidebar_categories": {
+        "id": "ebdb74ee-8a69-4175-96be-aa53f872eee7",
+        "key": "sidebar_categories",
+        "type": "sidebar_categories",
+        "data": {
+          "categories": [
+            "INTERACTIVE FLAT PANELS",
+            "TABLETS",
+            "DIGITAL BOARDS"
+          ]
+        },
+        "isVisible": true
+      },
+      "action_strip": {
+        "id": "8e8fd616-9eab-4764-a5d9-8693d5147a54",
+        "key": "action_strip",
+        "type": "action_strip",
+        "data": {
+          "title": "Digital Transformation 2025.",
+          "bgColor": "#0830fd",
+          "btnType": "shield",
+          "subtitle": "UPTIME & SECURITY REPORT",
+          "textColor": "#fbff00",
+          "downloadPath": "/catalogues"
+        },
+        "isVisible": true
+      }
+    }
+  },
+  "environments": {
+    "title": "Environments",
+    "slug": "environments",
+    "blockKeys": [
+      "action_stack",
+      "environments_page_content",
+      "inner_page_hero"
+    ],
+    "blocks": {
+      "action_stack": {
+        "id": "3c0f9b95-4571-463a-9c7b-3495202b4dfd",
+        "key": "action_stack",
+        "type": "action_stack",
+        "data": {},
+        "isVisible": true
+      },
+      "environments_page_content": {
+        "id": "f08c69b6-d7ae-465b-96b2-975412172c1c",
+        "key": "environments_page_content",
+        "type": "environments_page_content",
+        "data": {
+          "masonryItems": [
+            {
+              "c": "",
+              "t": "DINING HALL DESIGN TO EXECUTION",
+              "img": "/uploads/1777271434196-DINING HALL DESIGN TO EXECUTION.PNG",
+              "badge": "Case Study 2025",
+              "specs": [],
+              "mainImg": "/uploads/1777271481662-DINING HALL DESIGN TO EXECUTION.PNG",
+              "description": "Stainless Steel (304 Grade) dining desks: Stainless steel is commonly used for the construction of kitchen equipment and countertops due to its durability, resistance to corrosion, and ease of maintenance.\nComposite Panel dining desks: Composite panels, made from a combination of materials such as aluminum and plastic, are often used for wall cladding and partitions. They provide excellent insulation, are lightweight, and offer a modern aesthetic.\nGranite Top dining : Granite is a popular choice for countertops in dining halls due to its durability, heat resistance, and aesthetic appeal. It provides a polished and elegant surface for food preparation and serving.\nWaterproof High Pressure Laminate (HPL) Top: HPL is a versatile and durable material used for tabletops. It is resistant to water, stains, and scratches, making it suitable for heavy use in dining areas.\nFoldable Dining Tables: Foldable dining tables are a practical solution for maximizing space utilization in dining halls. They can be easily folded and stored when not in use, allowing for flexible configurations and efficient storage.\nMultiple Configurations : SchoolMart dining halls are designed to accommodate various seating configurations to meet different needs. This may include long communal tables, smaller round tables, booth seating, or flexible layouts that can be easily adjusted.\nErgonomic Seating: Comfortable seating is essential in dining halls. Ergonomic chairs and benches that provide proper support and comfort for extended periods of sitting are often incorporated into the design.\nEfficient Ventilation Systems: Dining halls require proper ventilation to maintain good air quality and control odors. Effective ventilation systems, including exhaust fans and air circulation, are integrated into the design to provide a comfortable dining experience.\nHygienic and Easy-to-Clean Surfaces: Dining halls prioritize cleanliness, so materials that are easy to clean and maintain are utilized. Smooth surfaces, such as stainless steel, composite panels, and laminates, are preferred for their resistance to stains and ease of cleaning.\nSustainable and Eco-Friendly Features: Increasingly, dining halls incorporate sustainable practices and materials. This may include energy-efficient lighting fixtures, recycling stations, water-saving fixtures, and the use of eco-friendly materials wherever possible.\nAccessibility Considerations: Designing for accessibility is important in dining halls. This involves providing wheelchair-accessible tables and seating, ramps or lifts for accessibility to different levels, and ensuring adequate maneuvering space for individuals with mobility aids.",
+              "cardDescription": "These are some of the key materials and features commonly included in the design and execution of SchoolMart dining halls. The specific details may vary depending on the project requirements and budget. Design and execution of SchoolMart dining halls typically include the following materials and features",
+              "technicalDetails": []
+            },
+            {
+              "c": "",
+              "t": "RUMPUS ROOMS",
+              "img": "/uploads/1777272747050-RUMPUS ROOMS.PNG",
+              "badge": "Case Study 2025",
+              "specs": [],
+              "mainImg": "/uploads/1777272750643-RUMPUS ROOMS.PNG",
+              "description": "A rumpus room, also known as a playroom or activity room, is a designated space within a kindergarten or preschool where children can engage in various play and recreational activities. It is designed to provide an environment that promotes creativity, social interaction, and physical development.\n\nIn schoolmart’s rumpus rooms, you might find a variety of toys, games, puzzles, and art supplies that are age-appropriate for the children attending the kindergarten. The room is typically furnished with child-sized tables and chairs, soft mats or carpets for comfortable play, and storage units to keep toys organized.\n\nThe purpose of a rumpus room is to offer children a place where they can explore their imagination, interact with their peers, and develop their cognitive and motor skills through play.\n\nIt is an essential component of early childhood education, as it supports the holistic development of children by providing them with opportunities for self-expression, problem-solving, and socialization.\n\nTeachers or caregivers usually supervise the rumpus room to ensure a safe and inclusive environment. They may organize structured activities or allow children to engage in free play, depending on the educational philosophy and curriculum of the kindergarten.",
+              "cardDescription": "A rumpus room, also known as a playroom or activity room, is a designated space within a kindergarten or preschool where children can engage in various play and recreational activities. It is designed to provide an environment that promotes creativity, social interaction, and physical development.",
+              "technicalDetails": []
+            },
+            {
+              "c": "",
+              "t": "SMART MUSIC ROOMS [ PROFESSIONAL ]",
+              "img": "/uploads/1777272882057-SMART MUSIC ROOMS [ PROFESSIONAL ].PNG",
+              "badge": "Case Study 2025",
+              "specs": [],
+              "mainImg": "/uploads/1777272913455-SMART MUSIC ROOMS [ PROFESSIONAL ].PNG",
+              "description": "Needs Assessment: determine the requirements of the teachers and students. This may involve speaking with music teachers, school administrators, and students to determine the types of instruments and equipment needed, as well as any specific requirements or limitations of the space.\n\nRoom Layout and Acoustics: designing the room to maximize sound quality and minimize outside noise, echoes, and other disturbances. Acoustic treatments such as sound-absorbing panels or diffusers may be installed to enhance the sound quality.\n\nEquipment Selection: The next step is to select the equipment needed for the smart music room. This may include instruments, amplifiers, microphones, speakers, mixing consoles, recording equipment, and software. The equipment selected should be appropriate for the level and needs of the students, and also be compatible with the smart features of the room.\n\nTablet controlled: The smart music room may include various features such as smart lighting, temperature control, and audio and video recording capabilities. These features can be controlled through a central system, such as a tablet or touch panel, to enhance the user experience and provide greater control over the room environment.",
+              "cardDescription": "Schoolmart’s smart music rooms design process involves Needs Assessment: determine the requirements of the teachers and students. This may involve speaking with music teachers, school administrators, and students to determine the types of instruments and equipment needed, as well as any specific requirements or limitations of the space. Room Layout and Acoustics: designing the room",
+              "technicalDetails": []
+            },
+            {
+              "c": "",
+              "t": "ART & CRAFT ROOMS",
+              "img": "/uploads/1777273042653-ART & CRAFT ROOMS.PNG",
+              "badge": "Case Study 2025",
+              "specs": [],
+              "mainImg": "/uploads/1777273074950-ART & CRAFT ROOMS.PNG",
+              "description": "Workstations and Tables: Art and craft rooms typically have individual workstations or tables where students can work on their projects. These workstations are spacious and provide ample surface area for creating art and craft pieces.\nStorage and Organization: Adequate storage solutions are essential to keep art supplies, materials, and tools organized and easily accessible. Cabinets, shelves, drawers, and bins are commonly used to store and categorize various art and craft supplies.\nArt Supplies: Art and craft rooms are stocked with a wide range of art supplies to cater to different artistic techniques and mediums. This includes paints (acrylic, watercolor, tempera), brushes, pencils, markers, pastels, clay, paper, canvas, glue, scissors, rulers, and other materials relevant to various art forms.\nEasels and Display Boards: Easels are commonly provided in art and craft rooms for students to work on larger canvas or paper. Display boards or walls are also available to showcase finished artwork or hold visual references and inspiration.\nSinks and Cleanup Area: A designated area with sinks, water supply, and proper drainage is included to facilitate easy cleanup of brushes, palettes, and other art tools. This area is equipped with drying racks or spaces for artwork to dry.\nNatural Lighting and Adjustable Lighting: Art and craft rooms are designed with ample natural lighting whenever possible to provide optimal lighting conditions for artwork. Adjustable lighting fixtures are also installed to ensure proper illumination during detailed work or for areas with limited natural light.\nVentilation and Exhaust Systems: Adequate ventilation and exhaust systems are essential to maintain air quality, especially when working with paints, adhesives, or other materials that may release fumes or dust particles.\nInspirational and Reference Materials: Art and craft rooms may feature a dedicated area with books, magazines, art catalogs, and visual references for students to explore and seek inspiration. This area may also include computers or tablets for digital references and research.\nCollaboration and Group Workspaces: Art and craft rooms may include collaborative workspaces or larger tables for group projects, discussions, and shared artistic experiences. This encourages teamwork, creativity, and peer learning.\nDrying Racks and Storage: Artwork often needs to be left to dry, and art and craft rooms have designated drying racks or storage areas where students can place their finished pieces to dry before taking them home or displaying them.\nSafety Considerations: Art and craft rooms should adhere to safety standards and guidelines. This includes providing safety equipment such as aprons, gloves, and goggles, as well as implementing proper ventilation and safe handling and disposal of art materials.\nAge appropriate : Art and craft rooms should be designed to accommodate students with diverse needs. This may include providing adjustable-height tables, accessible storage, and tools, as well as considering the layout and pathways for easy maneuverability.\nThese features contribute to creating a vibrant, inspiring, and functional art and craft room in schools, where students can explore their creativity, develop artistic skills, and engage in various art forms and craft activities.",
+              "cardDescription": "schoolmart’s Art and craft rooms in schools are dedicated spaces designed to foster creativity, imagination, and artistic expression. These rooms provide students with the necessary tools, materials, and a conducive environment to engage in various art and craft activities. Here are some common features and components found in art and craft rooms for schools:",
+              "technicalDetails": []
+            },
+            {
+              "c": "",
+              "t": "SMART STEM LABS DESIGN TO EXECUTION",
+              "img": "/uploads/1777273176552-SMART STEM LABS DESIGN TO EXECUTION.PNG",
+              "badge": "Case Study 2025",
+              "specs": [],
+              "mainImg": "/uploads/1777273204689-SMART STEM LABS DESIGN TO EXECUTION.PNG",
+              "description": "supply of Workstations and Equipment: STEM labs typically have dedicated workstations equipped with a variety of tools and equipment relevant to STEM disciplines. These may include computers, laptops, 3D printers, laser cutters, robotics kits, circuitry components, microscopes, scientific instruments, and measurement tools.\ndesign of Maker Spaces: Maker spaces within STEM labs provide students with the opportunity to engage in hands-on projects and create prototypes. These areas may include workbenches, hand tools, power tools, soldering stations, and materials for building and tinkering.\nDesign and Engineering Stations: Design and engineering areas in STEM labs facilitate the design process. They may feature computer-aided design (CAD) software, drafting tables, modeling materials (e.g., clay, foam, cardboard), and prototyping equipment (e.g., 3D printers, laser cutters) for students to develop and refine their designs.\nRobotics and Coding Stations: Dedicated stations equipped with robotics kits, programmable robots, coding software, and microcontrollers (such as Arduino or Raspberry Pi) enable students to learn and apply principles of robotics, coding, and automation.\nExperimentation and Research Areas: These areas provide space and resources for students to conduct experiments and research. They may include laboratory equipment, safety measures, chemical substances, and data collection tools for conducting scientific investigations.\nCollaboration Spaces: STEM labs often include collaborative areas with flexible seating and writable surfaces where students can work in teams, brainstorm ideas, and collaborate on projects. These spaces encourage communication, teamwork, and problem-solving skills.\nData Analysis and Visualization Tools: STEM labs may feature software and tools for data analysis, graphing, and visualization. This allows students to analyze experimental data, interpret results, and present their findings effectively.\nAugmented Reality (AR) and Virtual Reality (VR): Some STEM labs incorporate AR or VR technology to provide immersive and interactive experiences. Students can explore virtual environments, conduct virtual experiments, or simulate real-world scenarios.\nchild Safety Measures: Safety is a crucial aspect of STEM labs. Proper safety equipment, such as goggles, lab coats, and fire extinguishers, as well as safety protocols and guidelines, should be in place to ensure a safe learning environment.\nDisplay and Exhibition Areas: STEM labs often have display areas where students can showcase their projects, prototypes, and research findings. This encourages student engagement, motivation, and sharing of knowledge.\nTeacher Resources: STEM labs may include a dedicated area or resources for teachers, such as reference materials, curriculum guides, lesson plans, and professional development resources to support STEM instruction.\nmapped to all age groups : STEM labs should be designed to accommodate students with diverse needs. This may include adjustable workstations, accessibility tools and software, tactile materials, and wheelchair accessibility.\nThese features contribute to creating an engaging and immersive learning environment in STEM labs, allowing students to explore, experiment, and apply STEM concepts through hands-on activities and projects.",
+              "cardDescription": "STEM (Science, Technology, Engineering, and Mathematics) labs in schools are designed to provide students with hands-on learning experiences, encourage critical thinking, problem-solving, and foster an interest in STEM subjects. Here are some common features and components found in STEM labs for schools:",
+              "technicalDetails": []
+            },
+            {
+              "c": "",
+              "t": "HOME SCIENCE ROOM",
+              "img": "/uploads/1777273260640-HOME SCIENCE ROOM.PNG",
+              "badge": "Case Study 2025",
+              "specs": [],
+              "mainImg": "/uploads/1777273287756-HOME SCIENCE ROOM.PNG",
+              "description": "Kitchen Facilities: The room may have a fully equipped kitchen with stoves, ovens, sinks, and countertops where students can learn cooking techniques, meal planning, and nutrition.\nSewing Stations: There might be sewing machines, cutting tables, and storage for fabrics and sewing supplies to teach students basic sewing skills, garment construction, and textile care.\nChild Care and Development Resources: The room may include resources like cribs, baby dolls, toys, and child care materials to teach students about child development, parenting skills, and child care responsibilities.\nHousehold Management Tools: The room might have tools and resources related to budgeting, interior design, home maintenance, and organization to teach students about managing a household efficiently.\nSafety and Hygiene Considerations: The room should prioritize safety measures, including fire extinguishers, first aid kits, and proper ventilation. It should also emphasize the importance of hygiene practices.",
+              "cardDescription": "The home science room typically contains various equipment, tools, and resources that are essential for teaching and learning these skills. Here are some common features you might find in a home science room: Kitchen Facilities: The room may have a fully equipped kitchen with stoves, ovens, sinks, and countertops where students can learn cooking techniques",
+              "technicalDetails": []
+            },
+            {
+              "c": "",
+              "t": "INTERACTIVE KIDS LIBRARY",
+              "img": "/uploads/1777273350754-INTERACTIVE KIDS LIBRARY.PNG",
+              "badge": "Case Study 2025",
+              "specs": [],
+              "mainImg": "/uploads/1777273384510-INTERACTIVE KIDS LIBRARY.PNG",
+              "description": "Digital Resources: Interactive libraries often provide access to a wide range of digital resources, including e-books, audiobooks, educational videos, online databases, and interactive learning platforms. These resources can be accessed on computers, tablets, or dedicated library devices.\nMultimedia work Stations: Dedicated multimedia stations equipped with computers, headphones, and interactive software allow students to explore digital content, conduct research, and engage with educational applications and learning tools.\nInteractive Displays: Interactive displays such as touchscreen panels or interactive whiteboards are integrated into the library space. These displays enable students to interact with educational content, access digital resources, and participate in collaborative activities.\nDIY /Maker Spaces: Many interactive libraries feature maker spaces, providing students with hands-on opportunities to engage in creative projects and explore STEM (Science, Technology, Engineering, and Mathematics) concepts. Maker spaces may include tools, equipment, and materials for activities like 3D printing, coding, robotics, and crafting.\nCollaborative Zones: Designated areas within the library are set up to encourage collaborative learning and group work. These zones may include comfortable seating, movable furniture, and writable surfaces for brainstorming and collaborative projects.\nGaming Areas: Some interactive libraries incorporate gaming areas with educational games that promote critical thinking, problem-solving, and subject-specific learning. These areas may include consoles, computers, or tablets dedicated to educational gaming.\nVirtual Reality (VR) and Augmented Reality (AR) libraries: Libraries may have VR or AR stations where students can immerse themselves in virtual or augmented worlds to explore educational content, historical settings, or scientific simulations.\nLearning Pods: These are small enclosed spaces or rooms within the library that provide a quiet and focused environment for individual or small group study. Learning pods may be equipped with technology such as computers or tablets, and comfortable seating.\nReading Nooks: Comfortable and inviting reading nooks or cozy corners are designed to encourage students to relax and enjoy reading. These areas may have soft seating, cushions, and a collection of age-appropriate books.\nFlexible Furniture: Interactive libraries often feature flexible and modular furniture arrangements that can be easily rearranged to accommodate different learning activities. This allows for versatile use of space and promotes collaboration.\nDigital Signage and Information Displays: Digital signage screens or information displays can be strategically placed throughout the library to provide updates, announcements, and information on upcoming events, book recommendations, or library resources.\nAccessibility to all age groups [ primary + secondary schools ]: Interactive libraries ensure accessibility for students with diverse needs. This may include adjustable height workstations, braille resources, assistive technology tools, and wheelchair-accessible spaces.",
+              "cardDescription": "schoolmart’s architects contribute to creating an interactive and dynamic learning environment within the school library, fostering students’ curiosity, engagement, and exploration of knowledge",
+              "technicalDetails": []
+            },
+            {
+              "c": "",
+              "t": "KINDERGARTEN/ PRIMARY PHYSICAL ACTIVITY ROOM",
+              "img": "/uploads/1777273488963-KINDERGARTEN.PNG",
+              "badge": "Case Study 2025",
+              "specs": [],
+              "mainImg": "/uploads/1777273526856-KINDERGARTEN.PNG",
+              "description": "Open Space: SCHOOLMART’S Physical activity rooms typically have open, unobstructed spaces to allow students to engage in a variety of physical activities. The space should be spacious enough to accommodate different movements, games, and exercises.\nSafety Flooring: The flooring in physical activity rooms should be cushioned or padded to provide a safe surface for students during active play. Materials such as rubberized flooring or foam mats are commonly used to reduce the risk of injuries from falls.\nEquipment Storage: Adequate storage solutions are essential to keep sports equipment, toys, and props organized and easily accessible. Shelving units, racks, or bins are typically used to store equipment such as balls, hula hoops, jump ropes, cones, and other activity materials.\nSports Equipment: SCHOOLMART’S Physical activity rooms are equipped with a variety of sports equipment to cater to different types of activities. This may include balls for various sports (e.g., basketballs, soccer balls, volleyballs), bats, racquets, shuttlecocks, and other items used in organized games and sports.\nClimbing Structures: Climbing structures, such as low-level climbing walls or climbing frames, can be included in physical activity rooms to encourage gross motor skills development, balance, and coordination.\nObstacle Courses: Incorporating obstacle courses within the physical activity room offers opportunities for students to engage in structured and challenging physical activities. These courses can include balance beams, tunnels, stepping stones, and other obstacles that promote agility and motor skills.\nInteractive Games: Interactive gaming systems, such as motion-sensor games or dance platforms, can be installed to provide engaging and active gaming experiences for students. These games promote physical activity while providing an element of fun and competition.\nMirrors: Mirrors can be installed in the physical activity room to allow students to observe their movements and posture during exercises or dance activities. Mirrors help promote body awareness and proper form.\nWall Graphics and Signage: Decorative wall graphics, inspirational quotes, and visual cues can be used to create an inviting and motivating environment within the physical activity room. These elements can help set the atmosphere for active play and fitness.\nSound System: Installing a sound system in the physical activity room allows for the playing of energetic music or providing instructions during physical activities, dance sessions, or exercise routines.\nSafety Measures: Physical activity rooms should adhere to safety standards and guidelines. Adequate supervision and adult guidance, first aid kits, emergency protocols, and clear safety rules should be in place to ensure the well-being of students during physical activities.\nSchoolmart contributes to creating an engaging, active, and safe environment within the physical activity room, encouraging students to develop physical fitness, motor skills, teamwork, and a lifelong love for physical activity.",
+              "cardDescription": "Physical activity rooms in primary schools are dedicated spaces designed to promote active play, movement, and physical fitness among students. These rooms provide a safe and engaging environment for students to participate in various physical activities. Here are some common features and components found in physical activity rooms in primary schools",
+              "technicalDetails": []
+            },
+            {
+              "c": "",
+              "t": "JUNGLE ROOM FEATURES",
+              "img": "/uploads/1777273582747-JUNGLE ROOM FEATURES.PNG",
+              "badge": "Case Study 2025",
+              "specs": [],
+              "mainImg": "/uploads/1777273611342-JUNGLE ROOM FEATURES.PNG",
+              "description": "Wall Murals: Use jungle-themed wall murals to set the tone for the room. You can paint or use wallpaper featuring lush green foliage, tropical trees, exotic animals like lions, tigers, elephants, monkeys, and colorful birds.\nFaux Vines and Greenery: Hang faux vines from the ceiling or wrap them around furniture to create a jungle-like atmosphere. Place potted plants or artificial trees with large leaves to enhance the greenery.\nAnimal Prints and Textures: Incorporate animal prints, such as leopard or zebra patterns, into upholstery, rugs, or cushions. Animal textures, like faux fur or snakeskin patterns, can also be used for added visual interest.\nCanopy Bed or Tent: For a jungle-themed bedroom, consider a canopy bed with leafy fabric or a tent-style bed that resembles a safari tent. It adds a sense of adventure and makes the room feel like a hidden oasis.\nTreehouse Loft Bed: A treehouse-inspired loft bed can be a fantastic addition to a jungle-themed room. It gives the room a playful and adventurous feel, and provides extra space for play or study underneath.\nJungle Animal Stuffed Toys: Place stuffed animals like lions, giraffes, zebras, and monkeys around the room to create a sense of wildlife. These can be displayed on shelves, beds, or chairs.\nHanging Swings or Hammocks: Install a hanging swing or hammock in the room to mimic the feeling of swinging through the jungle. This can be a cozy spot for reading or relaxation.\nLeafy Window Treatments: Choose curtains or blinds in leafy patterns or earthy green colors to tie in with the jungle theme. This adds a touch of nature and filters sunlight in a soft and serene way.\nAdventure-themed Storage: Use storage containers or shelves designed to look like treasure chests, safari crates, or wooden barrels. It adds a touch of adventure and provides practical storage solutions.\nAnimal Wall Decals: Apply removable wall decals featuring various jungle animals to create a lively and dynamic wall display. These can be easily removed or replaced as the child’s interests evolve.\nSafari-inspired Furniture: Look for furniture with safari or rustic elements, such as rattan chairs, bamboo shelves, or wooden furniture with animal-themed carvings or details.\nJungle-themed  Accessories: Choose bedding with jungle prints, such as palm leaves, animal silhouettes, or tropical flowers. Add jungle-themed throw pillows, rugs, and artwork to complete the look.\nRemember to prioritize safety and age-appropriate elements when designing a jungle-themed room for children. Ensure that the space is comfortable, functional, and reflective of the child’s interests and imagination.",
+              "cardDescription": "schoolmart’s jungle-themed room is a fun and adventurous design choice that brings elements of nature and wildlife into an indoor space. Whether it’s a child’s bedroom, a playroom, or a classroom, here are some ideas to create a jungle-themed room",
+              "technicalDetails": []
+            },
+            {
+              "c": "",
+              "t": "INDOOR PLAY N ACTIVITY ROOMS",
+              "img": "/uploads/1777273670414-INDOOR PLAY N ACTIVITY ROOMS.PNG",
+              "badge": "Case Study 2025",
+              "specs": [],
+              "mainImg": "/uploads/1777273698576-INDOOR PLAY N ACTIVITY ROOMS.PNG",
+              "description": "Imaginative Play Areas: Designated areas within the playroom can be dedicated to imaginative play, featuring play kitchens, dollhouses, dress-up corners, puppet theaters, and storytelling zones. These areas encourage creativity, role-playing, and social interaction among children.\nManipulative and Constructive Play: Activity rooms often include tables or stations for manipulative and constructive play. These areas may have LEGO blocks, building sets, puzzles, magnetic tiles, arts and crafts supplies, and other materials that promote fine motor skills, problem-solving, and creativity.\nBoard Games and Table Games: Space can be allocated for tabletop games and board games, encouraging social interaction, strategic thinking, and cooperative play among students. Tables and chairs are provided for comfortable gameplay.\nSports and Active Games: Indoor playrooms may have areas dedicated to sports and active games, such as mini basketball hoops, mini soccer goals, mini tennis courts, and table tennis. These features promote physical fitness, hand-eye coordination, and friendly competition.\nSensory Play: Sensory play areas can be incorporated into indoor playrooms, offering activities that stimulate the senses. This may include sand or water tables, sensory bins filled with different textures, sensory walls with tactile elements, and calming sensory corners.\nSafety Flooring: The flooring in indoor play areas is often cushioned or padded to ensure the safety of children during active play. Materials like rubberized flooring or foam mats are commonly used to provide a soft and shock-absorbing surface.\nAge-Appropriate Play Equipment: Indoor playrooms may include age-appropriate play equipment such as climbing structures, slides, tunnels, balance beams, soft play blocks, and ball pits. These features help promote gross motor skills, coordination, and balance.\nReading Nooks and Quiet Spaces: Designated reading nooks or quiet corners with comfortable seating and a collection of age-appropriate books create a calming and relaxing environment where children can engage in quiet activities like reading or puzzles.\nArtistic Expression: Indoor playrooms may include art stations equipped with art supplies, easels, drawing materials, and a variety of craft materials. This allows children to explore their creativity, engage in art projects, and express themselves through visual arts.\nInteractive Technology: Some indoor playrooms incorporate interactive technology, such as interactive projectors, touchscreens, or educational gaming systems, that provide engaging and educational activities for children.\n \n\nThese features contribute to creating an inclusive, fun, and engaging indoor play and activity environment at schools, allowing children to develop physical, social, cognitive, and imaginative skills in a supportive and stimulating setting.",
+              "cardDescription": "Indoor play and activity rooms by schoolmart are dedicated spaces designed to provide students with opportunities for active play, social interaction, and engaging recreational activities. These rooms offer a safe and stimulating environment where children can participate in a variety of play-based and constructive activities. Here are some common features and components found in indoor play and activity rooms at schools:",
+              "technicalDetails": []
+            },
+            {
+              "c": "",
+              "t": "MINI AUDITORIUMS FOR SCHOOLS",
+              "img": "/uploads/1777273753360-MINI AUDITORIUMS FOR SCHOOLS.PNG",
+              "badge": "Case Study 2025",
+              "specs": [],
+              "mainImg": "/uploads/1777273784000-MINI AUDITORIUMS FOR SCHOOLS.PNG",
+              "description": "Seating: Install comfortable, tiered seating to ensure clear visibility for all audience members. Consider using ergonomic seats with proper lumbar support. The seating arrangement should provide ample legroom and space for easy movement.\nStage and Performance Area: Include a raised stage area that can accommodate performers, speakers, and presenters. The stage should be well-equipped with appropriate lighting, sound systems, and audiovisual equipment for effective presentations and performances.\nAcoustics: Pay attention to the acoustic design of the mini auditorium. Use sound-absorbing materials on walls, ceilings, and floors to minimize echo and ensure clear sound quality. Proper acoustic treatments can enhance the overall experience for the audience.\nLighting: Install a versatile lighting system that allows for various stage lighting effects to set the mood and highlight performers. Consider including spotlights, colored lights, and adjustable lighting options to create different atmospheres for different events.\nAudiovisual Equipment: Equip the mini auditorium with high-quality audiovisual equipment, including microphones, speakers, projectors, screens, and multimedia connectivity. This allows for seamless integration of presentations, videos, and other multimedia content.\nBackstage Area: Provide a backstage area with dressing rooms, storage spaces, and restrooms for performers. This allows for efficient preparation and transitions between performances.\nControl Room: Include a control room or booth from which the lighting, sound, and audiovisual equipment can be managed during events. This central control area should offer clear sightlines of the stage and the audience.\nStorage and Equipment Rooms: Allocate storage areas for staging equipment, props, and audiovisual materials. This helps maintain a clutter-free auditorium and facilitates efficient event setup and breakdown.\nMultipurpose auditoriums  Design the mini auditorium with flexibility in mind to accommodate various types of events. Include movable seating options or retractable seating systems to convert the space into a flat floor area for non-auditorium-style activities.\nAesthetics and Decor: Pay attention to the aesthetics and decor of the mini auditorium. Choose colors, materials, and finishes that create a welcoming and visually appealing space. Consider incorporating school branding or artistic elements to enhance the atmosphere.\nA well-designed mini auditorium in a school provides a versatile space for educational, artistic, and cultural activities. It serves as a hub for performances, presentations, and community gatherings, fostering a sense of pride and engagement among students, faculty, and the wider school community.\n\n \n\n \n\nRegenerate response",
+              "cardDescription": "Our Mini auditoriums in schools provide a dedicated space for various performances, presentations, assemblies, and cultural events. These smaller-scale auditoriums offer the benefits of a larger auditorium while accommodating a more intimate audience. Here are some key features and considerations when designing mini auditoriums for schools",
+              "technicalDetails": []
+            },
+            {
+              "c": "",
+              "t": "The Importance of Daylight in Classrooms",
+              "img": "/uploads/1777273840359-The Importance of Daylight in Classrooms.PNG",
+              "badge": "Case Study 2025",
+              "specs": [],
+              "mainImg": "/uploads/1777273869292-The Importance of Daylight in Classrooms.PNG",
+              "description": "Beyond Light Bulbs: The Sun’s Magic\nImagine a classroom bathed in warm sunlight, like a cozy nook by the window. Forget artificial bulbs; we’re talking about the original spotlight—the sun! 🌞\n\nThe Sun’s Superpowers\nVitamin D Boost: Sunlight isn’t just for tanning; it’s your body’s vitamin D factory. Strong bones and a happy immune system await! 🦴\nBody Clock Whisperer: The sun nudges our internal clocks, saying, “Wake up, sleepyhead!” Daylight keeps our sleep patterns in check. 🌅\nMood Elixir: Sunlight triggers serotonin—the feel-good neurotransmitter. Stress? Nah, we’re sun-kissed and stress-resistant! 😎\nSo, fellow adventurers, let’s optimize our content with the brilliance of the sun. Remember: “Golden Sunbeam” isn’t just a keyword; it’s a ray of hope in the vast digital wilderness. ☀️✨\n\nDisclaimer: No sunburns were acquired during the creation of this whimsical tale. ☀️📖",
+              "cardDescription": "Beyond Light Bulbs: The Sun’s Magic Imagine a classroom bathed in warm sunlight, like a cozy nook by the window. Forget artificial bulbs; we’re talking about the original spotlight—the sun! 🌞 The Sun’s Superpowers Vitamin D Boost: Sunlight isn’t just for tanning; it’s your body’s vitamin D factory. Strong bones and a happy immune system",
+              "technicalDetails": []
+            },
+            {
+              "c": "",
+              "t": "Why should classroom walls be more than just whiteboards?",
+              "img": "/uploads/1777273927600-Why should classroom..PNG",
+              "badge": "Case Study 2025",
+              "specs": [],
+              "mainImg": "/uploads/1777273963108-Why should classroom..PNG",
+              "description": "Classroom walls, those silent witnesses to countless lessons, hold more potential than meets the eye. Let’s peel back the layers and explore why they should be more than mere whiteboards:\n\n \n\nVertical Learning Canvas:\n\nImagine walls as blank canvases waiting for inspiration. Whiteboards transform them into dynamic learning spaces.\n\nStudents can manipulate objects, solve math equations, or map out collaborative projects—all on these vertical surfaces1.\n\n \n\nEngage Body and Brain:\n\nThe act of getting up, walking to the whiteboard, and picking up a marker engages both body and brain.\n\nMovement increases alertness, encodes memory, and strengthens attention1.\n\nWorking at a whiteboard activates multiple senses, catering to various learning styles.\n\n \n\nSpatial Awareness and Memory:\n\nYoung learners grasp concepts of up, down, right, and left by interacting with vertical surfaces.\n\nVisual and semantic information paired with visual cues enhances recall1.\n\nSpatial awareness develops as students navigate these wall zones.\n\n \n\nNo Digital Hassles:\n\nUnlike interactive whiteboards (IWBs), traditional whiteboards require no power-up or apps.\n\nTeachers seize teachable moments swiftly, capturing attention without digital distractions.\n\n \n\nDifferentiated Zones:\n\nJust as classrooms have physical learning zones, whiteboards create distinct wall zones.\n\nYoung learners manipulate objects; older students solve equations or collaborate1.\n\n \n\nThe Science Behind It:\n\nWhiteboards may lack digital bling, but that’s their strength.\n\nWritten or spoken information paired with visual cues leads to better recall.\n\nThe kinesthetic experience of writing on a vertical surface enhances learning1.",
+              "cardDescription": "Classroom walls, those silent witnesses to countless lessons, hold more potential than meets the eye. Let’s peel back the layers and explore why they should be more than mere whiteboards:   Vertical Learning Canvas: Imagine walls as blank canvases waiting for inspiration. Whiteboards transform them into dynamic learning spaces. Students can manipulate objects, solve math",
+              "technicalDetails": []
+            },
+            {
+              "c": "",
+              "t": "Creating Dynamic Learning Spaces with Furniture and Storage",
+              "img": "/uploads/1777274040230-Creating Dynamic Learning Spaces with Furniture and Storage.PNG",
+              "badge": "Case Study 2025",
+              "specs": [],
+              "mainImg": "/uploads/1777274064824-Creating Dynamic Learning Spaces with Furniture and Storage.PNG",
+              "description": "When designing educational environments, furniture plays a crucial role beyond mere functionality. It shapes the ambiance, influences learning experiences, and fosters a sense of belonging. Here are some key considerations:\n\nFlexibility: Opt for furniture that adapts to different needs. Movable desks, chairs, and storage units allow seamless transitions between individual work, group discussions, and collaborative projects. This flexibility encourages dynamic interactions and accommodates diverse learning styles.\n\nLayout Matters: Arrange furniture thoughtfully. Clear pathways, cozy reading corners, and open discussion circles enhance engagement. Avoid cluttered arrangements that hinder mobility. A well-thought-out layout fosters exploration and creativity.\n\nStorage Solutions and Reflecting Learner Diversity\n\nStorage isn’t just about stashing textbooks; it’s an organizational tool. Schools should provide ample storage options for both children and adults. From cubbies and lockers to digital solutions, consider diverse needs. An organized space reduces clutter and promotes focus.\n\nFurniture should mirror the learners within the room. Are your students curious explorers, analytical thinkers, or creative artists? Choose furniture that aligns with their needs. Adjustable desks, comfortable seating, and collaborative tables contribute to a learner-centric environment.",
+              "cardDescription": "When designing educational environments, furniture plays a crucial role beyond mere functionality. It shapes the ambiance, influences learning experiences, and fosters a sense of belonging. Here are some key considerations: Flexibility: Opt for furniture that adapts to different needs. Movable desks, chairs, and storage units allow seamless transitions between individual work, group discussions, and collaborative…",
+              "technicalDetails": []
+            },
+            {
+              "c": "",
+              "t": "Creating Safe Learning Environments: Comprehensive Health and Safety Resources",
+              "img": "/uploads/1777274108028-Creating Safe Learning Comprehensive Health and Safety Resources.PNG",
+              "badge": "Case Study 2025",
+              "specs": [],
+              "mainImg": "/uploads/1777274137703-Creating Safe Learning Comprehensive Health and Safety Resources.PNG",
+              "description": "Creating safe learning environments is paramount, and meticulous attention to health and safety regulations is non-negotiable. From the initial conceptualization to the final execution, educators must prioritize the well-being of students and staff. Let’s delve into comprehensive resources dedicated to enhancing health and safety in educational spaces.\n\nExploring Health and Safety Resources: A Comprehensive Approach\nHazardous Chemicals Storage: Safeguarding Your Learning Environment\nProper storage of hazardous chemicals is critical to preventing accidents. Our resources guide you through best practices, minimizing risks associated with chemical storage.\n\nHealth and Safety Considerations: A Holistic Approach to Well-being\nAddressing various factors such as layout design and ventilation, our resources help create environments that prioritize well-being and support optimal learning.\n\nLaboratory Fire, Health, and Safety: Mitigating Risks in Educational Spaces\nLaboratories pose unique risks. Our resources offer guidelines to mitigate these risks, ensuring a secure environment for experiments and practical activities.\n\nLaboratory Services: Enhancing Safety Protocols\nEffective laboratory management is essential for maintaining safety. Learn about the latest advancements to create secure learning spaces.\n\nVentilation: Breathing Life into Safe Spaces\nProper ventilation maintains indoor air quality, reducing the spread of airborne contaminants. Our resources provide insights into optimizing airflow for a healthier environment",
+              "cardDescription": "Creating safe learning environments is paramount, and meticulous attention to health and safety regulations is non-negotiable. From the initial conceptualization to the final execution, educators must prioritize the well-being of students and staff. Let’s delve into comprehensive resources dedicated to enhancing health and safety in educational spaces. Exploring Health and Safety Resources: A Comprehensive Approach",
+              "technicalDetails": []
+            }
+          ]
+        },
+        "isVisible": true
+      },
+      "inner_page_hero": {
+        "id": "78b822e5-58eb-4914-a513-c0c24ce690af",
+        "key": "inner_page_hero",
+        "type": "inner_page_hero",
+        "data": {
+          "badge": "Learning Spaces",
+          "mediaUrl": "/uploads/1776672867770-images.jpg",
+          "subtitle": "STEM labs, maker-spaces and activity rooms",
+          "titleHtml": "Learning<br/><span class=\"text-sm-blue\">Environments</span>"
+        },
+        "isVisible": true
+      }
+    }
+  }
+}

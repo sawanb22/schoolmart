@@ -1,0 +1,709 @@
+{
+  "page": {
+    "id": "91aac3e4-4898-4f30-8f1e-016ef1dd39b2",
+    "slug": "home",
+    "title": "Home Page",
+    "createdAt": "2026-04-12T23:12:31.905Z",
+    "updatedAt": "2026-04-13T06:52:31.498Z"
+  },
+  "blocks": {
+    "topbar": {
+      "id": "0793696d-78e8-4d42-afcf-51aac9a4999f",
+      "key": "topbar",
+      "type": "topbar",
+      "data": {
+        "email": "info@schoolmart.in",
+        "phone1": "+91 9966109191",
+        "phone2": "+91 9866091111",
+        "bgColor": "#0d5496",
+        "socials": {
+          "twitter": "https://twitter.com/schoolmarts",
+          "youtube": "https://www.youtube.com/channel/UCgKY_Kf8jH1hoP3p0I0tiRA",
+          "facebook": "https://www.facebook.com/share/1B7TodxPFN/",
+          "linkedin": "https://www.linkedin.com/school/13397648/admin/notifications/all/",
+          "instagram": "https://www.instagram.com/schoolmart.in/"
+        },
+        "textColor": "#ffffff"
+      },
+      "isVisible": true
+    },
+    "ticker": {
+      "id": "fb48e6e6-a9e4-4861-a7fd-4df12aba005d",
+      "key": "ticker",
+      "type": "ticker",
+      "data": {
+        "items": [
+          "Digital Transformation Summit: 15 May 2026",
+          "New AI-Powered Learning Stations now available for pre-order",
+          "Join our upcoming Campus Design Webinar on 15th April 2026",
+          "Annual Sports Meet Registrations closing soon",
+          "New Sustainable Furniture Catalogue Launched"
+        ],
+        "label": "Latest Updates"
+      },
+      "isVisible": true
+    },
+    "navbar": {
+      "id": "91574943-511a-4133-98c0-b0ac950454ec",
+      "key": "navbar",
+      "type": "navbar",
+      "data": {
+        "categories": [
+          {
+            "icon": "Armchair",
+            "name": "FURNITURE",
+            "path": "/furniture"
+          },
+          {
+            "icon": "Building2",
+            "name": "ARCHITECTURE",
+            "path": "/school-building-design"
+          },
+          {
+            "icon": "Laptop",
+            "name": "DIGITAL INFRA",
+            "path": "/digital"
+          },
+          {
+            "icon": "Palette",
+            "name": "SCHOOL DESIGNS",
+            "path": "/design"
+          },
+          {
+            "icon": "BookOpen",
+            "name": "LIBRARIES",
+            "path": "/libraries"
+          },
+          {
+            "icon": "Trophy",
+            "name": "SPORTS",
+            "path": "/sports"
+          },
+          {
+            "icon": "Calculator",
+            "name": "MATHEMATICS",
+            "path": "/gamified-math-labs"
+          },
+          {
+            "icon": "FlaskConical",
+            "name": "SCIENCE",
+            "path": "/science-is-fun"
+          },
+          {
+            "icon": "Library",
+            "name": "LABS",
+            "path": "/labs"
+          }
+        ]
+      },
+      "isVisible": true
+    },
+    "hero": {
+      "id": "c4d4d757-36a5-4cba-bb37-a552b43c3ae1",
+      "key": "hero",
+      "type": "hero",
+      "data": {
+        "cta1": {
+          "path": "/furniture",
+          "label": "Shop Furniture →"
+        },
+        "cta2": {
+          "path": "/catalogues",
+          "label": "View Catalogue"
+        },
+        "badge": "Price · Quality · Range Promise",
+        "bgColor": "#ffc501",
+        "mediaUrl": "http://localhost:5000/uploads/1776230256967-images.jpg",
+        "subline1": "Order Now",
+        "subline2": "Kindergarten · Highschools · Labs · Libraries",
+        "headline1": "FURNITURE",
+        "headline2": "QUICK DELIVERY",
+        "mediaType": "image",
+        "textColor": "#010f2d"
+      },
+      "isVisible": true
+    },
+    "product_carousel": {
+      "id": "47e03373-ec8b-464c-8920-424043eeab9e",
+      "key": "product_carousel",
+      "type": "product_carousel",
+      "data": {
+        "items": [
+          {
+            "img": "http://schoolmart-production.up.railway.app/uploads/1776335463331-WhatsApp Image 2026-04-15 at 15.46.51.jpeg",
+            "path": "https://schoolmart.store/adjustable-student-chair-with-caster-wheels.html",
+            "price": "3,50000",
+            "title": "dynamic tool",
+            "cartLink": "https://schoolmart.store/adjustable-student-chair-with-caster-wheels.html"
+          },
+          {
+            "img": "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=600&q=80",
+            "path": "/furniture",
+            "price": "18,500.00",
+            "title": "Lab Workstation V2"
+          },
+          {
+            "img": "https://images.unsplash.com/photo-1582213793728-9cc0034a34ea?w=600&q=80",
+            "path": "/furniture",
+            "price": "7,500.00",
+            "title": "Ergonomic Faculty Chair"
+          },
+          {
+            "img": "https://images.unsplash.com/photo-1581092160562-40aa08e78837?w=600&q=80",
+            "path": "/furniture",
+            "price": "36,000.00",
+            "title": "Stem Robotics Station"
+          },
+          {
+            "img": "https://images.unsplash.com/photo-1558448231-314777598379?w=600&q=80",
+            "path": "/digital",
+            "price": "18,500.00",
+            "title": "Digital Hub Monitor"
+          }
+        ],
+        "heading": "FEATURED PRODUCTS"
+      },
+      "isVisible": true
+    },
+    "tiles": {
+      "id": "7f7aa0bd-4443-43e8-9fdc-80aba6fcb685",
+      "key": "tiles",
+      "type": "tiles",
+      "data": {
+        "tiles": [
+          {
+            "img": "/uploads/1777103670266-IMMERSIVE LEARNING.PNG",
+            "path": "/p/immersive-learning",
+            "span": "h-64",
+            "inner": {
+              "tags": [],
+              "badge": "Institutional Insight",
+              "specs": [],
+              "content": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut elit tellus, luctus nec ullamcorper mattis, pulvinar dapibus leo.\n\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Ut elit tellus, luctus nec ullamcorper mattis, pulvinar dapibus leo.\n\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Ut elit tellus, luctus nec ullamcorper mattis, pulvinar dapibus leo.\n\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Ut elit tellus, luctus nec ullamcorper mattis, pulvinar dapibus leo.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut elit tellus, luctus nec ullamcorper mattis, pulvinar dapibus leo.\n\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Ut elit tellus, luctus nec ullamcorper mattis, pulvinar dapibus leo.\n\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Ut elit tellus, luctus nec ullamcorper mattis, pulvinar dapibus leo.\n\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Ut elit tellus, luctus nec ullamcorper mattis, pulvinar dapibus leo.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut elit tellus, luctus nec ullamcorper mattis, pulvinar dapibus leo.\n\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Ut elit tellus, luctus nec ullamcorper mattis, pulvinar dapibus leo.\n\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Ut elit tellus, luctus nec ullamcorper mattis, pulvinar dapibus leo.\n\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Ut elit tellus, luctus nec ullamcorper mattis, pulvinar dapibus leo.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut elit tellus, luctus nec ullamcorper mattis, pulvinar dapibus leo.\n\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Ut elit tellus, luctus nec ullamcorper mattis, pulvinar dapibus leo.\n\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Ut elit tellus, luctus nec ullamcorper mattis, pulvinar dapibus leo.\n\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Ut elit tellus, luctus nec ullamcorper mattis, pulvinar dapibus leo.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut elit tellus, luctus nec ullamcorper mattis, pulvinar dapibus leo.\n\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Ut elit tellus, luctus nec ullamcorper mattis, pulvinar dapibus leo.\n\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Ut elit tellus, luctus nec ullamcorper mattis, pulvinar dapibus leo.\n\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Ut elit tellus, luctus nec ullamcorper mattis, pulvinar dapibus leo.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut elit tellus, luctus nec ullamcorper mattis, pulvinar dapibus leo.\n\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Ut elit tellus, luctus nec ullamcorper mattis, pulvinar dapibus leo.\n\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Ut elit tellus, luctus nec ullamcorper mattis, pulvinar dapibus leo.\n\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Ut elit tellus, luctus nec ullamcorper mattis, pulvinar dapibus leo.",
+              "heading": "IMMERSIVE LEARNING",
+              "heroImg": "/uploads/1777104808239-IMMERSIVE LEARNING.PNG",
+              "btn1Path": "https://schoolmart.in/",
+              "btn2Path": "",
+              "btn1Label": "visit our store",
+              "btn2Label": "SHARE",
+              "description": ""
+            },
+            "title": "",
+            "subtitle": ""
+          },
+          {
+            "img": "/uploads/1777103714201-KINDERGARTEN DESIGN.PNG",
+            "path": "/p/kindergarten-design",
+            "span": "h-64",
+            "inner": {
+              "tags": [],
+              "badge": "Institutional Insight",
+              "specs": [],
+              "content": "",
+              "heading": "KINDERGARTEN DESIGN",
+              "heroImg": "/uploads/1777104819841-KINDERGARTEN DESIGN.PNG",
+              "btn1Path": "",
+              "btn2Path": "",
+              "btn1Label": "DOWNLOAD GUIDE",
+              "btn2Label": "SHARE",
+              "description": ""
+            },
+            "title": "",
+            "subtitle": "Institutional Insight 2026"
+          },
+          {
+            "img": "/uploads/1777103820798-COMPOSITE SKILL LAB.PNG",
+            "path": "/p/composite-skill-lab",
+            "span": "h-64",
+            "inner": {
+              "tags": [],
+              "badge": "Institutional Insight",
+              "specs": [],
+              "content": "",
+              "heading": "COMPOSITE SKILL LAB",
+              "heroImg": "/uploads/1777104828489-COMPOSITE SKILL LAB.PNG",
+              "btn1Path": "",
+              "btn2Path": "",
+              "btn1Label": "DOWNLOAD GUIDE",
+              "btn2Label": "SHARE",
+              "description": ""
+            },
+            "title": "",
+            "subtitle": "Institutional Insight 2026"
+          },
+          {
+            "img": "/uploads/1777104096006-LIBRARY.PNG",
+            "path": "/p/library-innovations",
+            "span": "h-64",
+            "inner": {
+              "tags": [],
+              "badge": "Institutional Insight",
+              "specs": [],
+              "content": "",
+              "heading": "LIBRARY INNOVATIONS",
+              "heroImg": "/uploads/1777104867939-LIBRARY.PNG",
+              "btn1Path": "",
+              "btn2Path": "",
+              "btn1Label": "DOWNLOAD GUIDE",
+              "btn2Label": "SHARE",
+              "description": ""
+            },
+            "title": "",
+            "subtitle": "Institutional Insight 2026"
+          },
+          {
+            "img": "/uploads/1777104336251-FURNITURE.PNG",
+            "path": "/p/furniture-design-planning-",
+            "span": "h-64",
+            "inner": {
+              "tags": [],
+              "badge": "Institutional Insight",
+              "specs": [],
+              "content": "",
+              "heading": "FURNITURE&DESIGN PLANNING ",
+              "heroImg": "/uploads/1777104463465-FURNITURE.PNG",
+              "btn1Path": "",
+              "btn2Path": "",
+              "btn1Label": "DOWNLOAD GUIDE",
+              "btn2Label": "SHARE",
+              "description": ""
+            },
+            "title": "",
+            "subtitle": "Institutional Insight 2026"
+          },
+          {
+            "img": "/uploads/1777104949558-SELLING OR BUYERS SCHOOL.PNG",
+            "path": "/p/sellning-or-buying-a-school",
+            "span": "h-64",
+            "inner": {
+              "tags": [],
+              "badge": "Institutional Insight",
+              "specs": [],
+              "content": "",
+              "heading": "SELLNING OR BUYING A SCHOOL",
+              "heroImg": "/uploads/1777104972258-SELLING OR BUYERS SCHOOL.PNG",
+              "btn1Path": "",
+              "btn2Path": "",
+              "btn1Label": "DOWNLOAD GUIDE",
+              "btn2Label": "SHARE",
+              "description": ""
+            },
+            "title": "",
+            "subtitle": "Institutional Insight 2026"
+          },
+          {
+            "img": "/uploads/1777109654075-GAMIFIED MATH LAB.PNG",
+            "path": "/p/gamified-math-lab",
+            "span": "h-64",
+            "inner": {
+              "tags": [],
+              "badge": "",
+              "specs": [],
+              "content": "",
+              "heading": "GAMIFIED MATH LAB",
+              "heroImg": "/uploads/1777109679869-GAMIFIED MATH LAB.PNG",
+              "btn1Path": "",
+              "btn2Path": "",
+              "btn1Label": "DOWNLOAD GUIDE",
+              "btn2Label": "SHARE",
+              "description": ""
+            },
+            "title": "GAMIFIED MATH LAB",
+            "subtitle": "Institutional Insight 2026"
+          },
+          {
+            "img": "/uploads/1777109744925-INTERACTIVE WALLS.PNG",
+            "path": "/p/interactivities-walls",
+            "span": "h-64",
+            "inner": {
+              "tags": [],
+              "badge": "Institutional Insight",
+              "specs": [],
+              "content": "",
+              "heading": "INTERACTIVITIES WALLS",
+              "heroImg": "/uploads/1777109756972-INTERACTIVE WALLS.PNG",
+              "btn1Path": "",
+              "btn2Path": "",
+              "btn1Label": "DOWNLOAD GUIDE",
+              "btn2Label": "SHARE",
+              "description": ""
+            },
+            "title": "",
+            "subtitle": "Institutional Insight 2026"
+          },
+          {
+            "img": "/uploads/1777109925495-16 INTERACTIVE PANELS  FOR CLASSROOMS.PNG",
+            "path": "/p/16-latetest-",
+            "span": "h-64",
+            "inner": {
+              "tags": [],
+              "badge": "Institutional Insight",
+              "specs": [],
+              "content": "",
+              "heading": "16 LATETEST ",
+              "heroImg": "/uploads/1777109941911-16 INTERACTIVE PANELS  FOR CLASSROOMS.PNG",
+              "btn1Path": "",
+              "btn2Path": "",
+              "btn1Label": "DOWNLOAD GUIDE",
+              "btn2Label": "SHARE",
+              "description": ""
+            },
+            "title": "",
+            "subtitle": "Institutional Insight 2026"
+          },
+          {
+            "img": "/uploads/1777110144115-20 AI TOOLS FOR CLASSROOM.PNG",
+            "path": "/p/20-ai-tools",
+            "span": "h-64",
+            "inner": {
+              "tags": [],
+              "badge": "Institutional Insight",
+              "specs": [],
+              "content": "",
+              "heading": "20 AI TOOLS",
+              "heroImg": "/uploads/1777110164011-20 AI TOOLS FOR CLASSROOM.PNG",
+              "btn1Path": "",
+              "btn2Path": "",
+              "btn1Label": "DOWNLOAD GUIDE",
+              "btn2Label": "SHARE",
+              "description": ""
+            },
+            "title": "",
+            "subtitle": "Institutional Insight 2026"
+          },
+          {
+            "img": "/uploads/1777110274160-THE BEST CURRICULUMS FOR YOUR KINDERGARTEN.PNG",
+            "path": "/p/the-best-",
+            "span": "h-64",
+            "inner": {
+              "tags": [],
+              "badge": "Institutional Insight",
+              "specs": [],
+              "content": "",
+              "heading": "THE BEST ",
+              "heroImg": "/uploads/1777110295750-THE BEST CURRICULUMS FOR YOUR KINDERGARTEN.PNG",
+              "btn1Path": "",
+              "btn2Path": "",
+              "btn1Label": "DOWNLOAD GUIDE",
+              "btn2Label": "SHARE",
+              "description": ""
+            },
+            "title": "",
+            "subtitle": "Institutional Insight 2026"
+          },
+          {
+            "img": "/uploads/1777110367611-GAMIFIED SCIENCE LABS.PNG",
+            "path": "/p/gamified-science-lab",
+            "span": "h-64",
+            "inner": {
+              "tags": [],
+              "badge": "Institutional Insight",
+              "specs": [],
+              "content": "",
+              "heading": "GAMIFIED SCIENCE LAB",
+              "heroImg": "/uploads/1777110376262-GAMIFIED SCIENCE LABS.PNG",
+              "btn1Path": "",
+              "btn2Path": "",
+              "btn1Label": "DOWNLOAD GUIDE",
+              "btn2Label": "SHARE",
+              "description": ""
+            },
+            "title": "",
+            "subtitle": "Institutional Insight 2026"
+          },
+          {
+            "img": "/uploads/1777110423310-SMART SPORTS FOR SCHOOOLS.PNG",
+            "path": "/p/smart-sports",
+            "span": "h-64",
+            "inner": {
+              "tags": [],
+              "badge": "Institutional Insight",
+              "specs": [],
+              "content": "",
+              "heading": "SMART SPORTS",
+              "heroImg": "/uploads/1777110436252-SMART SPORTS FOR SCHOOOLS.PNG",
+              "btn1Path": "",
+              "btn2Path": "",
+              "btn1Label": "DOWNLOAD GUIDE",
+              "btn2Label": "SHARE",
+              "description": ""
+            },
+            "title": "",
+            "subtitle": "Institutional Insight 2026"
+          },
+          {
+            "img": "/uploads/1777110472863-COMPLETE SCHOOL SETUP GUIDE.PNG",
+            "path": "/p/complete-school-setup",
+            "span": "h-64",
+            "inner": {
+              "tags": [],
+              "badge": "Institutional Insight",
+              "specs": [],
+              "content": "",
+              "heading": "COMPLETE SCHOOL SETUP",
+              "heroImg": "/uploads/1777110496400-COMPLETE SCHOOL SETUP GUIDE.PNG",
+              "btn1Path": "",
+              "btn2Path": "",
+              "btn1Label": "DOWNLOAD GUIDE",
+              "btn2Label": "SHARE",
+              "description": ""
+            },
+            "title": "",
+            "subtitle": "Institutional Insight 2026"
+          },
+          {
+            "img": "/uploads/1777110609039-DIGTAL TRANSFORMATION.PNG",
+            "path": "/p/talks-to-us",
+            "span": "h-64",
+            "inner": {
+              "tags": [],
+              "badge": "Institutional Insight",
+              "specs": [],
+              "content": "",
+              "heading": "TALKS TO US",
+              "heroImg": "/uploads/1777110619419-DIGTAL TRANSFORMATION.PNG",
+              "btn1Path": "",
+              "btn2Path": "",
+              "btn1Label": "DOWNLOAD GUIDE",
+              "btn2Label": "SHARE",
+              "description": ""
+            },
+            "title": "",
+            "subtitle": "Institutional Insight 2026"
+          },
+          {
+            "img": "/uploads/1777110683153-WONDERGARTENS.PNG",
+            "path": "/p/wondergartens",
+            "span": "h-64",
+            "inner": {
+              "tags": [],
+              "badge": "Institutional Insight",
+              "specs": [],
+              "content": "",
+              "heading": "WONDERGARTENS",
+              "heroImg": "/uploads/1777110693942-WONDERGARTENS.PNG",
+              "btn1Path": "",
+              "btn2Path": "",
+              "btn1Label": "DOWNLOAD GUIDE",
+              "btn2Label": "SHARE",
+              "description": ""
+            },
+            "title": "",
+            "subtitle": "Institutional Insight 2026"
+          }
+        ]
+      },
+      "isVisible": true
+    },
+    "solutions": {
+      "id": "55294247-5d9e-429c-9f15-0120da4bc616",
+      "key": "solutions",
+      "type": "solutions",
+      "data": {
+        "items": [
+          {
+            "img": "https://images.unsplash.com/photo-1580582932707-520aed937b7b?w=800&q=80",
+            "path": "/furniture",
+            "badge": {
+              "color": "#F97316",
+              "label": "Furniture"
+            },
+            "title": "School Furniture",
+            "description": "1200+ ergonomic products for every classroom, lab and library"
+          },
+          {
+            "img": "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=800&q=80",
+            "path": "/digital",
+            "badge": {
+              "color": "#3B82F6",
+              "label": "Technology"
+            },
+            "title": "Digital Infrastructure",
+            "description": "Cutting-edge ed-tech, interactive panels and smart classrooms"
+          },
+          {
+            "img": "https://images.unsplash.com/photo-1546519638-68e109498ffc?w=800&q=80",
+            "path": "/sports",
+            "badge": {
+              "color": "#22C55E",
+              "label": "Sports"
+            },
+            "title": "Sports Infrastructure",
+            "description": "Professional-grade courts, equipment and sports facilities"
+          },
+          {
+            "img": "https://images.unsplash.com/photo-1503387762-592deb58ef4e?w=800&q=80",
+            "path": "/school-building-design",
+            "badge": {
+              "color": "#8B5CF6",
+              "label": "Architecture"
+            },
+            "title": "School Architecture",
+            "description": "NEP-ready campus planning and interior design by expert architects"
+          },
+          {
+            "img": "https://images.unsplash.com/photo-1524758631624-e2822e304c36?w=800&q=80",
+            "path": "/environments",
+            "badge": {
+              "color": "#0EA5E9",
+              "label": "Environments"
+            },
+            "title": "Learning Environments",
+            "description": "STEM labs, libraries, maker-spaces and activity rooms"
+          },
+          {
+            "img": "https://images.unsplash.com/photo-1497366216548-37526070297c?w=800&q=80",
+            "path": "/design",
+            "badge": {
+              "color": "#EC4899",
+              "label": "Design"
+            },
+            "title": "School Design & Planning",
+            "description": "End-to-end campus setup, expansion and renovation services"
+          }
+        ],
+        "heading": "Explore Our Solutions"
+      },
+      "isVisible": true
+    },
+    "cta_whatsapp": {
+      "id": "5da7ff9f-6e3b-4753-9967-da2c3054fb4b",
+      "key": "cta_whatsapp",
+      "type": "cta_whatsapp",
+      "data": {
+        "badge": "Direct Consultation",
+        "phone": "+91 9966109191",
+        "bgColor": "#455fee",
+        "btnLabel": "Connect on WhatsApp",
+        "headline": "Ready to scale your campus?",
+        "description": "At SchoolMart, we provide end-to-end expertise in guiding you to set up your new campus project. From spatial planning to high-density procurement, we help you maximize ROI and institutional growth.",
+        "whatsappUrl": "https://chat.whatsapp.com/L79Vd9B2p9a5Q9D9X9D9X9",
+        "whatsappNumber": "919966109191"
+      },
+      "isVisible": true
+    },
+    "partners": {
+      "id": "77e67de0-2c1d-4143-9a3b-eafb19c266c6",
+      "key": "partners",
+      "type": "partners",
+      "data": {
+        "stats": [
+          {
+            "label": "Partner Schools",
+            "value": "4000+"
+          },
+          {
+            "label": "Years Experience",
+            "value": "7+"
+          },
+          {
+            "label": "Products",
+            "value": "1200+"
+          },
+          {
+            "label": "Panel Architects",
+            "value": "16+"
+          }
+        ],
+        "clients": [
+          {
+            "name": "AVN Vida International School"
+          },
+          {
+            "name": "Alwar Das Group"
+          },
+          {
+            "name": "DRS International School"
+          },
+          {
+            "name": "Bhashyam Educational Institutions"
+          },
+          {
+            "name": "Excel Edge The Value School"
+          },
+          {
+            "name": "Delhi Public School"
+          },
+          {
+            "name": "DAV Public School"
+          },
+          {
+            "name": "Podar International"
+          },
+          {
+            "name": "CMS School"
+          },
+          {
+            "name": "VIBGYOR Group"
+          }
+        ],
+        "heading": "Trusted by Leading Schools",
+        "subheading": "4000+ partner schools across India "
+      },
+      "isVisible": true
+    },
+    "sidebar_trending": {
+      "id": "18a3b28f-1e27-45ac-9aa0-a1b8750802e0",
+      "key": "sidebar_trending",
+      "type": "sidebar_trending",
+      "data": {
+        "items": [
+          "Schools for Sale / Lease",
+          "Fundraising",
+          "Partnerships",
+          "Workshops",
+          "Job Openings",
+          "Join as Influencers"
+        ]
+      },
+      "isVisible": true
+    },
+    "sidebar_resources": {
+      "id": "ae8147da-8de5-478e-aff7-a7337e73d013",
+      "key": "sidebar_resources",
+      "type": "sidebar_resources",
+      "data": {
+        "items": [
+          "Setup School in India",
+          "Digitization Guide",
+          "Product Catalog 2025",
+          "Skill Lab Guide",
+          "Lookbook – Play Furniture",
+          "Gamified Math Resources",
+          "Completed Projects",
+          "20 Stunning School Design Ideas",
+          "Library Trends"
+        ]
+      },
+      "isVisible": true
+    },
+    "sidebar_banners": {
+      "id": "799ae254-a039-4548-9f02-13beef6a02cd",
+      "key": "sidebar_banners",
+      "type": "sidebar_banners",
+      "data": {
+        "banners": [
+          {
+            "path": "/govt",
+            "color": "#06406f",
+            "label": "Products for schl",
+            "sublabel": "Govt School"
+          },
+          {
+            "path": "/renovation",
+            "color": "#9333EA",
+            "label": "School Renovation",
+            "sublabel": "Services"
+          },
+          {
+            "path": "/ideas",
+            "color": "#F97316",
+            "label": "20 Smart School Ideas",
+            "sublabel": ""
+          }
+        ]
+      },
+      "isVisible": true
+    }
+  }
+}

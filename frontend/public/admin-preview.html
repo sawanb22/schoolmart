@@ -1,0 +1,1319 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full" data-theme="slate-matte">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CampusMart B2B Operations Center — Low-Glare Studio Architecture</title>
+    
+    <!-- Google Fonts: Inter, Plus Jakarta Sans, JetBrains Mono -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Plus+Jakarta+Sans:wght@500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        studio: {
+                            bg: 'var(--canvas-bg)',
+                            surface: 'var(--surface-card)',
+                            border: 'var(--border-hairline)',
+                            'border-hover': 'var(--border-hover)',
+                            ink: 'var(--ink-primary)',
+                            muted: 'var(--ink-muted)',
+                            subtle: 'var(--surface-subtle)',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif'],
+                        display: ['Plus Jakarta Sans', 'Inter', '-apple-system', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        /* ==========================================================================
+           ERGONOMIC LOW-GLARE DESIGN SYSTEM TOKENS (No Blinding White Glare)
+           ========================================================================== */
+        :root, [data-theme="slate-matte"] {
+            /* Matte Studio Slate Canvas: Soothing on eyes, 0% harsh glare */
+            --canvas-bg: #EEF2F6;
+            --surface-card: #FFFFFF;
+            --surface-subtle: #F4F7FA;
+            --surface-inset: #E5EBF2;
+            --border-hairline: #D8E1E8;
+            --border-hover: #CBD5E1;
+            --ink-primary: #1E293B; /* Slate 800: soft deep graphite, zero contrast vibration */
+            --ink-secondary: #475569;
+            --ink-muted: #64748B;
+            --accent-brand: #1E293B;
+            --accent-blue: #2563EB;
+            --card-shadow: 0 1px 3px 0 rgba(15, 23, 42, 0.05), 0 1px 2px -1px rgba(15, 23, 42, 0.03);
+            --header-bg: rgba(255, 255, 255, 0.94);
+        }
+
+        /* Warm Paper & Eye-Rest Theme */
+        [data-theme="warm-paper"] {
+            --canvas-bg: #F4F1EA;
+            --surface-card: #FCFAF7;
+            --surface-subtle: #ECE8E0;
+            --surface-inset: #E3DDD3;
+            --border-hairline: #E2DDD5;
+            --border-hover: #D0C9BF;
+            --ink-primary: #292524;
+            --ink-secondary: #57534E;
+            --ink-muted: #78716C;
+            --accent-brand: #292524;
+            --accent-blue: #3B82F6;
+            --card-shadow: 0 1px 3px 0 rgba(41, 37, 36, 0.05);
+            --header-bg: rgba(252, 250, 247, 0.94);
+        }
+
+        /* Muted Twilight Theme */
+        [data-theme="twilight"] {
+            --canvas-bg: #0F172A;
+            --surface-card: #1E293B;
+            --surface-subtle: #273549;
+            --surface-inset: #162032;
+            --border-hairline: #334155;
+            --border-hover: #475569;
+            --ink-primary: #F8FAFC;
+            --ink-secondary: #CBD5E1;
+            --ink-muted: #94A3B8;
+            --accent-brand: #38BDF8;
+            --accent-blue: #60A5FA;
+            --card-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.4);
+            --header-bg: rgba(30, 41, 59, 0.94);
+        }
+
+        html, body {
+            overflow-x: hidden;
+            width: 100%;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: var(--canvas-bg);
+            color: var(--ink-secondary);
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            transition: background-color 200ms ease, color 200ms ease;
+        }
+
+        .tabular-nums {
+            font-variant-numeric: tabular-nums;
+        }
+
+        /* Slide-over Overlapping Drawer Transitions (NEVER pushes content horizontally) */
+        .drawer-transition {
+            transition: transform 240ms cubic-bezier(0.16, 1, 0.3, 1), box-shadow 240ms ease;
+        }
+
+        /* Active Nav Pill */
+        .nav-item-active {
+            background-color: var(--surface-subtle);
+            color: var(--ink-primary);
+            font-weight: 600;
+            position: relative;
+        }
+        .nav-item-active::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 6px;
+            bottom: 6px;
+            width: 3px;
+            background-color: var(--accent-brand);
+            border-radius: 0 2px 2px 0;
+        }
+
+        /* Simple Clickable Overview Tab Cards */
+        .metric-tab-card {
+            background-color: var(--surface-card);
+            border: 1px solid var(--border-hairline);
+            border-radius: 12px;
+            padding: 16px;
+            box-shadow: var(--card-shadow);
+            transition: border-color 150ms ease, box-shadow 150ms ease, transform 150ms ease;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        .metric-tab-card:hover {
+            border-color: var(--border-hover);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px 0 rgba(15, 23, 42, 0.06);
+        }
+
+        /* Directory Cards: Inverted icon well & translating arrow hover */
+        .module-card {
+            background-color: var(--surface-card);
+            border: 1px solid var(--border-hairline);
+            border-radius: 12px;
+            padding: 16px;
+            box-shadow: var(--card-shadow);
+            transition: border-color 150ms ease, box-shadow 150ms ease, transform 150ms ease;
+        }
+        .module-card:hover {
+            border-color: var(--border-hover);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px 0 rgba(15, 23, 42, 0.06);
+        }
+        .module-card .icon-well {
+            background-color: var(--surface-subtle);
+            border: 1px solid var(--border-hairline);
+            transition: background-color 150ms ease, color 150ms ease, border-color 150ms ease;
+        }
+        .module-card:hover .icon-well {
+            background-color: var(--accent-brand);
+            color: #FFFFFF;
+            border-color: var(--accent-brand);
+        }
+        .module-card .hover-arrow {
+            transition: transform 150ms ease, color 150ms ease;
+        }
+        .module-card:hover .hover-arrow {
+            transform: translateX(4px);
+            color: var(--ink-primary);
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: rgba(148, 163, 184, 0.4);
+            border-radius: 9999px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(100, 116, 139, 0.6);
+        }
+    </style>
+</head>
+
+<body class="h-full flex flex-col antialiased">
+
+    <!-- ====================================================================== -->
+    <!-- 1. OVERLAY BACKDROP FOR HAMBURGER/DRAWER MENU                          -->
+    <!-- Appears when drawer is open; clicking it closes the drawer             -->
+    <!-- ====================================================================== -->
+    <div id="drawer-backdrop" 
+         onclick="closeSidebarDrawer()" 
+         class="fixed inset-0 bg-[#0F172A]/30 backdrop-blur-xs z-40 hidden transition-opacity duration-200" 
+         aria-hidden="true"></div>
+
+    <!-- ====================================================================== -->
+    <!-- 2. OVERLAPPING SIDEBAR DRAWER (Hamburger-style)                        -->
+    <!-- Overlaps the screen smoothly WITHOUT shifting or pushing main content  -->
+    <!-- ====================================================================== -->
+    <aside id="sidebar-drawer" 
+           class="drawer-transition fixed top-0 bottom-0 left-0 z-50 flex flex-col w-[280px] max-w-[85vw] border-r -translate-x-full shadow-2xl"
+           style="background-color: var(--surface-card); border-color: var(--border-hairline);">
+
+        <!-- Drawer Header with Logo & Explicit Close Button -->
+        <div class="h-[60px] flex items-center justify-between px-4 border-b shrink-0"
+             style="border-color: var(--border-hairline);">
+            <a href="#dashboard" onclick="closeSidebarDrawer()" class="flex items-center gap-3 min-w-0 group">
+                <div class="w-8 h-8 rounded-lg flex items-center justify-center shrink-0 transition-transform group-hover:scale-105"
+                     style="background-color: var(--accent-brand); color: #FFFFFF;">
+                    <!-- CampusMart Institutional Logo Glyph -->
+                    <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M22 10v6M2 10l10-5 10 5-10 5z"></path>
+                        <path d="M6 12v5c3 3 9 3 12 0v-5"></path>
+                    </svg>
+                </div>
+                <div class="whitespace-nowrap leading-tight min-w-0">
+                    <span class="font-display font-bold text-[14px] tracking-tight block truncate" style="color: var(--ink-primary);">CampusMart</span>
+                    <span class="text-[10px] font-semibold tracking-wider uppercase block" style="color: var(--ink-muted);">B2B Operations</span>
+                </div>
+            </a>
+
+            <!-- Close Drawer Button (X) -->
+            <button onclick="closeSidebarDrawer()" title="Close menu (Esc)" class="w-7 h-7 rounded-md flex items-center justify-center text-slate-500 hover:text-slate-900 hover:bg-slate-100 transition-colors">
+                <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+            </button>
+        </div>
+
+        <!-- Drawer Navigation Items -->
+        <div class="flex-1 overflow-y-auto px-3 py-3 space-y-4">
+
+            <!-- 1. Overview -->
+            <div>
+                <div class="px-3 mb-1 text-[10.5px] font-semibold tracking-[0.06em] uppercase" style="color: var(--ink-muted);">Navigation</div>
+                <div class="space-y-0.5">
+                    <a href="#dashboard" onclick="closeSidebarDrawer()" class="nav-item-active flex items-center gap-3 px-3 h-9 rounded-lg text-[13px] transition-colors relative">
+                        <svg class="w-[18px] h-[18px] shrink-0" style="color: var(--ink-primary);" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="3" y="3" width="7" height="9" rx="1"></rect>
+                            <rect x="14" y="3" width="7" height="5" rx="1"></rect>
+                            <rect x="14" y="12" width="7" height="9" rx="1"></rect>
+                            <rect x="3" y="16" width="7" height="5" rx="1"></rect>
+                        </svg>
+                        <span class="truncate">Dashboard</span>
+                    </a>
+                </div>
+            </div>
+
+            <!-- 2. Quotations & RFPs -->
+            <div>
+                <div class="px-3 mb-1 text-[10.5px] font-semibold tracking-[0.06em] uppercase" style="color: var(--ink-muted);">Quotations & Enquiries</div>
+                <div class="space-y-0.5">
+                    <a href="#inquiries-section" onclick="closeSidebarDrawer()" class="flex items-center justify-between px-3 h-9 rounded-lg text-[13px] font-medium transition-colors hover:bg-[var(--surface-subtle)]" style="color: var(--ink-secondary);">
+                        <div class="flex items-center gap-3 min-w-0">
+                            <svg class="w-[18px] h-[18px] shrink-0 text-slate-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                            </svg>
+                            <span class="truncate">Enquiries & RFPs</span>
+                        </div>
+                        <span class="px-1.5 py-0.2 text-[10px] font-mono font-semibold bg-amber-50 text-amber-800 border border-amber-200 rounded-full">4</span>
+                    </a>
+
+                    <a href="#wishlist-section" onclick="closeSidebarDrawer()" class="flex items-center justify-between px-3 h-9 rounded-lg text-[13px] font-medium transition-colors hover:bg-[var(--surface-subtle)]" style="color: var(--ink-secondary);">
+                        <div class="flex items-center gap-3 min-w-0">
+                            <svg class="w-[18px] h-[18px] shrink-0 text-slate-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+                            </svg>
+                            <span class="truncate">Wishlist Leads</span>
+                        </div>
+                        <span class="px-1.5 py-0.2 text-[10px] font-mono font-semibold bg-emerald-50 text-emerald-800 border border-emerald-200 rounded-full">18</span>
+                    </a>
+                </div>
+            </div>
+
+            <!-- 3. B2B Institutional Catalog -->
+            <div>
+                <div class="px-3 mb-1 text-[10.5px] font-semibold tracking-[0.06em] uppercase" style="color: var(--ink-muted);">Institutional Catalog</div>
+                <div class="space-y-0.5">
+                    <a href="#products" onclick="closeSidebarDrawer()" class="flex items-center gap-3 px-3 h-9 rounded-lg text-[13px] font-medium transition-colors hover:bg-[var(--surface-subtle)]" style="color: var(--ink-secondary);">
+                        <svg class="w-[18px] h-[18px] shrink-0 text-slate-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
+                            <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
+                            <line x1="12" y1="22.08" x2="12" y2="12"></line>
+                        </svg>
+                        <span class="truncate">Products & Solutions</span>
+                    </a>
+
+                    <a href="#categories" onclick="closeSidebarDrawer()" class="flex items-center gap-3 px-3 h-9 rounded-lg text-[13px] font-medium transition-colors hover:bg-[var(--surface-subtle)]" style="color: var(--ink-secondary);">
+                        <svg class="w-[18px] h-[18px] shrink-0 text-slate-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path>
+                            <line x1="7" y1="7" x2="7.01" y2="7"></line>
+                        </svg>
+                        <span class="truncate">Categories</span>
+                    </a>
+
+                    <a href="#colleges-for-sale" onclick="closeSidebarDrawer()" class="flex items-center gap-3 px-3 h-9 rounded-lg text-[13px] font-medium transition-colors hover:bg-[var(--surface-subtle)]" style="color: var(--ink-secondary);">
+                        <svg class="w-[18px] h-[18px] shrink-0 text-slate-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M3 21h18"></path>
+                            <path d="M9 8h1"></path>
+                            <path d="M9 12h1"></path>
+                            <path d="M9 16h1"></path>
+                            <path d="M14 8h1"></path>
+                            <path d="M14 12h1"></path>
+                            <path d="M14 16h1"></path>
+                            <path d="M5 21V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16"></path>
+                        </svg>
+                        <span class="truncate">Colleges for Sale & M&A</span>
+                    </a>
+
+                    <a href="#catalogues" onclick="closeSidebarDrawer()" class="flex items-center gap-3 px-3 h-9 rounded-lg text-[13px] font-medium transition-colors hover:bg-[var(--surface-subtle)]" style="color: var(--ink-secondary);">
+                        <svg class="w-[18px] h-[18px] shrink-0 text-slate-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+                            <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+                        </svg>
+                        <span class="truncate">Catalogues & Case Studies</span>
+                    </a>
+
+                    <a href="#classifieds" onclick="closeSidebarDrawer()" class="flex items-center gap-3 px-3 h-9 rounded-lg text-[13px] font-medium transition-colors hover:bg-[var(--surface-subtle)]" style="color: var(--ink-secondary);">
+                        <svg class="w-[18px] h-[18px] shrink-0 text-slate-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                            <polyline points="14 2 14 8 20 8"></polyline>
+                            <line x1="16" y1="13" x2="8" y2="13"></line>
+                            <line x1="16" y1="17" x2="8" y2="17"></line>
+                        </svg>
+                        <span class="truncate">Institutional Classifieds</span>
+                    </a>
+                </div>
+            </div>
+
+            <!-- 4. CMS Content -->
+            <div>
+                <div class="px-3 mb-1 text-[10.5px] font-semibold tracking-[0.06em] uppercase" style="color: var(--ink-muted);">CMS Content</div>
+                <div class="space-y-0.5">
+                    <a href="#pages" onclick="closeSidebarDrawer()" class="flex items-center gap-3 px-3 h-9 rounded-lg text-[13px] font-medium transition-colors hover:bg-[var(--surface-subtle)]" style="color: var(--ink-secondary);">
+                        <svg class="w-[18px] h-[18px] shrink-0 text-slate-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <line x1="2" y1="12" x2="22" y2="12"></line>
+                            <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+                        </svg>
+                        <span class="truncate">All Pages & Hubs</span>
+                    </a>
+
+                    <a href="#homepage-hero" onclick="closeSidebarDrawer()" class="flex items-center gap-3 px-3 h-9 rounded-lg text-[13px] font-medium transition-colors hover:bg-[var(--surface-subtle)]" style="color: var(--ink-secondary);">
+                        <svg class="w-[18px] h-[18px] shrink-0 text-slate-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+                            <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                        </svg>
+                        <span class="truncate">Homepage & Hero</span>
+                    </a>
+
+                    <a href="#blog" onclick="closeSidebarDrawer()" class="flex items-center gap-3 px-3 h-9 rounded-lg text-[13px] font-medium transition-colors hover:bg-[var(--surface-subtle)]" style="color: var(--ink-secondary);">
+                        <svg class="w-[18px] h-[18px] shrink-0 text-slate-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path>
+                            <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path>
+                        </svg>
+                        <span class="truncate">Articles & Insights</span>
+                    </a>
+
+                    <a href="#solutions-finder" onclick="closeSidebarDrawer()" class="flex items-center gap-3 px-3 h-9 rounded-lg text-[13px] font-medium transition-colors hover:bg-[var(--surface-subtle)]" style="color: var(--ink-secondary);">
+                        <svg class="w-[18px] h-[18px] shrink-0 text-slate-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"></polygon>
+                        </svg>
+                        <span class="truncate">Solutions Finder</span>
+                    </a>
+                </div>
+            </div>
+
+            <!-- 5. Administration -->
+            <div>
+                <div class="px-3 mb-1 text-[10.5px] font-semibold tracking-[0.06em] uppercase" style="color: var(--ink-muted);">Administration</div>
+                <div class="space-y-0.5">
+                    <a href="#users" onclick="closeSidebarDrawer()" class="flex items-center gap-3 px-3 h-9 rounded-lg text-[13px] font-medium transition-colors hover:bg-[var(--surface-subtle)]" style="color: var(--ink-secondary);">
+                        <svg class="w-[18px] h-[18px] shrink-0 text-slate-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                            <circle cx="9" cy="7" r="4"></circle>
+                            <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                            <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                        </svg>
+                        <span class="truncate">User Accounts</span>
+                    </a>
+
+                    <a href="#site-settings" onclick="closeSidebarDrawer()" class="flex items-center gap-3 px-3 h-9 rounded-lg text-[13px] font-medium transition-colors hover:bg-[var(--surface-subtle)]" style="color: var(--ink-secondary);">
+                        <svg class="w-[18px] h-[18px] shrink-0 text-slate-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="3"></circle>
+                            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+                        </svg>
+                        <span class="truncate">Site Settings</span>
+                    </a>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Drawer User Footer -->
+        <div class="p-3 border-t shrink-0" style="border-color: var(--border-hairline);">
+            <div class="flex items-center gap-2.5 px-1 py-1">
+                <div class="w-8 h-8 rounded-lg flex items-center justify-center font-display font-semibold text-xs shrink-0"
+                     style="background-color: var(--accent-brand); color: #FFFFFF;">
+                    SB
+                </div>
+                <div class="min-w-0 flex-1 leading-tight">
+                    <div class="text-[12.5px] font-semibold truncate" style="color: var(--ink-primary);">Sawan Bhardwaj</div>
+                    <div class="text-[10.5px] truncate flex items-center gap-1.5 mt-0.5" style="color: var(--ink-muted);">
+                        <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+                        <span>Super Admin</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+    <!-- ====================================================================== -->
+    <!-- 3. MAIN WORKSPACE CANVAS                                               -->
+    <!-- Strictly 100% width, NEVER pushed or shifted horizontally by sidebar   -->
+    <!-- ====================================================================== -->
+    <div id="main-canvas" class="flex-1 flex flex-col w-full min-h-screen">
+
+        <!-- Sticky Top Header (Hamburger Button + Breadcrumb + Quick Action Tabs) -->
+        <header class="h-[60px] border-b px-4 sm:px-6 lg:px-8 flex items-center justify-between sticky top-0 z-30 transition-colors w-full"
+                style="background-color: var(--header-bg); border-color: var(--border-hairline); backdrop-filter: blur(8px);">
+            
+            <!-- Left: HAMBURGER / MENU TOGGLE BUTTON + Brand/Breadcrumb -->
+            <div class="flex items-center gap-3">
+                
+                <!-- HAMBURGER MENU BUTTON: Opens overlapping drawer menu -->
+                <button id="menu-toggle-button" 
+                        onclick="toggleSidebarDrawer()" 
+                        title="Open Navigation Menu" 
+                        class="h-[36px] px-2.5 rounded-lg border flex items-center gap-2 transition-colors shadow-2xs hover:bg-[var(--surface-subtle)]"
+                        style="border-color: var(--border-hairline); background-color: var(--surface-card); color: var(--ink-primary);">
+                    <!-- Hamburger 3-Line Icon -->
+                    <svg class="w-4 h-4 text-slate-700" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="3" y1="12" x2="21" y2="12"></line>
+                        <line x1="3" y1="6" x2="21" y2="6"></line>
+                        <line x1="3" y1="18" x2="21" y2="18"></line>
+                    </svg>
+                    <span class="text-[12px] font-semibold hidden sm:inline">Menu</span>
+                </button>
+
+                <!-- Breadcrumbs -->
+                <nav class="flex items-center gap-2 text-[12.5px] font-medium" style="color: var(--ink-muted);">
+                    <span class="font-semibold text-slate-900 hidden sm:inline">CampusMart</span>
+                    <span class="opacity-40 hidden sm:inline">/</span>
+                    <span class="font-semibold" style="color: var(--ink-primary);">Dashboard</span>
+                </nav>
+
+                <!-- Quick Navigation Action Tabs (Direct buttons to the key admin pages) -->
+                <div class="hidden md:flex items-center gap-1.5 ml-2 pl-3 border-l" style="border-color: var(--border-hairline);">
+                    <a href="#pages" class="px-2.5 h-[28px] text-[12px] font-medium rounded-md transition-colors flex items-center gap-1.5 hover:bg-[var(--surface-subtle)]" style="color: var(--ink-secondary);">
+                        All Pages
+                    </a>
+                    <a href="#categories" class="px-2.5 h-[28px] text-[12px] font-medium rounded-md transition-colors flex items-center gap-1.5 hover:bg-[var(--surface-subtle)]" style="color: var(--ink-secondary);">
+                        Categories
+                    </a>
+                    <a href="#products" class="px-2.5 h-[28px] text-[12px] font-medium rounded-md transition-colors flex items-center gap-1.5 hover:bg-[var(--surface-subtle)]" style="color: var(--ink-secondary);">
+                        Products
+                    </a>
+                    <a href="#inquiries-section" class="px-2.5 h-[28px] text-[12px] font-medium rounded-md transition-colors flex items-center gap-1.5 hover:bg-[var(--surface-subtle)]" style="color: var(--ink-secondary);">
+                        Enquiries <span class="px-1.5 py-0.2 text-[9.5px] font-mono font-semibold bg-amber-50 text-amber-800 border border-amber-200 rounded-full">4</span>
+                    </a>
+                    <a href="#wishlist-section" class="px-2.5 h-[28px] text-[12px] font-medium rounded-md transition-colors flex items-center gap-1.5 hover:bg-[var(--surface-subtle)]" style="color: var(--ink-secondary);">
+                        Wishlists
+                    </a>
+                </div>
+            </div>
+
+            <!-- Right: Eye-Comfort Tone Selector + Live Site Link -->
+            <div class="flex items-center gap-3">
+                
+                <!-- Eye-Comfort Tone Selector (Cuts glare immediately) -->
+                <div class="flex items-center p-0.5 rounded-lg border shadow-2xs"
+                     style="background-color: var(--surface-subtle); border-color: var(--border-hairline);">
+                    <button onclick="setEyeTheme('slate-matte')" id="btn-slate-matte" title="Calm Studio Slate" class="px-2 py-1 text-[11px] font-semibold rounded-md transition-all flex items-center gap-1 bg-white text-slate-900 shadow-xs">
+                        <span class="w-2 h-2 rounded-full bg-slate-400"></span>
+                        <span class="hidden sm:inline">Calm Studio</span>
+                    </button>
+                    <button onclick="setEyeTheme('warm-paper')" id="btn-warm-paper" title="Warm Paper (Anti-Eyestrain)" class="px-2 py-1 text-[11px] font-medium text-slate-500 hover:text-slate-900 rounded-md transition-all flex items-center gap-1">
+                        <span class="w-2 h-2 rounded-full bg-amber-300"></span>
+                        <span class="hidden sm:inline">Warm Paper</span>
+                    </button>
+                    <button onclick="setEyeTheme('twilight')" id="btn-twilight" title="Twilight Dim" class="px-2 py-1 text-[11px] font-medium text-slate-500 hover:text-slate-900 rounded-md transition-all flex items-center gap-1">
+                        <span class="w-2 h-2 rounded-full bg-slate-800"></span>
+                        <span class="hidden sm:inline">Twilight</span>
+                    </button>
+                </div>
+
+                <!-- Live Website Link -->
+                <a href="http://localhost:5173/" target="_blank" class="hidden sm:inline-flex items-center gap-1.5 h-8 px-2.5 text-[12px] font-medium border rounded-lg transition-colors hover:bg-[var(--surface-subtle)]"
+                   style="background-color: var(--surface-card); border-color: var(--border-hairline); color: var(--ink-secondary);">
+                    <svg class="w-3.5 h-3.5 text-slate-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75">
+                        <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                        <polyline points="15 3 21 3 21 9"></polyline>
+                        <line x1="10" y1="14" x2="21" y2="3"></line>
+                    </svg>
+                    <span>Live Site</span>
+                </a>
+            </div>
+        </header>
+
+        <!-- ============================================================== -->
+        <!-- 4. MAIN CONTENT CONTAINER                                      -->
+        <!-- 100% stable, max-w-[1360px] centered                           -->
+        <!-- ============================================================== -->
+        <main class="flex-1 px-4 sm:px-6 lg:px-8 py-6 max-w-[1360px] w-full mx-auto space-y-6">
+
+            <!-- Page Title Bar -->
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-2 border-b"
+                 style="border-color: var(--border-hairline);">
+                <div>
+                    <h1 class="text-xl sm:text-2xl font-display font-semibold tracking-tight" style="color: var(--ink-primary);">
+                        Operations Dashboard
+                    </h1>
+                    <p class="text-[12.5px] mt-0.5" style="color: var(--ink-muted);">
+                        Instant overview of active submissions, listings, and institutional catalog management.
+                    </p>
+                </div>
+
+                <!-- Direct Action Buttons -->
+                <div class="flex items-center gap-2">
+                    <button onclick="exportWishlistCSV()" class="h-8 px-3 text-[12px] font-medium border rounded-lg transition-colors flex items-center gap-1.5 shadow-2xs hover:bg-[var(--surface-subtle)]"
+                            style="background-color: var(--surface-card); border-color: var(--border-hairline); color: var(--ink-secondary);">
+                        <svg class="w-3.5 h-3.5 text-slate-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75">
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                            <polyline points="7 10 12 15 17 10"></polyline>
+                            <line x1="12" y1="15" x2="12" y2="3"></line>
+                        </svg>
+                        Export Wishlist CSV
+                    </button>
+                    
+                    <a href="#products" class="h-8 px-3.5 text-[12px] font-semibold text-white rounded-lg flex items-center gap-1.5 shadow-xs transition-transform hover:scale-[1.01]"
+                       style="background-color: var(--accent-brand);">
+                        <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <line x1="12" y1="5" x2="12" y2="19"></line>
+                            <line x1="5" y1="12" x2="19" y2="12"></line>
+                        </svg>
+                        Add Product
+                    </a>
+                </div>
+            </div>
+
+            <!-- ========================================================== -->
+            <!-- 5. HONEST, SIMPLE OVERVIEW TAB CARDS                       -->
+            <!-- No fake ₹ estimates, no fake sub-counts                    -->
+            <!-- Simple count cards that link directly to the admin pages   -->
+            <!-- ========================================================== -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+
+                <!-- Tab Card 1: Enquiries & RFPs -->
+                <a href="#inquiries-section" class="metric-tab-card group">
+                    <div class="flex items-center justify-between">
+                        <span class="text-[12.5px] font-medium" style="color: var(--ink-muted);">Pending Enquiries</span>
+                        <div class="w-7 h-7 rounded-lg border flex items-center justify-center transition-colors group-hover:border-slate-400"
+                             style="background-color: var(--surface-subtle); border-color: var(--border-hairline); color: var(--ink-secondary);">
+                            <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75">
+                                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="my-2">
+                        <div class="text-2xl font-display font-semibold tracking-tight tabular-nums" style="color: var(--ink-primary);">
+                            4
+                        </div>
+                    </div>
+                    <div class="pt-2 border-t flex items-center justify-between text-[11.5px]" style="border-color: var(--border-hairline); color: var(--ink-muted);">
+                        <span>Quote requests & inquiries</span>
+                        <span class="text-blue-600 font-semibold group-hover:underline">Open tab &rarr;</span>
+                    </div>
+                </a>
+
+                <!-- Tab Card 2: Wishlist Leads -->
+                <a href="#wishlist-section" class="metric-tab-card group">
+                    <div class="flex items-center justify-between">
+                        <span class="text-[12.5px] font-medium" style="color: var(--ink-muted);">Wishlist Leads</span>
+                        <div class="w-7 h-7 rounded-lg border flex items-center justify-center transition-colors group-hover:border-slate-400"
+                             style="background-color: var(--surface-subtle); border-color: var(--border-hairline); color: var(--ink-secondary);">
+                            <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75">
+                                <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="my-2">
+                        <div class="text-2xl font-display font-semibold tracking-tight tabular-nums" style="color: var(--ink-primary);">
+                            18
+                        </div>
+                    </div>
+                    <div class="pt-2 border-t flex items-center justify-between text-[11.5px]" style="border-color: var(--border-hairline); color: var(--ink-muted);">
+                        <span>Saved items for quotation</span>
+                        <span class="text-blue-600 font-semibold group-hover:underline">Open tab &rarr;</span>
+                    </div>
+                </a>
+
+                <!-- Tab Card 3: Active Products (Zero Stocks) -->
+                <a href="#products" class="metric-tab-card group">
+                    <div class="flex items-center justify-between">
+                        <span class="text-[12.5px] font-medium" style="color: var(--ink-muted);">Active Products</span>
+                        <div class="w-7 h-7 rounded-lg border flex items-center justify-center transition-colors group-hover:border-slate-400"
+                             style="background-color: var(--surface-subtle); border-color: var(--border-hairline); color: var(--ink-secondary);">
+                            <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75">
+                                <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="my-2">
+                        <div class="text-2xl font-display font-semibold tracking-tight tabular-nums" style="color: var(--ink-primary);">
+                            48
+                        </div>
+                    </div>
+                    <div class="pt-2 border-t flex items-center justify-between text-[11.5px]" style="border-color: var(--border-hairline); color: var(--ink-muted);">
+                        <span>Catalog items & equipment</span>
+                        <span class="text-blue-600 font-semibold group-hover:underline">Manage &rarr;</span>
+                    </div>
+                </a>
+
+                <!-- Tab Card 4: Published Pages -->
+                <a href="#pages" class="metric-tab-card group">
+                    <div class="flex items-center justify-between">
+                        <span class="text-[12.5px] font-medium" style="color: var(--ink-muted);">CMS Hub Pages</span>
+                        <div class="w-7 h-7 rounded-lg border flex items-center justify-center transition-colors group-hover:border-slate-400"
+                             style="background-color: var(--surface-subtle); border-color: var(--border-hairline); color: var(--ink-secondary);">
+                            <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <line x1="2" y1="12" x2="22" y2="12"></line>
+                                <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="my-2">
+                        <div class="text-2xl font-display font-semibold tracking-tight tabular-nums" style="color: var(--ink-primary);">
+                            12
+                        </div>
+                    </div>
+                    <div class="pt-2 border-t flex items-center justify-between text-[11.5px]" style="border-color: var(--border-hairline); color: var(--ink-muted);">
+                        <span>Universal dynamic hubs</span>
+                        <span class="text-blue-600 font-semibold group-hover:underline">Edit pages &rarr;</span>
+                    </div>
+                </a>
+
+            </div>
+
+            <!-- ========================================================== -->
+            <!-- 6. OPERATIONAL SPLIT WORKSPACE                             -->
+            <!-- Left: Real-Time Enquiries & Submissions Table              -->
+            <!-- Right: Recent Wishlist Selections                          -->
+            <!-- ========================================================== -->
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+
+                <!-- LEFT (2 Cols): Enquiries & Submissions -->
+                <div id="inquiries-section" class="lg:col-span-2 rounded-xl border shadow-2xs flex flex-col overflow-hidden"
+                     style="background-color: var(--surface-card); border-color: var(--border-hairline);">
+                    
+                    <!-- Header with Simple Filter Tabs -->
+                    <div class="p-4 border-b flex flex-col sm:flex-row sm:items-center justify-between gap-3"
+                         style="border-color: var(--border-hairline);">
+                        <div>
+                            <h2 class="text-sm font-semibold tracking-tight" style="color: var(--ink-primary);">
+                                Enquiries & Submissions
+                            </h2>
+                            <p class="text-[12px] mt-0.5" style="color: var(--ink-muted);">
+                                Incoming quote requests and contact messages.
+                            </p>
+                        </div>
+
+                        <!-- Filter Pills -->
+                        <div class="flex items-center gap-1 p-0.5 rounded-lg border text-[11px] font-medium"
+                             style="background-color: var(--surface-subtle); border-color: var(--border-hairline);">
+                            <button onclick="filterInquiries('all')" id="tab-inquiries-all" class="px-2.5 py-1 rounded-md bg-white font-semibold shadow-2xs" style="color: var(--ink-primary);">All (4)</button>
+                            <button onclick="filterInquiries('unread')" id="tab-inquiries-unread" class="px-2.5 py-1 rounded-md text-slate-500 hover:text-slate-900 transition-colors">Unread (2)</button>
+                            <button onclick="filterInquiries('rfp')" id="tab-inquiries-rfp" class="px-2.5 py-1 rounded-md text-slate-500 hover:text-slate-900 transition-colors">Quote Requests (2)</button>
+                        </div>
+                    </div>
+
+                    <!-- Inquiries Table -->
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left text-[12.5px]">
+                            <thead>
+                                <tr class="border-b uppercase tracking-wider text-[10px] font-semibold"
+                                    style="background-color: var(--surface-subtle); border-color: var(--border-hairline); color: var(--ink-muted);">
+                                    <th class="px-4 py-2.5">Institution / Contact</th>
+                                    <th class="px-4 py-2.5">Requirement Details</th>
+                                    <th class="px-4 py-2.5">Date</th>
+                                    <th class="px-4 py-2.5 text-right">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y" style="border-color: var(--border-hairline);">
+
+                                <!-- Row 1: Quote Request -->
+                                <tr class="inquiry-row inquiry-unread inquiry-rfp hover:bg-[var(--surface-subtle)] transition-colors">
+                                    <td class="px-4 py-3">
+                                        <div class="font-semibold" style="color: var(--ink-primary);">Testing College / University</div>
+                                        <div class="text-[11px] flex items-center gap-2 mt-0.5" style="color: var(--ink-muted);">
+                                            <span>yes9149@gmail.com</span>
+                                            <span>•</span>
+                                            <span class="font-mono text-slate-500">+91 91490 00000</span>
+                                        </div>
+                                    </td>
+                                    <td class="px-4 py-3">
+                                        <div class="flex items-center gap-1.5 mb-1">
+                                            <span class="px-1.5 py-0.2 text-[10px] font-mono font-semibold rounded-full bg-blue-50 text-blue-800 border border-blue-200">Quote Request</span>
+                                            <span class="px-1.5 py-0.2 text-[10px] font-mono font-semibold rounded-full bg-amber-50 text-amber-800 border border-amber-200">Unread</span>
+                                        </div>
+                                        <div class="text-[12px] truncate max-w-xs" style="color: var(--ink-secondary);">
+                                            Turnkey Biotech Lab & Digital Smart Classroom
+                                        </div>
+                                    </td>
+                                    <td class="px-4 py-3 text-[11px] tabular-nums whitespace-nowrap" style="color: var(--ink-muted);">
+                                        Today, 11:42 AM
+                                    </td>
+                                    <td class="px-4 py-3 text-right whitespace-nowrap">
+                                        <div class="flex items-center justify-end gap-1.5">
+                                            <button onclick="showToast('Inquiry marked as read')" class="px-2 py-1 text-[11px] font-medium border rounded-md hover:bg-slate-100 transition-colors"
+                                                    style="border-color: var(--border-hairline); color: var(--ink-secondary);">
+                                                Mark Read
+                                            </button>
+                                            <a href="mailto:yes9149@gmail.com?subject=CampusMart Quote" class="px-2 py-1 text-[11px] font-medium text-white rounded-md transition-colors"
+                                               style="background-color: var(--accent-brand);">
+                                                Reply
+                                            </a>
+                                        </div>
+                                    </td>
+                                </tr>
+
+                                <!-- Row 2: General Inquiry -->
+                                <tr class="inquiry-row inquiry-unread hover:bg-[var(--surface-subtle)] transition-colors">
+                                    <td class="px-4 py-3">
+                                        <div class="font-semibold" style="color: var(--ink-primary);">Symbiosis International University</div>
+                                        <div class="text-[11px] flex items-center gap-2 mt-0.5" style="color: var(--ink-muted);">
+                                            <span>Reem Baquri (reembaquri@symbiosis.ac.in)</span>
+                                            <span>•</span>
+                                            <span class="font-mono text-slate-500">+91 77969 62408</span>
+                                        </div>
+                                    </td>
+                                    <td class="px-4 py-3">
+                                        <div class="flex items-center gap-1.5 mb-1">
+                                            <span class="px-1.5 py-0.2 text-[10px] font-mono font-semibold rounded-full bg-slate-100 text-slate-700 border border-slate-200">General Inquiry</span>
+                                            <span class="px-1.5 py-0.2 text-[10px] font-mono font-semibold rounded-full bg-amber-50 text-amber-800 border border-amber-200">Unread</span>
+                                        </div>
+                                        <div class="text-[12px] truncate max-w-xs" style="color: var(--ink-secondary);">
+                                            Campus ERP demo & institutional licensing query
+                                        </div>
+                                    </td>
+                                    <td class="px-4 py-3 text-[11px] tabular-nums whitespace-nowrap" style="color: var(--ink-muted);">
+                                        Yesterday, 04:15 PM
+                                    </td>
+                                    <td class="px-4 py-3 text-right whitespace-nowrap">
+                                        <div class="flex items-center justify-end gap-1.5">
+                                            <button onclick="showToast('Inquiry marked as read')" class="px-2 py-1 text-[11px] font-medium border rounded-md hover:bg-slate-100 transition-colors"
+                                                    style="border-color: var(--border-hairline); color: var(--ink-secondary);">
+                                                Mark Read
+                                            </button>
+                                            <a href="tel:+917796962408" class="px-2 py-1 text-[11px] font-medium border rounded-md hover:bg-slate-100 transition-colors"
+                                               style="border-color: var(--border-hairline); color: var(--ink-secondary);">
+                                                Call
+                                            </a>
+                                        </div>
+                                    </td>
+                                </tr>
+
+                                <!-- Row 3: Quote Request -->
+                                <tr class="inquiry-row inquiry-read inquiry-rfp hover:bg-[var(--surface-subtle)] transition-colors">
+                                    <td class="px-4 py-3">
+                                        <div class="font-semibold" style="color: var(--ink-primary);">Amity Institute of Technology</div>
+                                        <div class="text-[11px] flex items-center gap-2 mt-0.5" style="color: var(--ink-muted);">
+                                            <span>Dr. Meenakshi Sundaram</span>
+                                            <span>•</span>
+                                            <span class="font-mono text-slate-500">+91 98401 23456</span>
+                                        </div>
+                                    </td>
+                                    <td class="px-4 py-3">
+                                        <div class="flex items-center gap-1.5 mb-1">
+                                            <span class="px-1.5 py-0.2 text-[10px] font-mono font-semibold rounded-full bg-blue-50 text-blue-800 border border-blue-200">Quote Request</span>
+                                            <span class="px-1.5 py-0.2 text-[10px] font-mono font-semibold rounded-full bg-emerald-50 text-emerald-800 border border-emerald-200">Replied</span>
+                                        </div>
+                                        <div class="text-[12px] truncate max-w-xs" style="color: var(--ink-secondary);">
+                                            Robotics Innovation Lab Setup (Scope: 60 Workstations)
+                                        </div>
+                                    </td>
+                                    <td class="px-4 py-3 text-[11px] tabular-nums whitespace-nowrap" style="color: var(--ink-muted);">
+                                        Nov 05, 02:20 PM
+                                    </td>
+                                    <td class="px-4 py-3 text-right whitespace-nowrap">
+                                        <a href="#inquiries-section" class="px-2 py-1 text-[11px] font-medium border rounded-md hover:bg-slate-100 transition-colors"
+                                           style="border-color: var(--border-hairline); color: var(--ink-secondary);">
+                                            View
+                                        </a>
+                                    </td>
+                                </tr>
+
+                                <!-- Row 4: Catalog Spec Inquiry -->
+                                <tr class="inquiry-row inquiry-read hover:bg-[var(--surface-subtle)] transition-colors">
+                                    <td class="px-4 py-3">
+                                        <div class="font-semibold" style="color: var(--ink-primary);">Shiv Nadar University</div>
+                                        <div class="text-[11px] flex items-center gap-2 mt-0.5" style="color: var(--ink-muted);">
+                                            <span>Karan Malhotra (karan.m@snu.edu.in)</span>
+                                        </div>
+                                    </td>
+                                    <td class="px-4 py-3">
+                                        <div class="flex items-center gap-1.5 mb-1">
+                                            <span class="px-1.5 py-0.2 text-[10px] font-mono font-semibold rounded-full bg-slate-100 text-slate-700 border border-slate-200">General Inquiry</span>
+                                            <span class="px-1.5 py-0.2 text-[10px] font-mono font-semibold rounded-full bg-emerald-50 text-emerald-800 border border-emerald-200">Replied</span>
+                                        </div>
+                                        <div class="text-[12px] truncate max-w-xs" style="color: var(--ink-secondary);">
+                                            Brochure specification download for Campus Turnstiles
+                                        </div>
+                                    </td>
+                                    <td class="px-4 py-3 text-[11px] tabular-nums whitespace-nowrap" style="color: var(--ink-muted);">
+                                        Nov 04, 10:10 AM
+                                    </td>
+                                    <td class="px-4 py-3 text-right whitespace-nowrap">
+                                        <a href="#inquiries-section" class="px-2 py-1 text-[11px] font-medium border rounded-md hover:bg-slate-100 transition-colors"
+                                           style="border-color: var(--border-hairline); color: var(--ink-secondary);">
+                                            View
+                                        </a>
+                                    </td>
+                                </tr>
+
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- Footer -->
+                    <div class="p-3 border-t flex items-center justify-between text-[11.5px]"
+                         style="border-color: var(--border-hairline); background-color: var(--surface-subtle);">
+                        <span style="color: var(--ink-muted);">Showing 4 active enquiries</span>
+                        <a href="#inquiries-section" class="font-semibold hover:underline flex items-center gap-1" style="color: var(--ink-primary);">
+                            Go to Enquiries Page &rarr;
+                        </a>
+                    </div>
+                </div>
+
+                <!-- RIGHT (1 Col): Wishlist Leads -->
+                <div id="wishlist-section" class="rounded-xl border shadow-2xs flex flex-col overflow-hidden"
+                     style="background-color: var(--surface-card); border-color: var(--border-hairline);">
+                    
+                    <div class="p-4 border-b flex items-center justify-between"
+                         style="border-color: var(--border-hairline);">
+                        <div>
+                            <h2 class="text-sm font-semibold tracking-tight" style="color: var(--ink-primary);">
+                                Wishlist Leads
+                            </h2>
+                            <p class="text-[12px] mt-0.5" style="color: var(--ink-muted);">
+                                Items saved by institutions for quotation.
+                            </p>
+                        </div>
+                        <span class="px-2 py-0.5 text-[11px] font-mono font-semibold rounded-md border"
+                              style="background-color: var(--surface-subtle); border-color: var(--border-hairline); color: var(--ink-secondary);">
+                            18 Total
+                        </span>
+                    </div>
+
+                    <!-- Intent Feed -->
+                    <div class="divide-y flex-1" style="border-color: var(--border-hairline);">
+
+                        <!-- Item 1 -->
+                        <div class="p-3.5 hover:bg-[var(--surface-subtle)] transition-colors">
+                            <div class="flex items-start justify-between gap-2">
+                                <div>
+                                    <div class="text-[12.5px] font-semibold" style="color: var(--ink-primary);">Vellore Institute of Technology</div>
+                                    <div class="text-[11px] mt-0.5" style="color: var(--ink-muted);">Dr. S. Ramanathan (Procurement)</div>
+                                </div>
+                                <span class="px-1.5 py-0.5 text-[10px] font-mono rounded bg-slate-100 text-slate-700">3 Items</span>
+                            </div>
+                            <div class="mt-2 text-[11.5px] p-2 rounded-lg border flex items-center justify-between"
+                                 style="background-color: var(--surface-subtle); border-color: var(--border-hairline);">
+                                <span class="truncate">Biotech Equipment & Lab Furniture</span>
+                                <a href="#wishlist-section" class="text-blue-600 font-semibold hover:underline shrink-0 ml-2">View &rarr;</a>
+                            </div>
+                        </div>
+
+                        <!-- Item 2 -->
+                        <div class="p-3.5 hover:bg-[var(--surface-subtle)] transition-colors">
+                            <div class="flex items-start justify-between gap-2">
+                                <div>
+                                    <div class="text-[12.5px] font-semibold" style="color: var(--ink-primary);">Manipal Academy of Higher Ed</div>
+                                    <div class="text-[11px] mt-0.5" style="color: var(--ink-muted);">Campus Infrastructure Committee</div>
+                                </div>
+                                <span class="px-1.5 py-0.5 text-[10px] font-mono rounded bg-slate-100 text-slate-700">2 Items</span>
+                            </div>
+                            <div class="mt-2 text-[11.5px] p-2 rounded-lg border flex items-center justify-between"
+                                 style="background-color: var(--surface-subtle); border-color: var(--border-hairline);">
+                                <span class="truncate">Smart Classroom Interactive Displays</span>
+                                <a href="#wishlist-section" class="text-blue-600 font-semibold hover:underline shrink-0 ml-2">View &rarr;</a>
+                            </div>
+                        </div>
+
+                        <!-- Item 3 -->
+                        <div class="p-3.5 hover:bg-[var(--surface-subtle)] transition-colors">
+                            <div class="flex items-start justify-between gap-2">
+                                <div>
+                                    <div class="text-[12.5px] font-semibold" style="color: var(--ink-primary);">Thapar Institute of Eng & Tech</div>
+                                    <div class="text-[11px] mt-0.5" style="color: var(--ink-muted);">Dept of Mechanical Engineering</div>
+                                </div>
+                                <span class="px-1.5 py-0.5 text-[10px] font-mono rounded bg-slate-100 text-slate-700">1 Item</span>
+                            </div>
+                            <div class="mt-2 text-[11.5px] p-2 rounded-lg border flex items-center justify-between"
+                                 style="background-color: var(--surface-subtle); border-color: var(--border-hairline);">
+                                <span class="truncate">Automated Testing & Metrology Setup</span>
+                                <a href="#wishlist-section" class="text-blue-600 font-semibold hover:underline shrink-0 ml-2">View &rarr;</a>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <!-- Footer CTA -->
+                    <div class="p-3 border-t text-center"
+                         style="border-color: var(--border-hairline); background-color: var(--surface-subtle);">
+                        <button onclick="exportWishlistCSV()" class="w-full py-1.5 text-[12px] font-medium border rounded-md transition-colors hover:bg-slate-200/50 flex items-center justify-center gap-1.5"
+                                style="border-color: var(--border-hairline); color: var(--ink-primary);">
+                            <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75">
+                                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                                <polyline points="7 10 12 15 17 10"></polyline>
+                                <line x1="12" y1="15" x2="12" y2="3"></line>
+                            </svg>
+                            Download Wishlist Leads (CSV)
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- ========================================================== -->
+            <!-- 7. DIRECTORY MODULE LINKS                                  -->
+            <!-- 9 Cleanly Grouped Cards                                    -->
+            <!-- ========================================================== -->
+            <div class="space-y-3">
+                <div class="flex items-center justify-between">
+                    <h2 class="text-sm font-semibold tracking-tight" style="color: var(--ink-primary);">
+                        Management Sections
+                    </h2>
+                    <span class="text-[11.5px]" style="color: var(--ink-muted);">
+                        Direct Page Shortcuts
+                    </span>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+
+                    <!-- Module 1: Products -->
+                    <a href="#products" class="module-card flex items-start gap-3.5 group">
+                        <div class="icon-well w-10 h-10 rounded-lg flex items-center justify-center shrink-0" style="color: var(--ink-secondary);">
+                            <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75">
+                                <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
+                                <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
+                                <line x1="12" y1="22.08" x2="12" y2="12"></line>
+                            </svg>
+                        </div>
+                        <div class="flex-1 min-w-0">
+                            <div class="flex items-center justify-between">
+                                <span class="text-[13.5px] font-semibold" style="color: var(--ink-primary);">Products</span>
+                                <span class="hover-arrow text-slate-400 group-hover:text-slate-900 font-bold">&rarr;</span>
+                            </div>
+                            <p class="text-[12px] mt-0.5 line-clamp-1" style="color: var(--ink-muted);">
+                                Add, edit, or remove catalog equipment and specifications.
+                            </p>
+                            <div class="mt-2 text-[10.5px] font-mono text-slate-500">
+                                48 Active Items
+                            </div>
+                        </div>
+                    </a>
+
+                    <!-- Module 2: Categories -->
+                    <a href="#categories" class="module-card flex items-start gap-3.5 group">
+                        <div class="icon-well w-10 h-10 rounded-lg flex items-center justify-center shrink-0" style="color: var(--ink-secondary);">
+                            <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75">
+                                <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path>
+                                <line x1="7" y1="7" x2="7.01" y2="7"></line>
+                            </svg>
+                        </div>
+                        <div class="flex-1 min-w-0">
+                            <div class="flex items-center justify-between">
+                                <span class="text-[13.5px] font-semibold" style="color: var(--ink-primary);">Categories</span>
+                                <span class="hover-arrow text-slate-400 group-hover:text-slate-900 font-bold">&rarr;</span>
+                            </div>
+                            <p class="text-[12px] mt-0.5 line-clamp-1" style="color: var(--ink-muted);">
+                                Manage product classifications and taxonomy structure.
+                            </p>
+                            <div class="mt-2 text-[10.5px] font-mono text-slate-500">
+                                8 Categories
+                            </div>
+                        </div>
+                    </a>
+
+                    <!-- Module 3: Colleges for Sale -->
+                    <a href="#colleges-for-sale" class="module-card flex items-start gap-3.5 group">
+                        <div class="icon-well w-10 h-10 rounded-lg flex items-center justify-center shrink-0" style="color: var(--ink-secondary);">
+                            <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75">
+                                <path d="M3 21h18"></path>
+                                <path d="M9 8h1"></path>
+                                <path d="M9 12h1"></path>
+                                <path d="M9 16h1"></path>
+                                <path d="M14 8h1"></path>
+                                <path d="M14 12h1"></path>
+                                <path d="M14 16h1"></path>
+                                <path d="M5 21V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16"></path>
+                            </svg>
+                        </div>
+                        <div class="flex-1 min-w-0">
+                            <div class="flex items-center justify-between">
+                                <span class="text-[13.5px] font-semibold" style="color: var(--ink-primary);">Colleges for Sale</span>
+                                <span class="hover-arrow text-slate-400 group-hover:text-slate-900 font-bold">&rarr;</span>
+                            </div>
+                            <p class="text-[12px] mt-0.5 line-clamp-1" style="color: var(--ink-muted);">
+                                Institutional sale and campus transfer listings.
+                            </p>
+                            <div class="mt-2 text-[10.5px] font-mono text-slate-500">
+                                M&A Listings
+                            </div>
+                        </div>
+                    </a>
+
+                    <!-- Module 4: Catalogues -->
+                    <a href="#catalogues" class="module-card flex items-start gap-3.5 group">
+                        <div class="icon-well w-10 h-10 rounded-lg flex items-center justify-center shrink-0" style="color: var(--ink-secondary);">
+                            <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75">
+                                <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+                                <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+                            </svg>
+                        </div>
+                        <div class="flex-1 min-w-0">
+                            <div class="flex items-center justify-between">
+                                <span class="text-[13.5px] font-semibold" style="color: var(--ink-primary);">Catalogues & Cases</span>
+                                <span class="hover-arrow text-slate-400 group-hover:text-slate-900 font-bold">&rarr;</span>
+                            </div>
+                            <p class="text-[12px] mt-0.5 line-clamp-1" style="color: var(--ink-muted);">
+                                Downloadable brochures, PDFs, and client case studies.
+                            </p>
+                            <div class="mt-2 text-[10.5px] font-mono text-slate-500">
+                                Digital Assets
+                            </div>
+                        </div>
+                    </a>
+
+                    <!-- Module 5: Classifieds -->
+                    <a href="#classifieds" class="module-card flex items-start gap-3.5 group">
+                        <div class="icon-well w-10 h-10 rounded-lg flex items-center justify-center shrink-0" style="color: var(--ink-secondary);">
+                            <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75">
+                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                                <polyline points="14 2 14 8 20 8"></polyline>
+                                <line x1="16" y1="13" x2="8" y2="13"></line>
+                                <line x1="16" y1="17" x2="8" y2="17"></line>
+                            </svg>
+                        </div>
+                        <div class="flex-1 min-w-0">
+                            <div class="flex items-center justify-between">
+                                <span class="text-[13.5px] font-semibold" style="color: var(--ink-primary);">Classifieds</span>
+                                <span class="hover-arrow text-slate-400 group-hover:text-slate-900 font-bold">&rarr;</span>
+                            </div>
+                            <p class="text-[12px] mt-0.5 line-clamp-1" style="color: var(--ink-muted);">
+                                Campus notices, tenders, and requirement posts.
+                            </p>
+                            <div class="mt-2 text-[10.5px] font-mono text-slate-500">
+                                Classified Feed
+                            </div>
+                        </div>
+                    </a>
+
+                    <!-- Module 6: All Pages -->
+                    <a href="#pages" class="module-card flex items-start gap-3.5 group">
+                        <div class="icon-well w-10 h-10 rounded-lg flex items-center justify-center shrink-0" style="color: var(--ink-secondary);">
+                            <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <line x1="2" y1="12" x2="22" y2="12"></line>
+                                <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+                            </svg>
+                        </div>
+                        <div class="flex-1 min-w-0">
+                            <div class="flex items-center justify-between">
+                                <span class="text-[13.5px] font-semibold" style="color: var(--ink-primary);">All Pages</span>
+                                <span class="hover-arrow text-slate-400 group-hover:text-slate-900 font-bold">&rarr;</span>
+                            </div>
+                            <p class="text-[12px] mt-0.5 line-clamp-1" style="color: var(--ink-muted);">
+                                Universal Dynamic Pages, Solutions Hubs, and Service Suites.
+                            </p>
+                            <div class="mt-2 text-[10.5px] font-mono text-slate-500">
+                                12 Hubs Active
+                            </div>
+                        </div>
+                    </a>
+
+                    <!-- Module 7: Homepage & Hero -->
+                    <a href="#homepage-hero" class="module-card flex items-start gap-3.5 group">
+                        <div class="icon-well w-10 h-10 rounded-lg flex items-center justify-center shrink-0" style="color: var(--ink-secondary);">
+                            <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75">
+                                <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                            </svg>
+                        </div>
+                        <div class="flex-1 min-w-0">
+                            <div class="flex items-center justify-between">
+                                <span class="text-[13.5px] font-semibold" style="color: var(--ink-primary);">Homepage & Hero</span>
+                                <span class="hover-arrow text-slate-400 group-hover:text-slate-900 font-bold">&rarr;</span>
+                            </div>
+                            <p class="text-[12px] mt-0.5 line-clamp-1" style="color: var(--ink-muted);">
+                                Edit homepage hero cards, banner images, and quick links.
+                            </p>
+                            <div class="mt-2 text-[10.5px] font-mono text-slate-500">
+                                Visual CMS
+                            </div>
+                        </div>
+                    </a>
+
+                    <!-- Module 8: Blog -->
+                    <a href="#blog" class="module-card flex items-start gap-3.5 group">
+                        <div class="icon-well w-10 h-10 rounded-lg flex items-center justify-center shrink-0" style="color: var(--ink-secondary);">
+                            <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75">
+                                <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path>
+                                <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path>
+                            </svg>
+                        </div>
+                        <div class="flex-1 min-w-0">
+                            <div class="flex items-center justify-between">
+                                <span class="text-[13.5px] font-semibold" style="color: var(--ink-primary);">Blog & Articles</span>
+                                <span class="hover-arrow text-slate-400 group-hover:text-slate-900 font-bold">&rarr;</span>
+                            </div>
+                            <p class="text-[12px] mt-0.5 line-clamp-1" style="color: var(--ink-muted);">
+                                Publish articles, higher-ed research, and campus trends.
+                            </p>
+                            <div class="mt-2 text-[10.5px] font-mono text-slate-500">
+                                Articles Feed
+                            </div>
+                        </div>
+                    </a>
+
+                    <!-- Module 9: Solutions Finder -->
+                    <a href="#solutions-finder" class="module-card flex items-start gap-3.5 group">
+                        <div class="icon-well w-10 h-10 rounded-lg flex items-center justify-center shrink-0" style="color: var(--ink-secondary);">
+                            <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"></polygon>
+                            </svg>
+                        </div>
+                        <div class="flex-1 min-w-0">
+                            <div class="flex items-center justify-between">
+                                <span class="text-[13.5px] font-semibold" style="color: var(--ink-primary);">Solutions Finder</span>
+                                <span class="hover-arrow text-slate-400 group-hover:text-slate-900 font-bold">&rarr;</span>
+                            </div>
+                            <p class="text-[12px] mt-0.5 line-clamp-1" style="color: var(--ink-muted);">
+                                Turnkey wizard questions, category rules, and search logs.
+                            </p>
+                            <div class="mt-2 text-[10.5px] font-mono text-slate-500">
+                                Match Engine
+                            </div>
+                        </div>
+                    </a>
+
+                </div>
+            </div>
+
+        </main>
+
+        <!-- Sticky Operational Footer -->
+        <footer class="h-10 border-t px-4 sm:px-6 lg:px-8 flex items-center justify-between text-[11.5px] mt-auto shrink-0 transition-colors w-full"
+                style="background-color: var(--surface-card); border-color: var(--border-hairline); color: var(--ink-muted);">
+            <div class="flex items-center gap-2">
+                <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+                <span class="font-medium" style="color: var(--ink-secondary);">CampusMart B2B Systems Active</span>
+            </div>
+            <div>
+                <span>Press <kbd class="px-1 py-0.5 font-mono border rounded text-[10px]" style="border-color: var(--border-hairline);">Menu</kbd> or <kbd class="px-1 py-0.5 font-mono border rounded text-[10px]" style="border-color: var(--border-hairline);">Esc</kbd></span>
+            </div>
+        </footer>
+
+    </div>
+
+    <!-- Notification Toast -->
+    <div id="toast" class="fixed bottom-6 right-6 z-50 text-white text-[12.5px] font-medium px-4 py-2.5 rounded-lg shadow-lg flex items-center gap-2.5 transition-all duration-200 opacity-0 translate-y-3 pointer-events-none"
+         style="background-color: var(--ink-primary);">
+        <svg class="w-4 h-4 text-emerald-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="20 6 9 17 4 12"></polyline>
+        </svg>
+        <span id="toast-message">Operation successful</span>
+    </div>
+
+    <!-- ====================================================================== -->
+    <!-- JAVASCRIPT: OVERLAPPING DRAWER & STATE                                 -->
+    <!-- ====================================================================== -->
+    <script>
+        let isDrawerOpen = false;
+
+        function toggleSidebarDrawer() {
+            if (isDrawerOpen) {
+                closeSidebarDrawer();
+            } else {
+                openSidebarDrawer();
+            }
+        }
+
+        function openSidebarDrawer() {
+            isDrawerOpen = true;
+            const drawer = document.getElementById('sidebar-drawer');
+            const backdrop = document.getElementById('drawer-backdrop');
+
+            drawer.classList.remove('-translate-x-full');
+            drawer.classList.add('translate-x-0');
+            backdrop.classList.remove('hidden');
+            document.body.classList.add('overflow-hidden');
+        }
+
+        function closeSidebarDrawer() {
+            isDrawerOpen = false;
+            const drawer = document.getElementById('sidebar-drawer');
+            const backdrop = document.getElementById('drawer-backdrop');
+
+            drawer.classList.add('-translate-x-full');
+            drawer.classList.remove('translate-x-0');
+            backdrop.classList.add('hidden');
+            document.body.classList.remove('overflow-hidden');
+        }
+
+        // Close on Escape key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && isDrawerOpen) {
+                closeSidebarDrawer();
+            }
+        });
+
+        // EYE-COMFORT THEME CONTROLLER
+        function setEyeTheme(themeName) {
+            document.documentElement.setAttribute('data-theme', themeName);
+            try {
+                localStorage.setItem('cm_admin_eye_theme', themeName);
+            } catch (e) {}
+
+            ['slate-matte', 'warm-paper', 'twilight'].forEach(t => {
+                const btn = document.getElementById('btn-' + t);
+                if (t === themeName) {
+                    btn.classList.add('bg-white', 'text-slate-900', 'shadow-xs');
+                    btn.classList.remove('text-slate-500');
+                } else {
+                    btn.classList.remove('bg-white', 'text-slate-900', 'shadow-xs');
+                    btn.classList.add('text-slate-500');
+                }
+            });
+
+            if (themeName === 'slate-matte') showToast('Calm Studio Slate activated');
+            else if (themeName === 'warm-paper') showToast('Warm Paper activated (anti-eyestrain)');
+            else if (themeName === 'twilight') showToast('Twilight activated (low-light dim)');
+        }
+
+        try {
+            const savedTheme = localStorage.getItem('cm_admin_eye_theme');
+            if (savedTheme) setEyeTheme(savedTheme);
+        } catch (e) {}
+
+        // Filter inquiries
+        function filterInquiries(type) {
+            const rows = document.querySelectorAll('.inquiry-row');
+            const tabs = ['all', 'unread', 'rfp'];
+            
+            tabs.forEach(t => {
+                const btn = document.getElementById('tab-inquiries-' + t);
+                if (t === type) {
+                    btn.classList.add('bg-white', 'font-semibold', 'shadow-2xs');
+                    btn.classList.remove('text-slate-500');
+                } else {
+                    btn.classList.remove('bg-white', 'font-semibold', 'shadow-2xs');
+                    btn.classList.add('text-slate-500');
+                }
+            });
+
+            rows.forEach(row => {
+                if (type === 'all') row.style.display = '';
+                else if (type === 'unread') row.style.display = row.classList.contains('inquiry-unread') ? '' : 'none';
+                else if (type === 'rfp') row.style.display = row.classList.contains('inquiry-rfp') ? '' : 'none';
+            });
+        }
+
+        // Export CSV handler
+        function exportWishlistCSV() {
+            const rows = [
+                ["ID", "Institution", "Contact Person", "Email", "Phone", "Items Count", "Requirement Details"],
+                ["1", "Vellore Institute of Technology", "Dr. S. Ramanathan", "s.ramanathan@vit.ac.in", "+91 98401 23456", "3 Items", "Biotech Equipment & Lab Furniture"],
+                ["2", "Manipal Academy of Higher Ed", "Procurement Committee", "infra@manipal.edu", "+91 82029 22000", "2 Items", "Smart Classroom Interactive Displays"],
+                ["3", "Thapar Institute of Eng & Tech", "Prof. H. Sharma", "hsharma@thapar.edu", "+91 97110 54321", "1 Item", "Automated Testing & Metrology Setup"]
+            ];
+            
+            let csvContent = "data:text/csv;charset=utf-8," + rows.map(e => e.map(cell => `"${cell}"`).join(",")).join("\n");
+            let encodedUri = encodeURI(csvContent);
+            let link = document.createElement("a");
+            link.setAttribute("href", encodedUri);
+            link.setAttribute("download", `campusmart_wishlist_leads_${new Date().toISOString().split('T')[0]}.csv`);
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            showToast("Downloaded wishlist leads CSV");
+        }
+
+        // Toast feedback
+        let toastTimeout;
+        function showToast(msg) {
+            const toast = document.getElementById('toast');
+            const toastMsg = document.getElementById('toast-message');
+            toastMsg.textContent = msg;
+            toast.classList.remove('opacity-0', 'translate-y-3', 'pointer-events-none');
+            clearTimeout(toastTimeout);
+            toastTimeout = setTimeout(() => {
+                toast.classList.add('opacity-0', 'translate-y-3', 'pointer-events-none');
+            }, 2400);
+        }
+    </script>
+</body>
+</html>
