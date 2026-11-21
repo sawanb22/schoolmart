@@ -16,8 +16,14 @@
             "header": [],
             "url": {
               "raw": "{{baseUrl}}/api/pages/:idOrSlug",
-              "host": ["{{baseUrl}}"],
-              "path": ["api", "pages", ":idOrSlug"],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "pages",
+                ":idOrSlug"
+              ],
               "variable": [
                 {
                   "key": "idOrSlug",
@@ -37,8 +43,14 @@
             "header": [],
             "url": {
               "raw": "{{baseUrl}}/api/pages/:slug?v=2",
-              "host": ["{{baseUrl}}"],
-              "path": ["api", "pages", ":slug"],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "pages",
+                ":slug"
+              ],
               "query": [
                 {
                   "key": "v",
@@ -65,8 +77,16 @@
             "header": [],
             "url": {
               "raw": "{{baseUrl}}/api/pages/:slug/items/:itemSlug",
-              "host": ["{{baseUrl}}"],
-              "path": ["api", "pages", ":slug", "items", ":itemSlug"],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "pages",
+                ":slug",
+                "items",
+                ":itemSlug"
+              ],
               "variable": [
                 {
                   "key": "slug",
@@ -115,8 +135,13 @@
             },
             "url": {
               "raw": "{{baseUrl}}/api/pages",
-              "host": ["{{baseUrl}}"],
-              "path": ["api", "pages"]
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "pages"
+              ]
             },
             "description": "Creates a page. Automatically classifies page model, splits structured collections into PageItem rows, and increments CmsState version."
           },
@@ -148,8 +173,14 @@
             },
             "url": {
               "raw": "{{baseUrl}}/api/pages/:id",
-              "host": ["{{baseUrl}}"],
-              "path": ["api", "pages", ":id"],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "pages",
+                ":id"
+              ],
               "variable": [
                 {
                   "key": "id",
@@ -188,8 +219,14 @@
             },
             "url": {
               "raw": "{{baseUrl}}/api/pages/:id",
-              "host": ["{{baseUrl}}"],
-              "path": ["api", "pages", ":id"],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "pages",
+                ":id"
+              ],
               "variable": [
                 {
                   "key": "id",
@@ -219,8 +256,14 @@
             "header": [],
             "url": {
               "raw": "{{baseUrl}}/api/pages/:id",
-              "host": ["{{baseUrl}}"],
-              "path": ["api", "pages", ":id"],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "pages",
+                ":id"
+              ],
               "variable": [
                 {
                   "key": "id",
@@ -230,6 +273,597 @@
               ]
             },
             "description": "Deletes non-protected page, cascades to items and categories, and bumps CmsState.version."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Admin Items & Categories",
+      "item": [
+        {
+          "name": "List Page Items",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{adminToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/admin/pages/:pageId/items?format=card",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "admin",
+                "pages",
+                ":pageId",
+                "items"
+              ],
+              "query": [
+                {
+                  "key": "format",
+                  "value": "card",
+                  "description": "Include legacy card representation"
+                }
+              ],
+              "variable": [
+                {
+                  "key": "pageId",
+                  "value": "1",
+                  "description": "Structured Page ID"
+                }
+              ]
+            },
+            "description": "Lists all items on a page. format=card includes the reconstructed legacy card object."
+          },
+          "response": []
+        },
+        {
+          "name": "Create Item (Fields)",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{adminToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"collection\": \"cards\",\n  \"title\": \"Robotics Workshop Suite\",\n  \"slug\": \"robotics-workshop-suite\",\n  \"summary\": \"Comprehensive hands-on robotics equipment\",\n  \"imageUrl\": \"/uploads/robotics-suite.png\",\n  \"categories\": [\n    \"STEM\",\n    \"Robotics\"\n  ],\n  \"data\": {\n    \"equipmentCount\": 24\n  },\n  \"detail\": {\n    \"body\": \"<p>Standard robotics workshop specifications.</p>\"\n  },\n  \"published\": true\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/admin/pages/:pageId/items",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "admin",
+                "pages",
+                ":pageId",
+                "items"
+              ],
+              "variable": [
+                {
+                  "key": "pageId",
+                  "value": "1",
+                  "description": "Structured Page ID"
+                }
+              ]
+            },
+            "description": "Creates a new item using explicit fields on a structured page. Returns 201 ItemFull & { card }."
+          },
+          "response": []
+        },
+        {
+          "name": "Create Item (Card Object)",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{adminToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"collection\": \"cards\",\n  \"card\": {\n    \"title\": \"3D Prototyping Station\",\n    \"description\": \"High-precision dual extruder 3D printing lab\",\n    \"image\": \"/uploads/3d-station.png\",\n    \"categories\": [\n      \"Prototyping\"\n    ],\n    \"detailContent\": \"<p>Complete rapid prototyping setup.</p>\"\n  }\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/admin/pages/:pageId/items",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "admin",
+                "pages",
+                ":pageId",
+                "items"
+              ],
+              "variable": [
+                {
+                  "key": "pageId",
+                  "value": "1",
+                  "description": "Structured Page ID"
+                }
+              ]
+            },
+            "description": "Creates a new item from a legacy card object. Automatically splits into structured schema."
+          },
+          "response": []
+        },
+        {
+          "name": "Update Item (Optimistic Locking Success)",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{adminToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"version\": 1,\n  \"title\": \"Robotics Workshop Suite v2\",\n  \"summary\": \"Updated robotics specifications\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/admin/pages/:pageId/items/:itemId",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "admin",
+                "pages",
+                ":pageId",
+                "items",
+                ":itemId"
+              ],
+              "variable": [
+                {
+                  "key": "pageId",
+                  "value": "1",
+                  "description": "Page ID"
+                },
+                {
+                  "key": "itemId",
+                  "value": "1",
+                  "description": "Item ID"
+                }
+              ]
+            },
+            "description": "Updates item with optimistic locking version check. Increments version and returns 200 ItemFull & { card }."
+          },
+          "response": []
+        },
+        {
+          "name": "Update Item Version Conflict (Deliberate 409)",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{adminToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"version\": 99999,\n  \"title\": \"Stale Item Edit Attempt\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/admin/pages/:pageId/items/:itemId",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "admin",
+                "pages",
+                ":pageId",
+                "items",
+                ":itemId"
+              ],
+              "variable": [
+                {
+                  "key": "pageId",
+                  "value": "1",
+                  "description": "Page ID"
+                },
+                {
+                  "key": "itemId",
+                  "value": "1",
+                  "description": "Item ID"
+                }
+              ]
+            },
+            "description": "Deliberately passes stale version to trigger 409 conflict, returning current item state with card."
+          },
+          "response": []
+        },
+        {
+          "name": "Reorder Page Items",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{adminToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"collection\": \"cards\",\n  \"orderedIds\": [\n    2,\n    1,\n    3\n  ]\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/admin/pages/:pageId/items/reorder",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "admin",
+                "pages",
+                ":pageId",
+                "items",
+                "reorder"
+              ],
+              "variable": [
+                {
+                  "key": "pageId",
+                  "value": "1",
+                  "description": "Page ID"
+                }
+              ]
+            },
+            "description": "Reorders items in a collection and rewrites sortOrder to 0..n-1 in one transaction."
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Page Item",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{adminToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/admin/pages/:pageId/items/:itemId?version=1",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "admin",
+                "pages",
+                ":pageId",
+                "items",
+                ":itemId"
+              ],
+              "query": [
+                {
+                  "key": "version",
+                  "value": "1",
+                  "description": "Optional optimistic lock version check"
+                }
+              ],
+              "variable": [
+                {
+                  "key": "pageId",
+                  "value": "1",
+                  "description": "Page ID"
+                },
+                {
+                  "key": "itemId",
+                  "value": "1",
+                  "description": "Item ID"
+                }
+              ]
+            },
+            "description": "Deletes page item, cascades category joins, and bumps CmsState version. Returns 204."
+          },
+          "response": []
+        },
+        {
+          "name": "List Page Categories",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{adminToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/admin/pages/:pageId/categories",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "admin",
+                "pages",
+                ":pageId",
+                "categories"
+              ],
+              "variable": [
+                {
+                  "key": "pageId",
+                  "value": "1",
+                  "description": "Page ID"
+                }
+              ]
+            },
+            "description": "Lists all categories for a page with sortOrder and itemCount."
+          },
+          "response": []
+        },
+        {
+          "name": "Create Page Category",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{adminToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Robotics & Automation\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/admin/pages/:pageId/categories",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "admin",
+                "pages",
+                ":pageId",
+                "categories"
+              ],
+              "variable": [
+                {
+                  "key": "pageId",
+                  "value": "1",
+                  "description": "Page ID"
+                }
+              ]
+            },
+            "description": "Creates a category on a page. Auto-slugifies name and returns 409 on collision."
+          },
+          "response": []
+        },
+        {
+          "name": "Update Page Category",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{adminToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Applied Robotics\",\n  \"sortOrder\": 0\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/admin/pages/:pageId/categories/:id",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "admin",
+                "pages",
+                ":pageId",
+                "categories",
+                ":id"
+              ],
+              "variable": [
+                {
+                  "key": "pageId",
+                  "value": "1",
+                  "description": "Page ID"
+                },
+                {
+                  "key": "id",
+                  "value": "1",
+                  "description": "Category ID"
+                }
+              ]
+            },
+            "description": "Updates category name or sortOrder. Renaming preserves all item links."
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Page Category",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{adminToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/admin/pages/:pageId/categories/:id",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "admin",
+                "pages",
+                ":pageId",
+                "categories",
+                ":id"
+              ],
+              "variable": [
+                {
+                  "key": "pageId",
+                  "value": "1",
+                  "description": "Page ID"
+                },
+                {
+                  "key": "id",
+                  "value": "1",
+                  "description": "Category ID"
+                }
+              ]
+            },
+            "description": "Deletes category row. Cascades join links without deleting items. Returns 204."
+          },
+          "response": []
+        },
+        {
+          "name": "Reorder Page Categories",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{adminToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"orderedIds\": [\n    2,\n    1,\n    3\n  ]\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/admin/pages/:pageId/categories/reorder",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "admin",
+                "pages",
+                ":pageId",
+                "categories",
+                "reorder"
+              ],
+              "variable": [
+                {
+                  "key": "pageId",
+                  "value": "1",
+                  "description": "Page ID"
+                }
+              ]
+            },
+            "description": "Reorders categories on a page and rewrites sortOrder to 0..n-1."
           },
           "response": []
         }

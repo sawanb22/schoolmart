@@ -230,6 +230,46 @@
 - Found, not fixed:
   - Visual regression suite (`visual.spec.ts`) exhibits subpixel and height diffs on Windows due to uncommitted working-copy styling changes in `frontend/src/` outside T5 scope; smoke test suite (`smoke.spec.ts`) proved all 206 routes continue to resolve cleanly with 0 regressions (Invariant I7).
 
+---
+
+## T6 – Admin Item and Category API with Validation and Locking – DONE
+- Date: 2026-11-21
+- Commit: `6edd69f` (T6: Admin item and category API with validation and locking)
+- Review Status: PENDING_REVIEW
+- Backup used (if DB touched): N/A (Admin tests run strictly against isolated test DB `DATABASE_URL_TEST`).
+- Files changed (summary):
+  - Installed and pinned `zod@3.23.8`, `sanitize-html@2.14.0`, and `@types/sanitize-html@2.16.2` in `backend/package.json`.
+  - Created `backend/src/services/page-content/schemas.ts` defining Zod validation schemas (`ItemInputSchema`, `ItemPatchSchema`, `CardInputSchema`, `CategoryInputSchema`, `CategoryPatchSchema`, `ReorderSchema`, `SettingsSchema`) and byte-length guards (`MAX_PAGEDATA_BYTES` = 512 KB, `MAX_ITEM_JSON_BYTES` = 256 KB).
+  - Created `backend/src/lib/sanitize.ts` with `sanitizeRichHtml` using `sanitize-html` with safe markup whitelist, stripping dangerous scripts, event handlers (`on*`), and `javascript:`/`vbscript:` protocols. Added recursive cleaners `sanitizeItemPayload` and `sanitizePageData`.
+  - Replaced legacy regex `<script\b[^<]*` in `backend/src/routes/pages.routes.ts` with `sanitizePageData` and `sanitizeRichHtml`. Verified 0 matches across `backend/src`.
+  - Created `backend/src/routes/admin-page-items.routes.ts` mounted at `/api/admin/pages` in `backend/src/app.ts`, enforcing `verifyToken`, `requireAdmin`, and `Cache-Control: no-store` (Invariant I8).
+  - Implemented optimistic concurrency locking via Prisma `updateMany` returning HTTP 409 `{ error: 'version_conflict', current }` on stale version, automatic `SlugRedirect` generation with circular loop prevention, contiguous 0..n-1 reordering for items and categories, and CMS write hook integration.
+  - Updated `postman/collections/campusmart-pages-api.json` with 12 admin requests under 'Admin Items & Categories'.
+  - Added resilient retry wrapper `withRetry` in `backend/tests/helpers/db.ts` for remote PostgreSQL connection stability.
+- Tests added:
+  - `backend/tests/admin-items/items-lifecycle.test.ts` (9 tests: CRUD, card split, format=card round-trip, page_not_structured)
+  - `backend/tests/admin-items/optimistic-locking.test.ts` (4 tests: stale version 409 with current, concurrent PATCH race where exactly one gets 200 and one 409, DELETE stale version 409, DELETE matching version 204)
+  - `backend/tests/admin-items/reorder.test.ts` (4 tests: items reordering, category reordering, contiguous 0..n-1 sortOrder, 400 on duplicate/missing/foreign IDs)
+  - `backend/tests/admin-items/slugs-and-redirects.test.ts` (4 tests: duplicate slug 409 on POST and PATCH, `SlugRedirect` creation, public resolution to `{ redirectTo }`, loop elimination on A->B->A)
+  - `backend/tests/admin-items/categories.test.ts` (5 tests: CRUD, auto-create on item assignment, rename preserves item links, delete cascades links only)
+  - `backend/tests/admin-items/validation-and-sanitizer.test.ts` (6 tests: oversize payload 400, settings passthrough with known type check, sanitizer tag preservation, 200 fast-check property runs)
+  - `backend/tests/admin-items/auth-guard.test.ts` (20 tests: 401 unauthenticated and 403 non-admin on all 10 admin routes, Invariant I8)
+  - `backend/tests/admin-items/cms-write-hook.test.ts` (7 tests: `CmsState.version` increment on every item and category write)
+- Test results:
+  - `npm run test --prefix backend`: 193 passed / 193 total (23 test files)
+  - `npm run build --prefix backend`: 0 compilation errors
+  - Script regex search (`<script\b[^<]*`): 0 matches in `backend/src`
+- Metrics:
+  - New test suites: 8 test files, 59 new tests
+  - Invariant I8: 10/10 admin endpoints reject unauthenticated (401) and non-admin (403)
+  - Optimistic locking: 409 version conflict verified under concurrent execution
+  - Script tag injection: 200 fast-check property test iterations verified safe
+- Deviations from plan and why:
+  - Added `withRetry` helper to `resetContentTables` in `backend/tests/helpers/db.ts` to absorb intermittent Neon remote TCP connection drops during high-frequency truncate operations.
+- Found, not fixed:
+  - None.
+
+
 
 
 

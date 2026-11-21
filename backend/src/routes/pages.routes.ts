@@ -11,6 +11,7 @@ import { splitLegacyPageData, classifyPage } from '../services/page-content/lega
 import { writeStructuredPage } from '../services/page-content/structured-writer';
 import { afterContentWrite } from '../services/page-content/after-content-write';
 import { COLLECTIONS } from '../services/page-content/constants';
+import { sanitizePageData, sanitizeRichHtml } from '../lib/sanitize';
 
 const router = Router();
 
@@ -292,11 +293,10 @@ router.post('/', verifyToken, requireAdmin, async (req: AuthRequest, res: Respon
             if (req.body[field] !== undefined) {
                 if (field === 'pageData') {
                     const parsed = parsePageData(req.body.pageData);
-                    const cleanStr = JSON.stringify(parsed)
-                        .replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '')
-                        .replace(/<style\b[^<]*(?:(?!<\/style>)<[^<]*)*<\/style>/gi, '');
-                    parsedIncomingPageData = JSON.parse(cleanStr);
+                    parsedIncomingPageData = sanitizePageData(parsed);
                     createData.pageData = parsedIncomingPageData as Prisma.InputJsonValue;
+                } else if (field === 'content' && typeof req.body.content === 'string') {
+                    createData.content = sanitizeRichHtml(req.body.content);
                 } else if (field === 'published' && typeof req.body.published !== 'boolean') {
                     createData.published = req.body.published === 'true' || req.body.published === 1;
                 } else {
@@ -424,11 +424,10 @@ router.put('/:id', verifyToken, requireAdmin, async (req: AuthRequest, res: Resp
                 if (field === 'pageData') {
                     hasIncomingPageData = true;
                     const parsed = parsePageData(req.body.pageData);
-                    const cleanStr = JSON.stringify(parsed)
-                        .replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '')
-                        .replace(/<style\b[^<]*(?:(?!<\/style>)<[^<]*)*<\/style>/gi, '');
-                    incomingPageData = JSON.parse(cleanStr);
+                    incomingPageData = sanitizePageData(parsed);
                     updateData.pageData = incomingPageData as Prisma.InputJsonValue;
+                } else if (field === 'content' && typeof req.body.content === 'string') {
+                    updateData.content = sanitizeRichHtml(req.body.content);
                 } else if (field === 'published' && typeof req.body.published !== 'boolean') {
                     updateData.published = req.body.published === 'true' || req.body.published === 1;
                 } else {
