@@ -1,6 +1,8 @@
 import fs from 'fs';
 import path from 'path';
+import { Prisma } from '@prisma/client';
 import prisma from '../../src/lib/prisma';
+import { parsePageData } from '../../src/lib/page-data';
 
 export const FIXTURES_DIR = path.resolve(__dirname, '../fixtures/pages');
 
@@ -28,6 +30,10 @@ export function loadAllPageFixtures(): PageFixture[] {
 export async function seedPagesFromFixtures(fixtures?: PageFixture[]): Promise<void> {
     const items = fixtures || loadAllPageFixtures();
     for (const item of items) {
+        const parsedData = item.pageData !== null && item.pageData !== undefined
+            ? parsePageData(item.pageData)
+            : Prisma.DbNull;
+
         await prisma.page.upsert({
             where: { slug: item.slug },
             update: {
@@ -35,7 +41,7 @@ export async function seedPagesFromFixtures(fixtures?: PageFixture[]): Promise<v
                 template: item.template,
                 published: item.published,
                 content: item.content,
-                pageData: item.pageData,
+                pageData: parsedData as any,
             },
             create: {
                 title: item.title,
@@ -43,7 +49,7 @@ export async function seedPagesFromFixtures(fixtures?: PageFixture[]): Promise<v
                 template: item.template,
                 published: item.published,
                 content: item.content,
-                pageData: item.pageData,
+                pageData: parsedData as any,
             },
         });
     }

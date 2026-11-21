@@ -1,6 +1,11 @@
 import dotenv from 'dotenv';
 import path from 'path';
+import dns from 'dns';
 import { execSync } from 'child_process';
+
+if (typeof dns.setDefaultResultOrder === 'function') {
+  dns.setDefaultResultOrder('ipv4first');
+}
 
 // Ensure backend .env is loaded before running safety checks
 dotenv.config({ path: path.resolve(__dirname, '../.env') });
@@ -55,14 +60,31 @@ export default async function setup(): Promise<void> {
     ...process.env,
     DATABASE_URL: process.env.DATABASE_URL_TEST!,
     DATABASE_URL_UNPOOLED: process.env.DATABASE_URL_TEST!,
+    NODE_OPTIONS: `${process.env.NODE_OPTIONS || ''} --dns-result-order=ipv4first`.trim(),
     NODE_ENV: 'test',
   };
 
-  execSync('npx prisma migrate reset --force --skip-seed --skip-generate', {
-    cwd: path.resolve(__dirname, '..'),
-    env: testEnv,
-    stdio: 'inherit',
-  });
+  let resetSuccess = false;
+  let lastError: any = null;
+  for (let attempt = 1; attempt <= 3; attempt++) {
+    try {
+      execSync('npx prisma migrate reset --force --skip-seed --skip-generate', {
+        cwd: path.resolve(__dirname, '..'),
+        env: testEnv,
+        stdio: 'inherit',
+      });
+      resetSuccess = true;
+      break;
+    } catch (err) {
+      lastError = err;
+      console.warn(`[global-setup] Prisma migrate reset attempt ${attempt} failed, retrying in 2s...`);
+      execSync('node -e "setTimeout(() => {}, 2000)"');
+    }
+  }
+
+  if (!resetSuccess) {
+    throw lastError || new Error('Prisma migrate reset failed after 3 attempts');
+  }
 }
 
 export { setup };

@@ -7,7 +7,10 @@ if (typeof dns.setDefaultResultOrder === 'function') {
   dns.setDefaultResultOrder('ipv4first');
 }
 
-const prisma = new PrismaClient();
+const targetUrl = process.env.TARGET_DATABASE_URL || process.env.DATABASE_URL;
+const prisma = new PrismaClient(
+  targetUrl ? { datasources: { db: { url: targetUrl } } } : undefined
+);
 
 async function withRetry(fn, retries = 5, delayMs = 1500) {
   for (let i = 0; i < retries; i++) {
@@ -182,25 +185,53 @@ async function restoreDatabase() {
     // 7. Restore Pages (CMS Pages with complete pageData!)
     if (data.pages && data.pages.length > 0) {
       console.log(`\n📄 Restoring ${data.pages.length} CMS Pages...`);
+      const colCheck = await prisma.$queryRawUnsafe(`
+        SELECT column_name FROM information_schema.columns 
+        WHERE table_name = 'page' AND column_name = 'contentModel'
+      `);
+      const hasContentModel = Array.isArray(colCheck) && colCheck.length > 0;
+
       for (const page of data.pages) {
-        await withRetry(() => prisma.page.upsert({
-          where: { slug: page.slug },
-          update: {
-            title: page.title,
-            template: page.template,
-            content: page.content,
-            pageData: page.pageData,
-            published: page.published,
-          },
-          create: {
-            title: page.title,
-            slug: page.slug,
-            template: page.template,
-            content: page.content,
-            pageData: page.pageData,
-            published: page.published,
-          },
-        }));
+        if (!hasContentModel) {
+          await withRetry(() => prisma.$executeRawUnsafe(
+            `INSERT INTO "page" ("title", "slug", "template", "content", "pageData", "published", "createdAt", "updatedAt")
+             VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
+             ON CONFLICT ("slug") DO UPDATE SET
+               "title" = EXCLUDED."title",
+               "template" = EXCLUDED."template",
+               "content" = EXCLUDED."content",
+               "pageData" = EXCLUDED."pageData",
+               "published" = EXCLUDED."published",
+               "updatedAt" = EXCLUDED."updatedAt"`,
+            page.title,
+            page.slug,
+            page.template || null,
+            page.content || null,
+            page.pageData != null ? (typeof page.pageData === 'object' ? JSON.stringify(page.pageData) : page.pageData) : null,
+            page.published ?? true,
+            page.createdAt ? new Date(page.createdAt) : new Date(),
+            page.updatedAt ? new Date(page.updatedAt) : new Date()
+          ));
+        } else {
+          await withRetry(() => prisma.page.upsert({
+            where: { slug: page.slug },
+            update: {
+              title: page.title,
+              template: page.template,
+              content: page.content,
+              pageData: page.pageData,
+              published: page.published,
+            },
+            create: {
+              title: page.title,
+              slug: page.slug,
+              template: page.template,
+              content: page.content,
+              pageData: page.pageData,
+              published: page.published,
+            },
+          }));
+        }
       }
       console.log(`✓ Pages restored`);
     }

@@ -1,5 +1,8 @@
 import { Router, Request, Response } from 'express';
+import { Prisma } from '@prisma/client';
 import prisma from '../lib/prisma';
+import { parsePageData } from '../lib/page-data';
+import { toLegacyPageResponse, toLegacyPagesResponse } from '../services/page-content/page-response';
 import { verifyToken, requireAdmin, AuthRequest } from '../middleware/auth.middleware';
 import { uploadDocument } from '../middleware/upload.middleware';
 import { solutionsIndexService } from '../services/solutions-finder';
@@ -15,7 +18,7 @@ router.get('/', verifyToken, requireAdmin, async (_req: AuthRequest, res: Respon
             orderBy: { title: 'asc' }
         });
         console.log(`Admin ${_req.user?.id} fetched ${pages.length} pages`);
-        res.json(pages);
+        res.json(toLegacyPagesResponse(pages));
     } catch (error) {
         console.error('Failed to fetch pages:', error);
         res.status(500).json({ error: 'An unexpected internal error occurred. Please try again later.' });
@@ -28,7 +31,7 @@ router.get('/published', async (_req: Request, res: Response) => {
         const pages = await prisma.page.findMany({
             where: { published: true }
         });
-        res.json(pages);
+        res.json(toLegacyPagesResponse(pages));
     } catch (err) {
         console.error('Failed to fetch published pages:', err);
         res.status(500).json({ error: 'An unexpected internal error occurred. Please try again later.' });
@@ -134,15 +137,10 @@ router.get('/hub/catalog', async (req: Request, res: Response) => {
         for (const slug of ['labs', 'sports-infra', 'tech-infra', 'libraries']) {
             const page = hubMap.get(slug);
             const meta = HUB_METADATA[slug] || { title: slug, defaultCategories: [] };
-            let rawData: any = {};
-            if (page?.pageData) {
-                try {
-                    rawData = typeof page.pageData === 'string' ? JSON.parse(page.pageData) : page.pageData;
-                } catch {}
-            }
+            const rawData = parsePageData(page?.pageData);
 
             const explicitCats: string[] = Array.isArray(rawData.categories)
-                ? rawData.categories.filter(Boolean)
+                ? (rawData.categories as string[]).filter(Boolean)
                 : meta.defaultCategories;
 
             const pageCards: any[] = Array.isArray(rawData.cards) ? rawData.cards : [];
@@ -234,7 +232,7 @@ router.get('/:idOrSlug', async (req: Request, res: Response) => {
         if (!page) {
             return res.status(404).json({ error: 'Page not found' });
         }
-        res.json(page);
+        res.json(toLegacyPageResponse(page));
     } catch (err) {
         console.error('Failed to fetch page:', err);
         res.status(500).json({ error: 'An unexpected internal error occurred. Please try again later.' });
@@ -273,10 +271,11 @@ router.post('/', verifyToken, requireAdmin, async (req: AuthRequest, res: Respon
         for (const field of validFields) {
             if (req.body[field] !== undefined) {
                 if (field === 'pageData') {
-                    let serialized = typeof req.body.pageData === 'object' && req.body.pageData !== null ? JSON.stringify(req.body.pageData) : String(req.body.pageData || '{}');
-                    createData.pageData = serialized
+                    const parsed = parsePageData(req.body.pageData);
+                    const cleanStr = JSON.stringify(parsed)
                         .replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '')
                         .replace(/<style\b[^<]*(?:(?!<\/style>)<[^<]*)*<\/style>/gi, '');
+                    createData.pageData = JSON.parse(cleanStr) as Prisma.InputJsonValue;
                 } else if (field === 'published' && typeof req.body.published !== 'boolean') {
                     createData.published = req.body.published === 'true' || req.body.published === 1;
                 } else {
@@ -305,7 +304,7 @@ router.post('/', verifyToken, requireAdmin, async (req: AuthRequest, res: Respon
         });
         console.log(`Page created by admin ${req.user?.id}: ${page.slug}`);
         solutionsIndexService.rebuild().catch(err => console.error('[SolutionsIndex] Rebuild error on page create:', err));
-        res.status(201).json(page);
+        res.status(201).json(toLegacyPageResponse(page));
     } catch (error: any) {
         if (error?.code === 'P2002') {
             try {
@@ -316,7 +315,7 @@ router.post('/', verifyToken, requireAdmin, async (req: AuthRequest, res: Respon
                     data: createData as any
                 });
                 console.log(`Page created with collision resolution by admin ${req.user?.id}: ${page.slug}`);
-                return res.status(201).json(page);
+                return res.status(201).json(toLegacyPageResponse(page));
             } catch (retryError: any) {
                 console.error('Collision resolution retry failed:', retryError);
                 return res.status(409).json({ error: 'A page with this slug already exists. Please choose a different title or slug.' });
@@ -355,9 +354,11 @@ router.put('/:id', verifyToken, requireAdmin, async (req: AuthRequest, res: Resp
         for (const field of validFields) {
             if (req.body[field] !== undefined) {
                 if (field === 'pageData') {
-                    let serialized = typeof req.body.pageData === 'object' && req.body.pageData !== null ? JSON.stringify(req.body.pageData) : String(req.body.pageData || '{}');
-                    
-                    updateData.pageData = serialized.replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '').replace(/<style\b[^<]*(?:(?!<\/style>)<[^<]*)*<\/style>/gi, '');
+                    const parsed = parsePageData(req.body.pageData);
+                    const cleanStr = JSON.stringify(parsed)
+                        .replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '')
+                        .replace(/<style\b[^<]*(?:(?!<\/style>)<[^<]*)*<\/style>/gi, '');
+                    updateData.pageData = JSON.parse(cleanStr) as Prisma.InputJsonValue;
                 } else if (field === 'published' && typeof req.body.published !== 'boolean') {
                     updateData.published = req.body.published === 'true' || req.body.published === 1;
                 } else {
@@ -386,7 +387,7 @@ router.put('/:id', verifyToken, requireAdmin, async (req: AuthRequest, res: Resp
         
         console.log(`Page ${id} updated by admin ${req.user?.id}`);
         solutionsIndexService.rebuild().catch(err => console.error('[SolutionsIndex] Rebuild error on page update:', err));
-        res.json(page);
+        res.json(toLegacyPageResponse(page));
     } catch (error: any) {
         if (error?.code === 'P2002') {
             res.status(409).json({ error: 'A page with this URL slug already exists. Please choose a different slug.' });

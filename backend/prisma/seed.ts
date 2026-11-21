@@ -242,7 +242,7 @@ async function main() {
                 title: page.title,
                 slug: page.slug,
                 template: page.slug,
-                pageData: '{}',
+                pageData: {},
                 published: true,
             },
         }));

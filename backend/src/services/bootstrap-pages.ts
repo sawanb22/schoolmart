@@ -1,4 +1,6 @@
+import { Prisma } from '@prisma/client';
 import prisma from '../lib/prisma';
+import { parsePageData } from '../lib/page-data';
 
 export const COLLEGE_SALE_SLUG = 'colleges-universities-for-sale';
 export const COLLEGE_SALE_DATA = {
@@ -85,7 +87,7 @@ async function safeCreatePage(data: {
     slug: string;
     template: string;
     published: boolean;
-    pageData: string;
+    pageData: Prisma.InputJsonValue;
 }): Promise<'created' | 'existed'> {
     try {
         await prisma.page.create({ data });
@@ -113,7 +115,7 @@ export async function bootstrapPages(): Promise<{ created: string[]; updated: st
             slug: COLLEGE_SALE_SLUG,
             template: COLLEGE_SALE_SLUG,
             published: true,
-            pageData: JSON.stringify(COLLEGE_SALE_DATA),
+            pageData: COLLEGE_SALE_DATA,
         });
         if (res === 'created') created.push(COLLEGE_SALE_SLUG);
     }
@@ -125,7 +127,7 @@ export async function bootstrapPages(): Promise<{ created: string[]; updated: st
             slug: PARTNER_SLUG,
             template: PARTNER_SLUG,
             published: true,
-            pageData: JSON.stringify({}),
+            pageData: {},
         });
         if (res === 'created') created.push(PARTNER_SLUG);
     }
@@ -137,7 +139,7 @@ export async function bootstrapPages(): Promise<{ created: string[]; updated: st
             slug: JOB_OPENINGS_SLUG,
             template: JOB_OPENINGS_SLUG,
             published: true,
-            pageData: JSON.stringify({}),
+            pageData: {},
         });
         if (res === 'created') created.push(JOB_OPENINGS_SLUG);
     }
@@ -149,7 +151,7 @@ export async function bootstrapPages(): Promise<{ created: string[]; updated: st
             slug: 'partnership',
             template: 'partnership',
             published: true,
-            pageData: JSON.stringify({}),
+            pageData: {},
         });
         if (res === 'created') created.push('partnership');
     }
@@ -166,8 +168,8 @@ export async function bootstrapPages(): Promise<{ created: string[]; updated: st
                 template: isArticle ? 'article' : slug,
                 published: true,
                 pageData: isArticle
-                    ? JSON.stringify(createEmptyArticlePageData(title))
-                    : JSON.stringify({}),
+                    ? createEmptyArticlePageData(title)
+                    : {},
             });
             if (res === 'created') created.push(slug);
         } else if (isArticle) {
@@ -179,25 +181,17 @@ export async function bootstrapPages(): Promise<{ created: string[]; updated: st
                 needsUpdate = true;
             }
 
-            let currentData: any = null;
-            try {
-                currentData =
-                    typeof existing.pageData === 'string'
-                        ? JSON.parse(existing.pageData)
-                        : existing.pageData;
-            } catch {
-                currentData = null;
-            }
+            const currentData = parsePageData(existing.pageData);
 
-            if (!currentData || typeof currentData !== 'object' || Object.keys(currentData).length === 0) {
-                updateData.pageData = JSON.stringify(createEmptyArticlePageData(existing.title || title));
+            if (Object.keys(currentData).length === 0) {
+                updateData.pageData = createEmptyArticlePageData(existing.title || title);
                 needsUpdate = true;
             } else if (!currentData.body && Array.isArray(currentData.sections) && currentData.sections.length > 0) {
                 const parts: string[] = [];
                 if (currentData.heroSubtitle) {
                     parts.push(`<p><strong>${currentData.heroSubtitle}</strong></p>`);
                 }
-                for (const s of currentData.sections) {
+                for (const s of currentData.sections as any[]) {
                     if (!s || s.active === false) continue;
                     if (s.heading) parts.push(`<h3>${s.heading}</h3>`);
                     if (s.body) parts.push(`<p>${s.body}</p>`);
@@ -218,7 +212,7 @@ export async function bootstrapPages(): Promise<{ created: string[]; updated: st
                     hideBody: Boolean(currentData.hideBody),
                     hideCta: currentData.hideCta !== undefined ? Boolean(currentData.hideCta) : !currentData.ctaTitle,
                 };
-                updateData.pageData = JSON.stringify(cleanArticleData);
+                updateData.pageData = cleanArticleData;
                 needsUpdate = true;
             }
 

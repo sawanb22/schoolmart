@@ -3,9 +3,10 @@
  * Called by the Railway start command to create the admin user and seed
  * homepage content on first deploy (upsert is safe to re-run).
  */
-import { PrismaClient } from '@prisma/client';
+import { PrismaClient, Prisma } from '@prisma/client';
 import bcrypt from 'bcryptjs';
 import { bootstrapPages } from './services/bootstrap-pages';
+import { parsePageData } from './lib/page-data';
 
 const prisma = new PrismaClient();
 
@@ -915,7 +916,8 @@ async function seed() {
         const existingPage = await prisma.page.findUnique({ where: { slug: page.slug } });
         let existingPageHasCards = false;
         try {
-            const existingCards = existingPage?.pageData ? JSON.parse(existingPage.pageData).cards : undefined;
+            const existingParsed = parsePageData(existingPage?.pageData);
+            const existingCards = existingParsed.cards;
             existingPageHasCards = Array.isArray(existingCards) && existingCards.length > 0;
         } catch {
             existingPageHasCards = false;
@@ -926,7 +928,7 @@ async function seed() {
             update: {
                 template: page.template,
                 published: true,
-                ...(shouldSeedNewPageData && pageData ? { pageData: JSON.stringify(pageData) } : {}),
+                ...(shouldSeedNewPageData && pageData ? { pageData: pageData as Prisma.InputJsonValue } : {}),
             },
             create: {
                 title: page.title,
@@ -934,7 +936,7 @@ async function seed() {
                 template: page.template,
                 published: true,
                 content: '',
-                pageData: pageData ? JSON.stringify(pageData) : '{}',
+                pageData: (pageData || {}) as Prisma.InputJsonValue,
             },
         });
     }

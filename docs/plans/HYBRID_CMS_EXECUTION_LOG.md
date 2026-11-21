@@ -116,3 +116,40 @@
 - Found, not fixed:
   - None.
 
+---
+
+## T3 – Schema: New Tables, JSONB, Versions – DONE
+- Date: 2026-11-21
+- Commit: `cf77156` (T3: Schema: new tables, jsonb, versions)
+- Review Status: Pending Review
+- Backup used (if DB touched): Fresh dev DB export created at `backend/prisma/database-export.json` (1,309,504 bytes, 130 pages) prior to `prisma migrate deploy`. Rehearsed migration on isolated Neon test database with 100% data retention before applying to dev database.
+- Files changed (summary):
+  - Updated `backend/prisma/schema.prisma` with 6 relational CMS models (`PageItem`, `PageCategory`, `PageItemCategory`, `SlugRedirect`, `PageRevision`, `CmsState`) and updated `Page` model (`contentModel`, `pageData Json?`, `version`, index on `published`).
+  - Created hand-crafted migration `backend/prisma/migrations/20261121120000_hybrid_cms_tables/migration.sql` with non-destructive `USING` cast for `pageData` to `JSONB` without column drop, and initialized singleton `CmsState` (id: 1, version: 1).
+  - Created shared parser `backend/src/lib/page-data.ts` (`parsePageData`) and legacy response serializer `backend/src/services/page-content/page-response.ts` (`toLegacyPageResponse`, `toLegacyPagesResponse`).
+  - Modernized backend reads and writes in `backend/src/routes/pages.routes.ts`, `backend/src/services/bootstrap-pages.ts`, `backend/prisma/seed.ts`, and `backend/src/runSeed.ts` to use native objects and `parsePageData`, eliminating all `pageData:\s*JSON\.stringify` (0 matches).
+  - Updated `backend/src/server.ts` with `dns.setDefaultResultOrder('ipv4first')` to prevent Windows IPv6 pooler connection drops.
+  - Updated `backend/tests/helpers/db.ts` to cascade-truncate all 9 content tables and re-seed `cmsstate` (1, 1).
+  - Updated `backend/scripts/export-database.js` and `backend/scripts/restore-database.js` to handle both pre-migration and post-migration schemas seamlessly.
+  - Added preflight validator `backend/scripts/check-pagedata-json.ts` (130/130 pages valid JSON).
+  - Created test suites `backend/tests/lib/page-data.test.ts` (10 tests), `backend/tests/schema/constraints.test.ts` (6 tests), and `backend/tests/schema/jsonb-integrity.test.ts` (3 tests).
+  - Enhanced snapshot normalization in `backend/tests/contract/legacy-pages.contract.test.ts` to handle PostgreSQL JSONB key reordering without modifying the 26 snapshot files.
+- Tests added:
+  - `backend/tests/lib/page-data.test.ts` (10 tests)
+  - `backend/tests/schema/constraints.test.ts` (6 tests)
+  - `backend/tests/schema/jsonb-integrity.test.ts` (3 tests)
+- Test results:
+  - `npm run test --prefix backend`: 56 passed / 56 total (7 test files)
+  - `npm run build --prefix backend`: 0 compilation errors
+  - `npx playwright test tests/e2e/smoke.spec.ts`: 206 passed / 206 executed (3 known failures skipped)
+- Metrics:
+  - Non-null `pageData` retention: 130/130 dev pages preserved (100%)
+  - Invariant I2 count (`jsonb_typeof("pageData") <> 'object'`): 0
+  - Matches for `pageData:\s*JSON\.stringify` across backend: 0
+- Deviations from plan and why:
+  - Enhanced `normalizePageResponse` in `legacy-pages.contract.test.ts` with `orderKeysLike` helper to handle PostgreSQL JSONB internal key sorting so that all 26 existing contract snapshot files remain unmodified and 100% green.
+  - Added `dns.setDefaultResultOrder('ipv4first')` to `backend/src/server.ts` to prevent Node.js IPv6 socket timeouts on Windows connecting to Neon AWS pooler hostnames.
+- Found, not fixed:
+  - None.
+
+

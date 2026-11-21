@@ -3,9 +3,12 @@ import { PrismaClient } from '@prisma/client';
 export const prisma = new PrismaClient();
 
 export async function resetContentTables(): Promise<void> {
-  // Truncate existing content tables
+  // Truncate all content tables and reset identity
   await prisma.$executeRawUnsafe(
-    'TRUNCATE "page", "sitecontent", "searchcard" RESTART IDENTITY CASCADE;'
+    'TRUNCATE "pageitemcategory", "pagecategory", "pageitem", "pagerevision", "slugredirect", "page", "sitecontent", "searchcard", "cmsstate" RESTART IDENTITY CASCADE;'
+  );
+  await prisma.$executeRawUnsafe(
+    'INSERT INTO "cmsstate" ("id", "version", "updatedAt") VALUES (1, 1, NOW()) ON CONFLICT ("id") DO NOTHING;'
   );
 }
 
