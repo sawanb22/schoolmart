@@ -12,7 +12,7 @@ export interface UsePageSeoOptions {
  * Derives SEO properties from page settings, item data, or fallbacks.
  *
  * Fallback chains:
- * - title: settings.seoTitle || settings.heroTitle || settings.title || fallbackTitle || 'CampusMart'
+ * - title: settings.seoTitle || settings.heroTitle || settings.title || fallbackTitle || 'SchoolMart'
  * - description: settings.seoDescription || settings.heroSubtitle || fallbackDescription || ''
  * - image: settings.ogImage || settings.heroImage || settings.featuredImage || settings.image
  * - noindex: Boolean(settings.noindex)
@@ -31,7 +31,7 @@ export function usePageSeo(
       s.title ||
       s.pageTitle ||
       fallbackTitle ||
-      'CampusMart';
+      'SchoolMart';
 
     const description =
       s.seoDescription ||

@@ -12,20 +12,20 @@ describe('Seo Component and Helpers (T16)', () => {
   });
 
   describe('formatTitle helper', () => {
-    it('appends | CampusMart if title does not contain CampusMart', () => {
-      expect(formatTitle('Science & Tech Labs')).toBe('Science & Tech Labs | CampusMart');
-      expect(formatTitle('Furniture')).toBe('Furniture | CampusMart');
+    it('appends | SchoolMart if title does not contain SchoolMart', () => {
+      expect(formatTitle('Science & Tech Labs')).toBe('Science & Tech Labs | SchoolMart');
+      expect(formatTitle('Furniture')).toBe('Furniture | SchoolMart');
     });
 
-    it('does not duplicate CampusMart if already present in title', () => {
-      expect(formatTitle('CampusMart')).toBe('CampusMart');
-      expect(formatTitle('CampusMart - Higher Education Setup')).toBe('CampusMart - Higher Education Setup');
-      expect(formatTitle('Welcome to campusmart')).toBe('Welcome to campusmart');
+    it('does not duplicate SchoolMart if already present in title', () => {
+      expect(formatTitle('SchoolMart')).toBe('SchoolMart');
+      expect(formatTitle('SchoolMart - Higher Education Setup')).toBe('SchoolMart - Higher Education Setup');
+      expect(formatTitle('Welcome to schoolmart')).toBe('Welcome to schoolmart');
     });
 
-    it('defaults to CampusMart when title is empty or undefined', () => {
-      expect(formatTitle('')).toBe('CampusMart');
-      expect(formatTitle(undefined)).toBe('CampusMart');
+    it('defaults to SchoolMart when title is empty or undefined', () => {
+      expect(formatTitle('')).toBe('SchoolMart');
+      expect(formatTitle(undefined)).toBe('SchoolMart');
     });
   });
 
@@ -59,14 +59,14 @@ describe('Seo Component and Helpers (T16)', () => {
 
   describe('formatCanonicalUrl helper', () => {
     it('generates canonical URL with custom baseUrl and normalized path', () => {
-      expect(formatCanonicalUrl('/labs', 'https://campusmart.in/')).toBe('https://campusmart.in/labs');
-      expect(formatCanonicalUrl('labs', 'https://campusmart.in')).toBe('https://campusmart.in/labs');
-      expect(formatCanonicalUrl('/', 'https://campusmart.in')).toBe('https://campusmart.in/');
+      expect(formatCanonicalUrl('/labs', 'https://schoolmart.in/')).toBe('https://schoolmart.in/labs');
+      expect(formatCanonicalUrl('labs', 'https://schoolmart.in')).toBe('https://schoolmart.in/labs');
+      expect(formatCanonicalUrl('/', 'https://schoolmart.in')).toBe('https://schoolmart.in/');
     });
 
     it('normalizes multi-segment paths correctly', () => {
-      expect(formatCanonicalUrl('/solutions/stem-lab', 'https://campusmart.in')).toBe(
-        'https://campusmart.in/solutions/stem-lab'
+      expect(formatCanonicalUrl('/solutions/stem-lab', 'https://schoolmart.in')).toBe(
+        'https://schoolmart.in/solutions/stem-lab'
       );
     });
   });
@@ -78,11 +78,11 @@ describe('Seo Component and Helpers (T16)', () => {
     });
 
     it('prepends site URL to relative image paths', () => {
-      expect(formatImageUrl('/uploads/banner.webp', 'https://campusmart.in')).toBe(
-        'https://campusmart.in/uploads/banner.webp'
+      expect(formatImageUrl('/uploads/banner.webp', 'https://schoolmart.in')).toBe(
+        'https://schoolmart.in/uploads/banner.webp'
       );
-      expect(formatImageUrl('uploads/banner.webp', 'https://campusmart.in')).toBe(
-        'https://campusmart.in/uploads/banner.webp'
+      expect(formatImageUrl('uploads/banner.webp', 'https://schoolmart.in')).toBe(
+        'https://schoolmart.in/uploads/banner.webp'
       );
     });
 
@@ -104,7 +104,7 @@ describe('Seo Component and Helpers (T16)', () => {
       );
 
       // In React 19, metadata is hoisted to document.head
-      expect(document.title).toBe('Smart Classrooms | CampusMart');
+      expect(document.title).toBe('Smart Classrooms | SchoolMart');
 
       const metaDesc = document.querySelector('meta[name="description"]');
       expect(metaDesc).not.toBeNull();
@@ -115,7 +115,7 @@ describe('Seo Component and Helpers (T16)', () => {
       expect(canonical?.getAttribute('href')).toContain('/smart-classrooms');
 
       const ogTitle = document.querySelector('meta[property="og:title"]');
-      expect(ogTitle?.getAttribute('content')).toBe('Smart Classrooms | CampusMart');
+      expect(ogTitle?.getAttribute('content')).toBe('Smart Classrooms | SchoolMart');
 
       const ogUrl = document.querySelector('meta[property="og:url"]');
       expect(ogUrl?.getAttribute('content')).toContain('/smart-classrooms');
@@ -136,7 +136,7 @@ describe('Seo Component and Helpers (T16)', () => {
         />
       );
 
-      expect(document.title).toBe('Admin Login | CampusMart');
+      expect(document.title).toBe('Admin Login | SchoolMart');
       const robotsMeta = document.querySelector('meta[name="robots"]');
       expect(robotsMeta).not.toBeNull();
       expect(robotsMeta?.getAttribute('content')).toContain('noindex');
@@ -204,9 +204,9 @@ describe('Seo Component and Helpers (T16)', () => {
       expect(r3.current.description).toBe('Final Fallback Description');
       expect(r3.current.noindex).toBe(false);
 
-      // 4. Default CampusMart fallback
+      // 4. Default SchoolMart fallback
       const { result: r4 } = renderHook(() => usePageSeo(null));
-      expect(r4.current.title).toBe('CampusMart');
+      expect(r4.current.title).toBe('SchoolMart');
       expect(r4.current.description).toBe('');
     });
   });

@@ -7,15 +7,15 @@ export interface SeoProps {
 }
 
 /**
- * Formats document title to "${cleanTitle} | CampusMart" unless cleanTitle already contains "CampusMart".
+ * Formats document title to "${cleanTitle} | SchoolMart" unless cleanTitle already contains "SchoolMart".
  */
 export function formatTitle(title?: string): string {
-  const clean = (title || 'CampusMart').trim();
-  if (!clean) return 'CampusMart';
-  if (/campusmart/i.test(clean)) {
+  const clean = (title || 'SchoolMart').trim();
+  if (!clean) return 'SchoolMart';
+  if (/schoolmart/i.test(clean)) {
     return clean;
   }
-  return `${clean} | CampusMart`;
+  return `${clean} | SchoolMart`;
 }
 
 /**

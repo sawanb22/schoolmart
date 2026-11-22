@@ -28,7 +28,7 @@ export default function Home() {
       heroTitle: homeHero.title || homeHero.headline,
       heroSubtitle: homeHero.subtitle || homeHero.description,
     },
-    'CampusMart - India\'s Premier Higher Ed Setup & Procurement Platform',
+    'SchoolMart - India\'s Premier Higher Ed Setup & Procurement Platform',
     'Comprehensive institutional solutions, laboratory setups, sports infrastructure, smart classrooms, and procurement for universities and colleges across India.',
     '/'
   );

@@ -2081,7 +2081,7 @@ export default function UnifiedPageEditor({
                                         className="w-full border border-gray-300 rounded-xl px-4 py-3 text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500 transition-all bg-white text-slate-800"
                                     />
                                     <p className="text-[11px] text-gray-500">
-                                        Browser tab title format: <code>&quot;{'{title}'} | CampusMart&quot;</code>. Defaults to hero title or page title if empty.
+                                        Browser tab title format: <code>&quot;{'{title}'} | SchoolMart&quot;</code>. Defaults to hero title or page title if empty.
                                     </p>
                                 </div>
 
