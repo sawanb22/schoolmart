@@ -24,7 +24,7 @@ function renderWithProviders(ui: React.ReactElement) {
   );
 }
 
-describe('UnifiedPageEditor Revision History & Restore (T13)', () => {
+describe('UnifiedPageEditor Page History (read-only activity log)', () => {
   const testPage = {
     id: 10,
     slug: 'labs',
@@ -41,24 +41,19 @@ describe('UnifiedPageEditor Revision History & Restore (T13)', () => {
   const mockRevisions = [
     {
       id: 102,
-      version: 4,
       reason: 'item-create',
+      summary: 'Added card "Physics Lab"',
       authorId: 1,
+      authorName: 'Asha Rao',
       createdAt: '2026-11-21T18:00:00.000Z',
     },
     {
       id: 101,
-      version: 3,
       reason: 'settings',
+      summary: 'Edited page settings',
       authorId: null,
+      authorName: 'System',
       createdAt: '2026-11-21T17:30:00.000Z',
-    },
-    {
-      id: 100,
-      version: 2,
-      reason: 'pre-migration',
-      authorId: null,
-      createdAt: '2026-11-21T17:00:00.000Z',
     },
   ];
 
@@ -67,40 +62,19 @@ describe('UnifiedPageEditor Revision History & Restore (T13)', () => {
     vi.spyOn(window, 'alert').mockImplementation(() => {});
   });
 
-  it('opens history panel, displays revisions list, and executes restore with current version', async () => {
-    let capturedRestorePayload: any = null;
+  it('opens the History panel from the toolbar and lists changes without any restore option', async () => {
     let restoreCalled = false;
 
     server.use(
-      http.get('*/api/pages', () => {
-        return HttpResponse.json([testPage]);
-      }),
-      http.get('*/api/admin/pages/10/items', () => {
-        return HttpResponse.json({ items: [] });
-      }),
-      http.get('*/api/admin/pages/10/categories', () => {
-        return HttpResponse.json({ categories: [] });
-      }),
-      http.get('*/api/admin/pages/10/revisions', () => {
-        return HttpResponse.json({ revisions: mockRevisions });
-      }),
-      http.post('*/api/admin/pages/10/revisions/101/restore', async ({ request }) => {
-        capturedRestorePayload = await request.json();
+      http.get('*/api/pages', () => HttpResponse.json([testPage])),
+      http.get('*/api/admin/pages/10/items', () => HttpResponse.json({ items: [] })),
+      http.get('*/api/admin/pages/10/categories', () => HttpResponse.json({ categories: [] })),
+      http.get('*/api/admin/pages/10/revisions', () => HttpResponse.json({ revisions: mockRevisions })),
+      http.post('*/api/admin/pages/10/revisions/:revId/restore', () => {
         restoreCalled = true;
-        return HttpResponse.json({
-          page: {
-            ...testPage,
-            title: 'Restored Science Labs',
-            version: 5,
-            pageData: JSON.stringify({ heroTitle: 'Restored Hero Title' }),
-          },
-          restoredRevisionId: 101,
-        });
+        return HttpResponse.json({}, { status: 404 });
       })
     );
-
-    // Mock window.confirm to approve restore
-    vi.spyOn(window, 'confirm').mockReturnValue(true);
 
     renderWithProviders(
       <UnifiedPageEditor
@@ -109,89 +83,18 @@ describe('UnifiedPageEditor Revision History & Restore (T13)', () => {
       />
     );
 
-    // 1. Click History button in toolbar
-    const historyButton = screen.getByRole('button', { name: /History/i });
-    expect(historyButton).toBeInTheDocument();
-    fireEvent.click(historyButton);
-
-    // 2. Verify panel opens and lists revisions
-    await waitFor(() => {
-      expect(screen.getByText(/Revision History/i)).toBeInTheDocument();
-      expect(screen.getByText('item-create')).toBeInTheDocument();
-      expect(screen.getByText('pre-migration')).toBeInTheDocument();
-    });
-
-    expect(screen.getByText(/Current Editor:/i)).toBeInTheDocument();
-    expect(screen.getAllByText('v4').length).toBeGreaterThanOrEqual(1);
-
-    // 3. Find Restore buttons
-    const restoreButtons = screen.getAllByRole('button', { name: /Restore/i });
-    expect(restoreButtons.length).toBeGreaterThanOrEqual(3);
-
-    // Click restore on the second revision (revId: 101)
-    fireEvent.click(restoreButtons[1]);
-
-    await waitFor(() => {
-      expect(restoreCalled).toBe(true);
-      expect(capturedRestorePayload).toBeDefined();
-    });
-
-    // Verify current page version (4) was sent in payload
-    expect(capturedRestorePayload.version).toBe(4);
-
-    // Verify success banner appears
-    await waitFor(() => {
-      expect(screen.getByText(/Restore Succeeded/i)).toBeInTheDocument();
-    });
-  }, 15000);
-
-  it('handles HTTP 409 conflict when restoring with stale page version', async () => {
-    server.use(
-      http.get('*/api/pages', () => {
-        return HttpResponse.json([testPage]);
-      }),
-      http.get('*/api/admin/pages/10/items', () => {
-        return HttpResponse.json({ items: [] });
-      }),
-      http.get('*/api/admin/pages/10/categories', () => {
-        return HttpResponse.json({ categories: [] });
-      }),
-      http.get('*/api/admin/pages/10/revisions', () => {
-        return HttpResponse.json({ revisions: mockRevisions });
-      }),
-      http.post('*/api/admin/pages/10/revisions/101/restore', () => {
-        return HttpResponse.json(
-          {
-            error: 'version_conflict',
-            current: 7,
-          },
-          { status: 409 }
-        );
-      })
-    );
-
-    vi.spyOn(window, 'confirm').mockReturnValue(true);
-
-    renderWithProviders(
-      <UnifiedPageEditor
-        page={{ ...testPage } as any}
-        isStandalone={true}
-      />
-    );
-
-    // Open History panel
     fireEvent.click(screen.getByRole('button', { name: /History/i }));
 
     await waitFor(() => {
-      expect(screen.getByText('item-create')).toBeInTheDocument();
+      expect(screen.getByText('Added card "Physics Lab"')).toBeInTheDocument();
     });
 
-    const restoreButtons = screen.getAllByRole('button', { name: /Restore/i });
-    fireEvent.click(restoreButtons[1]);
+    expect(screen.getByText('Edited page settings')).toBeInTheDocument();
+    expect(screen.getByText(/by Asha Rao/)).toBeInTheDocument();
+    expect(screen.getByText(/by System/)).toBeInTheDocument();
+    expect(screen.getByText(/Shows the last 20 changes to this page\./i)).toBeInTheDocument();
 
-    await waitFor(() => {
-      expect(screen.getByText(/Conflict Warning/i)).toBeInTheDocument();
-      expect(screen.getByText(/Version Conflict \(409\)/i)).toBeInTheDocument();
-    });
+    expect(screen.queryByRole('button', { name: /Restore/i })).not.toBeInTheDocument();
+    expect(restoreCalled).toBe(false);
   }, 15000);
 });

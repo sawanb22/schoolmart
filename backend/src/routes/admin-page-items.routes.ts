@@ -11,7 +11,8 @@ import {
 } from '../services/page-content/schemas';
 import { sanitizeItemPayload } from '../lib/sanitize';
 import { slugify, normalizeSlug, splitItem, buildItem } from '../services/page-content/legacy-mapper';
-import { afterContentWrite } from '../services/page-content/after-content-write';
+import { afterContentWrite, describeRevisionReason } from '../services/page-content/after-content-write';
+import { REVISIONS_KEPT_PER_PAGE } from '../services/page-content/constants';
 import { ItemFull } from '../services/page-content/page-content.service';
 
 const router = Router();
@@ -297,7 +298,7 @@ router.post('/:pageId/items', async (req: AuthRequest, res: Response) => {
       });
 
       // 4. Record revision snapshot and write hook
-      await afterContentWrite({ pageId, reason: 'item-create', authorId: req.user?.id }, tx);
+      await afterContentWrite({ pageId, reason: 'item-create', authorId: req.user?.id, summary: `Added card "${title}"` }, tx);
 
       return itemRow;
     }, TX_OPTIONS);
@@ -326,7 +327,7 @@ router.post('/:pageId/items', async (req: AuthRequest, res: Response) => {
 
 /**
  * PATCH /:pageId/items/:itemId
- * Requires version for optimistic concurrency locking.
+ * Last write wins: any `version` in the body is accepted but ignored.
  */
 router.patch('/:pageId/items/:itemId', async (req: AuthRequest, res: Response) => {
   try {
@@ -353,7 +354,6 @@ router.patch('/:pageId/items/:itemId', async (req: AuthRequest, res: Response) =
     }
 
     const body = parseResult.data;
-    const expectedVersion = body.version;
 
     // Check item existence
     const existing = await prisma.pageItem.findUnique({
@@ -434,7 +434,6 @@ router.patch('/:pageId/items/:itemId', async (req: AuthRequest, res: Response) =
       }
     }
 
-    // Optimistic locking updateMany
     const updatePayload: Prisma.PageItemUpdateManyMutationInput = {
       version: { increment: 1 },
       updatedAt: new Date(),
@@ -451,18 +450,28 @@ router.patch('/:pageId/items/:itemId', async (req: AuthRequest, res: Response) =
     if (data !== undefined) updatePayload.data = data as Prisma.InputJsonValue;
     if (detail !== undefined) updatePayload.detail = detail as Prisma.InputJsonValue;
 
+    // Plain-English summary for the activity log
+    const changedKeys = Object.keys(body).filter(
+      k => k !== 'version' && (body as Record<string, unknown>)[k] !== undefined
+    );
+    const cardTitle = title ?? existing.title;
+    let patchSummary = `Edited card "${cardTitle}"`;
+    if (changedKeys.length === 1 && changedKeys[0] === 'published' && published !== existing.published) {
+      patchSummary = `${published ? 'Published' : 'Unpublished'} card "${cardTitle}"`;
+    }
+
     const transactionResult = await prisma.$transaction(async (tx) => {
       const updateResult = await tx.pageItem.updateMany({
         where: {
           id: itemId,
           pageId,
-          version: expectedVersion,
         },
         data: updatePayload,
       });
 
       if (updateResult.count === 0) {
-        return { conflict: true };
+        // Item was removed between the existence check and the update
+        return { missing: true };
       }
 
       // Handle category links update if categories provided
@@ -535,32 +544,13 @@ router.patch('/:pageId/items/:itemId', async (req: AuthRequest, res: Response) =
       });
 
       // Record revision snapshot and write hook
-      await afterContentWrite({ pageId, reason: 'item-update', authorId: req.user?.id }, tx);
+      await afterContentWrite({ pageId, reason: 'item-update', authorId: req.user?.id, summary: patchSummary }, tx);
 
-      return { conflict: false };
+      return { missing: false };
     }, TX_OPTIONS);
 
-    if (transactionResult.conflict) {
-      // Re-read current database representation
-      const current = await prisma.pageItem.findUnique({
-        where: { id: itemId },
-        include: {
-          categories: {
-            include: { category: true },
-            orderBy: { sortOrder: 'asc' },
-          },
-        },
-      });
-
-      if (!current || current.pageId !== pageId) {
-        res.status(404).json({ error: 'item_not_found', message: `Item ${itemId} not found on page ${pageId}` });
-        return;
-      }
-
-      res.status(409).json({
-        error: 'version_conflict',
-        current: toItemFull(current, { includeCard: true }),
-      });
+    if (transactionResult.missing) {
+      res.status(404).json({ error: 'item_not_found', message: `Item ${itemId} not found on page ${pageId}` });
       return;
     }
 
@@ -584,7 +574,7 @@ router.patch('/:pageId/items/:itemId', async (req: AuthRequest, res: Response) =
 
 /**
  * DELETE /:pageId/items/:itemId
- * Accepts optional ?version=N for optimistic concurrency locking.
+ * Last write wins: any ?version query param is ignored.
  */
 router.delete('/:pageId/items/:itemId', async (req: AuthRequest, res: Response) => {
   try {
@@ -610,23 +600,6 @@ router.delete('/:pageId/items/:itemId', async (req: AuthRequest, res: Response) 
       return;
     }
 
-    // Optional optimistic locking check
-    if (req.query.version !== undefined) {
-      const expectedVersion = Number(req.query.version);
-      if (isNaN(expectedVersion)) {
-        res.status(400).json({ error: 'invalid_version', message: 'version query param must be an integer' });
-        return;
-      }
-
-      if (item.version !== expectedVersion) {
-        res.status(409).json({
-          error: 'version_conflict',
-          current: toItemFull(item, { includeCard: true }),
-        });
-        return;
-      }
-    }
-
     await prisma.$transaction(async (tx) => {
       // Cascading deletion handles PageItemCategory joins automatically
       await tx.pageItem.delete({
@@ -638,7 +611,7 @@ router.delete('/:pageId/items/:itemId', async (req: AuthRequest, res: Response) 
         data: { version: { increment: 1 } },
       });
 
-      await afterContentWrite({ pageId, reason: 'item-delete', authorId: req.user?.id }, tx);
+      await afterContentWrite({ pageId, reason: 'item-delete', authorId: req.user?.id, summary: `Deleted card "${item.title}"` }, tx);
     }, TX_OPTIONS);
 
     res.status(204).end();
@@ -718,7 +691,7 @@ router.put('/:pageId/items/reorder', async (req: AuthRequest, res: Response) => 
         data: { version: { increment: 1 } },
       });
 
-      await afterContentWrite({ pageId, reason: 'reorder', authorId: req.user?.id }, tx);
+      await afterContentWrite({ pageId, reason: 'reorder', authorId: req.user?.id, summary: 'Reordered cards' }, tx);
     }, TX_OPTIONS);
 
     const reorderedItems = await prisma.pageItem.findMany({
@@ -856,7 +829,7 @@ router.post('/:pageId/categories', async (req: AuthRequest, res: Response) => {
         data: { version: { increment: 1 } },
       });
 
-      await afterContentWrite({ pageId, reason: 'category-create', authorId: req.user?.id }, tx);
+      await afterContentWrite({ pageId, reason: 'category-create', authorId: req.user?.id, summary: `Added category "${name}"` }, tx);
 
       return cat;
     }, TX_OPTIONS);
@@ -941,6 +914,10 @@ router.patch('/:pageId/categories/:id', async (req: AuthRequest, res: Response) 
       }
     }
 
+    const categorySummary = (name !== undefined && name !== category.name)
+      ? `Renamed category "${category.name}" to "${name}"`
+      : `Edited category "${category.name}"`;
+
     const updated = await prisma.$transaction(async (tx) => {
       const cat = await tx.pageCategory.update({
         where: { id: categoryId },
@@ -955,7 +932,7 @@ router.patch('/:pageId/categories/:id', async (req: AuthRequest, res: Response) 
         data: { version: { increment: 1 } },
       });
 
-      await afterContentWrite({ pageId, reason: 'category-update', authorId: req.user?.id }, tx);
+      await afterContentWrite({ pageId, reason: 'category-update', authorId: req.user?.id, summary: categorySummary }, tx);
 
       return cat;
     }, TX_OPTIONS);
@@ -1007,7 +984,7 @@ router.delete('/:pageId/categories/:id', async (req: AuthRequest, res: Response)
         data: { version: { increment: 1 } },
       });
 
-      await afterContentWrite({ pageId, reason: 'category-delete', authorId: req.user?.id }, tx);
+      await afterContentWrite({ pageId, reason: 'category-delete', authorId: req.user?.id, summary: `Deleted category "${category.name}"` }, tx);
     }, TX_OPTIONS);
 
     res.status(204).end();
@@ -1083,7 +1060,7 @@ router.put('/:pageId/categories/reorder', async (req: AuthRequest, res: Response
         data: { version: { increment: 1 } },
       });
 
-      await afterContentWrite({ pageId, reason: 'category-reorder', authorId: req.user?.id }, tx);
+      await afterContentWrite({ pageId, reason: 'category-reorder', authorId: req.user?.id, summary: 'Reordered categories' }, tx);
     }, TX_OPTIONS);
 
     const updatedCategories = await prisma.pageCategory.findMany({
@@ -1113,7 +1090,9 @@ router.put('/:pageId/categories/reorder', async (req: AuthRequest, res: Response
 
 /**
  * GET /:pageId/revisions
- * Returns 200 { revisions: [{ id, version, reason, authorId, createdAt }] }
+ * Read-only activity log. Returns 200
+ * { revisions: [{ id, reason, summary, authorId, authorName, createdAt }] }
+ * newest first, max REVISIONS_KEPT_PER_PAGE rows. 'pre-migration' rows are hidden.
  */
 router.get('/:pageId/revisions', async (req: AuthRequest, res: Response) => {
   try {
@@ -1129,12 +1108,12 @@ router.get('/:pageId/revisions', async (req: AuthRequest, res: Response) => {
       return;
     }
 
-    const revisions = await prisma.pageRevision.findMany({
-      where: { pageId },
+    const rows = await prisma.pageRevision.findMany({
+      where: { pageId, reason: { not: 'pre-migration' } },
       select: {
         id: true,
-        version: true,
         reason: true,
+        snapshot: true,
         authorId: true,
         createdAt: true,
       },
@@ -1142,194 +1121,39 @@ router.get('/:pageId/revisions', async (req: AuthRequest, res: Response) => {
         { createdAt: 'desc' },
         { id: 'desc' },
       ],
+      take: REVISIONS_KEPT_PER_PAGE,
+    });
+
+    const authorIds = [...new Set(rows.map(r => r.authorId).filter((id): id is number => id !== null))];
+    const authors = authorIds.length > 0
+      ? await prisma.user.findMany({
+          where: { id: { in: authorIds } },
+          select: { id: true, name: true, email: true },
+        })
+      : [];
+    const authorNameById = new Map<number, string>(
+      authors.map(a => [a.id, a.name || a.email || 'Unknown admin'])
+    );
+
+    const revisions = rows.map(r => {
+      const snap = r.snapshot as { summary?: unknown } | null;
+      const summary = snap && typeof snap === 'object' && typeof snap.summary === 'string' && snap.summary.trim()
+        ? snap.summary
+        : describeRevisionReason(r.reason);
+      return {
+        id: r.id,
+        reason: r.reason,
+        summary,
+        authorId: r.authorId,
+        authorName: r.authorId === null ? 'System' : (authorNameById.get(r.authorId) ?? 'Unknown admin'),
+        createdAt: r.createdAt,
+      };
     });
 
     res.json({ revisions });
   } catch (error) {
     console.error('[AdminPageItems] GET /:pageId/revisions failed:', error);
     res.status(500).json({ error: 'Failed to fetch revisions' });
-  }
-});
-
-/**
- * POST /:pageId/revisions/:revId/restore
- * Body: { version: number }
- * Transactional restore of snapshot preserving original item/category IDs,
- * incrementing page version and setting item versions to maxItemVersion + 1.
- */
-router.post('/:pageId/revisions/:revId/restore', async (req: AuthRequest, res: Response) => {
-  try {
-    const pageId = parseParamInt(req.params.pageId);
-    const revId = parseParamInt(req.params.revId);
-    if (isNaN(pageId) || isNaN(revId)) {
-      res.status(400).json({ error: 'invalid_params', message: 'Page ID and Revision ID must be integers' });
-      return;
-    }
-
-    const requestedVersion = req.body?.version;
-    if (typeof requestedVersion !== 'number') {
-      res.status(400).json({ error: 'invalid_version', message: 'Page version must be provided as a number' });
-      return;
-    }
-
-    const result = await prisma.$transaction(async (tx) => {
-      // 1. Check page version
-      const page = await tx.page.findUnique({ where: { id: pageId } });
-      if (!page) {
-        return { status: 404, body: { error: 'page_not_found', message: `Page ${pageId} not found` } };
-      }
-
-      if (page.version !== requestedVersion) {
-        return { status: 409, body: { error: 'version_conflict', current: page.version } };
-      }
-
-      // 2. Find revision
-      const rev = await tx.pageRevision.findFirst({
-        where: { id: revId, pageId },
-      });
-      if (!rev) {
-        return { status: 404, body: { error: 'revision_not_found', message: `Revision ${revId} not found for page ${pageId}` } };
-      }
-
-      // 3. Extract snapshot
-      const snapshot = (rev.snapshot && typeof rev.snapshot === 'object') ? (rev.snapshot as any) : {};
-
-      // 4. Find highest item version on the page prior to restore
-      const currentItems = await tx.pageItem.findMany({
-        where: { pageId },
-        select: { version: true },
-      });
-      const snapshotItemVersions = (Array.isArray(snapshot.items) ? snapshot.items : [])
-        .map((i: any) => (typeof i.version === 'number' ? i.version : 1));
-
-      const maxItemVersion = Math.max(
-        0,
-        ...currentItems.map(i => i.version),
-        ...snapshotItemVersions
-      );
-      const restoredItemVersion = maxItemVersion + 1;
-
-      // 5. Delete existing PageItemCategory, PageItem, and PageCategory for this pageId
-      await tx.pageItemCategory.deleteMany({
-        where: { item: { pageId } },
-      });
-      await tx.pageItem.deleteMany({
-        where: { pageId },
-      });
-      await tx.pageCategory.deleteMany({
-        where: { pageId },
-      });
-
-      // 6. Recreate categories from snapshot preserving original IDs
-      const categoryMapByName = new Map<string, number>();
-      if (Array.isArray(snapshot.categories) && snapshot.categories.length > 0) {
-        for (const cat of snapshot.categories) {
-          await tx.pageCategory.create({
-            data: {
-              id: cat.id,
-              pageId,
-              name: cat.name,
-              slug: cat.slug,
-              sortOrder: cat.sortOrder ?? 0,
-            },
-          });
-          categoryMapByName.set(cat.name, cat.id);
-        }
-      }
-
-      // 7 & 8. Recreate items from snapshot preserving original IDs and reconnect PageItemCategory
-      if (Array.isArray(snapshot.items) && snapshot.items.length > 0) {
-        for (const item of snapshot.items) {
-          await tx.pageItem.create({
-            data: {
-              id: item.id,
-              pageId,
-              collection: item.collection,
-              slug: item.slug,
-              title: item.title,
-              summary: item.summary ?? null,
-              imageUrl: item.imageUrl ?? null,
-              href: item.href ?? null,
-              badge: item.badge ?? null,
-              data: (item.data && typeof item.data === 'object' && !Array.isArray(item.data)) ? item.data : {},
-              detail: (item.detail && typeof item.detail === 'object' && !Array.isArray(item.detail)) ? item.detail : {},
-              sortOrder: item.sortOrder ?? 0,
-              published: item.published !== false,
-              version: restoredItemVersion,
-            },
-          });
-
-          if (Array.isArray(item.categories)) {
-            for (let i = 0; i < item.categories.length; i++) {
-              const catEntry = item.categories[i];
-              const catName = typeof catEntry === 'string' ? catEntry : (catEntry?.name || catEntry?.category?.name);
-              const catId = (catName && categoryMapByName.get(catName)) || (typeof catEntry?.id === 'number' ? catEntry.id : undefined);
-              if (catId) {
-                await tx.pageItemCategory.create({
-                  data: {
-                    itemId: item.id,
-                    categoryId: catId,
-                    sortOrder: i,
-                  },
-                });
-              }
-            }
-          }
-        }
-      }
-
-      // 9. Reseed PostgreSQL sequences for pageitem_id_seq and pagecategory_id_seq
-      await tx.$queryRawUnsafe(
-        "SELECT setval(pg_get_serial_sequence('pageitem', 'id'), GREATEST(COALESCE((SELECT MAX(id) FROM pageitem), 1), 1))"
-      );
-      await tx.$queryRawUnsafe(
-        "SELECT setval(pg_get_serial_sequence('pagecategory', 'id'), GREATEST(COALESCE((SELECT MAX(id) FROM pagecategory), 1), 1))"
-      );
-
-      // 10. Update Page with settings, title, slug, template, published, and version: { increment: 1 }
-      const pageUpdateData: Prisma.PageUpdateInput = {
-        version: { increment: 1 },
-        updatedAt: new Date(),
-      };
-
-      if (snapshot.settings !== undefined) {
-        pageUpdateData.pageData = snapshot.settings as Prisma.InputJsonValue;
-      } else if (snapshot.pageData !== undefined) {
-        pageUpdateData.pageData = snapshot.pageData as Prisma.InputJsonValue;
-      }
-
-      if (snapshot.page && typeof snapshot.page === 'object') {
-        if (snapshot.page.title) pageUpdateData.title = snapshot.page.title;
-        if (snapshot.page.slug) pageUpdateData.slug = snapshot.page.slug;
-        if (snapshot.page.template !== undefined) pageUpdateData.template = snapshot.page.template;
-        if (snapshot.page.published !== undefined) pageUpdateData.published = snapshot.page.published;
-        if (snapshot.page.contentModel !== undefined) pageUpdateData.contentModel = snapshot.page.contentModel;
-      } else if (snapshot.contentModel) {
-        pageUpdateData.contentModel = snapshot.contentModel;
-      }
-
-      const updatedPage = await tx.page.update({
-        where: { id: pageId },
-        data: pageUpdateData,
-      });
-
-      // 11. Invoke afterContentWrite with reason: 'restore'
-      await afterContentWrite({ pageId, reason: 'restore', authorId: req.user?.id }, tx);
-
-      // 12. Return updatedPage and rev.id
-      return {
-        status: 200,
-        body: {
-          page: updatedPage,
-          restoredRevisionId: rev.id,
-        },
-      };
-    }, TX_OPTIONS);
-
-    res.status(result.status).json(result.body);
-  } catch (error) {
-    console.error('[AdminPageItems] POST /:pageId/revisions/:revId/restore failed:', error);
-    res.status(500).json({ error: 'Failed to restore revision' });
   }
 });
 

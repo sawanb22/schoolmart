@@ -452,7 +452,7 @@ router.post('/', verifyToken, requireAdmin, async (req: AuthRequest, res: Respon
         }
 
         logger.info(`Page created by admin ${req.user?.id}: ${createdPage.slug}`);
-        await afterContentWrite({ pageId: createdPage.id, reason: 'page-create', authorId: req.user?.id });
+        await afterContentWrite({ pageId: createdPage.id, reason: 'page-create', authorId: req.user?.id, summary: 'Created page' });
 
         const responsePage = await pageContentService.getPageLegacy(createdPage.id, { isAdmin: true });
         res.status(201).json(responsePage);
@@ -466,7 +466,7 @@ router.post('/', verifyToken, requireAdmin, async (req: AuthRequest, res: Respon
                     data: createData as any
                 });
                 logger.info(`Page created with collision resolution by admin ${req.user?.id}: ${page.slug}`);
-                await afterContentWrite({ pageId: page.id, reason: 'page-create', authorId: req.user?.id });
+                await afterContentWrite({ pageId: page.id, reason: 'page-create', authorId: req.user?.id, summary: 'Created page' });
                 const responsePage = await pageContentService.getPageLegacy(page.id, { isAdmin: true });
                 return res.status(201).json(responsePage);
             } catch (retryError: any) {
@@ -497,14 +497,7 @@ router.put('/:id', verifyToken, requireAdmin, async (req: AuthRequest, res: Resp
             return;
         }
 
-        // Optimistic locking check: if version is provided, it must match existing.version
-        if (req.body.version !== undefined && req.body.version !== null) {
-            const incomingVersion = Number(req.body.version);
-            if (!isNaN(incomingVersion) && incomingVersion !== existing.version) {
-                const current = await pageContentService.getPageLegacy(id, { isAdmin: true });
-                return res.status(409).json({ error: 'version_conflict', current });
-            }
-        }
+        // Last write wins: any incoming `version` is ignored (no optimistic locking).
 
         const validFields: Array<'title' | 'slug' | 'content' | 'template' | 'pageData' | 'published'> = [
             'title', 'slug', 'content', 'template', 'pageData', 'published'
@@ -628,7 +621,7 @@ router.put('/:id', verifyToken, requireAdmin, async (req: AuthRequest, res: Resp
 
         logger.info(`Page ${id} updated by admin ${req.user?.id}`);
         const writeReason = (isStructured && !hasCollectionKeys) ? 'settings' : 'legacy-adapter-update';
-        await afterContentWrite({ pageId: id, reason: writeReason, authorId: req.user?.id });
+        await afterContentWrite({ pageId: id, reason: writeReason, authorId: req.user?.id, summary: 'Edited page settings' });
 
         const updatedResponse = await pageContentService.getPageLegacy(id, { isAdmin: true });
         res.json(updatedResponse);
@@ -670,7 +663,7 @@ router.delete('/:id', verifyToken, requireAdmin, async (req: AuthRequest, res: R
             where: { id }
         });
         logger.info(`Page ${id} deleted by admin ${req.user?.id}`);
-        await afterContentWrite({ pageId: id, reason: 'page-delete', authorId: req.user?.id });
+        await afterContentWrite({ pageId: id, reason: 'page-delete', authorId: req.user?.id, summary: 'Deleted page' });
         res.status(204).end();
     } catch (error) {
         logger.error({ err: error, pageId: req.params.id }, 'Failed to delete page');

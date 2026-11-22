@@ -79,7 +79,7 @@ export const HTML_KEYS = [
 
 export const MAX_PAGEDATA_BYTES = 512 * 1024;
 export const MAX_ITEM_JSON_BYTES = 256 * 1024;
-export const REVISIONS_KEPT_PER_PAGE = 30;
+export const REVISIONS_KEPT_PER_PAGE = 20;
 
 // Slugs that require full detail content on the hub list view.
 // Currently empty as all migrated hub pages consume summary cards and detail views fetch individual item endpoints.

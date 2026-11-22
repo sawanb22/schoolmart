@@ -288,7 +288,12 @@ Per user instruction, cloud staging environments (Vercel frontend and Railway ba
 
 The migration was built with defense-in-depth rollback capabilities across all layers:
 
-### 8.1 Database & Content Model Rollback
+> **Update 2026-11-22 (owner decision):** History is now a read-only activity log, limited to the last 20 entries per page, with no Restore.
+> The `pre-migration` copies were deleted, so `cms:migrate-items -- --rollback` **no longer works** for existing pages.
+> The conflict check (409 `version_conflict`) was switched off: the last save always wins.
+> To undo the card-table move, restore a database backup instead.
+
+### 8.1 Database & Content Model Rollback (historical; see update above)
 1. **Pre-Migration Snapshots:** Every structured page maintains a `pre-migration` revision in `PageRevision`.
 2. **Reverse Script (`--rollback`):**
    ```powershell

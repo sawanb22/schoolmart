@@ -11,7 +11,6 @@ import BlogEditorSection from './BlogEditorSection';
 import FaqEditorSection from './FaqEditorSection';
 import ItemsManager from './items/ItemsManager';
 import CategoryManager from './items/CategoryManager';
-import ConflictDialog from './items/ConflictDialog';
 import HistoryPanel from './items/HistoryPanel';
 import { clearPageDataCache, broadcastCmsInvalidation } from '@/hooks/usePageData';
 import {
@@ -579,8 +578,6 @@ export default function UnifiedPageEditor({
     const urlCardSlug = searchParams.get('card') || undefined;
     const targetCardSlug = propTargetCardSlug || urlCardSlug;
 
-    const [conflictCurrentPage, setConflictCurrentPage] = useState<any>(null);
-    const [showPageConflictDialog, setShowPageConflictDialog] = useState(false);
     const [showHistoryPanel, setShowHistoryPanel] = useState(false);
     const [showSeoSection, setShowSeoSection] = useState(false);
 
@@ -1021,93 +1018,6 @@ export default function UnifiedPageEditor({
         });
     };
 
-    // Starter Template Modal state
-    const [showTemplateModal, setShowTemplateModal] = useState(false);
-    const [templateMode, setTemplateMode] = useState<'append' | 'replace'>('append');
-
-    const handleApplyStarterTemplate = () => {
-        if (!effectiveDefaults || Object.keys(effectiveDefaults).length === 0) {
-            alert('No starter template defaults found for this page.');
-            setShowTemplateModal(false);
-            return;
-        }
-
-        if (templateMode === 'replace') {
-            const cloned = structuredClone(effectiveDefaults);
-            setData(cloned);
-            setShowTemplateModal(false);
-            return;
-        }
-
-        // Mode: 'append' (Safe, Non-Destructive)
-        // 1. Preserve user-created cards at the top and only append non-duplicate sample cards
-        const currentCards = Array.isArray(data.cards) ? [...data.cards] : [];
-        const sampleCards = Array.isArray(effectiveDefaults.cards) ? effectiveDefaults.cards : [];
-
-        const existingTitles = new Set(
-            currentCards
-                .map((c: any) => (c?.title || '').trim().toLowerCase())
-                .filter(Boolean)
-        );
-
-        const nonDuplicateSamples = sampleCards.filter((sample: any) => {
-            const titleKey = (sample?.title || '').trim().toLowerCase();
-            return !existingTitles.has(titleKey);
-        });
-
-        const mergedCards = [...currentCards, ...structuredClone(nonDuplicateSamples)];
-
-        // 2. Additional card sets deduplication
-        let mergedSection2Cards = data.section2Cards;
-        if (Array.isArray(effectiveDefaults.section2Cards)) {
-            const current = Array.isArray(data.section2Cards) ? [...data.section2Cards] : [];
-            const existingS2Titles = new Set(current.map((c: any) => (c?.title || '').trim().toLowerCase()).filter(Boolean));
-            const nonDup = effectiveDefaults.section2Cards.filter((s: any) => !existingS2Titles.has((s?.title || '').trim().toLowerCase()));
-            mergedSection2Cards = [...current, ...structuredClone(nonDup)];
-        }
-
-        let mergedCaseStudies = data.caseStudies;
-        if (Array.isArray(effectiveDefaults.caseStudies)) {
-            const current = Array.isArray(data.caseStudies) ? [...data.caseStudies] : [];
-            const existingCSTitles = new Set(current.map((c: any) => (c?.title || '').trim().toLowerCase()).filter(Boolean));
-            const nonDup = effectiveDefaults.caseStudies.filter((s: any) => !existingCSTitles.has((s?.title || '').trim().toLowerCase()));
-            mergedCaseStudies = [...current, ...structuredClone(nonDup)];
-        }
-
-        let mergedMoreCards = data.moreCards;
-        if (Array.isArray(effectiveDefaults.moreCards)) {
-            const current = Array.isArray(data.moreCards) ? [...data.moreCards] : [];
-            const existingMoreTitles = new Set(current.map((c: any) => (c?.title || '').trim().toLowerCase()).filter(Boolean));
-            const nonDup = effectiveDefaults.moreCards.filter((s: any) => !existingMoreTitles.has((s?.title || '').trim().toLowerCase()));
-            mergedMoreCards = [...current, ...structuredClone(nonDup)];
-        }
-
-        // 3. Backfill empty scalar properties from effectiveDefaults without overwriting existing non-empty values
-        const mergedData: PageData = { ...data };
-        Object.entries(effectiveDefaults).forEach(([key, val]) => {
-            if (key === 'cards' || key === 'section2Cards' || key === 'caseStudies' || key === 'moreCards') return;
-            if (mergedData[key] === undefined || mergedData[key] === null || mergedData[key] === '') {
-                mergedData[key] = structuredClone(val);
-            }
-        });
-
-        if (Array.isArray(effectiveDefaults.cards)) {
-            mergedData.cards = mergedCards;
-        }
-        if (Array.isArray(effectiveDefaults.section2Cards)) {
-            mergedData.section2Cards = mergedSection2Cards;
-        }
-        if (Array.isArray(effectiveDefaults.caseStudies)) {
-            mergedData.caseStudies = mergedCaseStudies;
-        }
-        if (Array.isArray(effectiveDefaults.moreCards)) {
-            mergedData.moreCards = mergedMoreCards;
-        }
-
-        setData(mergedData);
-        setShowTemplateModal(false);
-    };
-
     const set = (key: string, value: any) => setData((p: any) => ({ ...p, [key]: value }));
     const setStyle = (key: string, value: any) => {
         setData((p: any) => ({
@@ -1476,7 +1386,7 @@ export default function UnifiedPageEditor({
     };
 
 
-    const save = async (versionOverride?: number) => {
+    const save = async () => {
         setSaving(true);
         setSaveError(null);
         try {
@@ -1559,11 +1469,7 @@ export default function UnifiedPageEditor({
                 template: payloadTemplate,
                 pageData: JSON.stringify(payloadData),
             };
-            const sendVersion = typeof versionOverride === 'number' ? versionOverride : page.version;
-            if (sendVersion !== undefined) {
-                putPayload.version = sendVersion;
-            }
-
+            // Last write wins: the server ignores `version`, so none is sent.
             const { data: updated } = await api.put(`/pages/${page.id}`, putPayload);
             if (updated?.version !== undefined) {
                 page.version = updated.version;
@@ -1587,15 +1493,9 @@ export default function UnifiedPageEditor({
             if (onSaved) onSaved(updated);
         } catch (err: any) {
             console.error(`Failed to save page ${page.slug}:`, err);
-            if (err?.response?.status === 409 && err?.response?.data?.error === 'version_conflict') {
-                const currentRemote = err.response.data.current;
-                setConflictCurrentPage(currentRemote);
-                setShowPageConflictDialog(true);
-            } else {
-                const msg = err?.response?.data?.error || 'Failed to save page changes. Please try again.';
-                setSaveError(msg);
-                alert(`Save failed: ${msg}`);
-            }
+            const msg = err?.response?.data?.error || 'Failed to save page changes. Please try again.';
+            setSaveError(msg);
+            alert(`Save failed: ${msg}`);
         } finally {
             setSaving(false);
         }
@@ -1719,20 +1619,10 @@ export default function UnifiedPageEditor({
                             type="button"
                             onClick={() => setShowHistoryPanel(true)}
                             className="flex items-center gap-2 px-3.5 py-2 text-xs font-bold border border-slate-200 text-slate-700 bg-white hover:bg-slate-50 rounded-xl transition-all shadow-sm active:scale-95"
-                            title="View page revision history and restore previous versions"
+                            title="View the recent changes made to this page"
                         >
                             <History className="w-3.5 h-3.5 text-slate-500" /> History
                         </button>
-                        {page.slug !== 'job-openings' && (
-                            <button
-                                type="button"
-                                onClick={() => setShowTemplateModal(true)}
-                                className="flex items-center gap-2 px-3.5 py-2 text-xs font-bold border border-blue-200 text-blue-700 bg-blue-50/90 hover:bg-blue-100 rounded-xl transition-all shadow-sm active:scale-95"
-                                title="Load recommended template samples for this page"
-                            >
-                                <FileText className="w-3.5 h-3.5" /> Load Starter Template
-                            </button>
-                        )}
                         <a
                             href={`/${page.slug}`}
                             target="_blank"
@@ -5680,147 +5570,12 @@ export default function UnifiedPageEditor({
                 </div>
             </div>
 
-            {/* Load Starter Template Modal */}
-            {showTemplateModal && (
-                <div className="fixed inset-0 z-[100] flex items-center justify-center bg-slate-950/60 p-4 backdrop-blur-sm" role="dialog" aria-modal="true">
-                    <div className="w-full max-w-lg rounded-2xl bg-white shadow-2xl overflow-hidden animate-in zoom-in-95 duration-200">
-                        <div className="flex items-start justify-between border-b border-slate-100 p-6">
-                            <div>
-                                <h3 className="text-lg font-bold text-slate-900">Load Starter Template</h3>
-                                <p className="mt-1 text-xs text-slate-500">
-                                    Populate <strong>/{page.slug}</strong> with recommended starter content and sample cards.
-                                </p>
-                            </div>
-                            <button
-                                type="button"
-                                onClick={() => setShowTemplateModal(false)}
-                                className="rounded-lg p-1.5 text-slate-400 hover:bg-slate-100 hover:text-slate-700 transition"
-                            >
-                                <X className="h-5 w-5" />
-                            </button>
-                        </div>
-
-                        <div className="p-6 space-y-4">
-                            <label
-                                className={`flex items-start gap-3 p-4 rounded-xl border-2 cursor-pointer transition ${
-                                    templateMode === 'append'
-                                        ? 'border-blue-600 bg-blue-50/50'
-                                        : 'border-slate-200 hover:border-slate-300'
-                                }`}
-                            >
-                                <input
-                                    type="radio"
-                                    name="templateMode"
-                                    checked={templateMode === 'append'}
-                                    onChange={() => setTemplateMode('append')}
-                                    className="mt-1 text-blue-600 focus:ring-blue-500"
-                                />
-                                <div>
-                                    <div className="font-bold text-sm text-slate-900">
-                                        Append Samples (Keep my current cards) <span className="ml-1 text-[11px] font-semibold text-blue-600 bg-blue-100 px-2 py-0.5 rounded-full">Recommended</span>
-                                    </div>
-                                    <p className="mt-1 text-xs text-slate-500 leading-relaxed">
-                                        Preserves all your existing custom cards at the top. Only appends non-duplicate sample cards from the starter template.
-                                    </p>
-                                </div>
-                            </label>
-
-                            <label
-                                className={`flex items-start gap-3 p-4 rounded-xl border-2 cursor-pointer transition ${
-                                    templateMode === 'replace'
-                                        ? 'border-red-500 bg-red-50/50'
-                                        : 'border-slate-200 hover:border-slate-300'
-                                }`}
-                            >
-                                <input
-                                    type="radio"
-                                    name="templateMode"
-                                    checked={templateMode === 'replace'}
-                                    onChange={() => setTemplateMode('replace')}
-                                    className="mt-1 text-red-600 focus:ring-red-500"
-                                />
-                                <div>
-                                    <div className="font-bold text-sm text-slate-900">Replace All</div>
-                                    <p className="mt-1 text-xs text-slate-500 leading-relaxed">
-                                        Replaces your current content and cards with the original template defaults. Existing custom edits on this page will be overwritten.
-                                    </p>
-                                </div>
-                            </label>
-                        </div>
-
-                        <div className="flex items-center justify-end gap-3 bg-slate-50 px-6 py-4 border-t border-slate-100">
-                            <button
-                                type="button"
-                                onClick={() => setShowTemplateModal(false)}
-                                className="px-4 py-2 text-xs font-semibold text-slate-600 hover:bg-slate-200/70 rounded-xl transition"
-                            >
-                                Cancel
-                            </button>
-                            <button
-                                type="button"
-                                onClick={handleApplyStarterTemplate}
-                                className={`px-5 py-2 text-xs font-bold text-white rounded-xl shadow-md transition ${
-                                    templateMode === 'replace'
-                                        ? 'bg-red-600 hover:bg-red-700'
-                                        : 'bg-blue-600 hover:bg-blue-700'
-                                }`}
-                            >
-                                {templateMode === 'replace' ? 'Replace All Content' : 'Append Starter Samples'}
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            )}
-
-            {/* Page-Level Conflict Dialog */}
-            <ConflictDialog
-                isOpen={showPageConflictDialog}
-                onClose={() => setShowPageConflictDialog(false)}
-                onReloadLatest={() => {
-                    if (conflictCurrentPage) {
-                        setTitle(conflictCurrentPage.title);
-                        setPublished(conflictCurrentPage.published);
-                        const parsed = parsePageData(conflictCurrentPage.pageData);
-                        setData(parsed);
-                        if (conflictCurrentPage.version !== undefined) {
-                            page.version = conflictCurrentPage.version;
-                        }
-                    }
-                    setShowPageConflictDialog(false);
-                    setConflictCurrentPage(null);
-                }}
-                onOverwrite={() => {
-                    const targetVersion = conflictCurrentPage?.version;
-                    setShowPageConflictDialog(false);
-                    save(targetVersion);
-                }}
-                localData={{ title, published, ...data }}
-                currentData={conflictCurrentPage ? {
-                    title: conflictCurrentPage.title,
-                    published: conflictCurrentPage.published,
-                    ...parsePageData(conflictCurrentPage.pageData),
-                } : {}}
-                title={`Page Conflict Detected on "${page.title}"`}
-                description="Another administrator or process modified this page while you were editing it. Review the settings differences below to reload latest or overwrite."
-            />
-
-            {/* Page Revision History Panel */}
+            {/* Page Activity History Panel (read-only) */}
             <HistoryPanel
                 isOpen={showHistoryPanel}
                 onClose={() => setShowHistoryPanel(false)}
                 pageId={page.id}
                 pageSlug={page.slug}
-                currentPageVersion={page.version ?? 1}
-                onRestoreSuccess={(restoredPage) => {
-                    if (restoredPage) {
-                        if (restoredPage.title) setTitle(restoredPage.title);
-                        if (restoredPage.published !== undefined) setPublished(restoredPage.published);
-                        if (restoredPage.pageData) setData(parsePageData(restoredPage.pageData));
-                        if (restoredPage.version !== undefined) {
-                            page.version = restoredPage.version;
-                        }
-                    }
-                }}
             />
         </div>
     );

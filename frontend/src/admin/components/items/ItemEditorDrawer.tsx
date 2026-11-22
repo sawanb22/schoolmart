@@ -15,7 +15,6 @@ import {
     updateAdminPageItem,
 } from '../../api/pageItems';
 import CardFieldsEditor from './CardFieldsEditor';
-import ConflictDialog from './ConflictDialog';
 
 export interface ItemEditorDrawerProps {
     pageId: number;
@@ -51,10 +50,6 @@ export default function ItemEditorDrawer({
     const [savedSuccess, setSavedSuccess] = useState(false);
     const [seoOpen, setSeoOpen] = useState(false);
 
-    // Conflict state
-    const [conflictCurrent, setConflictCurrent] = useState<(ItemFull & { card?: any }) | null>(null);
-    const [showConflictDialog, setShowConflictDialog] = useState(false);
-
     // Initialize or reset state when item or isOpen changes
     useEffect(() => {
         if (isOpen) {
@@ -84,8 +79,6 @@ export default function ItemEditorDrawer({
             setVersion(item?.version ?? 1);
             setSaveError(null);
             setSavedSuccess(false);
-            setConflictCurrent(null);
-            setShowConflictDialog(false);
         }
     }, [isOpen, item]);
 
@@ -102,12 +95,10 @@ export default function ItemEditorDrawer({
         onClose();
     };
 
-    const handleSave = async (versionOverride?: number) => {
+    const handleSave = async () => {
         setSaving(true);
         setSaveError(null);
         setSavedSuccess(false);
-
-        const sendVersion = versionOverride !== undefined ? versionOverride : version;
 
         try {
             let result: ItemFull & { card?: any };
@@ -119,7 +110,7 @@ export default function ItemEditorDrawer({
                 });
             } else {
                 result = await updateAdminPageItem(pageId, item.id, {
-                    version: sendVersion,
+                    version, // ignored by the server (last write wins)
                     card,
                 });
             }
@@ -133,47 +124,11 @@ export default function ItemEditorDrawer({
             }, 500);
         } catch (err: any) {
             console.error('Failed to save item:', err);
-            if (err?.response?.status === 409 && err?.response?.data?.error === 'version_conflict') {
-                const currentRemote = err.response.data.current;
-                setConflictCurrent(currentRemote);
-                setShowConflictDialog(true);
-            } else {
-                const msg = err?.response?.data?.error || err?.response?.data?.message || 'Failed to save item.';
-                setSaveError(msg);
-            }
+            const msg = err?.response?.data?.error || err?.response?.data?.message || 'Failed to save item.';
+            setSaveError(msg);
         } finally {
             setSaving(false);
         }
-    };
-
-    // Conflict Actions
-    const handleReloadLatest = () => {
-        if (!conflictCurrent) return;
-        const latestCard = conflictCurrent.card || {
-            title: conflictCurrent.title,
-            slug: conflictCurrent.slug,
-            description: conflictCurrent.summary || '',
-            image: conflictCurrent.imageUrl || '',
-            href: conflictCurrent.href || '',
-            badge: conflictCurrent.badge || '',
-            categories: conflictCurrent.categories || [],
-            ...conflictCurrent.data,
-            ...conflictCurrent.detail,
-        };
-        const cloned = structuredClone(latestCard);
-        setCard(cloned);
-        initialCard.current = structuredClone(cloned);
-        setVersion(conflictCurrent.version);
-        setShowConflictDialog(false);
-        setConflictCurrent(null);
-        setSaveError(null);
-    };
-
-    const handleOverwrite = () => {
-        if (!conflictCurrent) return;
-        const targetVersion = conflictCurrent.version;
-        setShowConflictDialog(false);
-        handleSave(targetVersion);
     };
 
     return (
@@ -420,17 +375,6 @@ export default function ItemEditorDrawer({
                     </button>
                 </div>
             </div>
-
-            {/* Version Conflict Dialog */}
-            <ConflictDialog
-                isOpen={showConflictDialog}
-                onClose={() => setShowConflictDialog(false)}
-                onReloadLatest={handleReloadLatest}
-                onOverwrite={handleOverwrite}
-                localData={card}
-                currentData={conflictCurrent?.card || {}}
-                title={`Version Conflict on "${card.title || 'Item'}"`}
-            />
         </div>
     );
 }

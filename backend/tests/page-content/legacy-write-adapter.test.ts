@@ -140,7 +140,7 @@ describe('Legacy Write Adapter (PUT /api/pages/:id)', () => {
     expect(savedSettings.customSettingKey).toBe('active');
   });
 
-  it('version mismatch returns HTTP 409 version_conflict with current page', async () => {
+  it('stale version is ignored (last write wins): returns 200 and saves the change', async () => {
     const labsPage = await prisma.page.findUnique({ where: { slug: 'labs' } });
     const staleVersion = labsPage!.version - 1; // deliberate mismatch
 
@@ -148,15 +148,17 @@ describe('Legacy Write Adapter (PUT /api/pages/:id)', () => {
       .put(`/api/pages/${labsPage!.id}`)
       .set('Authorization', `Bearer ${adminToken}`)
       .send({
-        title: 'Conflicting Edit',
+        title: 'Stale Version Edit',
         version: staleVersion,
       });
 
-    expect(res.status).toBe(409);
-    expect(res.body).toHaveProperty('error', 'version_conflict');
-    expect(res.body).toHaveProperty('current');
-    expect(res.body.current.version).toBe(labsPage!.version);
-    expect(res.body.current.slug).toBe('labs');
+    expect(res.status).toBe(200);
+    expect(res.body.error).toBeUndefined();
+    expect(res.body.title).toBe('Stale Version Edit');
+    expect(res.body.version).toBe(labsPage!.version + 1);
+
+    const saved = await prisma.page.findUnique({ where: { id: labsPage!.id } });
+    expect(saved!.title).toBe('Stale Version Edit');
   });
 
   it('every successful write increments page version', async () => {

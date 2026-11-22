@@ -24,7 +24,7 @@ function renderWithProviders(ui: React.ReactElement) {
   );
 }
 
-describe('UnifiedPageEditor Structured Page Save & Optimistic Locking', () => {
+describe('UnifiedPageEditor Structured Page Save (last write wins)', () => {
   const structuredPage = {
     id: 10,
     slug: 'labs',
@@ -46,7 +46,7 @@ describe('UnifiedPageEditor Structured Page Save & Optimistic Locking', () => {
     vi.spyOn(window, 'alert').mockImplementation(() => {});
   });
 
-  it('strips all collection keys and categories from PUT payload and sends version on structured page save', async () => {
+  it('strips all collection keys and categories from PUT payload on structured page save', async () => {
     let capturedPutPayload: any = null;
 
     server.use(
@@ -84,7 +84,8 @@ describe('UnifiedPageEditor Structured Page Save & Optimistic Locking', () => {
       expect(capturedPutPayload).toBeDefined();
     });
 
-    expect(capturedPutPayload.version).toBe(4);
+    // Last write wins: the editor no longer sends a version
+    expect(capturedPutPayload.version).toBeUndefined();
 
     const parsedPageData = JSON.parse(capturedPutPayload.pageData);
     expect(parsedPageData.heroTitle).toBe('Innovative Laboratories');
@@ -100,7 +101,9 @@ describe('UnifiedPageEditor Structured Page Save & Optimistic Locking', () => {
     expect(parsedPageData.categories).toBeUndefined();
   });
 
-  it('handles HTTP 409 version_conflict and displays page-level ConflictDialog', async () => {
+  it('save never shows "Page Conflict Detected" and succeeds with a stale page version', async () => {
+    let capturedPutPayload: any = null;
+
     server.use(
       http.get('*/api/pages', () => {
         return HttpResponse.json([structuredPage]);
@@ -111,18 +114,15 @@ describe('UnifiedPageEditor Structured Page Save & Optimistic Locking', () => {
       http.get('*/api/admin/pages/10/categories', () => {
         return HttpResponse.json({ categories: [] });
       }),
-      http.put('*/api/pages/10', () => {
-        return HttpResponse.json(
-          {
-            error: 'version_conflict',
-            current: {
-              ...structuredPage,
-              version: 5,
-              title: 'Remote Updated Title',
-            },
-          },
-          { status: 409 }
-        );
+      http.put('*/api/pages/10', async ({ request }) => {
+        capturedPutPayload = await request.json();
+        // Server is at a newer version than the editor; it still accepts the write
+        return HttpResponse.json({
+          id: 10,
+          title: capturedPutPayload.title,
+          version: 8,
+          pageData: capturedPutPayload.pageData,
+        });
       })
     );
 
@@ -137,8 +137,28 @@ describe('UnifiedPageEditor Structured Page Save & Optimistic Locking', () => {
     fireEvent.click(saveButtons[0]);
 
     await waitFor(() => {
-      expect(screen.getByText(/Page Conflict Detected/i)).toBeInTheDocument();
-      expect(screen.getByText(/Another administrator or process modified this page/i)).toBeInTheDocument();
+      expect(capturedPutPayload).not.toBeNull();
+      expect(screen.getAllByText(/All Changes Saved/i).length).toBeGreaterThan(0);
     });
+
+    expect(screen.queryByText(/Page Conflict Detected/i)).not.toBeInTheDocument();
+    expect(screen.queryByText(/Another administrator or process modified this page/i)).not.toBeInTheDocument();
+  });
+
+  it('does not offer the Load Starter Template button', () => {
+    server.use(
+      http.get('*/api/pages', () => HttpResponse.json([structuredPage])),
+      http.get('*/api/admin/pages/10/items', () => HttpResponse.json({ items: [] })),
+      http.get('*/api/admin/pages/10/categories', () => HttpResponse.json({ categories: [] }))
+    );
+
+    renderWithProviders(
+      <UnifiedPageEditor
+        page={structuredPage as any}
+        isStandalone={true}
+      />
+    );
+
+    expect(screen.queryByText(/Starter Template/i)).not.toBeInTheDocument();
   });
 });

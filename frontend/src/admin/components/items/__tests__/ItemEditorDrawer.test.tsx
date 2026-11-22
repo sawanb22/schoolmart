@@ -101,24 +101,14 @@ describe('ItemEditorDrawer Component', () => {
     });
   });
 
-  it('displays ConflictDialog on HTTP 409 version_conflict and reloads latest when requested', async () => {
-    const remoteItem = {
-      ...baseItem,
-      version: 5,
-      card: {
-        ...baseItem.card,
-        title: 'Robotics Lab (Updated by Another Admin)',
-        detailContent: 'Remote edited equipment list',
-      },
-    };
+  it('shows the server error and no conflict dialog when a save is rejected', async () => {
+    const onSavedMock = vi.fn();
+    vi.spyOn(console, 'error').mockImplementation(() => {});
 
     server.use(
       http.patch('*/api/admin/pages/1/items/42', () => {
         return HttpResponse.json(
-          {
-            error: 'version_conflict',
-            current: remoteItem,
-          },
+          { error: 'slug_taken', message: 'Slug collision' },
           { status: 409 }
         );
       })
@@ -132,61 +122,31 @@ describe('ItemEditorDrawer Component', () => {
         item={baseItem}
         isOpen={true}
         onClose={vi.fn()}
-        onSaved={vi.fn()}
+        onSaved={onSavedMock}
       />
     );
 
-    // Click Save to trigger 409
-    const saveBtn = screen.getByRole('button', { name: /Save Changes/i });
-    fireEvent.click(saveBtn);
+    fireEvent.click(screen.getByRole('button', { name: /Save Changes/i }));
 
     await waitFor(() => {
-      expect(screen.getByText(/Version Conflict on/i)).toBeInTheDocument();
-      expect(screen.getByText(/Reload Latest/i)).toBeInTheDocument();
-      expect(screen.getByText(/Overwrite With Mine/i)).toBeInTheDocument();
+      expect(screen.getByText('slug_taken')).toBeInTheDocument();
     });
 
-    // Click "Reload Latest"
-    const reloadBtn = screen.getByText(/Reload Latest/i);
-    fireEvent.click(reloadBtn);
-
-    await waitFor(() => {
-      // Conflict dialog should close and card title should be updated to remote title
-      expect(screen.queryByText(/Version Conflict on/i)).not.toBeInTheDocument();
-      expect(screen.getByRole('heading', { level: 2, name: /Edit: Robotics Lab \(Updated by Another Admin\)/i })).toBeInTheDocument();
-    });
+    expect(screen.queryByText(/Version Conflict/i)).not.toBeInTheDocument();
+    expect(screen.queryByText(/Overwrite With Mine/i)).not.toBeInTheDocument();
+    expect(onSavedMock).not.toHaveBeenCalled();
   });
 
-  it('resends with remote version when Overwrite With Mine is confirmed in ConflictDialog', async () => {
+  it('saves with an out-of-date item version without any conflict prompt (last write wins)', async () => {
     let patchCount = 0;
-    let lastSentVersion: number | null = null;
-    const remoteItem = {
-      ...baseItem,
-      version: 7,
-      card: {
-        ...baseItem.card,
-        title: 'Concurrent Remote Title',
-      },
-    };
+    const onSavedMock = vi.fn();
 
     server.use(
       http.patch('*/api/admin/pages/1/items/42', async ({ request }) => {
         patchCount++;
         const body: any = await request.json();
-        lastSentVersion = body.version;
-
-        if (patchCount === 1) {
-          return HttpResponse.json(
-            { error: 'version_conflict', current: remoteItem },
-            { status: 409 }
-          );
-        }
-
-        return HttpResponse.json({
-          id: 42,
-          version: 8,
-          card: body.card,
-        });
+        // Server ignores the version and applies the write
+        return HttpResponse.json({ id: 42, version: 9, card: body.card });
       })
     );
 
@@ -195,32 +155,19 @@ describe('ItemEditorDrawer Component', () => {
         pageId={1}
         pageSlug="labs"
         collection="cards"
-        item={baseItem}
+        item={{ ...baseItem, version: 1 }}
         isOpen={true}
         onClose={vi.fn()}
-        onSaved={vi.fn()}
+        onSaved={onSavedMock}
       />
     );
 
-    // Initial save (triggers 409)
-    const saveBtn = screen.getByRole('button', { name: /Save Changes/i });
-    fireEvent.click(saveBtn);
+    fireEvent.click(screen.getByRole('button', { name: /Save Changes/i }));
 
     await waitFor(() => {
-      expect(screen.getByText(/Version Conflict on/i)).toBeInTheDocument();
+      expect(patchCount).toBe(1);
+      expect(onSavedMock).toHaveBeenCalled();
     });
-
-    // Click "Overwrite With Mine"
-    const overwriteBtn = screen.getByText(/Overwrite With Mine/i);
-    fireEvent.click(overwriteBtn);
-
-    // Conflict dialog asks for confirmation
-    const confirmOverwriteBtn = screen.getByRole('button', { name: /Yes, Confirm Overwrite/i });
-    fireEvent.click(confirmOverwriteBtn);
-
-    await waitFor(() => {
-      expect(patchCount).toBe(2);
-      expect(lastSentVersion).toBe(7); // Used remote version to overwrite
-    });
+    expect(screen.queryByText(/Version Conflict/i)).not.toBeInTheDocument();
   });
 });

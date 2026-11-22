@@ -82,13 +82,13 @@ export const ItemInputSchema = z.object({
   });
 
 /**
- * Schema for partially updating an item. Requires an integer version for optimistic locking.
+ * Schema for partially updating an item. `version` is optional and ignored by the server
+ * (last write wins); older clients may still send it.
  */
 export const ItemPatchSchema = z.object({
   version: z.number({
-    required_error: 'version is required for optimistic concurrency locking',
     invalid_type_error: 'version must be an integer',
-  }).int('version must be an integer'),
+  }).int('version must be an integer').optional(),
   collection: z.enum(COLLECTIONS).optional(),
   title: z.string().min(1, 'Title cannot be empty').optional(),
   slug: z.string().optional().nullable(),
