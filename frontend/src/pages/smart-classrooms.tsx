@@ -4,11 +4,13 @@ import { ArrowRight, CheckCircle, Send, Sparkles } from 'lucide-react';
 import { usePagination } from '@/hooks/usePagination';
 import PaginationControl from '@/components/common/PaginationControl';
 import api from '@/api/client';
-import { usePageData } from '@/hooks/usePageData';
+import { useHubLegacy } from '@/hooks/useHubLegacy';
 import { MediaImage } from '@/components/ui/media-image';
 import { PageCardGridSkeleton } from '@/components/ui/page-skeleton';
 import { SafeRichText } from '@/components/common/RichTextContent';
 import { resolveCtaButtonStyles } from '@/lib/ctaStyles';
+import Seo from '@/components/seo/Seo';
+import usePageSeo from '@/hooks/usePageSeo';
 
 interface CardItem {
   title: string;
@@ -20,7 +22,8 @@ interface CardItem {
 const PAGE_SIZE = 12;
 
 const SmartClassrooms = () => {
-  const { data, loading } = usePageData('smart-classrooms');
+  const { data, loading } = useHubLegacy('smart-classrooms');
+  const seoProps = usePageSeo(data, 'Smart Classrooms', undefined, '/smart-classrooms');
 
   const heroTitle = data.heroTitle || 'Smart Classrooms';
   const heroSubtitle = data.heroSubtitle || '';
@@ -110,7 +113,12 @@ const SmartClassrooms = () => {
   };
 
   if (loading) {
-    return <PageCardGridSkeleton cardCount={4} />;
+    return (
+      <>
+        <Seo {...seoProps} />
+        <PageCardGridSkeleton cardCount={4} />
+      </>
+    );
   }
 
   return (
@@ -118,6 +126,7 @@ const SmartClassrooms = () => {
       className={`min-h-screen bg-white ${bodyFontClass} ${headingFontClass}`}
       style={{ '--primary-color': primaryColor } as React.CSSProperties}
     >
+      <Seo {...seoProps} />
       {/* Hero Section */}
       {!styles.hideHero && !data.hideHero && (
         <section className={`mx-3 sm:mx-6 lg:mx-8 rounded-[2rem] py-6 md:py-8 overflow-hidden relative mt-4 mb-2 ${heroBgClass}`}>

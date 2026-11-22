@@ -296,6 +296,14 @@ export function resolvePageCategory(
     const cSlug = slugify(rawCard.category);
     if (cSlug) return cSlug;
   }
+  if (rawCard && Array.isArray(rawCard.categories) && rawCard.categories.length > 0) {
+    for (const c of rawCard.categories) {
+      if (typeof c === 'string' && c.trim()) {
+        const cSlug = slugify(c);
+        if (cSlug) return cSlug;
+      }
+    }
+  }
   if (rawCard && typeof rawCard.objective === 'string' && rawCard.objective.trim()) {
     const oSlug = slugify(rawCard.objective);
     if (oSlug) return oSlug;

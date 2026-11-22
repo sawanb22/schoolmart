@@ -5,6 +5,8 @@ import { ArrowRight } from 'lucide-react';
 import { usePageData } from '@/hooks/usePageData';
 import MediaImage from '@/components/ui/media-image';
 import Shop from '@/pages/shop';
+import Seo from '@/components/seo/Seo';
+import usePageSeo from '@/hooks/usePageSeo';
 
 interface FurnitureStyles {
   headingFont?: 'playfair' | 'grotesk' | 'poppins' | 'opensans' | 'system';
@@ -79,8 +81,11 @@ const Furniture = () => {
     return () => ctx.revert();
   }, [loading]);
 
+  const seoProps = usePageSeo(data, 'Institutional Furniture Solutions', undefined, '/furniture');
+
   return (
     <main className={`min-h-screen bg-white ${bodyFontClass}`}>
+      <Seo {...seoProps} />
       {/* Hero Section - 100% Database Driven */}
       {!data.hideHero && (
         <section

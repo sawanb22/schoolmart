@@ -3,6 +3,7 @@ import { Link, useNavigate, useSearchParams, useLocation } from 'react-router-do
 import { Eye, EyeOff, Mail, Lock, User, Phone, Building2, ArrowRight, CheckCircle, Shield } from 'lucide-react';
 import api from '@/api/client';
 import { setUserSession } from '@/lib/auth-session';
+import Seo from '@/components/seo/Seo';
 
 type Step = 'form' | 'otp' | 'done';
 
@@ -103,6 +104,7 @@ const Registration = () => {
 
   return (
     <main className="min-h-screen bg-[#f0f4f8] flex items-center justify-center py-12 px-4">
+      <Seo title="Register" noindex={true} path="/register" />
       <div className="w-full max-w-md">
         {/* Logo */}
         <div className="text-center mb-8">

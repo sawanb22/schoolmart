@@ -19,7 +19,7 @@ import {
   ChevronRight,
   Camera,
 } from 'lucide-react';
-import { usePageData } from '@/hooks/usePageData';
+import { useHubLegacy } from '@/hooks/useHubLegacy';
 import api from '@/api/client';
 import LoginPromptModal from '@/components/login-prompt-modal';
 import MediaImage from '@/components/ui/media-image';
@@ -150,7 +150,7 @@ const resolveImage = (value?: string) => resolveMediaUrl(value);
 const EMPTY_FORM = { name: '', email: '', phone: '', institution: '', message: '' };
 
 export default function CollegesUniversitiesForSale() {
-  const { data, loading } = usePageData('colleges-universities-for-sale');
+  const { data, loading } = useHubLegacy('colleges-universities-for-sale');
   const [search, setSearch] = useState('');
   const [view, setView] = useState<'grid' | 'list'>('grid');
   const [sort, setSort] = useState<'relevance' | 'newest' | 'price'>('relevance');

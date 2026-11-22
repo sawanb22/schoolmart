@@ -1,0 +1,8 @@
+{
+  "title": "Edge Featured Empty",
+  "slug": "edge-featured-empty",
+  "template": "solution-hub",
+  "published": true,
+  "content": null,
+  "pageData": "{\"heroTitle\":\"Featured Empty\",\"featured\":{},\"cards\":[{\"title\":\"Standard Lab\",\"description\":\"Standard card\",\"slug\":\"standard-lab\"}]}"
+}

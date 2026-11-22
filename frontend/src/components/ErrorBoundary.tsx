@@ -10,10 +10,10 @@ interface State {
   isChunkError: boolean;
 }
 
-const CHUNK_RELOAD_KEY = 'cm_chunk_reload_ts';
-const RELOAD_DEBOUNCE_MS = 3000;
+export const CHUNK_RELOAD_KEY = 'cm_chunk_reload_ts';
+export const RELOAD_DEBOUNCE_MS = 30000;
 
-function isChunkLoadError(error: Error | null): boolean {
+export function isChunkLoadError(error: Error | null): boolean {
   if (!error) return false;
   const msg = String(error.message || '');
   return (
@@ -43,32 +43,32 @@ export class ErrorBoundary extends Component<Props, State> {
   public componentDidCatch(error: Error, errorInfo: ErrorInfo) {
     console.error('Uncaught error in React ErrorBoundary:', error, errorInfo);
 
-    // Auto-heal chunk errors on stale deployments
+    // Auto-heal chunk errors on stale deployments: at most 1 reload per 30s
     if (isChunkLoadError(error)) {
-      const lastReload = parseInt(sessionStorage.getItem(CHUNK_RELOAD_KEY) || '0', 10);
-      const now = Date.now();
-      if (now - lastReload > RELOAD_DEBOUNCE_MS) {
-        sessionStorage.setItem(CHUNK_RELOAD_KEY, String(now));
-        window.location.reload();
+      try {
+        const lastReload = parseInt(sessionStorage.getItem(CHUNK_RELOAD_KEY) || '0', 10);
+        const now = Date.now();
+        if (now - lastReload > RELOAD_DEBOUNCE_MS) {
+          sessionStorage.setItem(CHUNK_RELOAD_KEY, String(now));
+          window.location.reload();
+        }
+      } catch {
+        // Ignore sessionStorage or reload exceptions in restricted environments
       }
     }
   }
 
+  private handleReload = () => {
+    try {
+      window.location.reload();
+    } catch {
+      // ignore
+    }
+  };
+
   public render() {
     if (this.state.hasError) {
-      if (this.state.isChunkError) {
-        // Transparent auto-reload on deployment chunk changes: silently reload without intrusive prompt
-        try {
-          window.location.reload();
-        } catch {
-          // Ignore reload error in SSR/non-browser contexts
-        }
-        return (
-          <div className="min-h-screen flex items-center justify-center bg-white">
-            <div className="w-8 h-8 border-4 border-cm-blue border-t-transparent rounded-full animate-spin" />
-          </div>
-        );
-      }
+      const isDev = Boolean(import.meta.env?.DEV);
 
       return (
         <div className="min-h-screen flex flex-col items-center justify-center p-6 bg-slate-50 text-slate-800 text-center">
@@ -77,11 +77,16 @@ export class ErrorBoundary extends Component<Props, State> {
             <p className="text-sm text-slate-500 mb-6">
               An unexpected error occurred while rendering the page.
             </p>
-            <div className="bg-slate-100 p-3 rounded-lg text-left text-xs font-mono text-slate-700 overflow-auto max-h-32 mb-6">
-              {this.state.error?.message || 'Unknown error'}
-            </div>
+            {isDev && this.state.error?.message && (
+              <div
+                data-testid="error-message"
+                className="bg-slate-100 p-3 rounded-lg text-left text-xs font-mono text-slate-700 overflow-auto max-h-32 mb-6"
+              >
+                {this.state.error.message}
+              </div>
+            )}
             <button
-              onClick={() => window.location.reload()}
+              onClick={this.handleReload}
               className="px-6 py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-xl text-sm transition-colors shadow-md cursor-pointer"
             >
               Reload Page
@@ -96,4 +101,3 @@ export class ErrorBoundary extends Component<Props, State> {
 }
 
 export default ErrorBoundary;
-

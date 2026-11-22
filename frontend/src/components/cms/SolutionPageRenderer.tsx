@@ -4,13 +4,15 @@ import { Link } from 'react-router-dom';
 import { Heart, Check, Trash2, ArrowRight } from 'lucide-react';
 import { usePagination } from '@/hooks/usePagination';
 import PaginationControl from '@/components/common/PaginationControl';
-import { usePageData } from '@/hooks/usePageData';
+import { useHubLegacy } from '@/hooks/useHubLegacy';
 import { useDesignWishlist } from '@/hooks/useDesignWishlist';
 import LoginPromptModal from '@/components/login-prompt-modal';
 import { MediaImage } from '@/components/ui/media-image';
 import { SportsInfraSkeleton } from '@/components/ui/page-skeleton';
 import { SafeRichText } from '@/components/common/RichTextContent';
 import { resolveCtaButtonStyles } from '@/lib/ctaStyles';
+import Seo from '@/components/seo/Seo';
+import usePageSeo from '@/hooks/usePageSeo';
 
 export interface PartnerLogoItem {
   name: string;
@@ -88,6 +90,10 @@ export function SolutionCard({
             <MediaImage
               src={card.image}
               alt={card.title}
+              width={480}
+              height={230}
+              widths={[480, 960]}
+              sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
               className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
             />
           )}
@@ -161,9 +167,10 @@ const PAGE_SIZE = 12;
 const SolutionPageRenderer = ({ slug = '' }: SolutionPageRendererProps) => {
   const heroRef = useRef<HTMLDivElement>(null);
   const cardsRef = useRef<HTMLDivElement>(null);
-  const { data, loading } = usePageData(slug);
+  const { data, loading } = useHubLegacy(slug);
   const { isSaved, isPending, add, remove, showLoginPrompt, setShowLoginPrompt } = useDesignWishlist(slug);
   const [selectedCategory, setSelectedCategory] = useState('');
+  const seoProps = usePageSeo(data, slug, undefined, slug ? `/${slug}` : undefined);
 
   const styles: SolutionPageStyles = {
     headingFont: 'poppins',
@@ -323,13 +330,19 @@ const SolutionPageRenderer = ({ slug = '' }: SolutionPageRendererProps) => {
     card.href?.trim() || `/${slug}/${card.slug?.trim() || slugifySolutionItem(card.title)}`;
 
   if (loading) {
-    return <SportsInfraSkeleton />;
+    return (
+      <>
+        <Seo {...seoProps} />
+        <SportsInfraSkeleton />
+      </>
+    );
   }
 
   const showCta = !data.hideCta && (Boolean(data.ctaTitle) || Boolean(data.ctaButtonLabel));
 
   return (
     <main className={`min-h-screen bg-white ${bodyFontClass} ${showCta ? 'pb-0' : 'pb-16'}`}>
+      <Seo {...seoProps} />
       <LoginPromptModal open={showLoginPrompt} onClose={() => setShowLoginPrompt(false)} />
 
       {/* Hero Section - 100% Database Driven */}
@@ -376,6 +389,13 @@ const SolutionPageRenderer = ({ slug = '' }: SolutionPageRendererProps) => {
                   <MediaImage
                     src={data.heroImage}
                     alt={data.heroTitle || ''}
+                    width={960}
+                    height={320}
+                    widths={[480, 960, 1600]}
+                    sizes="(max-width: 768px) 100vw, 960px"
+                    priority
+                    fetchPriority="high"
+                    loading="eager"
                     className="w-full h-[280px] sm:h-[320px] object-cover"
                   />
                 </div>
@@ -457,6 +477,13 @@ const SolutionPageRenderer = ({ slug = '' }: SolutionPageRendererProps) => {
                   <MediaImage
                     src={data.heroImage}
                     alt={data.heroTitle || ''}
+                    width={960}
+                    height={300}
+                    widths={[480, 960, 1600]}
+                    sizes="(max-width: 1024px) 100vw, 50vw"
+                    priority
+                    fetchPriority="high"
+                    loading="eager"
                     className="rounded-2xl shadow-xl w-full h-[260px] sm:h-[300px] object-cover border-2 border-white/20 relative z-10"
                   />
                 </div>

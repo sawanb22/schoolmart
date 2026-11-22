@@ -1,5 +1,4 @@
 import { useEffect, useRef } from 'react';
-import gsap from 'gsap';
 import { Link } from 'react-router-dom';
 import {
   Ruler,
@@ -102,19 +101,32 @@ const CategoryBar = () => {
     if (hasAnimatedRef.current) return;
     hasAnimatedRef.current = true;
 
-    const ctx = gsap.context(() => {
-      gsap.fromTo(
-        containerRef.current,
-        { opacity: 0 },
-        { opacity: 1, duration: 0.4, delay: 0.1, ease: 'power2.out' }
-      );
-      gsap.fromTo(
-        iconsRef.current?.children || [],
-        { y: 40, scale: 0.5, opacity: 0 },
-        { y: 0, scale: 1, opacity: 1, duration: 0.5, stagger: 0.08, delay: 0.2, ease: 'back.out(1.7)' }
-      );
+    if (typeof window !== 'undefined' && window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      return;
+    }
+
+    let ctx: any;
+    let cancelled = false;
+
+    import('gsap').then(({ default: gsap }) => {
+      if (cancelled) return;
+      ctx = gsap.context(() => {
+        gsap.fromTo(
+          containerRef.current,
+          { opacity: 0.8 },
+          { opacity: 1, duration: 0.3, delay: 0.05, ease: 'power2.out' }
+        );
+        gsap.fromTo(
+          iconsRef.current?.children || [],
+          { y: 10, scale: 0.95, opacity: 0.8 },
+          { y: 0, scale: 1, opacity: 1, duration: 0.4, stagger: 0.04, delay: 0.05, ease: 'back.out(1.7)' }
+        );
+      });
     });
-    return () => ctx.revert();
+    return () => {
+      cancelled = true;
+      ctx?.revert();
+    };
   }, [loading, categories.length]);
 
   if (loading) {

@@ -1,0 +1,8 @@
+{
+  "title": "Edge Category Mix",
+  "slug": "edge-category-mix",
+  "template": "solution-hub",
+  "published": true,
+  "content": null,
+  "pageData": "{\"heroTitle\":\"Category Mix Test\",\"cards\":[{\"title\":\"Card Single Category\",\"description\":\"String category\",\"category\":\"Robotics\"},{\"title\":\"Card Multi Category\",\"description\":\"Array categories\",\"categories\":[\"Robotics\",\"AI\",\"Innovation\"]}]}"
+}

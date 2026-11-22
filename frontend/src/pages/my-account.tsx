@@ -5,6 +5,7 @@ import api from '@/api/client';
 import { resolveMediaUrl } from '@/lib/media-url';
 import { useWishlist } from '@/contexts/WishlistContext';
 import { getUserSession, isUserLoggedIn, clearUserSession, setUserSession, getUserToken } from '@/lib/auth-session';
+import Seo from '@/components/seo/Seo';
 
 interface Address {
   id: number;
@@ -177,6 +178,7 @@ const MyAccount = () => {
   if (!isLoggedIn) {
     return (
       <main className="min-h-screen bg-cm-gray flex items-center justify-center py-4">
+        <Seo title="My Account" noindex={true} path="/my-account" />
         <div className="bg-white rounded-2xl p-8 shadow-card max-w-md w-full mx-4 text-center">
           <div className="w-20 h-20 mx-auto mb-6 rounded-full bg-cm-blue/10 flex items-center justify-center">
             <User className="w-10 h-10 text-cm-blue" />
@@ -202,6 +204,7 @@ const MyAccount = () => {
 
   return (
     <main className="min-h-screen bg-cm-gray py-8">
+      <Seo title="My Account" noindex={true} path="/my-account" />
       <div className="w-full mx-auto px-2 sm:px-4">
         <h1 className="text-3xl font-bold text-cm-blue-dark mb-8">My Account</h1>
 

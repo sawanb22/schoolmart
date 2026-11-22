@@ -1,23 +1,16 @@
-import { useEffect, useState } from 'react';
-import { Link, useParams } from 'react-router-dom';
-import api from '@/api/client';
-import { usePageData } from '@/hooks/usePageData';
+import { Link, Navigate, useParams } from 'react-router-dom';
+import { useResolvePath } from '@/hooks/useResolvePath';
+import { useHubItem } from '@/hooks/useHubItem';
+import { itemToCard } from '@/lib/item-to-card';
+import { buildArticleViewModel } from '@/components/cms/article-view-model';
 import GenericPageRenderer, { type GenericPageData } from '@/components/cms/GenericPageRenderer';
+import Seo from '@/components/seo/Seo';
 
 export interface UniversalArticleDetailProps {
   hubSlug: string;
   hubTitle: string;
   defaultCtaHref?: string;
   defaultCtaLabel?: string;
-}
-
-function slugify(text: string): string {
-  if (!text) return '';
-  return text
-    .toLowerCase()
-    .trim()
-    .replace(/[^a-z0-9]+/g, '-')
-    .replace(/^-+|-+$/g, '');
 }
 
 export default function UniversalArticleDetail({
@@ -48,73 +41,24 @@ export default function UniversalArticleDetail({
   }
   const normalizedSlug = decodedSlug.trim().toLowerCase().replace(/^\/+|\/+$/g, '');
 
-  // 1. Check if a dedicated standalone page exists in the database
-  const [standalonePage, setStandalonePage] = useState<any>(null);
-  const [checkingStandalone, setCheckingStandalone] = useState(true);
+  const path = `/${hubSlug}/${normalizedSlug}`;
+  const { data: resolveResult, isLoading: isResolving } = useResolvePath(normalizedSlug ? path : '');
 
-  useEffect(() => {
-    let isMounted = true;
-    const checkDedicatedPage = async () => {
-      try {
-        // Try slug: `${hubSlug}/${normalizedSlug}` or `${normalizedSlug}`
-        const res = await api.get(`/pages/${hubSlug}-${normalizedSlug}`).catch(() => null)
-          || await api.get(`/pages/${normalizedSlug}`).catch(() => null);
-
-        if (isMounted && res?.data && res.data.published) {
-          setStandalonePage(res.data);
-        }
-      } catch {
-        // Fallback to hub card data
-      } finally {
-        if (isMounted) setCheckingStandalone(false);
-      }
-    };
-
-    if (normalizedSlug) {
-      checkDedicatedPage();
-    } else {
-      setCheckingStandalone(false);
-    }
-
-    return () => {
-      isMounted = false;
-    };
-  }, [hubSlug, normalizedSlug]);
-
-  // 2. Fetch the hub's data
-  const { data: hubData, loading: hubLoading } = usePageData<any>(hubSlug);
+  const itemSlugToQuery =
+    resolveResult?.type === 'item' && resolveResult.itemSlug ? resolveResult.itemSlug : '';
+  const { data: hubItemData, isLoading: isItemLoading } = useHubItem(hubSlug, itemSlugToQuery);
 
   const backLink = {
     label: `Back to ${hubTitle}`,
     href: `/${hubSlug}`,
   };
 
-  // If standalone page exists in DB, render it
-  if (standalonePage) {
-    let parsedData: GenericPageData = {};
-    try {
-      parsedData = typeof standalonePage.pageData === 'string'
-        ? JSON.parse(standalonePage.pageData)
-        : (standalonePage.pageData || {});
-    } catch {
-      parsedData = {};
-    }
-    return (
-      <GenericPageRenderer
-        page={{
-          id: standalonePage.id,
-          title: standalonePage.title,
-          slug: standalonePage.slug,
-          template: standalonePage.template || 'article',
-        }}
-        pageData={parsedData}
-        backLink={backLink}
-      />
-    );
-  }
+  // 1. Loading state while path is resolving or item is loading
+  const isLoading =
+    isResolving ||
+    (resolveResult?.type === 'item' && Boolean(resolveResult.itemSlug) && isItemLoading);
 
-  // Loading skeleton while checking
-  if ((hubLoading || checkingStandalone) && !standalonePage) {
+  if (isLoading) {
     return (
       <main className="min-h-screen bg-slate-50/60 py-8 sm:py-12 animate-pulse">
         <div className="mx-auto max-w-5xl px-4 sm:px-6 space-y-6">
@@ -133,128 +77,80 @@ export default function UniversalArticleDetail({
     );
   }
 
-  // 3. Resolve article from hub cards or featured
-  const cards: any[] = Array.isArray(hubData?.cards) ? hubData.cards.filter(Boolean) : [];
-  const moreCards: any[] = Array.isArray(hubData?.moreCards) ? hubData.moreCards.filter(Boolean) : [];
-  const featured = hubData?.featured && typeof hubData.featured === 'object' ? hubData.featured : null;
-
-  const allArticles: any[] = [
-    ...(featured && featured.title ? [featured] : []),
-    ...cards,
-    ...moreCards,
-  ];
-
-  const resolvedArticle = allArticles.find((item: any) => {
-    if (!item || !item.title) return false;
-    const s = (item.slug || '').trim().toLowerCase().replace(/^\/+|\/+$/g, '');
-    const t = slugify(item.title || '');
-    const h = (item.href || '').trim().toLowerCase().replace(/^\/+|\/+$/g, '');
-    const hLeaf = h.split('/').pop() || '';
-    return (
-      s === normalizedSlug ||
-      t === normalizedSlug ||
-      h === normalizedSlug ||
-      hLeaf === normalizedSlug ||
-      (h && (h.endsWith('/' + normalizedSlug) || h === normalizedSlug))
-    );
-  });
-
-  if (!resolvedArticle) {
-    return (
-      <main className="min-h-[60vh] flex flex-col items-center justify-center gap-5 px-4 bg-slate-50/60">
-        <h1 className="text-3xl font-bold text-cm-blue-dark">Article not found</h1>
-        <p className="text-gray-600">That guide or article couldn't be found.</p>
-        <Link to={`/${hubSlug}`} className="btn-primary">
-          Back to {hubTitle}
-        </Link>
-      </main>
-    );
+  // 2. Redirect handling from path resolve
+  if (resolveResult?.type === 'redirect' && resolveResult.redirectTo) {
+    return <Navigate to={resolveResult.redirectTo} replace />;
   }
 
-  const category =
-    resolvedArticle.category ||
-    resolvedArticle.eyebrow ||
-    (Array.isArray(resolvedArticle.categories) ? resolvedArticle.categories[0] : null) ||
-    hubTitle;
-
-  let bodyContent = (resolvedArticle.useCustomDetail && resolvedArticle.detailContent?.trim())
-    ? resolvedArticle.detailContent
-    : (resolvedArticle.body || resolvedArticle.content || '');
-  if (!bodyContent && resolvedArticle.methodology) {
-    bodyContent = resolvedArticle.methodology;
-    if (resolvedArticle.description && resolvedArticle.description.trim() !== resolvedArticle.methodology.trim()) {
-      bodyContent = `<p class="lead text-base sm:text-lg text-slate-600 mb-6 font-medium">${resolvedArticle.description}</p>${bodyContent}`;
+  // 3. Standalone dedicated page matched in DB
+  if (resolveResult?.type === 'page' && resolveResult.page) {
+    const page = resolveResult.page;
+    let parsedData: GenericPageData = {};
+    try {
+      parsedData =
+        typeof page.pageData === 'string'
+          ? JSON.parse(page.pageData)
+          : (page.pageData as GenericPageData) || {};
+    } catch {
+      parsedData = {};
     }
-  } else if (!bodyContent && resolvedArticle.description) {
-    bodyContent = resolvedArticle.description;
+    return (
+      <GenericPageRenderer
+        page={{
+          id: page.id as number | undefined,
+          title: (page.title as string) || '',
+          slug: (page.slug as string) || normalizedSlug,
+          template: (page.template as string) || 'article',
+        }}
+        pageData={parsedData}
+        backLink={backLink}
+      />
+    );
   }
 
-  // Gracefully adapt structured deliverables if present in cloud DB
-  if (Array.isArray(resolvedArticle.deliverables) && resolvedArticle.deliverables.length > 0) {
-    const deliverablesHtml = `
-      <div class="mt-8 pt-6 border-t border-slate-200">
-        <h3 class="text-xl font-bold text-slate-900 mb-4">${resolvedArticle.deliverablesHeading || 'Key Milestones & Deliverables'}</h3>
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 not-prose">
-          ${resolvedArticle.deliverables.map((d: any, idx: number) => `
-            <div class="p-4 rounded-xl bg-slate-50 border border-slate-100">
-              <span class="text-xs font-bold text-cm-blue uppercase tracking-wider block mb-1">
-                ${d.phaseLabel || `Phase ${String(idx + 1).padStart(2, '0')}`}
-              </span>
-              <h4 class="font-bold text-slate-900 text-sm mb-1">${d.title || ''}</h4>
-              <p class="text-xs text-slate-600 leading-relaxed">${d.desc || ''}</p>
-            </div>
-          `).join('')}
-        </div>
-      </div>
-    `;
-    bodyContent = `${bodyContent}${deliverablesHtml}`;
+  // 4. Redirect from item endpoint
+  if (hubItemData && (hubItemData as any).redirectTo) {
+    return <Navigate to={(hubItemData as any).redirectTo as string} replace />;
   }
 
-  const pageData: GenericPageData = {
-    heroTitle: resolvedArticle.title,
-    category,
-    featuredImage: resolvedArticle.image || featured?.image || '',
-    beforeImages: Array.isArray(resolvedArticle.beforeImages) ? resolvedArticle.beforeImages.filter(Boolean) : [],
-    afterImages: Array.isArray(resolvedArticle.afterImages) ? resolvedArticle.afterImages.filter(Boolean) : [],
-    body: bodyContent,
-    ctaTitle:
-      resolvedArticle.ctaTitle ||
-      hubData?.ctaTitle ||
-      `Want to bring ${resolvedArticle.title.toLowerCase()} to your campus?`,
-    ctaSubtitle:
-      resolvedArticle.ctaSubtitle ||
-      hubData?.ctaSubtitle ||
-      'Talk to our team about tailored advisory, planning, and implementation.',
-    ctaButtonLabel:
-      resolvedArticle.ctaButtonLabel ||
-      hubData?.ctaButtonLabel ||
-      defaultCtaLabel,
-    ctaHref:
-      resolvedArticle.ctaButtonHref ||
-      resolvedArticle.ctaHref ||
-      hubData?.ctaButtonHref ||
-      hubData?.ctaHref ||
+  // 5. Hub item resolved
+  if (resolveResult?.type === 'item' && hubItemData && (hubItemData as any).item) {
+    const rawItem = (hubItemData as any).item;
+    const hub = (hubItemData as any).hub || {};
+    const card = itemToCard(rawItem, { includeDetail: true });
+
+    const viewModel = buildArticleViewModel(card, hub, {
+      hubSlug,
+      hubTitle,
       defaultCtaHref,
-    hideHero: false,
-    hideBody: false,
-    hideCta: Boolean(resolvedArticle.hideCta),
-  };
+      defaultCtaLabel,
+      normalizedSlug,
+    });
 
-  const editSlug = (resolvedArticle.slug || (resolvedArticle.title || '').toLowerCase().trim().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '')).replace(/^\/+|\/+$/g, '');
-  const adminEditUrl = `/admin/pages?edit=${encodeURIComponent(hubSlug)}&card=${encodeURIComponent(editSlug)}`;
-  const adminEditLabel = `Edit in ${hubTitle || 'Hub Page'}`;
+    return (
+      <GenericPageRenderer
+        page={{
+          title: card.title || '',
+          slug: normalizedSlug,
+          template: 'article',
+        }}
+        pageData={viewModel.pageData}
+        backLink={viewModel.backLink}
+        adminEditUrl={viewModel.adminEditUrl}
+        adminEditLabel={viewModel.adminEditLabel}
+      />
+    );
+  }
 
+  // 6. Not found fallback
   return (
-    <GenericPageRenderer
-      page={{
-        title: resolvedArticle.title,
-        slug: normalizedSlug,
-        template: 'article',
-      }}
-      pageData={pageData}
-      backLink={backLink}
-      adminEditUrl={adminEditUrl}
-      adminEditLabel={adminEditLabel}
-    />
+    <main className="min-h-[60vh] flex flex-col items-center justify-center gap-5 px-4 bg-slate-50/60">
+      <Seo title="Article Not Found" noindex path={`/${hubSlug}/${normalizedSlug}`} />
+      <h1 className="text-3xl font-bold text-cm-blue-dark">Article not found</h1>
+      <p className="text-gray-600">That guide or article couldn't be found.</p>
+      <Link to={`/${hubSlug}`} className="btn-primary">
+        Back to {hubTitle}
+      </Link>
+    </main>
   );
 }

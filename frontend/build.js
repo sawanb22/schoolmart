@@ -2,13 +2,13 @@ import fs from "fs";
 import path from "path";
 import { fileURLToPath } from "url";
 import { build } from "vite";
-import react from "@vitejs/plugin-react";
-import { inspectAttr } from "kimi-plugin-inspect-react";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 console.log("🚀 Starting clean frontend Vite production build...");
+
+process.env.NODE_ENV = process.env.NODE_ENV || "production";
 
 const distDir = path.resolve(__dirname, "dist");
 const assetsDir = path.join(distDir, "assets");
@@ -18,18 +18,10 @@ if (fs.existsSync(assetsDir)) {
 
 try {
   await build({
-    configFile: false,
+    configFile: path.resolve(__dirname, "vite.config.ts"),
     root: __dirname,
+    mode: "production",
     publicDir: false, // Prevent Vite from copying .htaccess and triggering sandbox EPERM
-    plugins: [inspectAttr(), react()],
-    resolve: {
-      alias: {
-        "@": path.resolve(__dirname, "./src"),
-      },
-    },
-    css: {
-      postcss: path.resolve(__dirname, "postcss.config.js"),
-    },
     build: {
       emptyOutDir: false,
     },
@@ -44,6 +36,22 @@ try {
     const srcPath = path.join(publicDir, entry);
     const destPath = path.join(distDir, entry);
     fs.cpSync(srcPath, destPath, { recursive: true, force: true });
+  }
+
+  // Explicitly copy public/.htaccess to dist/.htaccess with try/catch and error warning
+  const htaccessSrc = path.join(publicDir, ".htaccess");
+  const htaccessDest = path.join(distDir, ".htaccess");
+  try {
+    if (fs.existsSync(htaccessSrc)) {
+      fs.copyFileSync(htaccessSrc, htaccessDest);
+      console.log("📄 Copied public/.htaccess to dist/.htaccess");
+    }
+  } catch (err) {
+    console.warn(
+      "⚠️ Warning: Could not copy .htaccess to dist (permission or EPERM issue). " +
+      "Please ensure public/.htaccess is uploaded manually to your cPanel public_html directory.",
+      err
+    );
   }
 
   // Also mirror build output to root dist directory so root-based Vercel deployments find it immediately

@@ -1,0 +1,309 @@
+{
+  "activeHub": "furniture",
+  "hubs": [
+    {
+      "id": "furniture",
+      "title": "Campus Furniture",
+      "subcategories": [],
+      "totalCount": 0
+    },
+    {
+      "id": "labs",
+      "title": "Composite & Skill Labs",
+      "subcategories": [
+        "COMPUTER LAB",
+        "COMPOSITE SKILLS LAB",
+        "STEM LAB"
+      ],
+      "totalCount": 3
+    },
+    {
+      "id": "sports-infra",
+      "title": "Sports Infrastructure",
+      "subcategories": [
+        "Track & Field",
+        "Playground",
+        "Indoor Courts",
+        "Equipment",
+        "Gym Tech"
+      ],
+      "totalCount": 5
+    },
+    {
+      "id": "tech-infra",
+      "title": "Tech Infrastructure",
+      "subcategories": [
+        "Classroom Tech",
+        "Displays",
+        "Networking",
+        "Wi-Fi & Fiber",
+        "Servers & Cloud",
+        "Security"
+      ],
+      "totalCount": 4
+    },
+    {
+      "id": "libraries",
+      "title": "Libraries",
+      "subcategories": [
+        "Phygital Libraries",
+        "Reading Zones",
+        "Digital Catalogs",
+        "AR Libraries",
+        "Study Pods",
+        "Open Shelving",
+        "Audio Rooms"
+      ],
+      "totalCount": 7
+    }
+  ],
+  "items": [
+    {
+      "id": "labs-0",
+      "title": "Composite Skill Lab & Technical Workshop",
+      "description": "Multidisciplinary vocational learning spaces with carpentry, electronics workbench, IoT prototyping stations, and 3D printing.",
+      "image": "/uploads/1777103755353-COMPOSITE SKILL LAB.PNG",
+      "categories": [
+        "COMPOSITE SKILLS LAB"
+      ],
+      "slug": "composite-skill-lab",
+      "href": "/p/composite-skill-lab",
+      "hubSlug": "labs",
+      "hubTitle": "Composite & Skill Labs"
+    },
+    {
+      "id": "labs-1",
+      "title": "Next-Gen AI & High-Performance Computer Lab",
+      "description": "Ergonomic networked computing workstations configured for computational thinking, graphic coding, and CBSE cyber security curriculums.",
+      "image": "/uploads/1776969406388-Gemini_Generated_Image_nathq4nathq4nath.png",
+      "categories": [
+        "COMPUTER LAB"
+      ],
+      "slug": "ai-computer-lab",
+      "href": "/labs/ai-computer-lab",
+      "hubSlug": "labs",
+      "hubTitle": "Composite & Skill Labs"
+    },
+    {
+      "id": "labs-2",
+      "title": "Integrated STEM Discovery & Robotics Studio",
+      "description": "Hands-on maker station equipped with modular robotics test tracks, microcontroller kits, sensor matrices, and rapid prototyping tools.",
+      "image": "/uploads/1777104618774-GAMIFIED SCIENCE LAB.PNG",
+      "categories": [
+        "STEM LAB"
+      ],
+      "slug": "stem-discovery-studio",
+      "href": "/labs/stem-discovery-studio",
+      "hubSlug": "labs",
+      "hubTitle": "Composite & Skill Labs"
+    },
+    {
+      "id": "sports-infra-0",
+      "title": "IAAF Certified Synthetic Athletic Tracks & Turf",
+      "description": "All-weather polyurethane running tracks and FIFA-standard shock-pad artificial turf engineered for high durability.",
+      "image": "/uploads/1776958500100-Gemini_Generated_Image_czxn03czxn03czxn.png",
+      "categories": [
+        "Track & Field"
+      ],
+      "slug": "track-and-field-turf",
+      "href": "/sports/track-and-field-turf",
+      "hubSlug": "sports-infra",
+      "hubTitle": "Sports Infrastructure"
+    },
+    {
+      "id": "sports-infra-1",
+      "title": "Dynamic Junior School Playgrounds & Multipurpose Courts",
+      "description": "EPDM rubber safety surfacing, climbing towers, and multi-game markings designed for injury-free recess play.",
+      "image": "/uploads/1777104652290-SMART SPORTS FOR SCHOOLS.PNG",
+      "categories": [
+        "Playground"
+      ],
+      "slug": "junior-playground-courts",
+      "href": "/p/smart-sports",
+      "hubSlug": "sports-infra",
+      "hubTitle": "Sports Infrastructure"
+    },
+    {
+      "id": "sports-infra-2",
+      "title": "FIBA Certified Maple Wood & PU Indoor Sports Courts",
+      "description": "Cushioned springing system wood courts for basketball, badminton, squash, and volleyball with anti-slip polyurethane coating.",
+      "image": "/uploads/1776958500100-Gemini_Generated_Image_czxn03czxn03czxn.png",
+      "categories": [
+        "Indoor Courts"
+      ],
+      "slug": "indoor-sports-courts",
+      "href": "/sports/indoor-sports-courts",
+      "hubSlug": "sports-infra",
+      "hubTitle": "Sports Infrastructure"
+    },
+    {
+      "id": "sports-infra-3",
+      "title": "Competition Grade Sports Equipment & Gear",
+      "description": "Heavy-duty soccer goals, adjustable basketball posts, tournament volleyball poles, and institutional ball storage carts.",
+      "image": "/uploads/1777104652290-SMART SPORTS FOR SCHOOLS.PNG",
+      "categories": [
+        "Equipment"
+      ],
+      "slug": "sports-equipment-gear",
+      "href": "/sports/sports-equipment-gear",
+      "hubSlug": "sports-infra",
+      "hubTitle": "Sports Infrastructure"
+    },
+    {
+      "id": "sports-infra-4",
+      "title": "Smart Athlete Performance & Gym Tech Systems",
+      "description": "Biometric fitness testing consoles, automated timing gates, and resistance training machines configured for adolescent physical education.",
+      "image": "/uploads/1776958500100-Gemini_Generated_Image_czxn03czxn03czxn.png",
+      "categories": [
+        "Gym Tech"
+      ],
+      "slug": "gym-tech-systems",
+      "href": "/sports/gym-tech-systems",
+      "hubSlug": "sports-infra",
+      "hubTitle": "Sports Infrastructure"
+    },
+    {
+      "id": "tech-infra-0",
+      "title": "Network Infrastructure",
+      "description": "High-speed campus-wide Wi-Fi and LAN systems",
+      "image": "https://images.unsplash.com/photo-1544197150-b99a580bb7a8?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80",
+      "categories": [
+        "Classroom Tech"
+      ],
+      "slug": "network-infrastructure",
+      "href": "/tech-infra/network-infrastructure",
+      "hubSlug": "tech-infra",
+      "hubTitle": "Tech Infrastructure"
+    },
+    {
+      "id": "tech-infra-1",
+      "title": "Smart Classrooms",
+      "description": "Interactive boards, projectors, and AV systems",
+      "image": "https://images.unsplash.com/photo-1509062522246-3755977927d7?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80",
+      "categories": [
+        "Classroom Tech"
+      ],
+      "slug": "smart-classrooms",
+      "href": "/tech-infra/smart-classrooms",
+      "hubSlug": "tech-infra",
+      "hubTitle": "Tech Infrastructure"
+    },
+    {
+      "id": "tech-infra-2",
+      "title": "Data Centers",
+      "description": "Campus servers, cloud integration and data management",
+      "image": "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80",
+      "categories": [
+        "Classroom Tech"
+      ],
+      "slug": "data-centers",
+      "href": "/tech-infra/data-centers",
+      "hubSlug": "tech-infra",
+      "hubTitle": "Tech Infrastructure"
+    },
+    {
+      "id": "tech-infra-3",
+      "title": "Security Systems",
+      "description": "CCTV surveillance, access control and safety systems",
+      "image": "https://images.unsplash.com/photo-1557804506-669a67965ba0?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80",
+      "categories": [
+        "Classroom Tech"
+      ],
+      "slug": "security-systems",
+      "href": "/tech-infra/security-systems",
+      "hubSlug": "tech-infra",
+      "hubTitle": "Tech Infrastructure"
+    },
+    {
+      "id": "libraries-0",
+      "title": "Phygital Smart Library & RFID Automation",
+      "description": "Automated RFID check-in/check-out kiosks, anti-theft security gates, and digital catalog kiosks connected to school LMS.",
+      "image": "/uploads/1777103789495-LIBRARY INNOVATIONS.PNG",
+      "categories": [
+        "Phygital Libraries"
+      ],
+      "slug": "library-innovations",
+      "href": "/p/library-innovations",
+      "hubSlug": "libraries",
+      "hubTitle": "Libraries"
+    },
+    {
+      "id": "libraries-1",
+      "title": "Collaborative Reading Amphitheatres",
+      "description": "Tiered upholstered amphitheater seating and ergonomic reading nooks designed to foster quiet immersion and group discussions.",
+      "image": "/uploads/1777012622668-Gemini_Generated_Image_ngcuvengcuvengcu.png",
+      "categories": [
+        "Reading Zones"
+      ],
+      "slug": "collaborative-reading-zones",
+      "href": "/libraries/collaborative-reading-zones",
+      "hubSlug": "libraries",
+      "hubTitle": "Libraries"
+    },
+    {
+      "id": "libraries-2",
+      "title": "Cloud Digital Catalogs & Touch Terminals",
+      "description": "OPAC touch consoles enabling instant book lookup, cross-campus inter-library reservations, and digital eBook previews.",
+      "image": "/uploads/1777012622668-Gemini_Generated_Image_ngcuvengcuvengcu.png",
+      "categories": [
+        "Digital Catalogs"
+      ],
+      "slug": "digital-catalogs-terminals",
+      "href": "/libraries/digital-catalogs-terminals",
+      "hubSlug": "libraries",
+      "hubTitle": "Libraries"
+    },
+    {
+      "id": "libraries-3",
+      "title": "Augmented Reality Immersive Book Stations",
+      "description": "Interactive 3D visual projection desks where physical picture books trigger immersive animated educational models.",
+      "image": "/uploads/1777104808239-IMMERSIVE LEARNING.PNG",
+      "categories": [
+        "AR Libraries"
+      ],
+      "slug": "ar-libraries-experience",
+      "href": "/libraries/ar-libraries-experience",
+      "hubSlug": "libraries",
+      "hubTitle": "Libraries"
+    },
+    {
+      "id": "libraries-4",
+      "title": "Acoustic Focus & Individual Study Pods",
+      "description": "Sound-dampening single and dual study pods equipped with task lighting, universal power sockets, and ergonomic seating.",
+      "image": "/uploads/1777012622668-Gemini_Generated_Image_ngcuvengcuvengcu.png",
+      "categories": [
+        "Study Pods"
+      ],
+      "slug": "acoustic-study-pods",
+      "href": "/libraries/acoustic-study-pods",
+      "hubSlug": "libraries",
+      "hubTitle": "Libraries"
+    },
+    {
+      "id": "libraries-5",
+      "title": "Curved Modular Open Shelving Displays",
+      "description": "Double-sided powder-coated metal book stacks with beechwood end panels and child-height accessible curved perimeter display runs.",
+      "image": "/uploads/1777012622668-Gemini_Generated_Image_ngcuvengcuvengcu.png",
+      "categories": [
+        "Open Shelving"
+      ],
+      "slug": "curved-open-shelving",
+      "href": "/libraries/curved-open-shelving",
+      "hubSlug": "libraries",
+      "hubTitle": "Libraries"
+    },
+    {
+      "id": "libraries-6",
+      "title": "Audio Recording & Audiobook Studio Rooms",
+      "description": "Soundproofed media listening booths and podcast recording stations designed for student storytelling and language acquisition.",
+      "image": "/uploads/1777272882057-SMART MUSIC ROOMS [ PROFESSIONAL ].PNG",
+      "categories": [
+        "Audio Rooms"
+      ],
+      "slug": "audio-listening-rooms",
+      "href": "/libraries/audio-listening-rooms",
+      "hubSlug": "libraries",
+      "hubTitle": "Libraries"
+    }
+  ]
+}

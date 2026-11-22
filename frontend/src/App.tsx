@@ -1,10 +1,12 @@
 import { BrowserRouter, Routes, Route, useLocation, useParams, Navigate } from 'react-router-dom';
-import { Suspense, useEffect, useState } from 'react';
+import { Suspense, useEffect } from 'react';
+import { QueryClientProvider } from '@tanstack/react-query';
+import { queryClient } from '@/lib/query-client';
 import { lazy } from '@/lib/lazy-with-retry';
 import { SiteContentProvider } from '@/contexts/SiteContentContext';
 import { WishlistProvider } from '@/contexts/WishlistContext';
 import { PageCardGridSkeleton } from '@/components/ui/page-skeleton';
-import api from '@/api/client';
+import { useResolvePath } from '@/hooks/useResolvePath';
 
 // Layout
 import TopBar from '@/components/layout/topbar';
@@ -82,7 +84,15 @@ function PageLoader() {
   );
 }
 
-function Layout({ children }: { children: React.ReactNode }) {
+export function Layout({
+  children,
+  showCategoryBar = true,
+  showBreadcrumb = true,
+}: {
+  children: React.ReactNode;
+  showCategoryBar?: boolean;
+  showBreadcrumb?: boolean;
+}) {
   const location = useLocation();
   if (!location.pathname.startsWith('/admin') && location.pathname !== location.pathname.toLowerCase()) {
     return <Navigate to={location.pathname.toLowerCase() + location.search} replace />;
@@ -93,81 +103,36 @@ function Layout({ children }: { children: React.ReactNode }) {
     <div className={`min-h-screen flex flex-col ${isAuthPage ? 'auth-page-shell' : ''}`}>
       <TopBar />
       <Header />
-      <CategoryBar />
-      <BreadcrumbBar />
-      <main className="flex-1">{children}</main>
+      {showCategoryBar && <CategoryBar />}
+      {showBreadcrumb && <BreadcrumbBar />}
+      <main className="flex-1">
+        <Suspense fallback={<PageCardGridSkeleton cardCount={6} />}>
+          {children}
+        </Suspense>
+      </main>
       <Footer />
     </div>
   );
 }
 
-const DynamicPageRoute = () => {
+export const DynamicPageRoute = () => {
   const { slug } = useParams();
-  const [pageStatus, setPageStatus] = useState<number>(0);
-  const [pageRecord, setPageRecord] = useState<any>(null);
+  const path = slug ? `/${slug}` : '';
+  const { data: resolveResult, isLoading } = useResolvePath(path);
 
-  useEffect(() => {
-    const verifyPage = async () => {
-      try {
-        let res: any;
-        try {
-          res = await api.get(`/pages/${slug}`);
-        } catch (firstErr: any) {
-          if (firstErr.response?.status === 404 && slug) {
-            let found = false;
-            if (!slug.startsWith('guide-')) {
-              try {
-                res = await api.get(`/pages/guide-${slug}`);
-                found = true;
-              } catch (guideErr: any) {
-                if (guideErr.response?.status !== 404) throw guideErr;
-              }
-            }
-            if (!found && !slug.startsWith('environment-')) {
-              try {
-                res = await api.get(`/pages/environment-${slug}`);
-                found = true;
-              } catch (envErr: any) {
-                if (envErr.response?.status !== 404) throw envErr;
-              }
-            }
-            if (!found && !slug.startsWith('resource-')) {
-              try {
-                res = await api.get(`/pages/resource-${slug}`);
-                found = true;
-              } catch (resErr: any) {
-                if (resErr.response?.status !== 404) throw resErr;
-              }
-            }
-            if (!found) {
-              throw firstErr;
-            }
-          } else {
-            throw firstErr;
-          }
-        }
-        if (!res) {
-          setPageStatus(404);
-          return;
-        }
-        const data = res.data;
-        if (!data.published) {
-          setPageStatus(404);
-        } else {
-          setPageRecord(data);
-          setPageStatus(200);
-        }
-      } catch (err: any) {
-        setPageStatus(err.response?.status === 404 ? 404 : 500);
-      }
-    };
-    verifyPage();
-  }, [slug]);
+  if (isLoading) return <PageCardGridSkeleton cardCount={6} />;
 
-  if (pageStatus === 0) return <PageCardGridSkeleton cardCount={6} />;
-  if (pageStatus === 404) return <NotFound />;
+  if (resolveResult?.type === 'redirect' && resolveResult.redirectTo) {
+    return <Navigate to={resolveResult.redirectTo} replace />;
+  }
 
-  const templateId = pageRecord?.template;
+  if (!resolveResult || resolveResult.type !== 'page' || !resolveResult.page) {
+    return <NotFound />;
+  }
+
+  const pageRecord = resolveResult.page;
+  const resolvedSlug = resolveResult.slug || (pageRecord.slug as string) || slug || '';
+  const templateId = (resolveResult.template || pageRecord.template) as string | undefined;
 
   // Resolve existing template component if specified (with alias normalization)
   const resolvedTemplate = templateId
@@ -177,7 +142,7 @@ const DynamicPageRoute = () => {
        || (templateId === 'library-products' ? PageTemplates['libraries'] : null)
        || (templateId === 'sports-products' ? PageTemplates['sports-infra'] : null)
        || (templateId === 'tech-infra-products' ? PageTemplates['tech-infra'] : null)
-       || (templateId === 'home' || slug === 'home' ? Home : null))
+       || (templateId === 'home' || resolvedSlug === 'home' ? Home : null))
     : null;
 
   if (resolvedTemplate) {
@@ -187,21 +152,24 @@ const DynamicPageRoute = () => {
 
   // Route by templateId for dynamically created pages
   if (templateId === 'solution-hub') {
-    return <SolutionPageRenderer slug={slug || pageRecord?.slug || ''} />;
+    return <SolutionPageRenderer slug={resolvedSlug} />;
   }
   if (templateId === 'service-suite') {
-    return <ServicePageRenderer slug={slug || pageRecord?.slug || ''} />;
+    return <ServicePageRenderer slug={resolvedSlug} />;
   }
 
   // Gracefully render dynamic CMS page content using GenericPageRenderer (SOLID SRP fallback)
   let parsedPageData = {};
   try {
-    parsedPageData = pageRecord?.pageData ? JSON.parse(pageRecord.pageData) : {};
+    parsedPageData =
+      typeof pageRecord.pageData === 'string'
+        ? JSON.parse(pageRecord.pageData)
+        : (pageRecord.pageData as Record<string, unknown>) || {};
   } catch {
     parsedPageData = {};
   }
 
-  return <GenericPageRenderer page={pageRecord} pageData={parsedPageData} />;
+  return <GenericPageRenderer page={pageRecord as any} pageData={parsedPageData} />;
 };
 
 const ProductDetail = lazy(() => import('@/pages/product-detail'));
@@ -229,12 +197,13 @@ const ExternalRedirect = ({ url }: { url: string }) => {
 
 function App() {
   return (
-    <SiteContentProvider>
-      <WishlistProvider>
-        <BrowserRouter>
-          <ScrollToTop />
-          <Suspense fallback={<PageLoader />}>
-            <Routes>
+    <QueryClientProvider client={queryClient}>
+      <SiteContentProvider>
+        <WishlistProvider>
+          <BrowserRouter>
+            <ScrollToTop />
+            <Suspense fallback={<PageLoader />}>
+              <Routes>
               {/* Core Pages */}
               <Route path="/" element={<Home />} />
               <Route path="/login" element={<Layout><Login /></Layout>} />
@@ -319,6 +288,7 @@ function App() {
         </BrowserRouter>
       </WishlistProvider>
     </SiteContentProvider>
+  </QueryClientProvider>
   );
 }
 

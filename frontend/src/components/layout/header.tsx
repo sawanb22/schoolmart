@@ -1,5 +1,4 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
-import gsap from 'gsap';
 import { Menu, X, ChevronDown } from 'lucide-react';
 import { Link, useLocation } from 'react-router-dom';
 import { isAdminSession } from '@/lib/auth-session';
@@ -58,29 +57,42 @@ const MainHeader = () => {
   }, []);
 
   useEffect(() => {
-    const ctx = gsap.context(() => {
-      const tl = gsap.timeline({ delay: 0.5 });
+    if (typeof window !== 'undefined' && window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      return;
+    }
 
-      tl.fromTo(
-        headerRef.current,
-        { scaleX: 0, transformOrigin: 'left' },
-        { scaleX: 1, duration: 0.8, ease: 'power3.out' }
-      )
-        .fromTo(
-          logoRef.current,
-          { clipPath: 'circle(0% at 50% 50%)', opacity: 0 },
-          { clipPath: 'circle(100% at 50% 50%)', opacity: 1, duration: 0.6, ease: 'power3.out' },
-          '-=0.4'
+    let ctx: any;
+    let cancelled = false;
+
+    import('gsap').then(({ default: gsap }) => {
+      if (cancelled) return;
+      ctx = gsap.context(() => {
+        const tl = gsap.timeline({ delay: 0.05 });
+
+        tl.fromTo(
+          headerRef.current,
+          { y: -10, opacity: 0.9 },
+          { y: 0, opacity: 1, duration: 0.4, ease: 'power3.out' }
         )
-        .fromTo(
-          navRef.current?.children || [],
-          { y: -30, opacity: 0 },
-          { y: 0, opacity: 1, duration: 0.4, stagger: 0.1, ease: 'back.out(1.7)' },
-          '-=0.3'
-        );
+          .fromTo(
+            logoRef.current,
+            { scale: 0.95, opacity: 0.9 },
+            { scale: 1, opacity: 1, duration: 0.4, ease: 'power3.out' },
+            '-=0.2'
+          )
+          .fromTo(
+            navRef.current?.children || [],
+            { y: -10, opacity: 0.8 },
+            { y: 0, opacity: 1, duration: 0.3, stagger: 0.05, ease: 'power2.out' },
+            '-=0.2'
+          );
+      });
     });
 
-    return () => ctx.revert();
+    return () => {
+      cancelled = true;
+      ctx?.revert();
+    };
   }, []);
 
   const navItems: NavItem[] = useMemo(() => {
@@ -139,6 +151,16 @@ const MainHeader = () => {
                       className="relative"
                       onMouseEnter={() => setDropdownOpen(item.label)}
                       onMouseLeave={() => setDropdownOpen(null)}
+                      onBlur={(e) => {
+                        if (!e.currentTarget.contains(e.relatedTarget as Node)) {
+                          setDropdownOpen((current) => (current === item.label ? null : current));
+                        }
+                      }}
+                      onKeyDown={(e) => {
+                        if (e.key === 'Escape') {
+                          setDropdownOpen(null);
+                        }
+                      }}
                     >
                       {item.href ? (
                         isExternalUrl(item.href) ? (
@@ -146,6 +168,9 @@ const MainHeader = () => {
                             href={item.href}
                             target="_blank"
                             rel="noopener noreferrer"
+                            aria-haspopup="menu"
+                            aria-expanded={dropdownOpen === item.label}
+                            onFocus={() => setDropdownOpen(item.label)}
                             className={`nav-link flex items-center gap-1 ${isItemActive(item) ? 'bg-white/20 text-white rounded-md' : 'text-white'}`}
                           >
                             {item.label}
@@ -154,6 +179,9 @@ const MainHeader = () => {
                         ) : (
                           <Link
                             to={item.href}
+                            aria-haspopup="menu"
+                            aria-expanded={dropdownOpen === item.label}
+                            onFocus={() => setDropdownOpen(item.label)}
                             className={`nav-link flex items-center gap-1 ${isItemActive(item) ? 'bg-white/20 text-white rounded-md' : 'text-white'}`}
                           >
                             {item.label}
@@ -162,6 +190,10 @@ const MainHeader = () => {
                         )
                       ) : (
                         <button
+                          type="button"
+                          aria-haspopup="menu"
+                          aria-expanded={dropdownOpen === item.label}
+                          onFocus={() => setDropdownOpen(item.label)}
                           className={`nav-link flex items-center gap-1 cursor-pointer ${isItemActive(item) ? 'bg-white/20 text-white rounded-md' : 'text-white'}`}
                           onClick={() => setDropdownOpen(dropdownOpen === item.label ? null : item.label)}
                         >
@@ -170,7 +202,7 @@ const MainHeader = () => {
                         </button>
                       )}
                       {dropdownOpen === item.label && item.dropdownItems && (
-                        <div className="absolute top-full left-0 pt-2 z-[150] animate-fade-in">
+                        <div className="absolute top-full left-0 pt-2 z-[150] animate-fade-in" role="menu">
                           <div className="w-56 rounded-2xl border border-slate-200 bg-white py-2 shadow-2xl overflow-hidden ring-1 ring-black/5">
                             {item.dropdownItems.map((dropdownItem) => (
                               isExternalUrl(dropdownItem.href) ? (
@@ -179,6 +211,8 @@ const MainHeader = () => {
                                   href={dropdownItem.href}
                                   target="_blank"
                                   rel="noopener noreferrer"
+                                  role="menuitem"
+                                  onClick={() => setDropdownOpen(null)}
                                   className="block px-4 py-2.5 text-xs uppercase tracking-wider text-slate-700 hover:bg-sm-blue hover:text-white transition-colors font-bold"
                                 >
                                   {dropdownItem.label}
@@ -187,6 +221,8 @@ const MainHeader = () => {
                                 <Link
                                   key={dropdownItem.label}
                                   to={dropdownItem.href}
+                                  role="menuitem"
+                                  onClick={() => setDropdownOpen(null)}
                                   className="block px-4 py-2.5 text-xs uppercase tracking-wider text-slate-700 hover:bg-sm-blue hover:text-white transition-colors font-bold"
                                 >
                                   {dropdownItem.label}
@@ -244,6 +280,9 @@ const MainHeader = () => {
                   {item.hasDropdown ? (
                     <div>
                       <button
+                        type="button"
+                        aria-haspopup="menu"
+                        aria-expanded={dropdownOpen === item.label}
                         className={`flex w-full items-center justify-between rounded-lg px-3 py-2 text-left text-xs font-semibold uppercase transition-colors ${isItemActive(item) ? 'bg-white/25 text-white' : 'text-white/90 hover:bg-white/15 hover:text-white'}`}
                         onClick={() => setDropdownOpen(dropdownOpen === item.label ? null : item.label)}
                       >

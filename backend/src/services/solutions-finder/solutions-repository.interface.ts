@@ -6,4 +6,5 @@ export interface ISolutionsRepository {
   fetchTaxonomy(): Promise<SolutionsTaxonomy | null>;
   fetchDataWatermarks(): Promise<DataWatermarks>;
   fetchCaseStudies(): Promise<CaseStudyDto[]>;
+  fetchCmsVersion?(): Promise<number>;
 }

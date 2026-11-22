@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect, useMemo } from 'react';
 import { CheckCircle, Send, Briefcase, MapPin, Clock, ArrowRight, Upload, FileText, Check, Sparkles } from 'lucide-react';
 import api from '@/api/client';
-import { usePageData } from '@/hooks/usePageData';
+import { useHubLegacy } from '@/hooks/useHubLegacy';
 
 export interface JobOpening {
   id: string;
@@ -16,7 +16,7 @@ export interface JobOpening {
 }
 
 const JobOpenings = () => {
-  const { data: pageData, loading } = usePageData('job-openings');
+  const { data: pageData, loading } = useHubLegacy('job-openings');
 
   const openings = useMemo<JobOpening[]>(() => {
     const raw = Array.isArray((pageData as any).openings) ? (pageData as any).openings : [];

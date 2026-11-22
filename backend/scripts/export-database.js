@@ -1,6 +1,11 @@
 const { PrismaClient } = require('@prisma/client');
 const fs = require('fs');
 const path = require('path');
+const dns = require('dns');
+
+if (typeof dns.setDefaultResultOrder === 'function') {
+  dns.setDefaultResultOrder('ipv4first');
+}
 
 const prisma = new PrismaClient();
 
@@ -13,7 +18,11 @@ async function exportDatabase() {
     data.exportedAt = new Date().toISOString();
     
     // Core CMS and Page Data
-    data.pages = await prisma.page.findMany({ orderBy: { id: 'asc' } });
+    try {
+      data.pages = await prisma.page.findMany({ orderBy: { id: 'asc' } });
+    } catch {
+      data.pages = await prisma.$queryRawUnsafe('SELECT * FROM "page" ORDER BY "id" ASC');
+    }
     console.log(`✓ Fetched ${data.pages.length} Pages`);
 
     data.siteContent = await prisma.siteContent.findMany({ orderBy: { id: 'asc' } });

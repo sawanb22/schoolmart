@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react';
 import gsap from 'gsap';
-import { usePageData } from '@/hooks/usePageData';
+import { useHubLegacy } from '@/hooks/useHubLegacy';
 
 interface CardItem { title: string; description: string; }
 
@@ -16,7 +16,7 @@ const DEFAULTS = {
 
 const LMS = () => {
   const heroRef = useRef<HTMLDivElement>(null);
-  const { data } = usePageData('lms');
+  const { data } = useHubLegacy('lms');
 
   useEffect(() => {
     const ctx = gsap.context(() => {

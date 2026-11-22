@@ -2,7 +2,7 @@ import { useState, type MouseEvent } from 'react';
 import { Link } from 'react-router-dom';
 import { FileText, Send, X, CheckCircle } from 'lucide-react';
 import api from '@/api/client';
-import { usePageData } from '@/hooks/usePageData';
+import { useHubLegacy } from '@/hooks/useHubLegacy';
 import { resolveMediaUrl } from '@/lib/media-url';
 import { MediaImage } from '@/components/ui/media-image';
 import { getCardCover } from '@/lib/card-covers';
@@ -36,7 +36,7 @@ const slugify = (text: string) =>
 const PAGE_SIZE = 6;
 
 const Catalogues = () => {
-  const { data, loading } = usePageData('catalogues');
+  const { data, loading } = useHubLegacy('catalogues');
 
   const heroTitle = data.heroTitle || '';
   const rawSubtitle = data.heroSubtitle || '';
@@ -121,7 +121,7 @@ const Catalogues = () => {
     }
   };
 
-  // Pure database-driven binding to usePageData('catalogues')
+  // Pure database-driven binding to useHubLegacy('catalogues')
   const catalogues = loading
     ? []
     : Array.isArray(data.cards)
@@ -174,6 +174,8 @@ const Catalogues = () => {
                 <MediaImage
                   src={heroImage}
                   alt={heroTitle}
+                  priority
+                  loading="eager"
                   className="rounded-2xl shadow-xl w-full h-[240px] sm:h-[260px] object-cover border-2 border-cm-blue-dark relative z-10"
                 />
               </div>

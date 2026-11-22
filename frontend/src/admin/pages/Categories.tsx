@@ -29,6 +29,14 @@ import {
     Building2
 } from 'lucide-react';
 import api from '../api/client';
+import {
+    fetchAdminPageCategories,
+    createAdminPageCategory,
+    deleteAdminPageCategory,
+    reorderAdminPageCategories,
+    fetchAdminPageItems,
+    updateAdminPageItem,
+} from '../api/pageItems';
 import { clearPageCategoriesCache } from '@/hooks/usePageCategories';
 import { clearPageDataCache, broadcastCmsInvalidation } from '@/hooks/usePageData';
 import {
@@ -52,6 +60,7 @@ interface PageSummary {
     title: string;
     slug: string;
     template?: string;
+    contentModel?: string;
     pageData?: string | Record<string, any>;
 }
 
@@ -526,22 +535,71 @@ export default function Categories() {
         setSaveSuccessMsg('');
 
         try {
-            const currentPd = typeof pageDetails.pageData === 'string'
-                ? JSON.parse(pageDetails.pageData || '{}')
-                : (pageDetails.pageData || {});
+            if (pageDetails.contentModel === 'structured') {
+                // Read current categories from backend
+                const { categories: serverCats } = await fetchAdminPageCategories(pageDetails.id);
+                const serverCatMap = new Map(serverCats.map(c => [c.name.trim().toLowerCase(), c]));
 
-            const updatedPageData = {
-                ...currentPd,
-                categories: pageCategories,
-                cards: pageCards,
-            };
+                // 1. Create missing categories
+                for (const catName of pageCategories) {
+                    const key = catName.trim().toLowerCase();
+                    if (!serverCatMap.has(key)) {
+                        const { category: created } = await createAdminPageCategory(pageDetails.id, catName.trim());
+                        serverCatMap.set(key, created);
+                    }
+                }
 
-            await api.put(`/pages/${pageDetails.id}`, {
-                pageData: updatedPageData,
-            });
+                // 2. Delete removed categories
+                const localCatSet = new Set(pageCategories.map(c => c.trim().toLowerCase()));
+                for (const [key, serverCat] of serverCatMap.entries()) {
+                    if (!localCatSet.has(key)) {
+                        await deleteAdminPageCategory(pageDetails.id, serverCat.id);
+                        serverCatMap.delete(key);
+                    }
+                }
 
-            // Update local snapshot
-            setPageDetails((prev) => (prev ? { ...prev, pageData: updatedPageData } : null));
+                // 3. Reorder categories to match pageCategories order
+                const orderedIds = pageCategories
+                    .map(name => serverCatMap.get(name.trim().toLowerCase())?.id)
+                    .filter((id): id is number => id !== undefined);
+
+                if (orderedIds.length > 0) {
+                    await reorderAdminPageCategories(pageDetails.id, orderedIds);
+                }
+
+                // 4. Update card categories if cards were modified
+                const { items: serverItems } = await fetchAdminPageItems(pageDetails.id, 'cards', 'card');
+                for (const card of pageCards) {
+                    const matchItem = serverItems.find(it => it.slug === card.slug || it.title === card.title);
+                    if (matchItem) {
+                        const newCats = Array.isArray(card.categories) ? card.categories : card.category ? [card.category] : [];
+                        const oldCats = matchItem.categories || [];
+                        if (JSON.stringify(newCats) !== JSON.stringify(oldCats)) {
+                            await updateAdminPageItem(pageDetails.id, matchItem.id, {
+                                version: matchItem.version,
+                                categories: newCats,
+                            });
+                        }
+                    }
+                }
+            } else {
+                const currentPd = typeof pageDetails.pageData === 'string'
+                    ? JSON.parse(pageDetails.pageData || '{}')
+                    : (pageDetails.pageData || {});
+
+                const updatedPageData = {
+                    ...currentPd,
+                    categories: pageCategories,
+                    cards: pageCards,
+                };
+
+                await api.put(`/pages/${pageDetails.id}`, {
+                    pageData: updatedPageData,
+                });
+
+                // Update local snapshot
+                setPageDetails((prev) => (prev ? { ...prev, pageData: updatedPageData } : null));
+            }
 
             // Instant cache invalidation
             clearPageDataCache(selectedPageSlug);
@@ -904,7 +962,10 @@ export default function Categories() {
                                                                     value={editingCategoryValue}
                                                                     onChange={(e) => setEditingCategoryValue(e.target.value)}
                                                                     onKeyDown={(e) => {
-                                                                        if (e.key === 'Enter') handleConfirmRename(idx);
+                                                                        if (e.key === 'Enter') {
+                                                                            if (e.nativeEvent.isComposing) return;
+                                                                            handleConfirmRename(idx);
+                                                                        }
                                                                         if (e.key === 'Escape') setEditingCategoryIndex(null);
                                                                     }}
                                                                     className="flex-1 px-3 py-1.5 rounded-lg border border-blue-400 text-xs font-bold text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500/20 bg-white"
@@ -983,6 +1044,7 @@ export default function Categories() {
                                         onChange={(e) => setNewCategoryInput(e.target.value)}
                                         onKeyDown={(e) => {
                                             if (e.key === 'Enter') {
+                                                if (e.nativeEvent.isComposing) return;
                                                 e.preventDefault();
                                                 handleAddCategory();
                                             }

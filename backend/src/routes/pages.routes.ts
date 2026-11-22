@@ -1,331 +1,82 @@
 import { Router, Request, Response } from 'express';
+import { Prisma } from '@prisma/client';
 import prisma from '../lib/prisma';
-import { verifyToken, requireAdmin, AuthRequest } from '../middleware/auth.middleware';
+import { parsePageData } from '../lib/page-data';
+import { toLegacyPageResponse, toLegacyPagesResponse } from '../services/page-content/page-response';
+import { verifyToken, requireAdmin, optionalAuth, AuthRequest } from '../middleware/auth.middleware';
 import { uploadDocument } from '../middleware/upload.middleware';
-import { solutionsIndexService } from '../services/solutions-finder';
+import { bootstrapPages } from '../services/bootstrap-pages';
+import { pageContentService } from '../services/page-content/page-content.service';
+import { splitLegacyPageData, classifyPage } from '../services/page-content/legacy-mapper';
+import { writeStructuredPage } from '../services/page-content/structured-writer';
+import { afterContentWrite } from '../services/page-content/after-content-write';
+import { COLLECTIONS, LEGACY_HUB_DEFAULT_CATEGORIES } from '../services/page-content/constants';
+import { sanitizePageData, sanitizeRichHtml } from '../lib/sanitize';
+import { publicCmsCache } from '../services/cms-cache';
+import { logger } from '../lib/logger';
 
 const router = Router();
-
-const COLLEGE_SALE_SLUG = 'colleges-universities-for-sale';
-const COLLEGE_SALE_DATA = {
-    heroTitle: 'Businesses for Sale and Investment',
-    heroSubtitle: 'Showing businesses for sale and investment. Buy or invest in a business listed by direct business owners and business brokers.',
-    filterLabel: 'cbse schools',
-    cards: [
-        { title: 'School for Sale in Bahraich, India', description: 'CBSE school with 800+ students, day and boarding facility for sale in Bahraich. The school encompasses a total area of 87,000 square feet and includes approximately 40 rooms, fully equipped science and computer labs.', location: 'Bahraich', rating: '6.8', sales: 'INR 2.6 crore', margin: '40 %', askingPrice: 'INR 20 Cr', premium: true, image: 'https://images.unsplash.com/photo-1580582932707-520aed937b7b?auto=format&fit=crop&w=700&q=80' },
-        { title: 'Playschool Seeking Loan in Haryana, India', description: 'Education society in Haryana with 5 CBSE schools and 70 playschools. This is an educational society with primary and play schools seeking growth funding.', location: 'Haryana', rating: '6.8', sales: 'INR 30 crore', margin: '25 %', askingPrice: 'INR 5 Cr at 15%', premium: true, image: 'https://images.unsplash.com/photo-1562774053-701939374585?auto=format&fit=crop&w=700&q=80' },
-        { title: 'School for Sale in Thiruvananthapuram, India', description: 'CBSE-affiliated school with 400+ students and owned facilities. Located in Thiruvananthapuram, this school offers quality education from a well-established campus.', location: 'Thiruvananthapuram', rating: '6.2', sales: 'INR 1.6 crore', margin: '10 - 20 %', askingPrice: 'INR 8 Cr', image: 'https://images.unsplash.com/photo-1498243691581-b145c3f54a5a?auto=format&fit=crop&w=700&q=80' },
-    ],
-};
-
-async function ensureCollegeSalePage() {
-    const existing = await prisma.page.findUnique({ where: { slug: COLLEGE_SALE_SLUG } });
-    if (existing) return existing;
-    return prisma.page.create({
-        data: {
-            title: 'Colleges / Universities for Sale',
-            slug: COLLEGE_SALE_SLUG,
-            template: COLLEGE_SALE_SLUG,
-            published: true,
-            pageData: JSON.stringify(COLLEGE_SALE_DATA),
-        },
-    });
-}
-
-const PARTNER_SLUG = 'partner-with-colleges';
-const JOB_OPENINGS_SLUG = 'job-openings';
-
-// Makes sure the "Partner With Running Colleges" page (linked from the Classifieds
-// "Partnership Opportunities" card) always has a DB row so it shows up in the admin
-// Pages Manager. Its full default content lives in the React component and can be edited in the admin CMS.
-async function ensurePartnerPage() {
-    const existing = await prisma.page.findUnique({ where: { slug: PARTNER_SLUG } });
-    if (existing) return existing;
-    return prisma.page.create({
-        data: {
-            title: 'Partner With Running Colleges',
-            slug: PARTNER_SLUG,
-            template: PARTNER_SLUG,
-            published: true,
-            pageData: JSON.stringify({}),
-        },
-    });
-}
-
-async function ensureJobOpeningsPage() {
-    const existing = await prisma.page.findUnique({ where: { slug: JOB_OPENINGS_SLUG } });
-    if (existing) return existing;
-    return prisma.page.create({
-        data: {
-            title: 'Job Openings',
-            slug: JOB_OPENINGS_SLUG,
-            template: JOB_OPENINGS_SLUG,
-            published: true,
-            pageData: JSON.stringify({}),
-        },
-    });
-}
-
-async function restorePartnershipIdentity() {
-    const existing = await prisma.page.findUnique({ where: { slug: 'partnership' } });
-    if (existing) return existing;
-    return prisma.page.create({
-        data: {
-            title: 'Partnership Enquiry',
-            slug: 'partnership',
-            template: 'partnership',
-            published: true,
-            pageData: JSON.stringify({}),
-        },
-    });
-}
-
-
-async function ensureSimplePage(slug: string, title: string) {
-    const existing = await prisma.page.findUnique({ where: { slug } });
-    if (existing) {
-        return existing;
-    }
-    return prisma.page.create({
-        data: {
-            title,
-            slug,
-            template: slug,
-            published: true,
-            pageData: JSON.stringify({}),
-        },
-    });
-}
-
-function createEmptyArticlePageData(title: string) {
-    return {
-        category: '',
-        heroTitle: title || '',
-        heroImage: '',
-        body: '',
-        ctaTitle: '',
-        ctaSubtitle: '',
-        ctaButtonLabel: '',
-        ctaHref: '/contact-us',
-        hideHero: false,
-        hideBody: false,
-        hideCta: true,
-    };
-}
-
-const ARTICLE_PAGE_SLUGS = new Set([
-    'how-it-works',
-    'brand-help',
-    'sell-on-schoolmart',
-    'sell-on-campusmart',
-    '20-stunning-college-buildings',
-    'academic-buildings',
-    'research-facilities',
-    'student-life-centers',
-    'privacy-policy',
-    'terms-of-use',
-    'payment-policy',
-    'replacement-return',
-    'order-rejection',
-]);
-
-const requiredDefaults: [string, string][] = [
-    ['science-tech-labs', 'Science & Tech Labs'],
-    ['campus-master-planning', 'Campus Master Planning'],
-    ['ar-vr-experiences', 'AR / VR Learning'],
-    ['campus-furniture-design', 'Campus Furniture Design'],
-    ['collaboration-spaces', 'Collaboration Spaces'],
-    ['contact-us', 'Contact Us'],
-    ['catalogues', 'Catalogues & Downloads'],
-    ['faq', 'Frequently Asked Questions'],
-    ['how-it-works', 'How It Works'],
-    ['brand-help', 'Brand Help'],
-    ['sell-on-schoolmart', 'Sell on SchoolMart'],
-    ['sell-on-campusmart', 'Sell on CampusMart'],
-    ['20-stunning-college-buildings', '20 Stunning College Buildings'],
-    ['academic-buildings', 'Academic Buildings'],
-    ['research-facilities', 'Research Facilities'],
-    ['student-life-centers', 'Student Life Centers'],
-    ['privacy-policy', 'Privacy Policy'],
-    ['terms-of-use', 'Terms of Use'],
-    ['payment-policy', 'Payment Policy'],
-    ['replacement-return', 'Replacement & Return Policy'],
-    ['order-rejection', 'Order Rejection Policy'],
-    ['home', 'Homepage'],
-    ['campus-design', 'Campus Design'],
-    ['campus-design-execution', 'Campus Design & Execution'],
-    ['ai-guide', 'AI Implementation Guide'],
-    ['setup-college', 'Setup Your College'],
-    ['ugc-guidelines', 'UGC Guidelines'],
-    ['innovation', 'Innovation'],
-    ['resources', 'Resources & Guides'],
-    ['collaboration', 'Collaboration Spaces'],
-];
-
-async function ensureArticlePage(slug: string, title: string) {
-    const existing = await prisma.page.findUnique({ where: { slug } });
-    if (existing) {
-        let needsUpdate = false;
-        const updateData: Record<string, any> = {};
-
-        if (existing.template !== 'article') {
-            updateData.template = 'article';
-            needsUpdate = true;
-        }
-
-        let currentData: any = null;
-        try {
-            currentData = typeof existing.pageData === 'string' ? JSON.parse(existing.pageData) : existing.pageData;
-        } catch {
-            currentData = null;
-        }
-
-        if (!currentData || typeof currentData !== 'object' || Object.keys(currentData).length === 0) {
-            updateData.pageData = JSON.stringify(createEmptyArticlePageData(existing.title || title));
-            needsUpdate = true;
-        } else if (!currentData.body && Array.isArray(currentData.sections) && currentData.sections.length > 0) {
-            const parts: string[] = [];
-            if (currentData.heroSubtitle) {
-                parts.push(`<p><strong>${currentData.heroSubtitle}</strong></p>`);
-            }
-            for (const s of currentData.sections) {
-                if (!s || s.active === false) continue;
-                if (s.heading) parts.push(`<h3>${s.heading}</h3>`);
-                if (s.body) parts.push(`<p>${s.body}</p>`);
-                if (Array.isArray(s.bullets) && s.bullets.length > 0) {
-                    parts.push(`<ul>${s.bullets.map((b: string) => `<li>${b}</li>`).join('')}</ul>`);
-                }
-            }
-            const cleanArticleData = {
-                category: currentData.category || currentData.heroEyebrow || '',
-                heroTitle: currentData.heroTitle || currentData.title || existing.title || title || '',
-                heroImage: currentData.heroImage || currentData.featuredImage || '',
-                body: parts.join('\n'),
-                ctaTitle: currentData.ctaTitle || '',
-                ctaSubtitle: currentData.ctaSubtitle || '',
-                ctaButtonLabel: currentData.ctaButtonLabel || '',
-                ctaHref: currentData.ctaHref || '/contact-us',
-                hideHero: Boolean(currentData.hideHero),
-                hideBody: Boolean(currentData.hideBody),
-                hideCta: currentData.hideCta !== undefined ? Boolean(currentData.hideCta) : !currentData.ctaTitle,
-            };
-            updateData.pageData = JSON.stringify(cleanArticleData);
-            needsUpdate = true;
-        }
-
-        if (needsUpdate) {
-            try {
-                return await prisma.page.update({
-                    where: { slug },
-                    data: updateData,
-                });
-            } catch (err) {
-                console.warn(`Failed to update page ${slug} to article template:`, err);
-                return existing;
-            }
-        }
-        return existing;
-    }
-
-    return prisma.page.create({
-        data: {
-            title,
-            slug,
-            template: 'article',
-            published: true,
-            pageData: JSON.stringify(createEmptyArticlePageData(title)),
-        },
-    });
-}
 
 // GET /api/pages - get all pages (admin only to see unpublished)
 router.get('/', verifyToken, requireAdmin, async (_req: AuthRequest, res: Response) => {
     try {
-        let pages = await prisma.page.findMany({
+        await bootstrapPages();
+        const pages = await prisma.page.findMany({
             orderBy: { title: 'asc' }
         });
-
-        // Fast in-memory slug check: only seed missing pages if database is missing defaults
-        const pageMap = new Map(pages.map(p => [p.slug, p]));
-        let missingPagesCreated = false;
-
-        if (!pageMap.has(COLLEGE_SALE_SLUG)) {
-            await ensureCollegeSalePage();
-            missingPagesCreated = true;
-        }
-        if (!pageMap.has(PARTNER_SLUG)) {
-            await ensurePartnerPage();
-            missingPagesCreated = true;
-        }
-        if (!pageMap.has(JOB_OPENINGS_SLUG)) {
-            await ensureJobOpeningsPage();
-            missingPagesCreated = true;
-        }
-        if (!pageMap.has('partnership')) {
-            await restorePartnershipIdentity();
-            missingPagesCreated = true;
-        }
-
-        for (const [slug, title] of requiredDefaults) {
-            const existing = pageMap.get(slug);
-            if (!existing) {
-                if (ARTICLE_PAGE_SLUGS.has(slug)) {
-                    await ensureArticlePage(slug, title);
-                } else {
-                    await ensureSimplePage(slug, title);
-                }
-                missingPagesCreated = true;
-            } else if (ARTICLE_PAGE_SLUGS.has(slug) && (existing.template !== 'article' || !existing.pageData || existing.pageData === '{}')) {
-                await ensureArticlePage(slug, title);
-                missingPagesCreated = true;
-            }
-        }
-
-        if (missingPagesCreated) {
-            pages = await prisma.page.findMany({
-                orderBy: { title: 'asc' }
-            });
-        }
-
-        console.log(`Admin ${_req.user?.id} fetched ${pages.length} pages`);
-        res.json(pages);
+        logger.info(`Admin ${_req.user?.id} fetched ${pages.length} pages`);
+        res.json(toLegacyPagesResponse(pages));
     } catch (error) {
-        console.error('Failed to fetch pages:', error);
+        logger.error({ err: error }, 'Failed to fetch pages');
         res.status(500).json({ error: 'An unexpected internal error occurred. Please try again later.' });
     }
 });
 
 // GET /api/pages/published - get all published pages (public)
-router.get('/published', async (req: Request, res: Response) => {
+router.get('/published', publicCmsCache(), async (_req: Request, res: Response) => {
     try {
-        await ensureSimplePage('faq', 'Frequently Asked Questions');
-        for (const [s, t] of requiredDefaults) {
-            if (ARTICLE_PAGE_SLUGS.has(s)) {
-                await ensureArticlePage(s, t);
-            }
-        }
         const pages = await prisma.page.findMany({
             where: { published: true }
         });
-        res.json(pages);
+        res.json(toLegacyPagesResponse(pages));
     } catch (err) {
-        console.error('Failed to fetch published pages:', err);
+        logger.error({ err }, 'Failed to fetch published pages');
         res.status(500).json({ error: 'An unexpected internal error occurred. Please try again later.' });
     }
 });
 
 // GET /api/pages/hub/catalog - Master Hub Aggregator for Shop (Option B: On-Demand Hub Loading)
-router.get('/hub/catalog', async (req: Request, res: Response) => {
+router.get('/hub/catalog', publicCmsCache(), async (req: Request, res: Response) => {
     try {
         const requestedHub = typeof req.query.hub === 'string' ? req.query.hub.trim().toLowerCase() : '';
 
-        // 1. Fetch CMS hub pages
+        // 1. Fetch CMS hub pages with relational items & categories
         const hubPages = await prisma.page.findMany({
             where: {
                 slug: { in: ['labs', 'sports-infra', 'tech-infra', 'libraries'] },
                 published: true,
             },
-            select: { id: true, slug: true, title: true, pageData: true },
+            select: {
+                id: true,
+                slug: true,
+                title: true,
+                contentModel: true,
+                pageData: true,
+                categories: {
+                    orderBy: { sortOrder: 'asc' },
+                    select: { id: true, name: true, slug: true, sortOrder: true },
+                },
+                items: {
+                    where: { published: true, collection: 'cards' },
+                    orderBy: { sortOrder: 'asc' },
+                    include: {
+                        categories: {
+                            orderBy: { sortOrder: 'asc' },
+                            include: { category: true },
+                        },
+                    },
+                },
+            },
         });
 
         // 2. Fetch Furniture data
@@ -390,13 +141,13 @@ router.get('/hub/catalog', async (req: Request, res: Response) => {
             }
         }
 
-        // Metadata definitions with robust fallback subcategories
-        const HUB_METADATA: Record<string, { title: string; defaultCategories: string[] }> = {
-            'furniture': { title: 'Campus Furniture', defaultCategories: furnitureCatNames },
-            'labs': { title: 'Science & Tech Labs', defaultCategories: ['Science Labs', 'Skill Labs', 'Tech Labs', 'STEM & Innovation'] },
-            'sports-infra': { title: 'Sports Infrastructure', defaultCategories: ['Consulting', 'Surface Sports', 'Indoor Sports', 'Athletics', 'Water Sports', 'Artificial Turf'] },
-            'tech-infra': { title: 'Tech Infrastructure', defaultCategories: ['Classroom Tech', 'Displays', 'Networking', 'Wi-Fi & Fiber', 'Servers & Cloud', 'Security'] },
-            'libraries': { title: 'Smart Libraries', defaultCategories: ['Seating', 'Shelving & Display', 'Digital & Tech', 'Collaborative'] },
+        // Hub titles metadata (default categories removed - read from relational tables)
+        const HUB_METADATA: Record<string, { title: string }> = {
+            'furniture': { title: 'Campus Furniture' },
+            'labs': { title: 'Science & Tech Labs' },
+            'sports-infra': { title: 'Sports Infrastructure' },
+            'tech-infra': { title: 'Tech Infrastructure' },
+            'libraries': { title: 'Smart Libraries' },
         };
 
         const hubConfigs: Array<{ id: string; title: string; subcategories: string[]; totalCount: number }> = [];
@@ -412,134 +163,186 @@ router.get('/hub/catalog', async (req: Request, res: Response) => {
         // Process CMS page hubs (labs, sports-infra, tech-infra, libraries)
         for (const slug of ['labs', 'sports-infra', 'tech-infra', 'libraries']) {
             const page = hubMap.get(slug);
-            const meta = HUB_METADATA[slug] || { title: slug, defaultCategories: [] };
-            let rawData: any = {};
-            if (page?.pageData) {
-                try {
-                    rawData = typeof page.pageData === 'string' ? JSON.parse(page.pageData) : page.pageData;
-                } catch {}
-            }
-
-            const explicitCats: string[] = Array.isArray(rawData.categories)
-                ? rawData.categories.filter(Boolean)
-                : meta.defaultCategories;
-
-            const pageCards: any[] = Array.isArray(rawData.cards) ? rawData.cards : [];
-            const cardCatSet = new Set<string>(explicitCats);
-
+            const meta = HUB_METADATA[slug] || { title: slug };
             const needThisHubItems = !requestedHub || requestedHub === 'all' || requestedHub === slug;
 
-            let pageItemCount = 0;
-            for (let i = 0; i < pageCards.length; i++) {
-                const c = pageCards[i];
-                if (!c || !c.title) continue;
+            if (page && page.contentModel === 'structured') {
+                const dbCats = (page.categories || []).map((c: any) => c.name.trim()).filter(Boolean);
+                const fallbackCats = LEGACY_HUB_DEFAULT_CATEGORIES[slug] || [];
+                const explicitCats = dbCats.length > 0 ? dbCats : fallbackCats;
+                const cardCatSet = new Set<string>(explicitCats);
+                const pageItems: any[] = page.items || [];
 
-                const cardCats: string[] = Array.isArray(c.categories)
-                    ? c.categories.filter(Boolean)
-                    : c.category
-                    ? [c.category]
-                    : [];
+                for (let i = 0; i < pageItems.length; i++) {
+                    const item = pageItems[i];
+                    if (!item || !item.title) continue;
 
-                cardCats.forEach(cat => {
-                    if (cat) cardCatSet.add(cat.trim());
-                });
+                    const itemCats: string[] = (item.categories || [])
+                        .map((ic: any) => ic.category?.name?.trim() || ic.name?.trim())
+                        .filter(Boolean);
 
-                if (needThisHubItems) {
-                    const fallbackSlug = String(c.slug || c.title || `card-${i}`)
-                        .toLowerCase()
-                        .trim()
-                        .replace(/[^a-z0-9]+/g, '-')
-                        .replace(/^-+|-+$/g, '') || `item-${i}`;
+                    itemCats.forEach((cat: string) => cardCatSet.add(cat));
 
-                    items.push({
-                        id: `${slug}-${i}`,
-                        title: c.title,
-                        description: c.description || '',
-                        image: c.image || '',
-                        categories: cardCats.length > 0 ? cardCats : [explicitCats[0] || 'General'],
-                        slug: fallbackSlug,
-                        href: c.href || `/${slug}/${fallbackSlug}`,
-                        hubSlug: slug,
-                        hubTitle: page?.title || meta.title,
-                    });
+                    if (needThisHubItems) {
+                        const fallbackSlug = String(item.slug || item.title || `item-${i}`)
+                            .toLowerCase()
+                            .trim()
+                            .replace(/[^a-z0-9]+/g, '-')
+                            .replace(/^-+|-+$/g, '') || `item-${i}`;
+
+                        const resolvedCategories = itemCats.length > 0
+                            ? itemCats
+                            : (explicitCats.length > 0 ? [explicitCats[0]] : ['General']);
+
+                        items.push({
+                            id: `pi-${item.id}`,
+                            title: item.title,
+                            description: item.summary || (item.data as any)?.description || '',
+                            image: item.imageUrl || (item.data as any)?.image || '',
+                            categories: resolvedCategories,
+                            slug: item.slug || fallbackSlug,
+                            href: item.href || `/${slug}/${item.slug || fallbackSlug}`,
+                            hubSlug: slug,
+                            hubTitle: page.title || meta.title,
+                        });
+                    }
                 }
-                pageItemCount++;
-            }
 
-            hubConfigs.push({
-                id: slug,
-                title: page?.title || meta.title,
-                subcategories: Array.from(cardCatSet),
-                totalCount: pageItemCount,
-            });
+                hubConfigs.push({
+                    id: slug,
+                    title: page.title || meta.title,
+                    subcategories: Array.from(cardCatSet),
+                    totalCount: pageItems.length,
+                });
+            } else {
+                // Legacy unmigrated blob fallback
+                const rawData = parsePageData(page?.pageData);
+                const fallbackCats = LEGACY_HUB_DEFAULT_CATEGORIES[slug] || [];
+                const explicitCats: string[] = (Array.isArray(rawData.categories) && rawData.categories.length > 0)
+                    ? (rawData.categories as string[]).filter(Boolean)
+                    : fallbackCats;
+
+                const pageCards: any[] = Array.isArray(rawData.cards) ? rawData.cards : [];
+                const cardCatSet = new Set<string>(explicitCats);
+
+                let pageItemCount = 0;
+                for (let i = 0; i < pageCards.length; i++) {
+                    const c = pageCards[i];
+                    if (!c || !c.title) continue;
+
+                    const cardCats: string[] = Array.isArray(c.categories)
+                        ? c.categories.filter(Boolean)
+                        : c.category
+                        ? [c.category]
+                        : [];
+
+                    cardCats.forEach(cat => {
+                        if (cat) cardCatSet.add(cat.trim());
+                    });
+
+                    if (needThisHubItems) {
+                        const fallbackSlug = String(c.slug || c.title || `card-${i}`)
+                            .toLowerCase()
+                            .trim()
+                            .replace(/[^a-z0-9]+/g, '-')
+                            .replace(/^-+|-+$/g, '') || `item-${i}`;
+
+                        items.push({
+                            id: `${slug}-${i}`,
+                            title: c.title,
+                            description: c.description || '',
+                            image: c.image || '',
+                            categories: cardCats.length > 0 ? cardCats : (explicitCats[0] ? [explicitCats[0]] : ['General']),
+                            slug: fallbackSlug,
+                            href: c.href || `/${slug}/${fallbackSlug}`,
+                            hubSlug: slug,
+                            hubTitle: page?.title || meta.title,
+                        });
+                    }
+                    pageItemCount++;
+                }
+
+                hubConfigs.push({
+                    id: slug,
+                    title: page?.title || meta.title,
+                    subcategories: Array.from(cardCatSet),
+                    totalCount: pageItemCount,
+                });
+            }
         }
 
-        res.setHeader('Cache-Control', 'public, max-age=60, s-maxage=120, stale-while-revalidate=300');
         res.json({
             activeHub: requestedHub || 'furniture',
             hubs: hubConfigs,
             items,
         });
     } catch (error) {
-        console.error('Failed to fetch hub catalog:', error);
+        logger.error({ err: error }, 'Failed to fetch hub catalog');
+        res.status(500).json({ error: 'An unexpected internal error occurred. Please try again later.' });
+    }
+});
+
+// GET /api/pages/resolve - path resolution endpoint (guarantees <= 3 database queries)
+router.get('/resolve', publicCmsCache(), optionalAuth, async (req: AuthRequest, res: Response) => {
+    try {
+        const pathParam = typeof req.query.path === 'string' ? req.query.path : '';
+        const isAdmin = req.user?.role === 'admin';
+        const result = await pageContentService.resolvePath(pathParam, { isAdmin });
+
+        if (result.type === 'not_found') {
+            return res.status(404).json(result);
+        }
+        res.json(result);
+    } catch (err) {
+        logger.error({ err }, 'Failed to resolve path');
+        res.status(500).json({ error: 'An unexpected internal error occurred. Please try again later.' });
+    }
+});
+
+// GET /api/pages/:slug/items/:itemSlug - get single item within a hub (or redirect)
+router.get('/:slug/items/:itemSlug', publicCmsCache(), optionalAuth, async (req: AuthRequest, res: Response) => {
+    try {
+        const slug = String(req.params.slug);
+        const itemSlug = String(req.params.itemSlug);
+        const isAdmin = req.user?.role === 'admin';
+        const result = await pageContentService.getItem(slug, itemSlug, { isAdmin });
+
+        if (!result) {
+            return res.status(404).json({ error: 'not_found' });
+        }
+
+        if ('redirectTo' in result) {
+            return res.status(200).json(result);
+        }
+
+        res.json(result);
+    } catch (err) {
+        logger.error({ err, hubSlug: req.params.slug, itemSlug: req.params.itemSlug }, 'Failed to fetch item in hub');
         res.status(500).json({ error: 'An unexpected internal error occurred. Please try again later.' });
     }
 });
 
 // GET /api/pages/:idOrSlug - get specific page by ID (number) or slug (string)
-router.get('/:idOrSlug', async (req: Request, res: Response) => {
+router.get('/:idOrSlug', publicCmsCache(), optionalAuth, async (req: AuthRequest, res: Response) => {
     try {
         const param = req.params.idOrSlug as string;
-        const normalizedParam = param;
-        const numericId = parseInt(normalizedParam);
-        const isNumeric = !isNaN(numericId) && String(numericId) === normalizedParam;
+        const isAdmin = req.user?.role === 'admin';
 
-        if (!isNumeric && normalizedParam === COLLEGE_SALE_SLUG) {
-            return res.json(await ensureCollegeSalePage());
-        }
-        if (!isNumeric && normalizedParam === 'catalogues') {
-            return res.json(await ensureSimplePage('catalogues', 'Catalogues & Downloads'));
-        }
-        if (!isNumeric && normalizedParam === 'faq') {
-            return res.json(await ensureSimplePage('faq', 'Frequently Asked Questions'));
-        }
-        if (!isNumeric && ARTICLE_PAGE_SLUGS.has(normalizedParam)) {
-            const defItem = requiredDefaults.find(([s]) => s === normalizedParam);
-            const title = defItem ? defItem[1] : normalizedParam;
-            return res.json(await ensureArticlePage(normalizedParam, title));
-        }
-        if (!isNumeric && normalizedParam === 'campus-design') {
-            return res.json(await ensureSimplePage('campus-design', 'Campus Design'));
-        }
-        if (!isNumeric && normalizedParam === 'campus-design-execution') {
-            return res.json(await ensureSimplePage('campus-design-execution', 'Campus Design & Execution'));
-        }
-        if (!isNumeric && normalizedParam === 'home') {
-            return res.json(await ensureSimplePage('home', 'Homepage'));
-        }
-
-        let page = isNumeric
-            ? await prisma.page.findUnique({ where: { id: numericId } })
-            : await prisma.page.findUnique({ where: { slug: normalizedParam } });
-
-        if (!page && !isNumeric) {
-            if (normalizedParam === 'sports') {
-                page = await prisma.page.findUnique({ where: { slug: 'sports-infra' } });
-            } else if (normalizedParam === 'sports-infra') {
-                page = await prisma.page.findUnique({ where: { slug: 'sports' } });
-            } else if (normalizedParam === 'sell-on-schoolmart') {
-                page = await prisma.page.findUnique({ where: { slug: 'sell-on-campusmart' } });
-            } else if (normalizedParam === 'sell-on-campusmart') {
-                page = await prisma.page.findUnique({ where: { slug: 'sell-on-schoolmart' } });
+        if (req.query.v === '2') {
+            const v2 = await pageContentService.getHubV2(param, { isAdmin });
+            if (!v2) {
+                return res.status(404).json({ error: 'Page not found' });
             }
+            return res.json(v2);
         }
 
+        const page = await pageContentService.getPageLegacy(param, { isAdmin });
         if (!page) {
             return res.status(404).json({ error: 'Page not found' });
         }
         res.json(page);
     } catch (err) {
-        console.error('Failed to fetch page:', err);
+        logger.error({ err, param: req.params.idOrSlug }, 'Failed to fetch page');
         res.status(500).json({ error: 'An unexpected internal error occurred. Please try again later.' });
     }
 });
@@ -573,13 +376,16 @@ router.post('/', verifyToken, requireAdmin, async (req: AuthRequest, res: Respon
             'title', 'slug', 'content', 'template', 'pageData', 'published'
         ];
 
+        let parsedIncomingPageData: Record<string, unknown> = {};
+
         for (const field of validFields) {
             if (req.body[field] !== undefined) {
                 if (field === 'pageData') {
-                    let serialized = typeof req.body.pageData === 'object' && req.body.pageData !== null ? JSON.stringify(req.body.pageData) : String(req.body.pageData || '{}');
-                    createData.pageData = serialized
-                        .replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '')
-                        .replace(/<style\b[^<]*(?:(?!<\/style>)<[^<]*)*<\/style>/gi, '');
+                    const parsed = parsePageData(req.body.pageData);
+                    parsedIncomingPageData = sanitizePageData(parsed);
+                    createData.pageData = parsedIncomingPageData as Prisma.InputJsonValue;
+                } else if (field === 'content' && typeof req.body.content === 'string') {
+                    createData.content = sanitizeRichHtml(req.body.content);
                 } else if (field === 'published' && typeof req.body.published !== 'boolean') {
                     createData.published = req.body.published === 'true' || req.body.published === 1;
                 } else {
@@ -603,12 +409,53 @@ router.post('/', verifyToken, requireAdmin, async (req: AuthRequest, res: Respon
         }
         createData.slug = targetSlug;
 
-        const page = await prisma.page.create({
-            data: createData as any
-        });
-        console.log(`Page created by admin ${req.user?.id}: ${page.slug}`);
-        solutionsIndexService.rebuild().catch(err => console.error('[SolutionsIndex] Rebuild error on page create:', err));
-        res.status(201).json(page);
+        const classification = classifyPage({ slug: targetSlug, template: createData.template, pageData: parsedIncomingPageData });
+        const collectionKeysPresent = [...COLLECTIONS, 'categories'].filter(col => col in parsedIncomingPageData);
+        const hasCollectionKeys = collectionKeysPresent.length > 0;
+
+        const isStrictMode = process.env.CMS_STRICT_STRUCTURED_WRITES !== 'false';
+        let createdPage: any;
+        if (classification === 'structured' && hasCollectionKeys) {
+            if (isStrictMode) {
+                res.status(400).json({
+                    error: 'collections_not_allowed',
+                    keys: collectionKeysPresent,
+                    message: 'Collection keys cannot be written via whole-page creation on structured pages. Use the items and categories API.',
+                });
+                return;
+            }
+
+            const splitResult = splitLegacyPageData(parsedIncomingPageData);
+            createdPage = await prisma.$transaction(async tx => {
+                const page = await tx.page.create({
+                    data: {
+                        ...createData,
+                        pageData: splitResult.settings as Prisma.InputJsonValue,
+                        contentModel: 'structured',
+                        version: 0,
+                    } as any,
+                });
+                await writeStructuredPage(tx, page.id, splitResult, {
+                    reason: 'page-create',
+                    authorId: req.user?.id,
+                });
+                return page;
+            }, { maxWait: 10000, timeout: 30000 });
+        } else {
+            createdPage = await prisma.page.create({
+                data: {
+                    ...createData,
+                    contentModel: 'document',
+                    version: 1,
+                } as any,
+            });
+        }
+
+        logger.info(`Page created by admin ${req.user?.id}: ${createdPage.slug}`);
+        await afterContentWrite({ pageId: createdPage.id, reason: 'page-create', authorId: req.user?.id });
+
+        const responsePage = await pageContentService.getPageLegacy(createdPage.id, { isAdmin: true });
+        res.status(201).json(responsePage);
     } catch (error: any) {
         if (error?.code === 'P2002') {
             try {
@@ -618,14 +465,16 @@ router.post('/', verifyToken, requireAdmin, async (req: AuthRequest, res: Respon
                 const page = await prisma.page.create({
                     data: createData as any
                 });
-                console.log(`Page created with collision resolution by admin ${req.user?.id}: ${page.slug}`);
-                return res.status(201).json(page);
+                logger.info(`Page created with collision resolution by admin ${req.user?.id}: ${page.slug}`);
+                await afterContentWrite({ pageId: page.id, reason: 'page-create', authorId: req.user?.id });
+                const responsePage = await pageContentService.getPageLegacy(page.id, { isAdmin: true });
+                return res.status(201).json(responsePage);
             } catch (retryError: any) {
-                console.error('Collision resolution retry failed:', retryError);
+                logger.error({ err: retryError }, 'Collision resolution retry failed');
                 return res.status(409).json({ error: 'A page with this slug already exists. Please choose a different title or slug.' });
             }
         }
-        console.error('Failed to create page:', error);
+        logger.error({ err: error }, 'Failed to create page');
         res.status(500).json({ error: 'An unexpected internal error occurred. Please try again later.' });
     }
 });
@@ -642,10 +491,19 @@ router.put('/:id', verifyToken, requireAdmin, async (req: AuthRequest, res: Resp
         }
 
         // Check page exists before attempting update
-        const existing = await prisma.page.findUnique({ where: { id } });
+        const existing = await pageContentService.loadPage(id, { includeUnpublished: true });
         if (!existing) {
             res.status(404).json({ error: 'Page not found' });
             return;
+        }
+
+        // Optimistic locking check: if version is provided, it must match existing.version
+        if (req.body.version !== undefined && req.body.version !== null) {
+            const incomingVersion = Number(req.body.version);
+            if (!isNaN(incomingVersion) && incomingVersion !== existing.version) {
+                const current = await pageContentService.getPageLegacy(id, { isAdmin: true });
+                return res.status(409).json({ error: 'version_conflict', current });
+            }
         }
 
         const validFields: Array<'title' | 'slug' | 'content' | 'template' | 'pageData' | 'published'> = [
@@ -655,12 +513,18 @@ router.put('/:id', verifyToken, requireAdmin, async (req: AuthRequest, res: Resp
             updatedAt: new Date()
         };
 
+        let hasIncomingPageData = false;
+        let incomingPageData: Record<string, unknown> = {};
+
         for (const field of validFields) {
             if (req.body[field] !== undefined) {
                 if (field === 'pageData') {
-                    let serialized = typeof req.body.pageData === 'object' && req.body.pageData !== null ? JSON.stringify(req.body.pageData) : String(req.body.pageData || '{}');
-                    
-                    updateData.pageData = serialized.replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '').replace(/<style\b[^<]*(?:(?!<\/style>)<[^<]*)*<\/style>/gi, '');
+                    hasIncomingPageData = true;
+                    const parsed = parsePageData(req.body.pageData);
+                    incomingPageData = sanitizePageData(parsed);
+                    updateData.pageData = incomingPageData as Prisma.InputJsonValue;
+                } else if (field === 'content' && typeof req.body.content === 'string') {
+                    updateData.content = sanitizeRichHtml(req.body.content);
                 } else if (field === 'published' && typeof req.body.published !== 'boolean') {
                     updateData.published = req.body.published === 'true' || req.body.published === 1;
                 } else {
@@ -669,33 +533,111 @@ router.put('/:id', verifyToken, requireAdmin, async (req: AuthRequest, res: Resp
             }
         }
 
-        // Update page (atomic transaction if slug changes)
-        let page;
-        if (updateData.slug && updateData.slug !== existing.slug) {
-            const [updatedPage] = await prisma.$transaction([
-                prisma.page.update({ where: { id }, data: updateData }),
-                prisma.searchCard.updateMany({
-                    where: { targetSlug: existing.slug },
-                    data: { targetSlug: updateData.slug }
-                })
-            ]);
-            page = updatedPage;
+        const isStructured = existing.contentModel === 'structured';
+        const collectionKeysPresent = hasIncomingPageData
+            ? [...COLLECTIONS, 'categories'].filter(col => col in incomingPageData)
+            : [];
+        const hasCollectionKeys = collectionKeysPresent.length > 0;
+
+        const isStrictMode = process.env.CMS_STRICT_STRUCTURED_WRITES !== 'false';
+        if (isStructured && hasCollectionKeys) {
+            if (isStrictMode) {
+                res.status(400).json({
+                    error: 'collections_not_allowed',
+                    keys: collectionKeysPresent,
+                    message: 'Collection keys cannot be written via whole-page update on structured pages. Use the items and categories API.',
+                });
+                return;
+            }
+
+            // Full blob write on structured page: split & writeStructuredPage
+            const splitResult = splitLegacyPageData(incomingPageData);
+
+            await prisma.$transaction(async tx => {
+                const basicUpdates: any = { updatedAt: new Date() };
+                if (updateData.title !== undefined) basicUpdates.title = updateData.title;
+                if (updateData.slug !== undefined) basicUpdates.slug = updateData.slug;
+                if (updateData.content !== undefined) basicUpdates.content = updateData.content;
+                if (updateData.template !== undefined) basicUpdates.template = updateData.template;
+                if (updateData.published !== undefined) basicUpdates.published = updateData.published;
+
+                await tx.page.update({
+                    where: { id },
+                    data: basicUpdates,
+                });
+
+                await writeStructuredPage(tx, id, splitResult, {
+                    reason: 'legacy-adapter-update',
+                    authorId: req.user?.id,
+                });
+
+                if (updateData.slug && updateData.slug !== existing.slug) {
+                    await tx.searchCard.updateMany({
+                        where: { targetSlug: existing.slug },
+                        data: { targetSlug: updateData.slug }
+                    });
+                }
+            }, { maxWait: 10000, timeout: 30000 });
+        } else if (isStructured && !hasCollectionKeys) {
+            // Settings-only update on structured page: merge settings over existing
+            const currentSettings = parsePageData(existing.pageData);
+            const mergedSettings = hasIncomingPageData
+                ? { ...currentSettings, ...incomingPageData }
+                : currentSettings;
+
+            const basicUpdates: any = {
+                ...updateData,
+                pageData: mergedSettings as Prisma.InputJsonValue,
+                version: { increment: 1 },
+                updatedAt: new Date(),
+            };
+
+            await prisma.$transaction(async tx => {
+                await tx.page.update({
+                    where: { id },
+                    data: basicUpdates,
+                });
+
+                if (updateData.slug && updateData.slug !== existing.slug) {
+                    await tx.searchCard.updateMany({
+                        where: { targetSlug: existing.slug },
+                        data: { targetSlug: updateData.slug }
+                    });
+                }
+            });
         } else {
-            page = await prisma.page.update({
-                where: { id },
-                data: updateData
+            // Document page: standard update
+            await prisma.$transaction(async tx => {
+                await tx.page.update({
+                    where: { id },
+                    data: {
+                        ...updateData,
+                        version: { increment: 1 },
+                        updatedAt: new Date(),
+                    },
+                });
+
+                if (updateData.slug && updateData.slug !== existing.slug) {
+                    await tx.searchCard.updateMany({
+                        where: { targetSlug: existing.slug },
+                        data: { targetSlug: updateData.slug }
+                    });
+                }
             });
         }
-        
-        console.log(`Page ${id} updated by admin ${req.user?.id}`);
-        solutionsIndexService.rebuild().catch(err => console.error('[SolutionsIndex] Rebuild error on page update:', err));
-        res.json(page);
+
+        logger.info(`Page ${id} updated by admin ${req.user?.id}`);
+        const writeReason = (isStructured && !hasCollectionKeys) ? 'settings' : 'legacy-adapter-update';
+        await afterContentWrite({ pageId: id, reason: writeReason, authorId: req.user?.id });
+
+        const updatedResponse = await pageContentService.getPageLegacy(id, { isAdmin: true });
+        res.json(updatedResponse);
     } catch (error: any) {
         if (error?.code === 'P2002') {
             res.status(409).json({ error: 'A page with this URL slug already exists. Please choose a different slug.' });
             return;
         }
-        console.error(`Failed to update page ${req.params.id}:`, error);
+        logger.error({ err: error, pageId: req.params.id }, 'Failed to update page');
         res.status(500).json({ error: 'An unexpected internal error occurred. Please try again later.' });
     }
 });
@@ -727,11 +669,11 @@ router.delete('/:id', verifyToken, requireAdmin, async (req: AuthRequest, res: R
         await prisma.page.delete({
             where: { id }
         });
-        console.log(`Page ${id} deleted by admin ${req.user?.id}`);
-        solutionsIndexService.rebuild().catch(err => console.error('[SolutionsIndex] Rebuild error on page delete:', err));
+        logger.info(`Page ${id} deleted by admin ${req.user?.id}`);
+        await afterContentWrite({ pageId: id, reason: 'page-delete', authorId: req.user?.id });
         res.status(204).end();
     } catch (error) {
-        console.error(`Failed to delete page ${req.params.id}:`, error);
+        logger.error({ err: error, pageId: req.params.id }, 'Failed to delete page');
         res.status(500).json({ error: 'An unexpected internal error occurred. Please try again later.' });
     }
 });

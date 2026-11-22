@@ -50,6 +50,7 @@ yarn-debug.log*
 tree-dump.json
 yarn-error.log*
 backend/*.log
+backend/scripts/output/
 backend/testout.txt
 backend/prisma_out.txt
 puppeteer-error.png
@@ -79,7 +80,9 @@ Thumbs.db
 # Documents, office files, and temporary scratch (Strict Zero-Docs Policy)
 /scratch/
 scratch/
-docs/
+docs/*
+!docs/plans/
+!docs/deployment/
 reports/
 *.docx
 *.doc
@@ -93,6 +96,16 @@ reports/
 
 # Markdown documentation (Zero docs policy - user will add custom README later)
 *.md
+!README.md
+!docs/plans/**
+!docs/deployment/**
+!backend/prisma/sql/README.md
+!.agents/**
+
+# Playwright artifacts
+test-results/
+playwright-report/
+tests/e2e/artifacts/
 
 # Tooling, IDE & AI agent metadata
 .commandcode/

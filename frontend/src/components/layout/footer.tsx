@@ -1,5 +1,4 @@
 import { useEffect, useRef } from 'react';
-import gsap from 'gsap';
 import { Link } from 'react-router-dom';
 import { Facebook, Twitter, Youtube, Instagram, Linkedin } from 'lucide-react';
 import { useSiteContent } from '@/contexts/SiteContentContext';
@@ -159,39 +158,49 @@ const Footer = () => {
   const resolveSocialUrl = (key: string) => (key in content ? content[key] : DEFAULT_SOCIAL_URLS[key]);
 
   useEffect(() => {
-    const ctx = gsap.context(() => {
-      // Footer wipe up (plays on mount rather than being scroll-gated, so a short
-      // page never leaves the footer permanently clipped if the scroll trigger's
-      // start position ends up past the page's actual max scroll)
-      gsap.fromTo(
-        footerRef.current,
-        { clipPath: 'inset(100% 0 0 0)' },
-        {
-          clipPath: 'inset(0% 0 0 0)',
-          duration: 0.8,
-          ease: 'power3.out',
-        }
-      );
+    if (typeof window !== 'undefined' && window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      return;
+    }
 
-      // Columns fade up
-      const columns = columnsRef.current?.children;
-      if (columns) {
+    let ctx: any;
+    let cancelled = false;
+
+    import('gsap').then(({ default: gsap }) => {
+      if (cancelled) return;
+      ctx = gsap.context(() => {
         gsap.fromTo(
-          columns,
-          { y: 40, opacity: 0 },
+          footerRef.current,
+          { y: 20, opacity: 0.9 },
           {
             y: 0,
             opacity: 1,
             duration: 0.5,
-            stagger: 0.1,
-            delay: 0.2,
             ease: 'power3.out',
           }
         );
-      }
+
+        const columns = columnsRef.current?.children;
+        if (columns) {
+          gsap.fromTo(
+            columns,
+            { y: 15, opacity: 0.8 },
+            {
+              y: 0,
+              opacity: 1,
+              duration: 0.4,
+              stagger: 0.05,
+              delay: 0.05,
+              ease: 'power3.out',
+            }
+          );
+        }
+      });
     });
 
-    return () => ctx.revert();
+    return () => {
+      cancelled = true;
+      ctx?.revert();
+    };
   }, []);
 
   // Dynamic Footer Settings resolution with bulletproof fallbacks

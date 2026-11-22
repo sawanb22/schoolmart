@@ -1,7 +1,8 @@
 import { useState } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { Link, Navigate, useParams } from 'react-router-dom';
 import { ArrowLeft, ArrowRight, Handshake, X, CheckCircle2, Send } from 'lucide-react';
-import { usePageData } from '@/hooks/usePageData';
+import { useHubItem } from '@/hooks/useHubItem';
+import { itemToCard } from '@/lib/item-to-card';
 import api from '@/api/client';
 import { resolveMediaUrl } from '@/lib/media-url';
 import MediaImage from '@/components/ui/media-image';
@@ -9,9 +10,7 @@ import { PARTNER_PAGE_SLUG, PARTNER_DEFAULTS, slugifyModelTitle } from './partne
 
 const PartnershipModelDetail = () => {
   const { modelSlug } = useParams();
-  const { data, loading } = usePageData(PARTNER_PAGE_SLUG);
-  const cards: any[] = Array.isArray(data.cards) ? data.cards : PARTNER_DEFAULTS.cards;
-  const card = cards.find((item) => slugifyModelTitle(item.title) === modelSlug);
+  const { data: hubItemData, isLoading } = useHubItem(PARTNER_PAGE_SLUG, modelSlug || '');
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [formData, setFormData] = useState({
@@ -25,13 +24,23 @@ const PartnershipModelDetail = () => {
   const [submitted, setSubmitted] = useState(false);
   const [formError, setFormError] = useState('');
 
-  if (loading) {
+  if (isLoading) {
     return (
       <main className="flex min-h-screen items-center justify-center">
         <div className="h-8 w-8 animate-spin rounded-full border-4 border-cm-blue border-t-transparent" />
       </main>
     );
   }
+
+  if (hubItemData && (hubItemData as any).redirectTo) {
+    return <Navigate to={(hubItemData as any).redirectTo as string} replace />;
+  }
+
+  const rawItem = (hubItemData as any)?.item;
+  const cardFromItem = rawItem ? itemToCard(rawItem, { includeDetail: true }) : null;
+  const card =
+    cardFromItem ||
+    PARTNER_DEFAULTS.cards.find((item) => slugifyModelTitle(item.title) === modelSlug);
 
   if (!card) {
     return (
@@ -182,7 +191,7 @@ const PartnershipModelDetail = () => {
                       <span>{card.title} Consultation</span>
                     </div>
                     <p className="text-slate-600 text-xs sm:text-[13px] leading-relaxed">
-                      {data.formIntro || 'Join over 4,000+ partner campuses nationwide. Submit your institution details below to discuss collaboration terms, operational models, and rollout timelines with our partnership director.'}
+                      {((hubItemData as any)?.hub?.formIntro) || 'Join over 4,000+ partner campuses nationwide. Submit your institution details below to discuss collaboration terms, operational models, and rollout timelines with our partnership director.'}
                     </p>
                   </div>
 

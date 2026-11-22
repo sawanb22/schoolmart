@@ -11,6 +11,8 @@ import MediaImage from '@/components/ui/media-image';
 import RichTextContent from '@/components/common/RichTextContent';
 import { normalizeCardHref, isExternalLink } from '@/lib/cms-routing';
 import { resolveCtaButtonStyles } from '@/lib/ctaStyles';
+import Seo from '@/components/seo/Seo';
+import usePageSeo from '@/hooks/usePageSeo';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -56,6 +58,10 @@ export interface GenericPageData {
   category?: string;
   heroEyebrow?: string;
   heroButtonLabel?: string;
+  seoTitle?: string;
+  seoDescription?: string;
+  ogImage?: string;
+  noindex?: boolean;
   heroButtonHref?: string;
   readMoreLabel?: string;
   categories?: string[];
@@ -261,6 +267,8 @@ export default function GenericPageRenderer({ page, pageData = {}, backLink, adm
       ? false
       : page?.template === 'article' || Boolean(pageData.body?.trim());
 
+  const seoProps = usePageSeo(pageData, title || page?.title, subtitle, page?.slug ? `/${page.slug}` : undefined);
+
   // Styles and Theme Resolution matching AI/ML baseline
   const rawStyles = pageData.styles || {};
   const styles: GenericPageStyles = {
@@ -438,6 +446,7 @@ export default function GenericPageRenderer({ page, pageData = {}, backLink, adm
 
     return (
       <main className="min-h-screen bg-slate-50/60 py-8 sm:py-12">
+        <Seo {...seoProps} />
         <div className="mx-auto max-w-5xl px-4 sm:px-6 space-y-8">
           {backLink && (
             <div className="flex items-center justify-between gap-4 flex-wrap">
@@ -571,6 +580,7 @@ export default function GenericPageRenderer({ page, pageData = {}, backLink, adm
 
   return (
     <main ref={containerRef} className={`min-h-screen bg-white ${bodyFontClass} ${showCta ? 'pb-0' : 'pb-16'}`}>
+      <Seo {...seoProps} />
       {/* ─── Hero Section ─── */}
       {showHero && (
         <section

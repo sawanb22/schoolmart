@@ -574,7 +574,6 @@ export default function PagesManager() {
                 heroSubtitle: '',
                 heroImage: '',
                 section1Title: 'Facilities & Solutions',
-                cards: [],
                 ctaTitle: 'Ready to Elevate Your Campus Facilities?',
                 ctaSubtitle: 'Partner with our specialists to plan, equip, and maintain state-of-the-art infrastructure.',
                 ctaButtonLabel: 'Get Project Audit',
@@ -603,7 +602,6 @@ export default function PagesManager() {
                 section1Title: 'Phases & Execution Steps',
                 stepCountLabel: 'Phases',
                 readMoreLabel: 'Explore Service',
-                cards: [],
                 ctaTitle: 'Ready to Execute Your Campus Project?',
                 ctaSubtitle: 'Share your project scope, area, and timelines with our architectural and engineering team.',
                 ctaButtonLabel: 'Get a Project Quote',
@@ -629,7 +627,6 @@ export default function PagesManager() {
                 heroSubtitle: '',
                 heroImage: '',
                 section1Title: 'Solutions & Offerings',
-                cards: [],
                 ctaTitle: '',
                 ctaSubtitle: '',
                 ctaButtonLabel: '',
@@ -1099,6 +1096,7 @@ export default function PagesManager() {
                         onClose={handleCloseEditor}
                         onSaved={handleSaved}
                         onSelectPage={(targetPage) => setEditingPage(targetPage)}
+                        targetCardSlug={searchParams.get('card') || undefined}
                     />
                 )}
             </div>

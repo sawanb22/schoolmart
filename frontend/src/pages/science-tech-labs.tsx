@@ -2,12 +2,14 @@ import { useMemo, useState } from 'react';
 import type { FormEvent } from 'react';
 import { ArrowRight, Check, Heart, Trash2 } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import { usePageData } from '@/hooks/usePageData';
+import { useHubLegacy } from '@/hooks/useHubLegacy';
 import { useDesignWishlist } from '@/hooks/useDesignWishlist';
 import LoginPromptModal from '@/components/login-prompt-modal';
 import MediaImage from '@/components/ui/media-image';
 import { PageCardGridSkeleton } from '@/components/ui/page-skeleton';
 import { SafeRichText } from '@/components/common/RichTextContent';
+import Seo from '@/components/seo/Seo';
+import usePageSeo from '@/hooks/usePageSeo';
 import {
   SCIENCE_TECH_LABS_PAGE_SLUG,
   SCIENCE_TECH_LABS_DEFAULTS,
@@ -16,12 +18,13 @@ import {
 } from './science-tech-labs.data';
 
 const ScienceTechLabs = () => {
-  const { data, loading } = usePageData<any>(SCIENCE_TECH_LABS_PAGE_SLUG);
+  const { data, loading } = useHubLegacy<any>(SCIENCE_TECH_LABS_PAGE_SLUG);
   const { isSaved, isPending, add, remove, showLoginPrompt, setShowLoginPrompt } =
     useDesignWishlist('science-tech-labs');
 
   const [selectedFilter, setSelectedFilter] = useState('All');
   const [subscribed, setSubscribed] = useState(false);
+  const seoProps = usePageSeo(data, 'Science & Tech Labs', undefined, `/${SCIENCE_TECH_LABS_PAGE_SLUG}`);
 
   const value = (key: string) => data[key] ?? SCIENCE_TECH_LABS_DEFAULTS[key as keyof typeof SCIENCE_TECH_LABS_DEFAULTS];
 
@@ -61,11 +64,17 @@ const ScienceTechLabs = () => {
   const featuredTarget = featured.href?.trim() || `/${SCIENCE_TECH_LABS_PAGE_SLUG}/${featured.slug?.trim() || slugifyScienceLabTitle(featured.title)}`;
 
   if (loading && !data.cards) {
-    return <PageCardGridSkeleton cardCount={6} />;
+    return (
+      <>
+        <Seo {...seoProps} />
+        <PageCardGridSkeleton cardCount={6} />
+      </>
+    );
   }
 
   return (
     <main className="ai-guide-page science-tech-labs-page">
+      <Seo {...seoProps} />
       <LoginPromptModal open={showLoginPrompt} onClose={() => setShowLoginPrompt(false)} />
       <style>{`
         .science-tech-labs-page {

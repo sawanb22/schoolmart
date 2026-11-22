@@ -1,0 +1,27 @@
+{
+  "title": "Edge Featured Duplicate",
+  "slug": "edge-featured-duplicate",
+  "content": null,
+  "template": "solution-hub",
+  "pageData": {
+    "heroTitle": "Featured Duplicate",
+    "featured": {
+      "title": "Flagship STEM Center",
+      "description": "Flagship card description",
+      "slug": "flagship-stem"
+    },
+    "cards": [
+      {
+        "title": "Flagship STEM Center",
+        "description": "Flagship card description",
+        "slug": "flagship-stem"
+      },
+      {
+        "title": "Secondary Lab",
+        "description": "Other card",
+        "slug": "secondary-lab"
+      }
+    ]
+  },
+  "published": true
+}

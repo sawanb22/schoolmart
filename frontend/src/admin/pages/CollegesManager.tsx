@@ -24,6 +24,15 @@ import {
   Camera,
 } from 'lucide-react';
 import api from '../api/client';
+import {
+  fetchAdminPageItems,
+  createAdminPageItem,
+  updateAdminPageItem,
+  deleteAdminPageItem,
+  reorderAdminPageItems,
+  fetchAdminPageCategories,
+  createAdminPageCategory,
+} from '../api/pageItems';
 import MediaImageField from '../components/MediaImageField';
 import HtmlRichTextEditor from '../components/HtmlRichTextEditor';
 import RichTextContent from '@/components/common/RichTextContent';
@@ -34,6 +43,8 @@ import { broadcastCmsInvalidation, clearPageDataCache } from '@/hooks/usePageDat
 export type Region = 'North' | 'South' | 'East' | 'West';
 
 export interface CollegeListing {
+  id?: number;
+  version?: number;
   title: string;
   category?: string;
   location?: string;
@@ -67,6 +78,8 @@ interface PageRecord {
   slug: string;
   template: string;
   published: boolean;
+  contentModel?: string;
+  version?: number;
   pageData: PageData | string;
 }
 
@@ -164,21 +177,55 @@ export default function CollegesManager() {
         setCardDetailsButtonLabel(pd.cardDetailsButtonLabel || 'View Full Details');
         setCardContactButtonLabel(pd.cardContactButtonLabel || 'Contact Business');
 
-        const rawCards = Array.isArray(pd.cards) ? pd.cards : [];
-        const initialCards: CollegeListing[] = rawCards.map((c) => ({
-          ...c,
-          category: c.category === 'General' ? '' : (c.category || ''),
-          images: Array.isArray(c.images) && c.images.length > 0
-            ? c.images.filter(Boolean)
-            : (c.image ? [c.image] : []),
-        }));
-        setCards(initialCards);
+        if (data.contentModel === 'structured') {
+          // Structured Page: Read items and categories from relational endpoints
+          const [itemsRes, catsRes] = await Promise.all([
+            fetchAdminPageItems(data.id, 'cards', 'card'),
+            fetchAdminPageCategories(data.id).catch(() => ({ categories: [] })),
+          ]);
 
-        // Derive categories: Strictly respect pd.categories from database if present; otherwise default
-        const existingCats = Array.isArray(pd.categories) && pd.categories.length > 0
-          ? pd.categories.filter((c) => c !== 'General')
-          : DEFAULT_CATEGORIES.filter((c) => c !== 'General');
-        setCategories(existingCats);
+          const loadedCards: CollegeListing[] = itemsRes.items.map((it) => {
+            const c = it.card || it.data || {};
+            return {
+              id: it.id,
+              version: it.version,
+              title: it.title || c.title || '',
+              description: it.summary || c.description || '',
+              image: it.imageUrl || c.image || '',
+              images: Array.isArray(c.images) && c.images.length > 0 ? c.images : (it.imageUrl ? [it.imageUrl] : []),
+              category: (it.categories && it.categories[0]) || c.category || '',
+              location: c.location || '',
+              region: c.region || 'North',
+              rating: c.rating || '7.5',
+              sales: c.sales || '',
+              margin: c.margin || '',
+              askingPrice: c.askingPrice || '',
+              premium: Boolean(c.premium),
+              ndaUrl: c.ndaUrl || '',
+              mandateUrl: c.mandateUrl || '',
+            };
+          });
+          setCards(loadedCards);
+
+          const catNames = catsRes.categories.map((c) => c.name);
+          setCategories(catNames.length > 0 ? catNames : DEFAULT_CATEGORIES.filter((c) => c !== 'General'));
+        } else {
+          const rawCards = Array.isArray(pd.cards) ? pd.cards : [];
+          const initialCards: CollegeListing[] = rawCards.map((c) => ({
+            ...c,
+            category: c.category === 'General' ? '' : (c.category || ''),
+            images: Array.isArray(c.images) && c.images.length > 0
+              ? c.images.filter(Boolean)
+              : (c.image ? [c.image] : []),
+          }));
+          setCards(initialCards);
+
+          // Derive categories: Strictly respect pd.categories from database if present; otherwise default
+          const existingCats = Array.isArray(pd.categories) && pd.categories.length > 0
+            ? pd.categories.filter((c) => c !== 'General')
+            : DEFAULT_CATEGORIES.filter((c) => c !== 'General');
+          setCategories(existingCats);
+        }
       }
     } catch (err: any) {
       console.error('Failed to load colleges page:', err);
@@ -207,16 +254,24 @@ export default function CollegesManager() {
         filterLabel,
         cardDetailsButtonLabel,
         cardContactButtonLabel,
-        cards: nextCards,
-        categories: nextCategories,
       };
+
+      if (pageRecord.contentModel !== 'structured') {
+        updatedPageData.cards = nextCards;
+        updatedPageData.categories = nextCategories;
+      }
 
       const publishedState = typeof nextPublished === 'boolean' ? nextPublished : isPublished;
 
-      const { data: updatedRecord } = await api.put(`/pages/${pageRecord.id}`, {
+      const putBody: Record<string, any> = {
         published: publishedState,
         pageData: updatedPageData,
-      });
+      };
+      if (pageRecord.version !== undefined) {
+        putBody.version = pageRecord.version;
+      }
+
+      const { data: updatedRecord } = await api.put(`/pages/${pageRecord.id}`, putBody);
 
       setPageRecord(updatedRecord);
       setCards(nextCards);
@@ -319,6 +374,34 @@ export default function CollegesManager() {
       title: `${source.title} (Copy)`,
       images: Array.isArray(source.images) ? [...source.images] : (source.image ? [source.image] : []),
     };
+
+    if (pageRecord?.contentModel === 'structured') {
+      try {
+        setSaving(true);
+        const res = await createAdminPageItem(pageRecord.id, {
+          collection: 'cards',
+          card: clone,
+          position: index + 1,
+        });
+        const newListing: CollegeListing = {
+          id: res.id,
+          version: res.version,
+          ...clone,
+        };
+        const nextCards = [...cards];
+        nextCards.splice(index + 1, 0, newListing);
+        setCards(nextCards);
+        clearPageDataCache('colleges-universities-for-sale');
+        broadcastCmsInvalidation({ type: 'INVALIDATE_PAGE', slug: 'colleges-universities-for-sale' });
+        showToast('Listing duplicated successfully.');
+      } catch (err: any) {
+        showToast(err?.response?.data?.error || 'Failed to duplicate listing', 'error');
+      } finally {
+        setSaving(false);
+      }
+      return;
+    }
+
     const nextCards = [...cards];
     nextCards.splice(index + 1, 0, clone);
     await saveToDatabase(nextCards, categories);
@@ -331,6 +414,25 @@ export default function CollegesManager() {
     );
     if (!ok) return;
 
+    if (pageRecord?.contentModel === 'structured') {
+      try {
+        setSaving(true);
+        if (target.id) {
+          await deleteAdminPageItem(pageRecord.id, target.id, target.version);
+        }
+        const nextCards = cards.filter((_, i) => i !== index);
+        setCards(nextCards);
+        clearPageDataCache('colleges-universities-for-sale');
+        broadcastCmsInvalidation({ type: 'INVALIDATE_PAGE', slug: 'colleges-universities-for-sale' });
+        showToast('Listing deleted successfully.');
+      } catch (err: any) {
+        showToast(err?.response?.data?.error || 'Failed to delete listing', 'error');
+      } finally {
+        setSaving(false);
+      }
+      return;
+    }
+
     const nextCards = cards.filter((_, i) => i !== index);
     await saveToDatabase(nextCards, categories);
   };
@@ -338,6 +440,27 @@ export default function CollegesManager() {
   const handleMove = async (index: number, direction: 'up' | 'down') => {
     const targetIndex = direction === 'up' ? index - 1 : index + 1;
     if (targetIndex < 0 || targetIndex >= cards.length) return;
+
+    if (pageRecord?.contentModel === 'structured') {
+      try {
+        setSaving(true);
+        const nextCards = [...cards];
+        const temp = nextCards[index];
+        nextCards[index] = nextCards[targetIndex];
+        nextCards[targetIndex] = temp;
+        const orderedIds = nextCards.map((c) => c.id).filter((id): id is number => id !== undefined);
+        await reorderAdminPageItems(pageRecord.id, 'cards', orderedIds);
+        setCards(nextCards);
+        clearPageDataCache('colleges-universities-for-sale');
+        broadcastCmsInvalidation({ type: 'INVALIDATE_PAGE', slug: 'colleges-universities-for-sale' });
+        showToast('Listings reordered successfully.');
+      } catch (err: any) {
+        showToast(err?.response?.data?.error || 'Failed to reorder listings', 'error');
+      } finally {
+        setSaving(false);
+      }
+      return;
+    }
 
     const nextCards = [...cards];
     const temp = nextCards[index];
@@ -348,6 +471,30 @@ export default function CollegesManager() {
   };
 
   const handleTogglePremiumDirect = async (index: number) => {
+    if (pageRecord?.contentModel === 'structured') {
+      const target = cards[index];
+      if (target.id) {
+        try {
+          setSaving(true);
+          const updatedCard = { ...target, premium: !target.premium };
+          const res = await updateAdminPageItem(pageRecord.id, target.id, {
+            version: target.version ?? 1,
+            card: updatedCard,
+          });
+          const nextCards = cards.map((c, i) => (i === index ? { ...c, premium: !c.premium, version: res.version } : c));
+          setCards(nextCards);
+          clearPageDataCache('colleges-universities-for-sale');
+          broadcastCmsInvalidation({ type: 'INVALIDATE_PAGE', slug: 'colleges-universities-for-sale' });
+          showToast(`Premium status updated for ${target.title}.`);
+        } catch (err: any) {
+          showToast(err?.response?.data?.error || 'Failed to update premium status', 'error');
+        } finally {
+          setSaving(false);
+        }
+        return;
+      }
+    }
+
     const nextCards = cards.map((c, i) => (i === index ? { ...c, premium: !c.premium } : c));
     await saveToDatabase(nextCards, categories);
   };
@@ -401,6 +548,55 @@ export default function CollegesManager() {
       rating: formData.rating?.trim() || '7.0',
       description: formData.description.trim(),
     };
+
+    if (pageRecord?.contentModel === 'structured') {
+      try {
+        setSaving(true);
+        if (customCategoryInput.trim() && !categories.includes(finalCategory)) {
+          await createAdminPageCategory(pageRecord.id, finalCategory).catch(() => {});
+          setCategories(nextCategories);
+        }
+
+        if (editingIndex === null) {
+          const res = await createAdminPageItem(pageRecord.id, {
+            collection: 'cards',
+            card: cleanedCard,
+            position: 0,
+          });
+          const newListing: CollegeListing = {
+            id: res.id,
+            version: res.version,
+            ...cleanedCard,
+          };
+          setCards([newListing, ...cards]);
+          showToast('New institutional listing created successfully.');
+        } else {
+          const existing = cards[editingIndex];
+          if (existing.id) {
+            const res = await updateAdminPageItem(pageRecord.id, existing.id, {
+              version: existing.version ?? 1,
+              card: cleanedCard,
+            });
+            const updatedListing: CollegeListing = {
+              id: res.id,
+              version: res.version,
+              ...cleanedCard,
+            };
+            setCards(cards.map((c, i) => (i === editingIndex ? updatedListing : c)));
+            showToast('Institutional listing updated successfully.');
+          }
+        }
+        clearPageDataCache('colleges-universities-for-sale');
+        broadcastCmsInvalidation({ type: 'INVALIDATE_PAGE', slug: 'colleges-universities-for-sale' });
+        setModalOpen(false);
+      } catch (err: any) {
+        console.error('Failed to save college listing:', err);
+        showToast(err?.response?.data?.error || 'Failed to save listing to database', 'error');
+      } finally {
+        setSaving(false);
+      }
+      return;
+    }
 
     let nextCards: CollegeListing[];
     if (editingIndex === null) {

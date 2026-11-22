@@ -2,11 +2,13 @@ import { Router, Request, Response } from 'express';
 import prisma from '../lib/prisma';
 import { verifyToken, requireAdmin, AuthRequest } from '../middleware/auth.middleware';
 import { validateTaxonomyPayload, solutionsIndexService } from '../services/solutions-finder';
+import { afterContentWrite } from '../services/page-content/after-content-write';
+import { publicCmsCache } from '../services/cms-cache';
 
 const router = Router();
 
 // GET /api/content - get all site content
-router.get('/', async (_req: Request, res: Response) => {
+router.get('/', publicCmsCache(), async (_req: Request, res: Response) => {
     try {
         const content = await prisma.siteContent.findMany();
         const contentMap = Object.fromEntries(content.map((c) => [c.key, c.value]));
@@ -55,9 +57,7 @@ router.put('/', verifyToken, requireAdmin, async (req: AuthRequest, res: Respons
             await prisma.$transaction(promises);
         }
 
-        if (taxonomyUpdated) {
-            solutionsIndexService.rebuild().catch(err => console.error('[SolutionsIndex] Rebuild error on taxonomy bulk update:', err));
-        }
+        await afterContentWrite({ reason: 'content-update', authorId: req.user?.id });
 
         res.json({ message: 'Content updated successfully' });
     } catch {
@@ -95,9 +95,7 @@ router.put('/:key', verifyToken, requireAdmin, async (req: AuthRequest, res: Res
             create: { key, value: stringValue },
         });
 
-        if (taxonomyUpdated) {
-            solutionsIndexService.rebuild().catch(err => console.error('[SolutionsIndex] Rebuild error on taxonomy update:', err));
-        }
+        await afterContentWrite({ reason: 'content-key-update', authorId: req.user?.id });
 
         res.json(content);
     } catch {

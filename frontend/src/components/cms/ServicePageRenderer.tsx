@@ -14,12 +14,14 @@ import {
 } from 'lucide-react';
 import { usePagination } from '@/hooks/usePagination';
 import PaginationControl from '@/components/common/PaginationControl';
-import { usePageData } from '@/hooks/usePageData';
+import { useHubLegacy } from '@/hooks/useHubLegacy';
 import MediaImage from '@/components/ui/media-image';
 import { CampusDesignExecutionSkeleton } from '@/components/ui/page-skeleton';
 import { SafeRichText } from '@/components/common/RichTextContent';
 import { normalizeCardHref } from '@/lib/cms-routing';
 import { resolveCtaButtonStyles } from '@/lib/ctaStyles';
+import Seo from '@/components/seo/Seo';
+import usePageSeo from '@/hooks/usePageSeo';
 
 export interface ServiceCardItem {
   title: string;
@@ -168,8 +170,9 @@ export function getStepBadge(card: { title?: string; category?: string; categori
 const PAGE_SIZE = 12;
 
 const ServicePageRenderer = ({ slug = '' }: ServicePageRendererProps) => {
-  const { data, loading } = usePageData(slug);
+  const { data, loading } = useHubLegacy(slug);
   const [activeCategory, setActiveCategory] = useState('All');
+  const seoProps = usePageSeo(data, slug, undefined, slug ? `/${slug}` : undefined);
 
   const styles: ServicePageStyles = {
     headingFont: 'poppins',
@@ -292,7 +295,12 @@ const ServicePageRenderer = ({ slug = '' }: ServicePageRendererProps) => {
   };
 
   if (loading) {
-    return <CampusDesignExecutionSkeleton />;
+    return (
+      <>
+        <Seo {...seoProps} />
+        <CampusDesignExecutionSkeleton />;
+      </>
+    );
   }
 
   const heroEyebrow = data.heroEyebrow || '';
@@ -312,6 +320,7 @@ const ServicePageRenderer = ({ slug = '' }: ServicePageRendererProps) => {
 
   return (
     <main className={`min-h-screen bg-white ${bodyFontClass} ${showCta ? 'pb-0' : 'pb-16'}`}>
+      <Seo {...seoProps} />
       {/* Hero / Section Header - 100% Database Driven */}
       {!data.hideHero && (
         <section

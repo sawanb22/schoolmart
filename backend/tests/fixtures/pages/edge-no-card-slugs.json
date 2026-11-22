@@ -1,0 +1,8 @@
+{
+  "title": "Edge No Card Slugs",
+  "slug": "edge-no-card-slugs",
+  "template": "solution-hub",
+  "published": true,
+  "content": null,
+  "pageData": "{\"heroTitle\":\"No Card Slugs Test\",\"cards\":[{\"title\":\"Advanced Physics Studio\",\"description\":\"No slug property here\"},{\"title\":\"Bio Research Facility\",\"description\":\"Also missing slug\"}]}"
+}

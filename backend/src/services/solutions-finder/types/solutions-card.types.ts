@@ -49,6 +49,7 @@ export interface DataWatermarks {
   readonly taxonomyMax: number;
   readonly caseMax?: number;
   readonly caseCount?: number;
+  readonly cmsVersion?: number;
 }
 
 export interface CaseStudyDto {

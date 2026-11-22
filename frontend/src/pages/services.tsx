@@ -3,7 +3,7 @@ import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { LayoutGrid, Ruler, Trophy, Cpu } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import { usePageData } from '@/hooks/usePageData';
+import { useHubLegacy } from '@/hooks/useHubLegacy';
 import { MediaImage } from '@/components/ui/media-image';
 import { PageCardGridSkeleton } from '@/components/ui/page-skeleton';
 
@@ -42,7 +42,7 @@ const DEFAULTS = {
 
 const Services = () => {
     const containerRef = useRef<HTMLDivElement>(null);
-    const { data, loading } = usePageData('services');
+    const { data, loading } = useHubLegacy('services');
 
     const heroTitle = data.heroTitle ?? DEFAULTS.heroTitle;
     const heroSubtitle = data.heroSubtitle ?? DEFAULTS.heroSubtitle;

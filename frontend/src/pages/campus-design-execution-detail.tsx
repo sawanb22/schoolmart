@@ -1,22 +1,21 @@
-import { Link, useParams } from 'react-router-dom';
+import { Link, Navigate, useParams } from 'react-router-dom';
 import { ArrowLeft, ArrowRight, Layers } from 'lucide-react';
 import { getStepBadge } from '@/components/cms/ServicePageRenderer';
-import { usePageData } from '@/hooks/usePageData';
+import { useHubItem } from '@/hooks/useHubItem';
+import { itemToCard } from '@/lib/item-to-card';
 import { MediaImage } from '@/components/ui/media-image';
 import RichTextContent from '@/components/common/RichTextContent';
 import {
   CDE_PAGE_SLUG,
-  slugifyStepTitle,
   type CampusDesignExecutionCard,
   type CampusDesignExecutionDeliverable,
-  type CampusDesignExecutionPageData,
 } from './campus-design-execution.data';
 
 const CampusDesignExecutionDetail = () => {
   const { stepSlug } = useParams();
-  const { data, loading } = usePageData<CampusDesignExecutionPageData>(CDE_PAGE_SLUG);
+  const { data: hubItemData, isLoading } = useHubItem(CDE_PAGE_SLUG, stepSlug || '');
 
-  if (loading) {
+  if (isLoading) {
     return (
       <main className="min-h-screen bg-gray-50/50 py-8 sm:py-12 animate-pulse">
         <article className="mx-auto max-w-3xl px-4 sm:px-6">
@@ -37,16 +36,13 @@ const CampusDesignExecutionDetail = () => {
     );
   }
 
-  const cards: CampusDesignExecutionCard[] = Array.isArray(data?.cards)
-    ? data.cards
-    : [];
+  if (hubItemData && (hubItemData as any).redirectTo) {
+    return <Navigate to={(hubItemData as any).redirectTo as string} replace />;
+  }
 
-  const card = cards.find(
-    (item: CampusDesignExecutionCard) =>
-      (item.slug && item.slug.trim() === stepSlug) ||
-      (item.title && slugifyStepTitle(item.title) === stepSlug) ||
-      item.href?.endsWith(`/${stepSlug}`),
-  );
+  const rawItem = (hubItemData as any)?.item;
+  const hub = ((hubItemData as any)?.hub || {}) as any;
+  const card = rawItem ? (itemToCard(rawItem, { includeDetail: true }) as CampusDesignExecutionCard) : null;
 
   if (!card) {
     return (
@@ -62,7 +58,7 @@ const CampusDesignExecutionDetail = () => {
   const rawDeliverables: CampusDesignExecutionDeliverable[] = Array.isArray(card.deliverables) ? card.deliverables : [];
   const deliverables = rawDeliverables.filter((item: CampusDesignExecutionDeliverable) => item?.title?.trim() || item?.desc?.trim());
 
-  const styles = data.styles || {};
+  const styles = hub.styles || {};
   const headingFontClass =
     styles.headingFont === 'playfair'
       ? 'font-playfair'
@@ -83,13 +79,12 @@ const CampusDesignExecutionDetail = () => {
       ? 'font-sans'
       : 'font-opensans';
 
+  const methodologyHeading = card.methodologyHeading?.trim() || hub.methodologyHeading?.trim() || 'Scope & Methodology';
+  const deliverablesHeading = card.deliverablesHeading?.trim() || hub.deliverablesHeading?.trim() || 'Key Milestones & Deliverables';
 
-  const methodologyHeading = card.methodologyHeading?.trim() || data.methodologyHeading?.trim() || 'Scope & Methodology';
-  const deliverablesHeading = card.deliverablesHeading?.trim() || data.deliverablesHeading?.trim() || 'Key Milestones & Deliverables';
-
-  const showHero = !card.hideHero && !data.hideHero;
-  const showMethodology = !card.hideMethodology && !data.hideMethodology && Boolean(overview);
-  const showDeliverables = !card.hideDeliverables && !data.hideDeliverables && deliverables.length > 0;
+  const showHero = !card.hideHero && !hub.hideHero;
+  const showMethodology = !card.hideMethodology && !hub.hideMethodology && Boolean(overview);
+  const showDeliverables = !card.hideDeliverables && !hub.hideDeliverables && deliverables.length > 0;
   const hasCardContent = showHero || showMethodology || showDeliverables;
 
   return (
@@ -161,16 +156,16 @@ const CampusDesignExecutionDetail = () => {
           </div>
         )}
 
-        {!data.hideCta && (
+        {!hub.hideCta && (
           <div className="mt-8 flex flex-col items-center justify-between gap-4 rounded-2xl bg-gradient-to-br from-cm-blue-dark to-cm-blue p-6 text-center sm:flex-row sm:p-8 sm:text-left">
             <p className="text-sm font-semibold text-white sm:text-base">
-              {card.ctaTitle || data.subpageCtaTitle || data.ctaTitle || `Ready to start the ${(card.title || 'project').toLowerCase()} phase?`}
+              {card.ctaTitle || hub.subpageCtaTitle || hub.ctaTitle || `Ready to start the ${(card.title || 'project').toLowerCase()} phase?`}
             </p>
             <Link
-              to={card.ctaHref || data.subpageCtaHref || data.ctaHref || '/request-quote'}
+              to={card.ctaHref || hub.subpageCtaHref || hub.ctaHref || '/request-quote'}
               className="btn-secondary inline-flex flex-shrink-0 items-center gap-2 px-6 py-3 text-sm font-bold"
             >
-              {card.ctaButtonLabel || data.subpageCtaButtonLabel || data.ctaButtonLabel || 'Get a Project Quote'} <ArrowRight className="h-4 w-4" />
+              {card.ctaButtonLabel || hub.subpageCtaButtonLabel || hub.ctaButtonLabel || 'Get a Project Quote'} <ArrowRight className="h-4 w-4" />
             </Link>
           </div>
         )}

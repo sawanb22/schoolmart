@@ -1,0 +1,3048 @@
+[
+  {
+    "sourcePage": "ai-ml.json",
+    "slug": "ai-ml",
+    "v2Payload": {
+      "page": {
+        "id": 1,
+        "slug": "ai-ml",
+        "title": "AI & ML Labs",
+        "template": "ai-ml",
+        "contentModel": "structured",
+        "version": 1,
+        "updatedAt": "2026-11-21T00:00:00.000Z"
+      },
+      "settings": {
+        "heroTitle": "AI & Machine Learning",
+        "heroSubtitle": "Cutting-edge AI and ML solutions for educational institutions. Prepare students for the future with hands-on learning experiences.",
+        "heroImage": "https://images.unsplash.com/photo-1677442136019-21780ecad995?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80",
+        "section1Title": "AI/ML Solutions",
+        "section2Title": "Future-Ready Education"
+      },
+      "collections": {
+        "cards": [
+          {
+            "id": 0,
+            "slug": "ai-learning-stations",
+            "collection": "cards",
+            "title": "AI Learning Stations",
+            "summary": "Interactive AI-powered learning environments",
+            "imageUrl": null,
+            "href": null,
+            "badge": null,
+            "categories": [],
+            "data": {},
+            "sortOrder": 0
+          },
+          {
+            "id": 1,
+            "slug": "ml-labs",
+            "collection": "cards",
+            "title": "ML Labs",
+            "summary": "Machine learning experimentation setups",
+            "imageUrl": null,
+            "href": null,
+            "badge": null,
+            "categories": [],
+            "data": {},
+            "sortOrder": 1
+          },
+          {
+            "id": 2,
+            "slug": "coding-platforms",
+            "collection": "cards",
+            "title": "Coding Platforms",
+            "summary": "Programming and development environments",
+            "imageUrl": null,
+            "href": null,
+            "badge": null,
+            "categories": [],
+            "data": {},
+            "sortOrder": 2
+          },
+          {
+            "id": 3,
+            "slug": "computing-infrastructure",
+            "collection": "cards",
+            "title": "Computing Infrastructure",
+            "summary": "High-performance computing solutions",
+            "imageUrl": null,
+            "href": null,
+            "badge": null,
+            "categories": [],
+            "data": {},
+            "sortOrder": 3
+          }
+        ]
+      },
+      "categories": []
+    },
+    "expectedLegacyNoDetail": {
+      "heroTitle": "AI & Machine Learning",
+      "heroSubtitle": "Cutting-edge AI and ML solutions for educational institutions. Prepare students for the future with hands-on learning experiences.",
+      "heroImage": "https://images.unsplash.com/photo-1677442136019-21780ecad995?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80",
+      "section1Title": "AI/ML Solutions",
+      "section2Title": "Future-Ready Education",
+      "cards": [
+        {
+          "title": "AI Learning Stations",
+          "slug": "ai-learning-stations",
+          "description": "Interactive AI-powered learning environments"
+        },
+        {
+          "title": "ML Labs",
+          "slug": "ml-labs",
+          "description": "Machine learning experimentation setups"
+        },
+        {
+          "title": "Coding Platforms",
+          "slug": "coding-platforms",
+          "description": "Programming and development environments"
+        },
+        {
+          "title": "Computing Infrastructure",
+          "slug": "computing-infrastructure",
+          "description": "High-performance computing solutions"
+        }
+      ]
+    }
+  },
+  {
+    "sourcePage": "campus-design-execution.json",
+    "slug": "campus-design-execution",
+    "v2Payload": {
+      "page": {
+        "id": 1,
+        "slug": "campus-design-execution",
+        "title": "Campus Design & Execution",
+        "template": "campus-design-execution",
+        "contentModel": "structured",
+        "version": 1,
+        "updatedAt": "2026-11-21T00:00:00.000Z"
+      },
+      "settings": {},
+      "collections": {},
+      "categories": []
+    },
+    "expectedLegacyNoDetail": {}
+  },
+  {
+    "sourcePage": "campus-master-planning.json",
+    "slug": "campus-master-planning",
+    "v2Payload": {
+      "page": {
+        "id": 1,
+        "slug": "campus-master-planning",
+        "title": "Campus Master Planning",
+        "template": "campus-master-planning",
+        "contentModel": "structured",
+        "version": 1,
+        "updatedAt": "2026-11-21T00:00:00.000Z"
+      },
+      "settings": {},
+      "collections": {},
+      "categories": []
+    },
+    "expectedLegacyNoDetail": {}
+  },
+  {
+    "sourcePage": "catalogues.json",
+    "slug": "catalogues",
+    "v2Payload": {
+      "page": {
+        "id": 1,
+        "slug": "catalogues",
+        "title": "Comprehensive School Infrastructure Product Catalogues",
+        "template": "grid",
+        "contentModel": "structured",
+        "version": 1,
+        "updatedAt": "2026-11-21T00:00:00.000Z"
+      },
+      "settings": {
+        "badge": "Downloads",
+        "image": "https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?w=800&q=80",
+        "hero": {
+          "title": "Product Catalogues & Architectural Spec Sheets",
+          "titleHtml": "Product <br/><span class=\"text-[#004a8e]\">Catalogues</span>",
+          "subtitle": "Download our complete product catalogues. Complete 2026 product specifications, dimension drawings, material certifications, and finish swatches across all school infrastructure verticals.",
+          "bannerImage": "https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?w=1600&q=80",
+          "badge": "Downloads"
+        },
+        "heroImg": "https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?w=1600&q=80",
+        "heading": "Comprehensive School Infrastructure Product Catalogues",
+        "description": "Download official SchoolMart 2026 catalogues covering agile classroom furniture, STEM & science laboratories, sports turfs, and early learning Wondergartens.",
+        "blocks": {
+          "page_hero": {
+            "id": "fcdd4fec-d75b-4d20-9225-824dcd8b9cf3",
+            "key": "page_hero",
+            "type": "page_hero",
+            "data": {
+              "badge": "Downloads",
+              "subtitle": "Download our complete product catalogues",
+              "titleHtml": "Product<br/><span class=\"text-sm-blue\">Catalogues</span>"
+            },
+            "isVisible": true
+          },
+          "pdf_resource": {
+            "id": "8f27b014-7f87-4f00-b897-f019c592a77b",
+            "key": "pdf_resource",
+            "type": "pdf_resource",
+            "data": {
+              "title": "Product Catalogue 2025",
+              "fileUrl": "",
+              "description": "Complete range of school furniture and infrastructure",
+              "registeredOnly": true
+            },
+            "isVisible": true
+          }
+        },
+        "ctaTitle": "Need Custom Architectural CAD Blocks or Printed Catalogues?",
+        "ctaSubtitle": "Our design team can provide complete Revit families, AutoCAD blocks, and physical material swatch boxes delivered directly to your office.",
+        "ctaButtonLabel": "Request Spec Swatch Box",
+        "ctaHref": "/contact-us",
+        "body": "Explore SchoolMart's comprehensive suite of 2026 institutional product catalogues. Designed specifically for architects, educational consultants, school trustees, and procurement committees, our catalogues provide exhaustive technical documentation, anthropometric sizing charts, CAD dimension drawings, material certifications, and high-resolution finish swatches.\n\n### Official 2026 Catalogue Volumes\n1. **Volume I: Agile Classroom Furniture & Collaborative Workspaces**\n   * Nesting trapezoidal and teardrop student desks with silent castors.\n   * BIFMA-certified ergonomic student chairs (sizes 1 through 6).\n   * Heavy-duty teacher mobile podiums and height-adjustable standing desks.\n   * Modular student locker bays and Gratnells tote-tray organizational carts.\n\n2. **Volume II: Specialized Scientific, Composite & STEM Laboratories**\n   * Heavy-duty epoxy and phenolic resin laboratory workbenches.\n   * Integrated clay sediment traps, fume extraction hoods, and centralized gas manifolds.\n   * Mobile maker carts, CNC tooling enclosures, and electronics breadboard stations.\n   * Complete CBSE / ICSE / IB curriculum-aligned instrument lists.\n\n3. **Volume III: Early Childhood & Wondergarten Sensory Environments**\n   * Biophilic natural solid-wood sensory tables and sand/water play troughs.\n   * Curved acoustic book display islands and cozy quiet-reading dens.\n   * Non-toxic foam soft-play shapes and indoor movement balance beams.\n\n4. **Volume IV: Sports Infrastructure, Athletic Turfs & Outdoor Play**\n   * FIFA-standard monofilament synthetic football grass with eco-cool infills.\n   * Polyurethane (PU) multi-sport court surfacing (basketball, tennis, volleyball).\n   * Galvanized, anti-rust outdoor play structures with safety impact surfacing.\n\n5. **Volume V: Library Stacks, Media Centers & Administrative Suites**\n   * Double-faced cantilever steel bookshelves and book return kiosks.\n   * High-backed acoustic felt study booths and informal lounge soft seating.\n   * Executive principal desks, board meeting conference tables, and reception counters.",
+        "heroImage": "https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?w=1600&q=80",
+        "heroTitle": "Product Catalogues & Architectural Spec Sheets",
+        "heroSubtitle": "Download our complete product catalogues. Complete 2026 product specifications, dimension drawings, material certifications, and finish swatches across all school infrastructure verticals.",
+        "heroEyebrow": "Downloads",
+        "heroBadge": "Downloads",
+        "pageTitle": "Comprehensive School Infrastructure Product Catalogues",
+        "category": "Corporate Programs",
+        "taxonomy": [
+          "Corporate",
+          "Product Catalogues",
+          "Downloads",
+          "Specifications",
+          "BIM & CAD"
+        ],
+        "tags": [
+          "Corporate",
+          "Product Catalogues",
+          "Downloads",
+          "Specifications",
+          "BIM & CAD"
+        ],
+        "content": "Explore SchoolMart's comprehensive suite of 2026 institutional product catalogues. Designed specifically for architects, educational consultants, school trustees, and procurement committees, our catalogues provide exhaustive technical documentation, anthropometric sizing charts, CAD dimension drawings, material certifications, and high-resolution finish swatches.\n\n### Official 2026 Catalogue Volumes\n1. **Volume I: Agile Classroom Furniture & Collaborative Workspaces**\n   * Nesting trapezoidal and teardrop student desks with silent castors.\n   * BIFMA-certified ergonomic student chairs (sizes 1 through 6).\n   * Heavy-duty teacher mobile podiums and height-adjustable standing desks.\n   * Modular student locker bays and Gratnells tote-tray organizational carts.\n\n2. **Volume II: Specialized Scientific, Composite & STEM Laboratories**\n   * Heavy-duty epoxy and phenolic resin laboratory workbenches.\n   * Integrated clay sediment traps, fume extraction hoods, and centralized gas manifolds.\n   * Mobile maker carts, CNC tooling enclosures, and electronics breadboard stations.\n   * Complete CBSE / ICSE / IB curriculum-aligned instrument lists.\n\n3. **Volume III: Early Childhood & Wondergarten Sensory Environments**\n   * Biophilic natural solid-wood sensory tables and sand/water play troughs.\n   * Curved acoustic book display islands and cozy quiet-reading dens.\n   * Non-toxic foam soft-play shapes and indoor movement balance beams.\n\n4. **Volume IV: Sports Infrastructure, Athletic Turfs & Outdoor Play**\n   * FIFA-standard monofilament synthetic football grass with eco-cool infills.\n   * Polyurethane (PU) multi-sport court surfacing (basketball, tennis, volleyball).\n   * Galvanized, anti-rust outdoor play structures with safety impact surfacing.\n\n5. **Volume V: Library Stacks, Media Centers & Administrative Suites**\n   * Double-faced cantilever steel bookshelves and book return kiosks.\n   * High-backed acoustic felt study booths and informal lounge soft seating.\n   * Executive principal desks, board meeting conference tables, and reception counters.",
+        "ctaButtonHref": "/contact-us",
+        "ctaBtnBg": "#002a6c",
+        "ctaBtnText": "#ffffff",
+        "hideCta": false,
+        "styles": {
+          "ctaBg": "#002a6c"
+        },
+        "btn1Label": "Request Spec Swatch Box",
+        "btn1Path": "/contact-us"
+      },
+      "collections": {},
+      "categories": []
+    },
+    "expectedLegacyNoDetail": {
+      "badge": "Downloads",
+      "image": "https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?w=800&q=80",
+      "hero": {
+        "title": "Product Catalogues & Architectural Spec Sheets",
+        "titleHtml": "Product <br/><span class=\"text-[#004a8e]\">Catalogues</span>",
+        "subtitle": "Download our complete product catalogues. Complete 2026 product specifications, dimension drawings, material certifications, and finish swatches across all school infrastructure verticals.",
+        "bannerImage": "https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?w=1600&q=80",
+        "badge": "Downloads"
+      },
+      "heroImg": "https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?w=1600&q=80",
+      "heading": "Comprehensive School Infrastructure Product Catalogues",
+      "description": "Download official SchoolMart 2026 catalogues covering agile classroom furniture, STEM & science laboratories, sports turfs, and early learning Wondergartens.",
+      "blocks": {
+        "page_hero": {
+          "id": "fcdd4fec-d75b-4d20-9225-824dcd8b9cf3",
+          "key": "page_hero",
+          "type": "page_hero",
+          "data": {
+            "badge": "Downloads",
+            "subtitle": "Download our complete product catalogues",
+            "titleHtml": "Product<br/><span class=\"text-sm-blue\">Catalogues</span>"
+          },
+          "isVisible": true
+        },
+        "pdf_resource": {
+          "id": "8f27b014-7f87-4f00-b897-f019c592a77b",
+          "key": "pdf_resource",
+          "type": "pdf_resource",
+          "data": {
+            "title": "Product Catalogue 2025",
+            "fileUrl": "",
+            "description": "Complete range of school furniture and infrastructure",
+            "registeredOnly": true
+          },
+          "isVisible": true
+        }
+      },
+      "ctaTitle": "Need Custom Architectural CAD Blocks or Printed Catalogues?",
+      "ctaSubtitle": "Our design team can provide complete Revit families, AutoCAD blocks, and physical material swatch boxes delivered directly to your office.",
+      "ctaButtonLabel": "Request Spec Swatch Box",
+      "ctaHref": "/contact-us",
+      "body": "Explore SchoolMart's comprehensive suite of 2026 institutional product catalogues. Designed specifically for architects, educational consultants, school trustees, and procurement committees, our catalogues provide exhaustive technical documentation, anthropometric sizing charts, CAD dimension drawings, material certifications, and high-resolution finish swatches.\n\n### Official 2026 Catalogue Volumes\n1. **Volume I: Agile Classroom Furniture & Collaborative Workspaces**\n   * Nesting trapezoidal and teardrop student desks with silent castors.\n   * BIFMA-certified ergonomic student chairs (sizes 1 through 6).\n   * Heavy-duty teacher mobile podiums and height-adjustable standing desks.\n   * Modular student locker bays and Gratnells tote-tray organizational carts.\n\n2. **Volume II: Specialized Scientific, Composite & STEM Laboratories**\n   * Heavy-duty epoxy and phenolic resin laboratory workbenches.\n   * Integrated clay sediment traps, fume extraction hoods, and centralized gas manifolds.\n   * Mobile maker carts, CNC tooling enclosures, and electronics breadboard stations.\n   * Complete CBSE / ICSE / IB curriculum-aligned instrument lists.\n\n3. **Volume III: Early Childhood & Wondergarten Sensory Environments**\n   * Biophilic natural solid-wood sensory tables and sand/water play troughs.\n   * Curved acoustic book display islands and cozy quiet-reading dens.\n   * Non-toxic foam soft-play shapes and indoor movement balance beams.\n\n4. **Volume IV: Sports Infrastructure, Athletic Turfs & Outdoor Play**\n   * FIFA-standard monofilament synthetic football grass with eco-cool infills.\n   * Polyurethane (PU) multi-sport court surfacing (basketball, tennis, volleyball).\n   * Galvanized, anti-rust outdoor play structures with safety impact surfacing.\n\n5. **Volume V: Library Stacks, Media Centers & Administrative Suites**\n   * Double-faced cantilever steel bookshelves and book return kiosks.\n   * High-backed acoustic felt study booths and informal lounge soft seating.\n   * Executive principal desks, board meeting conference tables, and reception counters.",
+      "heroImage": "https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?w=1600&q=80",
+      "heroTitle": "Product Catalogues & Architectural Spec Sheets",
+      "heroSubtitle": "Download our complete product catalogues. Complete 2026 product specifications, dimension drawings, material certifications, and finish swatches across all school infrastructure verticals.",
+      "heroEyebrow": "Downloads",
+      "heroBadge": "Downloads",
+      "pageTitle": "Comprehensive School Infrastructure Product Catalogues",
+      "category": "Corporate Programs",
+      "taxonomy": [
+        "Corporate",
+        "Product Catalogues",
+        "Downloads",
+        "Specifications",
+        "BIM & CAD"
+      ],
+      "tags": [
+        "Corporate",
+        "Product Catalogues",
+        "Downloads",
+        "Specifications",
+        "BIM & CAD"
+      ],
+      "content": "Explore SchoolMart's comprehensive suite of 2026 institutional product catalogues. Designed specifically for architects, educational consultants, school trustees, and procurement committees, our catalogues provide exhaustive technical documentation, anthropometric sizing charts, CAD dimension drawings, material certifications, and high-resolution finish swatches.\n\n### Official 2026 Catalogue Volumes\n1. **Volume I: Agile Classroom Furniture & Collaborative Workspaces**\n   * Nesting trapezoidal and teardrop student desks with silent castors.\n   * BIFMA-certified ergonomic student chairs (sizes 1 through 6).\n   * Heavy-duty teacher mobile podiums and height-adjustable standing desks.\n   * Modular student locker bays and Gratnells tote-tray organizational carts.\n\n2. **Volume II: Specialized Scientific, Composite & STEM Laboratories**\n   * Heavy-duty epoxy and phenolic resin laboratory workbenches.\n   * Integrated clay sediment traps, fume extraction hoods, and centralized gas manifolds.\n   * Mobile maker carts, CNC tooling enclosures, and electronics breadboard stations.\n   * Complete CBSE / ICSE / IB curriculum-aligned instrument lists.\n\n3. **Volume III: Early Childhood & Wondergarten Sensory Environments**\n   * Biophilic natural solid-wood sensory tables and sand/water play troughs.\n   * Curved acoustic book display islands and cozy quiet-reading dens.\n   * Non-toxic foam soft-play shapes and indoor movement balance beams.\n\n4. **Volume IV: Sports Infrastructure, Athletic Turfs & Outdoor Play**\n   * FIFA-standard monofilament synthetic football grass with eco-cool infills.\n   * Polyurethane (PU) multi-sport court surfacing (basketball, tennis, volleyball).\n   * Galvanized, anti-rust outdoor play structures with safety impact surfacing.\n\n5. **Volume V: Library Stacks, Media Centers & Administrative Suites**\n   * Double-faced cantilever steel bookshelves and book return kiosks.\n   * High-backed acoustic felt study booths and informal lounge soft seating.\n   * Executive principal desks, board meeting conference tables, and reception counters.",
+      "ctaButtonHref": "/contact-us",
+      "ctaBtnBg": "#002a6c",
+      "ctaBtnText": "#ffffff",
+      "hideCta": false,
+      "styles": {
+        "ctaBg": "#002a6c"
+      },
+      "btn1Label": "Request Spec Swatch Box",
+      "btn1Path": "/contact-us"
+    }
+  },
+  {
+    "sourcePage": "colleges-universities-for-sale.json",
+    "slug": "colleges-universities-for-sale",
+    "v2Payload": {
+      "page": {
+        "id": 1,
+        "slug": "colleges-universities-for-sale",
+        "title": "Colleges / Universities for Sale",
+        "template": "colleges-universities-for-sale",
+        "contentModel": "structured",
+        "version": 1,
+        "updatedAt": "2026-11-21T00:00:00.000Z"
+      },
+      "settings": {
+        "heroTitle": "Businesses for Sale and Investment",
+        "heroSubtitle": "Showing businesses for sale and investment. Buy or invest in a business listed by direct business owners and business brokers.",
+        "filterLabel": "cbse schools"
+      },
+      "collections": {
+        "cards": [
+          {
+            "id": 0,
+            "slug": "school-for-sale-in-bahraich-india",
+            "collection": "cards",
+            "title": "School for Sale in Bahraich, India",
+            "summary": "CBSE school with 800+ students, day and boarding facility for sale in Bahraich. The school encompasses a total area of 87,000 square feet and includes approximately 40 rooms, fully equipped science and computer labs.",
+            "imageUrl": "https://images.unsplash.com/photo-1580582932707-520aed937b7b?auto=format&fit=crop&w=700&q=80",
+            "href": null,
+            "badge": null,
+            "categories": [],
+            "data": {
+              "location": "Bahraich",
+              "rating": "6.8",
+              "sales": "INR 2.6 crore",
+              "margin": "40 %",
+              "askingPrice": "INR 20 Cr",
+              "premium": true
+            },
+            "sortOrder": 0
+          },
+          {
+            "id": 1,
+            "slug": "playschool-seeking-loan-in-haryana-india",
+            "collection": "cards",
+            "title": "Playschool Seeking Loan in Haryana, India",
+            "summary": "Education society in Haryana with 5 CBSE schools and 70 playschools. This is an educational society with primary and play schools seeking growth funding.",
+            "imageUrl": "https://images.unsplash.com/photo-1562774053-701939374585?auto=format&fit=crop&w=700&q=80",
+            "href": null,
+            "badge": null,
+            "categories": [],
+            "data": {
+              "location": "Haryana",
+              "rating": "6.8",
+              "sales": "INR 30 crore",
+              "margin": "25 %",
+              "askingPrice": "INR 5 Cr at 15%",
+              "premium": true
+            },
+            "sortOrder": 1
+          },
+          {
+            "id": 2,
+            "slug": "school-for-sale-in-thiruvananthapuram-india",
+            "collection": "cards",
+            "title": "School for Sale in Thiruvananthapuram, India",
+            "summary": "CBSE-affiliated school with 400+ students and owned facilities. Located in Thiruvananthapuram, this school offers quality education from a well-established campus.",
+            "imageUrl": "https://images.unsplash.com/photo-1498243691581-b145c3f54a5a?auto=format&fit=crop&w=700&q=80",
+            "href": null,
+            "badge": null,
+            "categories": [],
+            "data": {
+              "location": "Thiruvananthapuram",
+              "rating": "6.2",
+              "sales": "INR 1.6 crore",
+              "margin": "10 - 20 %",
+              "askingPrice": "INR 8 Cr"
+            },
+            "sortOrder": 2
+          }
+        ]
+      },
+      "categories": []
+    },
+    "expectedLegacyNoDetail": {
+      "heroTitle": "Businesses for Sale and Investment",
+      "heroSubtitle": "Showing businesses for sale and investment. Buy or invest in a business listed by direct business owners and business brokers.",
+      "filterLabel": "cbse schools",
+      "cards": [
+        {
+          "location": "Bahraich",
+          "rating": "6.8",
+          "sales": "INR 2.6 crore",
+          "margin": "40 %",
+          "askingPrice": "INR 20 Cr",
+          "premium": true,
+          "title": "School for Sale in Bahraich, India",
+          "slug": "school-for-sale-in-bahraich-india",
+          "description": "CBSE school with 800+ students, day and boarding facility for sale in Bahraich. The school encompasses a total area of 87,000 square feet and includes approximately 40 rooms, fully equipped science and computer labs.",
+          "image": "https://images.unsplash.com/photo-1580582932707-520aed937b7b?auto=format&fit=crop&w=700&q=80"
+        },
+        {
+          "location": "Haryana",
+          "rating": "6.8",
+          "sales": "INR 30 crore",
+          "margin": "25 %",
+          "askingPrice": "INR 5 Cr at 15%",
+          "premium": true,
+          "title": "Playschool Seeking Loan in Haryana, India",
+          "slug": "playschool-seeking-loan-in-haryana-india",
+          "description": "Education society in Haryana with 5 CBSE schools and 70 playschools. This is an educational society with primary and play schools seeking growth funding.",
+          "image": "https://images.unsplash.com/photo-1562774053-701939374585?auto=format&fit=crop&w=700&q=80"
+        },
+        {
+          "location": "Thiruvananthapuram",
+          "rating": "6.2",
+          "sales": "INR 1.6 crore",
+          "margin": "10 - 20 %",
+          "askingPrice": "INR 8 Cr",
+          "title": "School for Sale in Thiruvananthapuram, India",
+          "slug": "school-for-sale-in-thiruvananthapuram-india",
+          "description": "CBSE-affiliated school with 400+ students and owned facilities. Located in Thiruvananthapuram, this school offers quality education from a well-established campus.",
+          "image": "https://images.unsplash.com/photo-1498243691581-b145c3f54a5a?auto=format&fit=crop&w=700&q=80"
+        }
+      ]
+    }
+  },
+  {
+    "sourcePage": "edge-category-mix.json",
+    "slug": "edge-category-mix",
+    "v2Payload": {
+      "page": {
+        "id": 1,
+        "slug": "edge-category-mix",
+        "title": "Edge Category Mix",
+        "template": "solution-hub",
+        "contentModel": "structured",
+        "version": 1,
+        "updatedAt": "2026-11-21T00:00:00.000Z"
+      },
+      "settings": {
+        "heroTitle": "Category Mix Test"
+      },
+      "collections": {
+        "cards": [
+          {
+            "id": 0,
+            "slug": "card-single-category",
+            "collection": "cards",
+            "title": "Card Single Category",
+            "summary": "String category",
+            "imageUrl": null,
+            "href": null,
+            "badge": null,
+            "categories": [
+              "Robotics"
+            ],
+            "data": {},
+            "sortOrder": 0
+          },
+          {
+            "id": 1,
+            "slug": "card-multi-category",
+            "collection": "cards",
+            "title": "Card Multi Category",
+            "summary": "Array categories",
+            "imageUrl": null,
+            "href": null,
+            "badge": null,
+            "categories": [
+              "Robotics",
+              "AI",
+              "Innovation"
+            ],
+            "data": {},
+            "sortOrder": 1
+          }
+        ]
+      },
+      "categories": [
+        {
+          "id": 0,
+          "name": "Robotics",
+          "slug": "robotics"
+        },
+        {
+          "id": 1,
+          "name": "AI",
+          "slug": "ai"
+        },
+        {
+          "id": 2,
+          "name": "Innovation",
+          "slug": "innovation"
+        }
+      ]
+    },
+    "expectedLegacyNoDetail": {
+      "heroTitle": "Category Mix Test",
+      "cards": [
+        {
+          "title": "Card Single Category",
+          "slug": "card-single-category",
+          "description": "String category",
+          "categories": [
+            "Robotics"
+          ]
+        },
+        {
+          "title": "Card Multi Category",
+          "slug": "card-multi-category",
+          "description": "Array categories",
+          "categories": [
+            "Robotics",
+            "AI",
+            "Innovation"
+          ]
+        }
+      ],
+      "categories": [
+        "Robotics",
+        "AI",
+        "Innovation"
+      ]
+    }
+  },
+  {
+    "sourcePage": "edge-duplicate-titles.json",
+    "slug": "edge-duplicate-titles",
+    "v2Payload": {
+      "page": {
+        "id": 1,
+        "slug": "edge-duplicate-titles",
+        "title": "Edge Duplicate Titles",
+        "template": "solution-hub",
+        "contentModel": "structured",
+        "version": 1,
+        "updatedAt": "2026-11-21T00:00:00.000Z"
+      },
+      "settings": {
+        "heroTitle": "Duplicate Titles Test"
+      },
+      "collections": {
+        "cards": [
+          {
+            "id": 0,
+            "slug": "robotics-lab",
+            "collection": "cards",
+            "title": "Robotics Lab",
+            "summary": "First lab",
+            "imageUrl": null,
+            "href": null,
+            "badge": null,
+            "categories": [],
+            "data": {},
+            "sortOrder": 0
+          },
+          {
+            "id": 1,
+            "slug": "robotics-lab-2",
+            "collection": "cards",
+            "title": "Robotics Lab",
+            "summary": "Second lab with same title",
+            "imageUrl": null,
+            "href": null,
+            "badge": null,
+            "categories": [],
+            "data": {},
+            "sortOrder": 1
+          }
+        ]
+      },
+      "categories": []
+    },
+    "expectedLegacyNoDetail": {
+      "heroTitle": "Duplicate Titles Test",
+      "cards": [
+        {
+          "title": "Robotics Lab",
+          "slug": "robotics-lab",
+          "description": "First lab"
+        },
+        {
+          "title": "Robotics Lab",
+          "slug": "robotics-lab-2",
+          "description": "Second lab with same title"
+        }
+      ]
+    }
+  },
+  {
+    "sourcePage": "edge-faq-no-title.json",
+    "slug": "edge-faq-no-title",
+    "v2Payload": {
+      "page": {
+        "id": 1,
+        "slug": "edge-faq-no-title",
+        "title": "Edge FAQ No Title",
+        "template": "faq",
+        "contentModel": "structured",
+        "version": 1,
+        "updatedAt": "2026-11-21T00:00:00.000Z"
+      },
+      "settings": {
+        "heroTitle": "FAQ No Title Test"
+      },
+      "collections": {
+        "faqs": [
+          {
+            "id": 0,
+            "slug": "what-is-the-warranty-period",
+            "collection": "faqs",
+            "title": "What is the warranty period?",
+            "summary": null,
+            "imageUrl": null,
+            "href": null,
+            "badge": null,
+            "categories": [],
+            "data": {
+              "question": "What is the warranty period?",
+              "answer": "All equipment comes with a 3-year warranty.",
+              "__titleDerived": true
+            },
+            "sortOrder": 0
+          },
+          {
+            "id": 1,
+            "slug": "how-long-does-installation-take",
+            "collection": "faqs",
+            "title": "How long does installation take?",
+            "summary": null,
+            "imageUrl": null,
+            "href": null,
+            "badge": null,
+            "categories": [],
+            "data": {
+              "question": "How long does installation take?",
+              "answer": "Turnkey setups typically take 4-6 weeks.",
+              "__titleDerived": true
+            },
+            "sortOrder": 1
+          }
+        ]
+      },
+      "categories": []
+    },
+    "expectedLegacyNoDetail": {
+      "heroTitle": "FAQ No Title Test",
+      "faqs": [
+        {
+          "question": "What is the warranty period?",
+          "answer": "All equipment comes with a 3-year warranty.",
+          "slug": "what-is-the-warranty-period"
+        },
+        {
+          "question": "How long does installation take?",
+          "answer": "Turnkey setups typically take 4-6 weeks.",
+          "slug": "how-long-does-installation-take"
+        }
+      ]
+    }
+  },
+  {
+    "sourcePage": "edge-featured-duplicate.json",
+    "slug": "edge-featured-duplicate",
+    "v2Payload": {
+      "page": {
+        "id": 1,
+        "slug": "edge-featured-duplicate",
+        "title": "Edge Featured Duplicate",
+        "template": "solution-hub",
+        "contentModel": "structured",
+        "version": 1,
+        "updatedAt": "2026-11-21T00:00:00.000Z"
+      },
+      "settings": {
+        "heroTitle": "Featured Duplicate"
+      },
+      "collections": {
+        "cards": [
+          {
+            "id": 0,
+            "slug": "flagship-stem",
+            "collection": "cards",
+            "title": "Flagship STEM Center",
+            "summary": "Flagship card description",
+            "imageUrl": null,
+            "href": null,
+            "badge": null,
+            "categories": [],
+            "data": {},
+            "sortOrder": 0
+          },
+          {
+            "id": 1,
+            "slug": "secondary-lab",
+            "collection": "cards",
+            "title": "Secondary Lab",
+            "summary": "Other card",
+            "imageUrl": null,
+            "href": null,
+            "badge": null,
+            "categories": [],
+            "data": {},
+            "sortOrder": 1
+          }
+        ],
+        "featured": [
+          {
+            "id": 0,
+            "slug": "flagship-stem-2",
+            "collection": "featured",
+            "title": "Flagship STEM Center",
+            "summary": "Flagship card description",
+            "imageUrl": null,
+            "href": null,
+            "badge": null,
+            "categories": [],
+            "data": {},
+            "sortOrder": 0
+          }
+        ]
+      },
+      "categories": []
+    },
+    "expectedLegacyNoDetail": {
+      "heroTitle": "Featured Duplicate",
+      "cards": [
+        {
+          "title": "Flagship STEM Center",
+          "slug": "flagship-stem",
+          "description": "Flagship card description"
+        },
+        {
+          "title": "Secondary Lab",
+          "slug": "secondary-lab",
+          "description": "Other card"
+        }
+      ],
+      "featured": {
+        "title": "Flagship STEM Center",
+        "slug": "flagship-stem-2",
+        "description": "Flagship card description"
+      }
+    }
+  },
+  {
+    "sourcePage": "edge-featured-empty.json",
+    "slug": "edge-featured-empty",
+    "v2Payload": {
+      "page": {
+        "id": 1,
+        "slug": "edge-featured-empty",
+        "title": "Edge Featured Empty",
+        "template": "solution-hub",
+        "contentModel": "structured",
+        "version": 1,
+        "updatedAt": "2026-11-21T00:00:00.000Z"
+      },
+      "settings": {
+        "heroTitle": "Featured Empty"
+      },
+      "collections": {
+        "cards": [
+          {
+            "id": 0,
+            "slug": "standard-lab",
+            "collection": "cards",
+            "title": "Standard Lab",
+            "summary": "Standard card",
+            "imageUrl": null,
+            "href": null,
+            "badge": null,
+            "categories": [],
+            "data": {},
+            "sortOrder": 0
+          }
+        ]
+      },
+      "categories": []
+    },
+    "expectedLegacyNoDetail": {
+      "heroTitle": "Featured Empty",
+      "cards": [
+        {
+          "title": "Standard Lab",
+          "slug": "standard-lab",
+          "description": "Standard card"
+        }
+      ]
+    }
+  },
+  {
+    "sourcePage": "edge-no-card-slugs.json",
+    "slug": "edge-no-card-slugs",
+    "v2Payload": {
+      "page": {
+        "id": 1,
+        "slug": "edge-no-card-slugs",
+        "title": "Edge No Card Slugs",
+        "template": "solution-hub",
+        "contentModel": "structured",
+        "version": 1,
+        "updatedAt": "2026-11-21T00:00:00.000Z"
+      },
+      "settings": {
+        "heroTitle": "No Card Slugs Test"
+      },
+      "collections": {
+        "cards": [
+          {
+            "id": 0,
+            "slug": "advanced-physics-studio",
+            "collection": "cards",
+            "title": "Advanced Physics Studio",
+            "summary": "No slug property here",
+            "imageUrl": null,
+            "href": null,
+            "badge": null,
+            "categories": [],
+            "data": {},
+            "sortOrder": 0
+          },
+          {
+            "id": 1,
+            "slug": "bio-research-facility",
+            "collection": "cards",
+            "title": "Bio Research Facility",
+            "summary": "Also missing slug",
+            "imageUrl": null,
+            "href": null,
+            "badge": null,
+            "categories": [],
+            "data": {},
+            "sortOrder": 1
+          }
+        ]
+      },
+      "categories": []
+    },
+    "expectedLegacyNoDetail": {
+      "heroTitle": "No Card Slugs Test",
+      "cards": [
+        {
+          "title": "Advanced Physics Studio",
+          "slug": "advanced-physics-studio",
+          "description": "No slug property here"
+        },
+        {
+          "title": "Bio Research Facility",
+          "slug": "bio-research-facility",
+          "description": "Also missing slug"
+        }
+      ]
+    }
+  },
+  {
+    "sourcePage": "edge-null-entries.json",
+    "slug": "edge-null-entries",
+    "v2Payload": {
+      "page": {
+        "id": 1,
+        "slug": "edge-null-entries",
+        "title": "Edge Null Entries",
+        "template": "solution-hub",
+        "contentModel": "structured",
+        "version": 1,
+        "updatedAt": "2026-11-21T00:00:00.000Z"
+      },
+      "settings": {
+        "heroTitle": "Null Entries Test"
+      },
+      "collections": {
+        "cards": [
+          {
+            "id": 0,
+            "slug": "valid-first-card",
+            "collection": "cards",
+            "title": "Valid First Card",
+            "summary": "After null entry",
+            "imageUrl": null,
+            "href": null,
+            "badge": null,
+            "categories": [],
+            "data": {},
+            "sortOrder": 0
+          },
+          {
+            "id": 1,
+            "slug": "valid-second-card",
+            "collection": "cards",
+            "title": "Valid Second Card",
+            "summary": "After another null",
+            "imageUrl": null,
+            "href": null,
+            "badge": null,
+            "categories": [],
+            "data": {},
+            "sortOrder": 1
+          }
+        ]
+      },
+      "categories": []
+    },
+    "expectedLegacyNoDetail": {
+      "heroTitle": "Null Entries Test",
+      "cards": [
+        {
+          "title": "Valid First Card",
+          "slug": "valid-first-card",
+          "description": "After null entry"
+        },
+        {
+          "title": "Valid Second Card",
+          "slug": "valid-second-card",
+          "description": "After another null"
+        }
+      ]
+    }
+  },
+  {
+    "sourcePage": "edge-script-injection.json",
+    "slug": "edge-script-injection",
+    "v2Payload": {
+      "page": {
+        "id": 1,
+        "slug": "edge-script-injection",
+        "title": "Edge Script Injection",
+        "template": "solution-hub",
+        "contentModel": "structured",
+        "version": 1,
+        "updatedAt": "2026-11-21T00:00:00.000Z"
+      },
+      "settings": {
+        "heroTitle": "Script Injection Test"
+      },
+      "collections": {
+        "cards": [
+          {
+            "id": 0,
+            "slug": "vulnerable-card",
+            "collection": "cards",
+            "title": "Vulnerable HTML Card",
+            "summary": "Contains script tags <script>alert(1)</script>",
+            "imageUrl": null,
+            "href": null,
+            "badge": null,
+            "categories": [],
+            "data": {
+              "detail": {
+                "overview": "<p>Safe overview</p><script>alert(1)</script><p>More text</p>",
+                "specs": "<img src=x onerror=alert(2) />"
+              }
+            },
+            "sortOrder": 0
+          }
+        ]
+      },
+      "categories": []
+    },
+    "expectedLegacyNoDetail": {
+      "heroTitle": "Script Injection Test",
+      "cards": [
+        {
+          "detail": {
+            "overview": "<p>Safe overview</p><script>alert(1)</script><p>More text</p>",
+            "specs": "<img src=x onerror=alert(2) />"
+          },
+          "title": "Vulnerable HTML Card",
+          "slug": "vulnerable-card",
+          "description": "Contains script tags <script>alert(1)</script>"
+        }
+      ]
+    }
+  },
+  {
+    "sourcePage": "edge-section2-only.json",
+    "slug": "edge-section2-only",
+    "v2Payload": {
+      "page": {
+        "id": 1,
+        "slug": "edge-section2-only",
+        "title": "Edge Section 2 Only",
+        "template": "solution-hub",
+        "contentModel": "structured",
+        "version": 1,
+        "updatedAt": "2026-11-21T00:00:00.000Z"
+      },
+      "settings": {
+        "heroTitle": "Section 2 Only",
+        "section2Title": "Exclusive Section 2"
+      },
+      "collections": {
+        "section2Cards": [
+          {
+            "id": 0,
+            "slug": "testing-unit",
+            "collection": "section2Cards",
+            "title": "Specialized Testing Unit",
+            "summary": "Only in section2",
+            "imageUrl": null,
+            "href": null,
+            "badge": null,
+            "categories": [],
+            "data": {},
+            "sortOrder": 0
+          },
+          {
+            "id": 1,
+            "slug": "sensor-station",
+            "collection": "section2Cards",
+            "title": "Sensor Calibration Station",
+            "summary": "Secondary section card",
+            "imageUrl": null,
+            "href": null,
+            "badge": null,
+            "categories": [],
+            "data": {},
+            "sortOrder": 1
+          }
+        ]
+      },
+      "categories": []
+    },
+    "expectedLegacyNoDetail": {
+      "heroTitle": "Section 2 Only",
+      "section2Title": "Exclusive Section 2",
+      "section2Cards": [
+        {
+          "title": "Specialized Testing Unit",
+          "slug": "testing-unit",
+          "description": "Only in section2"
+        },
+        {
+          "title": "Sensor Calibration Station",
+          "slug": "sensor-station",
+          "description": "Secondary section card"
+        }
+      ]
+    }
+  },
+  {
+    "sourcePage": "edge-unicode-titles.json",
+    "slug": "edge-unicode-titles",
+    "v2Payload": {
+      "page": {
+        "id": 1,
+        "slug": "edge-unicode-titles",
+        "title": "Edge Unicode Titles (Édition Française & 实验室 & 🚀)",
+        "template": "solution-hub",
+        "contentModel": "structured",
+        "version": 1,
+        "updatedAt": "2026-11-21T00:00:00.000Z"
+      },
+      "settings": {
+        "heroTitle": "Unicode & Emojis Hub 🚀 实验室"
+      },
+      "collections": {
+        "cards": [
+          {
+            "id": 0,
+            "slug": "laboratoire-innovation",
+            "collection": "cards",
+            "title": "Laboratoire d'Innovation 🧪",
+            "summary": "Laboratoire avec caractères accentués",
+            "imageUrl": null,
+            "href": null,
+            "badge": null,
+            "categories": [],
+            "data": {},
+            "sortOrder": 0
+          },
+          {
+            "id": 1,
+            "slug": "ai-lab-chinese",
+            "collection": "cards",
+            "title": "人工智能实验室 (AI Lab) 🤖",
+            "summary": "Chinese and emoji characters in title",
+            "imageUrl": null,
+            "href": null,
+            "badge": null,
+            "categories": [],
+            "data": {},
+            "sortOrder": 1
+          },
+          {
+            "id": 2,
+            "slug": "vidyalaya-lab",
+            "collection": "cards",
+            "title": "विद्यालय प्रयोगशाला 🇮🇳",
+            "summary": "Hindi script and flag emoji",
+            "imageUrl": null,
+            "href": null,
+            "badge": null,
+            "categories": [],
+            "data": {},
+            "sortOrder": 2
+          }
+        ]
+      },
+      "categories": []
+    },
+    "expectedLegacyNoDetail": {
+      "heroTitle": "Unicode & Emojis Hub 🚀 实验室",
+      "cards": [
+        {
+          "title": "Laboratoire d'Innovation 🧪",
+          "slug": "laboratoire-innovation",
+          "description": "Laboratoire avec caractères accentués"
+        },
+        {
+          "title": "人工智能实验室 (AI Lab) 🤖",
+          "slug": "ai-lab-chinese",
+          "description": "Chinese and emoji characters in title"
+        },
+        {
+          "title": "विद्यालय प्रयोगशाला 🇮🇳",
+          "slug": "vidyalaya-lab",
+          "description": "Hindi script and flag emoji"
+        }
+      ]
+    }
+  },
+  {
+    "sourcePage": "faq.json",
+    "slug": "faq",
+    "v2Payload": {
+      "page": {
+        "id": 1,
+        "slug": "faq",
+        "title": "Frequently Asked Questions",
+        "template": "faq",
+        "contentModel": "structured",
+        "version": 1,
+        "updatedAt": "2026-11-21T00:00:00.000Z"
+      },
+      "settings": {},
+      "collections": {},
+      "categories": []
+    },
+    "expectedLegacyNoDetail": {}
+  },
+  {
+    "sourcePage": "guide-50-global-resources-for-school-excellence.json",
+    "slug": "guide-50-global-resources-for-school-excellence",
+    "v2Payload": {
+      "page": {
+        "id": 1,
+        "slug": "guide-50-global-resources-for-school-excellence",
+        "title": "50 Global Resources for School Excellence",
+        "template": "article",
+        "contentModel": "structured",
+        "version": 1,
+        "updatedAt": "2026-11-21T00:00:00.000Z"
+      },
+      "settings": {
+        "badge": "Strategic Guide 2026",
+        "image": "https://images.unsplash.com/photo-1541339907198-e08756dedf3f?w=800&q=80",
+        "hero": {
+          "title": "50 Global Resources for School Excellence",
+          "titleHtml": "50 Global Resources for <br/><span class=\"text-[#004a8e]\">School Excellence</span>",
+          "subtitle": "The definitive compendium of international frameworks, architectural benchmarks, pedagogical toolkits, and accreditation standards for world-class educational institutions.",
+          "bannerImage": "https://images.unsplash.com/photo-1541339907198-e08756dedf3f?w=1600&q=80",
+          "badge": "Strategic Guide 2026"
+        },
+        "heroImg": "https://images.unsplash.com/photo-1541339907198-e08756dedf3f?w=1600&q=80",
+        "heading": "50 Global Resources for School Excellence",
+        "description": "Comprehensive 50-resource compendium indexing global pedagogical standards, campus architectural frameworks, STEM lab protocols, and school quality rubrics.",
+        "blocks": {},
+        "ctaTitle": "Elevate Your School's Infrastructure to Global Standards",
+        "ctaSubtitle": "Partner with SchoolMart to audit, benchmark, and upgrade your campus facilities against world-class educational guidelines.",
+        "ctaButtonLabel": "Schedule Excellence Audit",
+        "ctaHref": "/contact-us",
+        "body": "Establishing and sustaining a school of genuine international excellence requires far more than aesthetic campus grounds and conventional textbook syllabi. Contemporary school leaders, trustees, and academic directors must ground their institutional strategies in rigorous, empirically validated global benchmarks. This definitive guide synthesizes 50 foundational global resources across five critical dimensions of school operations: Curricular & Pedagogical Frameworks, Campus Architecture & Spatial Ecology, STEM & Innovation Infrastructure, Digital Learning & Information Systems, and Institutional Governance & Accreditation.\n\n### Pillar 1: Curricular & Pedagogical Frameworks (Resources 1-10)\n1. **OECD Learning Compass 2030**: An evolving learning framework defining the knowledge, skills, attitudes, and values students need to thrive and shape a sustainable future.\n2. **International Baccalaureate (IB) Standards & Practices**: The gold standard for inquiry-based, interdisciplinary education across PYP, MYP, and DP curricula.\n3. **Cambridge Assessment International Education (CAIE) Pathways**: Robust subject progression criteria and international benchmarking frameworks from Primary through A-Levels.\n4. **Finnish National Agency for Education (Opetushallitus)**: Core curricula prioritizing student well-being, phenomenon-based learning, and autonomous teacher leadership.\n5. **Singapore Ministry of Education 21st Century Competencies**: Systemic framework operationalizing critical and inventive thinking, civic literacy, and global awareness.\n6. **Harvard Project Zero (Visible Thinking Routines)**: Practical classroom thinking protocols designed to cultivate deep conceptual understanding.\n7. **Reggio Emilia Early Childhood Principles**: Environmental philosophy positioning the physical learning space as 'the third teacher'.\n8. **Montessori Foundation Architectural & Material Guidelines**: Self-directed learning environments structured with self-correcting didactic apparatus.\n9. **NEP 2020 Pedagogical Restructuring Framework (5+3+3+4)**: India's foundational policy shifting curriculum toward multidisciplinary, experiential learning.\n10. **Universal Design for Learning (UDL) Guidelines (CAST)**: Framework optimizing teaching and learning for all individuals based on cognitive neuroscience.\n\n### Pillar 2: Campus Architecture & Spatial Ecology (Resources 11-20)\n11. **Association for Learning Environments (A4LE / CEFPI)**: Planning guides for student-centered, agile educational facilities and life-cycle costing.\n12. **WELL Building Standard v2 for Educational Facilities**: Rigorous standards for indoor air quality, thermal comfort, circadian lighting, and student nourishment.\n13. **David Thornburg's Five Learning Archetypes**: Architectural spatial planning covering Campfires (lecture), Watering Holes (peer discourse), Caves (reflection), Life (hands-on), and Porches (transition).\n14. **Biophilic Design in Schools (Terrapin Bright Green)**: 14 patterns of biophilic design proven to lower student stress levels and elevate cognitive focus.\n15. **LEED v4.1 for Schools**: Environmental rating system for energy efficiency, water conservation, daylight harvesting, and sustainable building materials.\n16. **CIBSE Lighting Guide 5 (Educational Facilities)**: Photometric guidelines for glare control (UGR < 19), task illuminance (300-500 lux), and natural daylight integration.\n17. **BB93 Acoustic Design of Schools (UK Dept of Education)**: Comprehensive reverberation time limits (RT60 < 0.6s) and sound insulation thresholds for speech intelligibility.\n18. **BIFMA / EN 1729 Ergonomic School Furniture Standards**: Anthropometric sizing standards ensuring postural health and spinal alignment across age cohorts.\n19. **RPwD Act & ADA Universal Accessibility Standards**: Tactile paving, zero-barrier ramp gradients (1:12), braille directional signage, and accessible sanitary blocks.\n20. **Crime Prevention Through Environmental Design (CPTED) in Schools**: Natural surveillance, territorial reinforcement, and access control without institutional hostility.\n\n### Pillar 3: STEM, STEAM & Innovation Infrastructure (Resources 21-30)\n21. **FabLab Foundation Charter & Equipment Specifications**: International standards for digital fabrication tooling, CNC milling, laser cutters, and open-source electronics.\n22. **MIT Lifelong Kindergarten (Scratch & Creative Computing)**: Pedagogical frameworks for playful invention, computational thinking, and peer-to-peer debugging.\n23. **Next Generation Science Standards (NGSS)**: Three-dimensional learning integrating disciplinary core ideas, science and engineering practices, and cross-cutting concepts.\n24. **Maker Ed Resource Library**: Safety checklists, material management protocols, and facilitation guides for K-12 makerspaces.\n25. **Atal Tinkering Lab (ATL) Operational Handbook (NITI Aayog)**: Equipment blueprints and curriculum milestones for Indian school innovation labs.\n26. **VEX Robotics & FIRST LEGO League Curricular Matrices**: Progressive robotics pathways bridging mechanical assembly, sensor logic, and autonomous navigation.\n27. **Royal Society of Chemistry Laboratory Safety Guidelines**: Fume hood exhaust velocity (0.5 m/s), chemical storage segregation, and eyewash station plumbed standards.\n28. **NSTA Minimum Safety Practices in Science Teaching**: Student-to-station density ratios and protective equipment guidelines.\n29. **Composite Skill Lab Blueprint (CBSE Directive 2024)**: Multidisciplinary spatial layout integrating electronics, carpentry, coding, and environmental science.\n30. **BioBuilder Synthetic Biology Curricula**: Safe, high-school-accessible genetic engineering and biotechnology lab exercises.\n\n### Pillar 4: Digital Learning & Systems Infrastructure (Resources 31-40)\n31. **ISTE Standards for Students and Educators**: Global roadmaps for transformative technology integration, digital citizenship, and computational design.\n32. **UNESCO ICT Competency Framework for Teachers**: Guiding national teacher training programs in artificial intelligence, digital pedagogy, and open educational resources.\n33. **EdTech Impact Global Evidence Base**: Independent educator reviews and empirical efficacy studies of software platforms and curriculum products.\n34. **CoSN Trusted Learning Environment (TLE) Seal**: Comprehensive framework for school student data privacy, cybersecurity, and compliance governance.\n35. **NIST Cybersecurity Framework for K-12 Institutions**: Incident prevention, access control, endpoint security, and backup resilience for school networks.\n36. **Wi-Fi 6E/7 Educational Deployment Standards (IEEE 802.11ax/be)**: High-density campus networking supporting 1:1 device rollouts and simultaneous 4K streams.\n37. **Common Sense Media Digital Citizenship Curriculum**: Age-graded lessons in media literacy, cyberbullying prevention, and digital footprint management.\n38. **Accessibility Standards for Digital Learning (WCAG 2.2 AA)**: Ensuring school portals, LMS environments, and multimedia content are screen-reader accessible.\n39. **IMS Global Learning Consortium Interoperability (1EdTech)**: LTI, OneRoster, and QTI standards enabling seamless software integration across SIS and LMS.\n40. **AI in Education Ethical Guidelines (Council of Europe & UNICEF)**: Governance frameworks preventing algorithmic bias and protecting child autonomy in generative AI use.\n\n### Pillar 5: Institutional Governance & Accreditation (Resources 41-50)\n41. **Council of International Schools (CIS) Accreditation Framework**: Rigorous institutional evaluation centered on student well-being, global citizenship, and continuous improvement.\n42. **New England Association of Schools and Colleges (NEASC) ACE Protocol**: Transforming school accreditation into evidence of conceptual, contextual learning.\n43. **British Schools Overseas (BSO) Inspection Standards**: UK government-recognized inspection framework ensuring quality across international British curriculum schools.\n44. **NABET School Accreditation Standards (Quality Council of India)**: India's benchmark accreditation evaluating governance, infrastructure, and teaching quality.\n45. **ISO 21001:2018 (Educational Organizations Management Systems)**: Process-driven quality management standard enhancing learner satisfaction and operational rigor.\n46. **International School Services (ISS) Best Practices in Child Safeguarding**: Robust child protection policies, safer recruitment protocols, and reporting workflows.\n47. **Council of Educational Facility Planners Guidelines for School Capacity**: Scientifically calculated gross square footage per student across primary and secondary wings.\n48. **Green School National Network Sustainability Metrics**: Measuring campus environmental impact across zero waste, solar generation, and eco-literacy.\n49. **PISA Educational Indicators & Assessment Framework (OECD)**: International comparative analytics on reading, mathematics, and collaborative problem-solving.\n50. **SchoolMart Institutional Audit Rubric 2026**: Proprietary 120-point diagnostic instrument evaluating campus readiness across architecture, labs, ergonomics, and safety.",
+        "heroImage": "https://images.unsplash.com/photo-1541339907198-e08756dedf3f?w=1600&q=80",
+        "heroTitle": "50 Global Resources for School Excellence",
+        "heroSubtitle": "The definitive compendium of international frameworks, architectural benchmarks, pedagogical toolkits, and accreditation standards for world-class educational institutions.",
+        "heroEyebrow": "Strategic Guide 2026",
+        "heroBadge": "Strategic Guide 2026",
+        "pageTitle": "50 Global Resources for School Excellence",
+        "category": "Guides & Editorial",
+        "taxonomy": [
+          "Guides & Editorial",
+          "School Excellence",
+          "Educational Leadership",
+          "Global Benchmarks",
+          "NEP 2020"
+        ],
+        "tags": [
+          "Guides & Editorial",
+          "School Excellence",
+          "Educational Leadership",
+          "Global Benchmarks",
+          "NEP 2020"
+        ],
+        "content": "Establishing and sustaining a school of genuine international excellence requires far more than aesthetic campus grounds and conventional textbook syllabi. Contemporary school leaders, trustees, and academic directors must ground their institutional strategies in rigorous, empirically validated global benchmarks. This definitive guide synthesizes 50 foundational global resources across five critical dimensions of school operations: Curricular & Pedagogical Frameworks, Campus Architecture & Spatial Ecology, STEM & Innovation Infrastructure, Digital Learning & Information Systems, and Institutional Governance & Accreditation.\n\n### Pillar 1: Curricular & Pedagogical Frameworks (Resources 1-10)\n1. **OECD Learning Compass 2030**: An evolving learning framework defining the knowledge, skills, attitudes, and values students need to thrive and shape a sustainable future.\n2. **International Baccalaureate (IB) Standards & Practices**: The gold standard for inquiry-based, interdisciplinary education across PYP, MYP, and DP curricula.\n3. **Cambridge Assessment International Education (CAIE) Pathways**: Robust subject progression criteria and international benchmarking frameworks from Primary through A-Levels.\n4. **Finnish National Agency for Education (Opetushallitus)**: Core curricula prioritizing student well-being, phenomenon-based learning, and autonomous teacher leadership.\n5. **Singapore Ministry of Education 21st Century Competencies**: Systemic framework operationalizing critical and inventive thinking, civic literacy, and global awareness.\n6. **Harvard Project Zero (Visible Thinking Routines)**: Practical classroom thinking protocols designed to cultivate deep conceptual understanding.\n7. **Reggio Emilia Early Childhood Principles**: Environmental philosophy positioning the physical learning space as 'the third teacher'.\n8. **Montessori Foundation Architectural & Material Guidelines**: Self-directed learning environments structured with self-correcting didactic apparatus.\n9. **NEP 2020 Pedagogical Restructuring Framework (5+3+3+4)**: India's foundational policy shifting curriculum toward multidisciplinary, experiential learning.\n10. **Universal Design for Learning (UDL) Guidelines (CAST)**: Framework optimizing teaching and learning for all individuals based on cognitive neuroscience.\n\n### Pillar 2: Campus Architecture & Spatial Ecology (Resources 11-20)\n11. **Association for Learning Environments (A4LE / CEFPI)**: Planning guides for student-centered, agile educational facilities and life-cycle costing.\n12. **WELL Building Standard v2 for Educational Facilities**: Rigorous standards for indoor air quality, thermal comfort, circadian lighting, and student nourishment.\n13. **David Thornburg's Five Learning Archetypes**: Architectural spatial planning covering Campfires (lecture), Watering Holes (peer discourse), Caves (reflection), Life (hands-on), and Porches (transition).\n14. **Biophilic Design in Schools (Terrapin Bright Green)**: 14 patterns of biophilic design proven to lower student stress levels and elevate cognitive focus.\n15. **LEED v4.1 for Schools**: Environmental rating system for energy efficiency, water conservation, daylight harvesting, and sustainable building materials.\n16. **CIBSE Lighting Guide 5 (Educational Facilities)**: Photometric guidelines for glare control (UGR < 19), task illuminance (300-500 lux), and natural daylight integration.\n17. **BB93 Acoustic Design of Schools (UK Dept of Education)**: Comprehensive reverberation time limits (RT60 < 0.6s) and sound insulation thresholds for speech intelligibility.\n18. **BIFMA / EN 1729 Ergonomic School Furniture Standards**: Anthropometric sizing standards ensuring postural health and spinal alignment across age cohorts.\n19. **RPwD Act & ADA Universal Accessibility Standards**: Tactile paving, zero-barrier ramp gradients (1:12), braille directional signage, and accessible sanitary blocks.\n20. **Crime Prevention Through Environmental Design (CPTED) in Schools**: Natural surveillance, territorial reinforcement, and access control without institutional hostility.\n\n### Pillar 3: STEM, STEAM & Innovation Infrastructure (Resources 21-30)\n21. **FabLab Foundation Charter & Equipment Specifications**: International standards for digital fabrication tooling, CNC milling, laser cutters, and open-source electronics.\n22. **MIT Lifelong Kindergarten (Scratch & Creative Computing)**: Pedagogical frameworks for playful invention, computational thinking, and peer-to-peer debugging.\n23. **Next Generation Science Standards (NGSS)**: Three-dimensional learning integrating disciplinary core ideas, science and engineering practices, and cross-cutting concepts.\n24. **Maker Ed Resource Library**: Safety checklists, material management protocols, and facilitation guides for K-12 makerspaces.\n25. **Atal Tinkering Lab (ATL) Operational Handbook (NITI Aayog)**: Equipment blueprints and curriculum milestones for Indian school innovation labs.\n26. **VEX Robotics & FIRST LEGO League Curricular Matrices**: Progressive robotics pathways bridging mechanical assembly, sensor logic, and autonomous navigation.\n27. **Royal Society of Chemistry Laboratory Safety Guidelines**: Fume hood exhaust velocity (0.5 m/s), chemical storage segregation, and eyewash station plumbed standards.\n28. **NSTA Minimum Safety Practices in Science Teaching**: Student-to-station density ratios and protective equipment guidelines.\n29. **Composite Skill Lab Blueprint (CBSE Directive 2024)**: Multidisciplinary spatial layout integrating electronics, carpentry, coding, and environmental science.\n30. **BioBuilder Synthetic Biology Curricula**: Safe, high-school-accessible genetic engineering and biotechnology lab exercises.\n\n### Pillar 4: Digital Learning & Systems Infrastructure (Resources 31-40)\n31. **ISTE Standards for Students and Educators**: Global roadmaps for transformative technology integration, digital citizenship, and computational design.\n32. **UNESCO ICT Competency Framework for Teachers**: Guiding national teacher training programs in artificial intelligence, digital pedagogy, and open educational resources.\n33. **EdTech Impact Global Evidence Base**: Independent educator reviews and empirical efficacy studies of software platforms and curriculum products.\n34. **CoSN Trusted Learning Environment (TLE) Seal**: Comprehensive framework for school student data privacy, cybersecurity, and compliance governance.\n35. **NIST Cybersecurity Framework for K-12 Institutions**: Incident prevention, access control, endpoint security, and backup resilience for school networks.\n36. **Wi-Fi 6E/7 Educational Deployment Standards (IEEE 802.11ax/be)**: High-density campus networking supporting 1:1 device rollouts and simultaneous 4K streams.\n37. **Common Sense Media Digital Citizenship Curriculum**: Age-graded lessons in media literacy, cyberbullying prevention, and digital footprint management.\n38. **Accessibility Standards for Digital Learning (WCAG 2.2 AA)**: Ensuring school portals, LMS environments, and multimedia content are screen-reader accessible.\n39. **IMS Global Learning Consortium Interoperability (1EdTech)**: LTI, OneRoster, and QTI standards enabling seamless software integration across SIS and LMS.\n40. **AI in Education Ethical Guidelines (Council of Europe & UNICEF)**: Governance frameworks preventing algorithmic bias and protecting child autonomy in generative AI use.\n\n### Pillar 5: Institutional Governance & Accreditation (Resources 41-50)\n41. **Council of International Schools (CIS) Accreditation Framework**: Rigorous institutional evaluation centered on student well-being, global citizenship, and continuous improvement.\n42. **New England Association of Schools and Colleges (NEASC) ACE Protocol**: Transforming school accreditation into evidence of conceptual, contextual learning.\n43. **British Schools Overseas (BSO) Inspection Standards**: UK government-recognized inspection framework ensuring quality across international British curriculum schools.\n44. **NABET School Accreditation Standards (Quality Council of India)**: India's benchmark accreditation evaluating governance, infrastructure, and teaching quality.\n45. **ISO 21001:2018 (Educational Organizations Management Systems)**: Process-driven quality management standard enhancing learner satisfaction and operational rigor.\n46. **International School Services (ISS) Best Practices in Child Safeguarding**: Robust child protection policies, safer recruitment protocols, and reporting workflows.\n47. **Council of Educational Facility Planners Guidelines for School Capacity**: Scientifically calculated gross square footage per student across primary and secondary wings.\n48. **Green School National Network Sustainability Metrics**: Measuring campus environmental impact across zero waste, solar generation, and eco-literacy.\n49. **PISA Educational Indicators & Assessment Framework (OECD)**: International comparative analytics on reading, mathematics, and collaborative problem-solving.\n50. **SchoolMart Institutional Audit Rubric 2026**: Proprietary 120-point diagnostic instrument evaluating campus readiness across architecture, labs, ergonomics, and safety.",
+        "ctaButtonHref": "/contact-us",
+        "ctaBtnBg": "#002a6c",
+        "ctaBtnText": "#ffffff",
+        "hideCta": false,
+        "styles": {
+          "ctaBg": "#002a6c"
+        },
+        "btn1Label": "Schedule Excellence Audit",
+        "btn1Path": "/contact-us"
+      },
+      "collections": {},
+      "categories": []
+    },
+    "expectedLegacyNoDetail": {
+      "badge": "Strategic Guide 2026",
+      "image": "https://images.unsplash.com/photo-1541339907198-e08756dedf3f?w=800&q=80",
+      "hero": {
+        "title": "50 Global Resources for School Excellence",
+        "titleHtml": "50 Global Resources for <br/><span class=\"text-[#004a8e]\">School Excellence</span>",
+        "subtitle": "The definitive compendium of international frameworks, architectural benchmarks, pedagogical toolkits, and accreditation standards for world-class educational institutions.",
+        "bannerImage": "https://images.unsplash.com/photo-1541339907198-e08756dedf3f?w=1600&q=80",
+        "badge": "Strategic Guide 2026"
+      },
+      "heroImg": "https://images.unsplash.com/photo-1541339907198-e08756dedf3f?w=1600&q=80",
+      "heading": "50 Global Resources for School Excellence",
+      "description": "Comprehensive 50-resource compendium indexing global pedagogical standards, campus architectural frameworks, STEM lab protocols, and school quality rubrics.",
+      "blocks": {},
+      "ctaTitle": "Elevate Your School's Infrastructure to Global Standards",
+      "ctaSubtitle": "Partner with SchoolMart to audit, benchmark, and upgrade your campus facilities against world-class educational guidelines.",
+      "ctaButtonLabel": "Schedule Excellence Audit",
+      "ctaHref": "/contact-us",
+      "body": "Establishing and sustaining a school of genuine international excellence requires far more than aesthetic campus grounds and conventional textbook syllabi. Contemporary school leaders, trustees, and academic directors must ground their institutional strategies in rigorous, empirically validated global benchmarks. This definitive guide synthesizes 50 foundational global resources across five critical dimensions of school operations: Curricular & Pedagogical Frameworks, Campus Architecture & Spatial Ecology, STEM & Innovation Infrastructure, Digital Learning & Information Systems, and Institutional Governance & Accreditation.\n\n### Pillar 1: Curricular & Pedagogical Frameworks (Resources 1-10)\n1. **OECD Learning Compass 2030**: An evolving learning framework defining the knowledge, skills, attitudes, and values students need to thrive and shape a sustainable future.\n2. **International Baccalaureate (IB) Standards & Practices**: The gold standard for inquiry-based, interdisciplinary education across PYP, MYP, and DP curricula.\n3. **Cambridge Assessment International Education (CAIE) Pathways**: Robust subject progression criteria and international benchmarking frameworks from Primary through A-Levels.\n4. **Finnish National Agency for Education (Opetushallitus)**: Core curricula prioritizing student well-being, phenomenon-based learning, and autonomous teacher leadership.\n5. **Singapore Ministry of Education 21st Century Competencies**: Systemic framework operationalizing critical and inventive thinking, civic literacy, and global awareness.\n6. **Harvard Project Zero (Visible Thinking Routines)**: Practical classroom thinking protocols designed to cultivate deep conceptual understanding.\n7. **Reggio Emilia Early Childhood Principles**: Environmental philosophy positioning the physical learning space as 'the third teacher'.\n8. **Montessori Foundation Architectural & Material Guidelines**: Self-directed learning environments structured with self-correcting didactic apparatus.\n9. **NEP 2020 Pedagogical Restructuring Framework (5+3+3+4)**: India's foundational policy shifting curriculum toward multidisciplinary, experiential learning.\n10. **Universal Design for Learning (UDL) Guidelines (CAST)**: Framework optimizing teaching and learning for all individuals based on cognitive neuroscience.\n\n### Pillar 2: Campus Architecture & Spatial Ecology (Resources 11-20)\n11. **Association for Learning Environments (A4LE / CEFPI)**: Planning guides for student-centered, agile educational facilities and life-cycle costing.\n12. **WELL Building Standard v2 for Educational Facilities**: Rigorous standards for indoor air quality, thermal comfort, circadian lighting, and student nourishment.\n13. **David Thornburg's Five Learning Archetypes**: Architectural spatial planning covering Campfires (lecture), Watering Holes (peer discourse), Caves (reflection), Life (hands-on), and Porches (transition).\n14. **Biophilic Design in Schools (Terrapin Bright Green)**: 14 patterns of biophilic design proven to lower student stress levels and elevate cognitive focus.\n15. **LEED v4.1 for Schools**: Environmental rating system for energy efficiency, water conservation, daylight harvesting, and sustainable building materials.\n16. **CIBSE Lighting Guide 5 (Educational Facilities)**: Photometric guidelines for glare control (UGR < 19), task illuminance (300-500 lux), and natural daylight integration.\n17. **BB93 Acoustic Design of Schools (UK Dept of Education)**: Comprehensive reverberation time limits (RT60 < 0.6s) and sound insulation thresholds for speech intelligibility.\n18. **BIFMA / EN 1729 Ergonomic School Furniture Standards**: Anthropometric sizing standards ensuring postural health and spinal alignment across age cohorts.\n19. **RPwD Act & ADA Universal Accessibility Standards**: Tactile paving, zero-barrier ramp gradients (1:12), braille directional signage, and accessible sanitary blocks.\n20. **Crime Prevention Through Environmental Design (CPTED) in Schools**: Natural surveillance, territorial reinforcement, and access control without institutional hostility.\n\n### Pillar 3: STEM, STEAM & Innovation Infrastructure (Resources 21-30)\n21. **FabLab Foundation Charter & Equipment Specifications**: International standards for digital fabrication tooling, CNC milling, laser cutters, and open-source electronics.\n22. **MIT Lifelong Kindergarten (Scratch & Creative Computing)**: Pedagogical frameworks for playful invention, computational thinking, and peer-to-peer debugging.\n23. **Next Generation Science Standards (NGSS)**: Three-dimensional learning integrating disciplinary core ideas, science and engineering practices, and cross-cutting concepts.\n24. **Maker Ed Resource Library**: Safety checklists, material management protocols, and facilitation guides for K-12 makerspaces.\n25. **Atal Tinkering Lab (ATL) Operational Handbook (NITI Aayog)**: Equipment blueprints and curriculum milestones for Indian school innovation labs.\n26. **VEX Robotics & FIRST LEGO League Curricular Matrices**: Progressive robotics pathways bridging mechanical assembly, sensor logic, and autonomous navigation.\n27. **Royal Society of Chemistry Laboratory Safety Guidelines**: Fume hood exhaust velocity (0.5 m/s), chemical storage segregation, and eyewash station plumbed standards.\n28. **NSTA Minimum Safety Practices in Science Teaching**: Student-to-station density ratios and protective equipment guidelines.\n29. **Composite Skill Lab Blueprint (CBSE Directive 2024)**: Multidisciplinary spatial layout integrating electronics, carpentry, coding, and environmental science.\n30. **BioBuilder Synthetic Biology Curricula**: Safe, high-school-accessible genetic engineering and biotechnology lab exercises.\n\n### Pillar 4: Digital Learning & Systems Infrastructure (Resources 31-40)\n31. **ISTE Standards for Students and Educators**: Global roadmaps for transformative technology integration, digital citizenship, and computational design.\n32. **UNESCO ICT Competency Framework for Teachers**: Guiding national teacher training programs in artificial intelligence, digital pedagogy, and open educational resources.\n33. **EdTech Impact Global Evidence Base**: Independent educator reviews and empirical efficacy studies of software platforms and curriculum products.\n34. **CoSN Trusted Learning Environment (TLE) Seal**: Comprehensive framework for school student data privacy, cybersecurity, and compliance governance.\n35. **NIST Cybersecurity Framework for K-12 Institutions**: Incident prevention, access control, endpoint security, and backup resilience for school networks.\n36. **Wi-Fi 6E/7 Educational Deployment Standards (IEEE 802.11ax/be)**: High-density campus networking supporting 1:1 device rollouts and simultaneous 4K streams.\n37. **Common Sense Media Digital Citizenship Curriculum**: Age-graded lessons in media literacy, cyberbullying prevention, and digital footprint management.\n38. **Accessibility Standards for Digital Learning (WCAG 2.2 AA)**: Ensuring school portals, LMS environments, and multimedia content are screen-reader accessible.\n39. **IMS Global Learning Consortium Interoperability (1EdTech)**: LTI, OneRoster, and QTI standards enabling seamless software integration across SIS and LMS.\n40. **AI in Education Ethical Guidelines (Council of Europe & UNICEF)**: Governance frameworks preventing algorithmic bias and protecting child autonomy in generative AI use.\n\n### Pillar 5: Institutional Governance & Accreditation (Resources 41-50)\n41. **Council of International Schools (CIS) Accreditation Framework**: Rigorous institutional evaluation centered on student well-being, global citizenship, and continuous improvement.\n42. **New England Association of Schools and Colleges (NEASC) ACE Protocol**: Transforming school accreditation into evidence of conceptual, contextual learning.\n43. **British Schools Overseas (BSO) Inspection Standards**: UK government-recognized inspection framework ensuring quality across international British curriculum schools.\n44. **NABET School Accreditation Standards (Quality Council of India)**: India's benchmark accreditation evaluating governance, infrastructure, and teaching quality.\n45. **ISO 21001:2018 (Educational Organizations Management Systems)**: Process-driven quality management standard enhancing learner satisfaction and operational rigor.\n46. **International School Services (ISS) Best Practices in Child Safeguarding**: Robust child protection policies, safer recruitment protocols, and reporting workflows.\n47. **Council of Educational Facility Planners Guidelines for School Capacity**: Scientifically calculated gross square footage per student across primary and secondary wings.\n48. **Green School National Network Sustainability Metrics**: Measuring campus environmental impact across zero waste, solar generation, and eco-literacy.\n49. **PISA Educational Indicators & Assessment Framework (OECD)**: International comparative analytics on reading, mathematics, and collaborative problem-solving.\n50. **SchoolMart Institutional Audit Rubric 2026**: Proprietary 120-point diagnostic instrument evaluating campus readiness across architecture, labs, ergonomics, and safety.",
+      "heroImage": "https://images.unsplash.com/photo-1541339907198-e08756dedf3f?w=1600&q=80",
+      "heroTitle": "50 Global Resources for School Excellence",
+      "heroSubtitle": "The definitive compendium of international frameworks, architectural benchmarks, pedagogical toolkits, and accreditation standards for world-class educational institutions.",
+      "heroEyebrow": "Strategic Guide 2026",
+      "heroBadge": "Strategic Guide 2026",
+      "pageTitle": "50 Global Resources for School Excellence",
+      "category": "Guides & Editorial",
+      "taxonomy": [
+        "Guides & Editorial",
+        "School Excellence",
+        "Educational Leadership",
+        "Global Benchmarks",
+        "NEP 2020"
+      ],
+      "tags": [
+        "Guides & Editorial",
+        "School Excellence",
+        "Educational Leadership",
+        "Global Benchmarks",
+        "NEP 2020"
+      ],
+      "content": "Establishing and sustaining a school of genuine international excellence requires far more than aesthetic campus grounds and conventional textbook syllabi. Contemporary school leaders, trustees, and academic directors must ground their institutional strategies in rigorous, empirically validated global benchmarks. This definitive guide synthesizes 50 foundational global resources across five critical dimensions of school operations: Curricular & Pedagogical Frameworks, Campus Architecture & Spatial Ecology, STEM & Innovation Infrastructure, Digital Learning & Information Systems, and Institutional Governance & Accreditation.\n\n### Pillar 1: Curricular & Pedagogical Frameworks (Resources 1-10)\n1. **OECD Learning Compass 2030**: An evolving learning framework defining the knowledge, skills, attitudes, and values students need to thrive and shape a sustainable future.\n2. **International Baccalaureate (IB) Standards & Practices**: The gold standard for inquiry-based, interdisciplinary education across PYP, MYP, and DP curricula.\n3. **Cambridge Assessment International Education (CAIE) Pathways**: Robust subject progression criteria and international benchmarking frameworks from Primary through A-Levels.\n4. **Finnish National Agency for Education (Opetushallitus)**: Core curricula prioritizing student well-being, phenomenon-based learning, and autonomous teacher leadership.\n5. **Singapore Ministry of Education 21st Century Competencies**: Systemic framework operationalizing critical and inventive thinking, civic literacy, and global awareness.\n6. **Harvard Project Zero (Visible Thinking Routines)**: Practical classroom thinking protocols designed to cultivate deep conceptual understanding.\n7. **Reggio Emilia Early Childhood Principles**: Environmental philosophy positioning the physical learning space as 'the third teacher'.\n8. **Montessori Foundation Architectural & Material Guidelines**: Self-directed learning environments structured with self-correcting didactic apparatus.\n9. **NEP 2020 Pedagogical Restructuring Framework (5+3+3+4)**: India's foundational policy shifting curriculum toward multidisciplinary, experiential learning.\n10. **Universal Design for Learning (UDL) Guidelines (CAST)**: Framework optimizing teaching and learning for all individuals based on cognitive neuroscience.\n\n### Pillar 2: Campus Architecture & Spatial Ecology (Resources 11-20)\n11. **Association for Learning Environments (A4LE / CEFPI)**: Planning guides for student-centered, agile educational facilities and life-cycle costing.\n12. **WELL Building Standard v2 for Educational Facilities**: Rigorous standards for indoor air quality, thermal comfort, circadian lighting, and student nourishment.\n13. **David Thornburg's Five Learning Archetypes**: Architectural spatial planning covering Campfires (lecture), Watering Holes (peer discourse), Caves (reflection), Life (hands-on), and Porches (transition).\n14. **Biophilic Design in Schools (Terrapin Bright Green)**: 14 patterns of biophilic design proven to lower student stress levels and elevate cognitive focus.\n15. **LEED v4.1 for Schools**: Environmental rating system for energy efficiency, water conservation, daylight harvesting, and sustainable building materials.\n16. **CIBSE Lighting Guide 5 (Educational Facilities)**: Photometric guidelines for glare control (UGR < 19), task illuminance (300-500 lux), and natural daylight integration.\n17. **BB93 Acoustic Design of Schools (UK Dept of Education)**: Comprehensive reverberation time limits (RT60 < 0.6s) and sound insulation thresholds for speech intelligibility.\n18. **BIFMA / EN 1729 Ergonomic School Furniture Standards**: Anthropometric sizing standards ensuring postural health and spinal alignment across age cohorts.\n19. **RPwD Act & ADA Universal Accessibility Standards**: Tactile paving, zero-barrier ramp gradients (1:12), braille directional signage, and accessible sanitary blocks.\n20. **Crime Prevention Through Environmental Design (CPTED) in Schools**: Natural surveillance, territorial reinforcement, and access control without institutional hostility.\n\n### Pillar 3: STEM, STEAM & Innovation Infrastructure (Resources 21-30)\n21. **FabLab Foundation Charter & Equipment Specifications**: International standards for digital fabrication tooling, CNC milling, laser cutters, and open-source electronics.\n22. **MIT Lifelong Kindergarten (Scratch & Creative Computing)**: Pedagogical frameworks for playful invention, computational thinking, and peer-to-peer debugging.\n23. **Next Generation Science Standards (NGSS)**: Three-dimensional learning integrating disciplinary core ideas, science and engineering practices, and cross-cutting concepts.\n24. **Maker Ed Resource Library**: Safety checklists, material management protocols, and facilitation guides for K-12 makerspaces.\n25. **Atal Tinkering Lab (ATL) Operational Handbook (NITI Aayog)**: Equipment blueprints and curriculum milestones for Indian school innovation labs.\n26. **VEX Robotics & FIRST LEGO League Curricular Matrices**: Progressive robotics pathways bridging mechanical assembly, sensor logic, and autonomous navigation.\n27. **Royal Society of Chemistry Laboratory Safety Guidelines**: Fume hood exhaust velocity (0.5 m/s), chemical storage segregation, and eyewash station plumbed standards.\n28. **NSTA Minimum Safety Practices in Science Teaching**: Student-to-station density ratios and protective equipment guidelines.\n29. **Composite Skill Lab Blueprint (CBSE Directive 2024)**: Multidisciplinary spatial layout integrating electronics, carpentry, coding, and environmental science.\n30. **BioBuilder Synthetic Biology Curricula**: Safe, high-school-accessible genetic engineering and biotechnology lab exercises.\n\n### Pillar 4: Digital Learning & Systems Infrastructure (Resources 31-40)\n31. **ISTE Standards for Students and Educators**: Global roadmaps for transformative technology integration, digital citizenship, and computational design.\n32. **UNESCO ICT Competency Framework for Teachers**: Guiding national teacher training programs in artificial intelligence, digital pedagogy, and open educational resources.\n33. **EdTech Impact Global Evidence Base**: Independent educator reviews and empirical efficacy studies of software platforms and curriculum products.\n34. **CoSN Trusted Learning Environment (TLE) Seal**: Comprehensive framework for school student data privacy, cybersecurity, and compliance governance.\n35. **NIST Cybersecurity Framework for K-12 Institutions**: Incident prevention, access control, endpoint security, and backup resilience for school networks.\n36. **Wi-Fi 6E/7 Educational Deployment Standards (IEEE 802.11ax/be)**: High-density campus networking supporting 1:1 device rollouts and simultaneous 4K streams.\n37. **Common Sense Media Digital Citizenship Curriculum**: Age-graded lessons in media literacy, cyberbullying prevention, and digital footprint management.\n38. **Accessibility Standards for Digital Learning (WCAG 2.2 AA)**: Ensuring school portals, LMS environments, and multimedia content are screen-reader accessible.\n39. **IMS Global Learning Consortium Interoperability (1EdTech)**: LTI, OneRoster, and QTI standards enabling seamless software integration across SIS and LMS.\n40. **AI in Education Ethical Guidelines (Council of Europe & UNICEF)**: Governance frameworks preventing algorithmic bias and protecting child autonomy in generative AI use.\n\n### Pillar 5: Institutional Governance & Accreditation (Resources 41-50)\n41. **Council of International Schools (CIS) Accreditation Framework**: Rigorous institutional evaluation centered on student well-being, global citizenship, and continuous improvement.\n42. **New England Association of Schools and Colleges (NEASC) ACE Protocol**: Transforming school accreditation into evidence of conceptual, contextual learning.\n43. **British Schools Overseas (BSO) Inspection Standards**: UK government-recognized inspection framework ensuring quality across international British curriculum schools.\n44. **NABET School Accreditation Standards (Quality Council of India)**: India's benchmark accreditation evaluating governance, infrastructure, and teaching quality.\n45. **ISO 21001:2018 (Educational Organizations Management Systems)**: Process-driven quality management standard enhancing learner satisfaction and operational rigor.\n46. **International School Services (ISS) Best Practices in Child Safeguarding**: Robust child protection policies, safer recruitment protocols, and reporting workflows.\n47. **Council of Educational Facility Planners Guidelines for School Capacity**: Scientifically calculated gross square footage per student across primary and secondary wings.\n48. **Green School National Network Sustainability Metrics**: Measuring campus environmental impact across zero waste, solar generation, and eco-literacy.\n49. **PISA Educational Indicators & Assessment Framework (OECD)**: International comparative analytics on reading, mathematics, and collaborative problem-solving.\n50. **SchoolMart Institutional Audit Rubric 2026**: Proprietary 120-point diagnostic instrument evaluating campus readiness across architecture, labs, ergonomics, and safety.",
+      "ctaButtonHref": "/contact-us",
+      "ctaBtnBg": "#002a6c",
+      "ctaBtnText": "#ffffff",
+      "hideCta": false,
+      "styles": {
+        "ctaBg": "#002a6c"
+      },
+      "btn1Label": "Schedule Excellence Audit",
+      "btn1Path": "/contact-us"
+    }
+  },
+  {
+    "sourcePage": "job-openings.json",
+    "slug": "job-openings",
+    "v2Payload": {
+      "page": {
+        "id": 1,
+        "slug": "job-openings",
+        "title": "Job Openings",
+        "template": "job-openings",
+        "contentModel": "structured",
+        "version": 1,
+        "updatedAt": "2026-11-21T00:00:00.000Z"
+      },
+      "settings": {},
+      "collections": {},
+      "categories": []
+    },
+    "expectedLegacyNoDetail": {}
+  },
+  {
+    "sourcePage": "labs.json",
+    "slug": "labs",
+    "v2Payload": {
+      "page": {
+        "id": 1,
+        "slug": "labs",
+        "title": "Composite & Skill Labs",
+        "template": "solution-hub",
+        "contentModel": "structured",
+        "version": 1,
+        "updatedAt": "2026-11-21T00:00:00.000Z"
+      },
+      "settings": {
+        "hero": {
+          "title": "Advanced LABS.",
+          "titleHtml": "Advanced <br/> LABS.",
+          "subtitle": "Configure your LABS parameters.",
+          "bannerImage": "/uploads/1776969406388-Gemini_Generated_Image_nathq4nathq4nath.png",
+          "badge": "LABS 2025",
+          "bgColor": "#fcdb03",
+          "textColor": "#fcdb03",
+          "pageDescription": "At Schoolmart, we manufacture and supply NEP-compliant STEM, science, and math labs, offering fully engineered, end-to-end solutions that make modern lab setup effortless for schools across India.",
+          "pageDescriptionBgColor": "#313d91",
+          "pageDescriptionTextColor": "#fafafa",
+          "img": "https://images.unsplash.com/photo-1546519638-68e109498ffc?w=800&q=80",
+          "mediaUrl": "/uploads/1776969406388-Gemini_Generated_Image_nathq4nathq4nath.png",
+          "mediaType": "image"
+        },
+        "ctaTitle": "Build Research-Grade STEM & Composite Skill Labs",
+        "ctaSubtitle": "Ensure 100% compliance with NEP 2020 guidelines with heavy-duty lab workstations, ESD-safe flooring, 3D printers, and certified robotics kits.",
+        "ctaButtonLabel": "Request Lab Setup Consultation",
+        "ctaHref": "/contact-us",
+        "ctaButtonHref": "/contact-us",
+        "hideCta": false,
+        "blocks": {
+          "inner_page_hero": {
+            "id": "2616af3e-138d-4118-a86a-33ce8cdb7846",
+            "key": "inner_page_hero",
+            "type": "inner_page_hero",
+            "data": {
+              "img": "https://images.unsplash.com/photo-1546519638-68e109498ffc?w=800&q=80",
+              "badge": "LABS 2025",
+              "bgColor": "#fcdb03",
+              "mediaUrl": "/uploads/1776969406388-Gemini_Generated_Image_nathq4nathq4nath.png",
+              "subtitle": "Configure your LABS parameters.",
+              "mediaType": "image",
+              "textColor": "#fcdb03",
+              "titleHtml": "Advanced <br/> LABS.",
+              "pageDescription": "At Schoolmart, we manufacture and supply NEP-compliant STEM, science, and math labs, offering fully engineered, end-to-end solutions that make modern lab setup effortless for schools across India.",
+              "pageDescriptionBgColor": "#313d91",
+              "pageDescriptionTextColor": "#fafafa"
+            },
+            "isVisible": true
+          },
+          "sidebar_categories": {
+            "id": "3e7de399-6edd-4e6f-8e64-17f8f9b218d0",
+            "key": "sidebar_categories",
+            "type": "sidebar_categories",
+            "data": {
+              "categories": [
+                "COMPUTER LAB",
+                "COMPOSITE SKILLS LAB",
+                "STEM LAB"
+              ]
+            },
+            "isVisible": true
+          }
+        },
+        "rawBlocks": {
+          "inner_page_hero": {
+            "id": "2616af3e-138d-4118-a86a-33ce8cdb7846",
+            "key": "inner_page_hero",
+            "type": "inner_page_hero",
+            "data": {
+              "img": "https://images.unsplash.com/photo-1546519638-68e109498ffc?w=800&q=80",
+              "badge": "LABS 2025",
+              "bgColor": "#fcdb03",
+              "mediaUrl": "/uploads/1776969406388-Gemini_Generated_Image_nathq4nathq4nath.png",
+              "subtitle": "Configure your LABS parameters.",
+              "mediaType": "image",
+              "textColor": "#fcdb03",
+              "titleHtml": "Advanced <br/> LABS.",
+              "pageDescription": "At Schoolmart, we manufacture and supply NEP-compliant STEM, science, and math labs, offering fully engineered, end-to-end solutions that make modern lab setup effortless for schools across India.",
+              "pageDescriptionBgColor": "#313d91",
+              "pageDescriptionTextColor": "#fafafa"
+            },
+            "isVisible": true
+          },
+          "sidebar_categories": {
+            "id": "3e7de399-6edd-4e6f-8e64-17f8f9b218d0",
+            "key": "sidebar_categories",
+            "type": "sidebar_categories",
+            "data": {
+              "categories": [
+                "COMPUTER LAB",
+                "COMPOSITE SKILLS LAB",
+                "STEM LAB"
+              ]
+            },
+            "isVisible": true
+          }
+        },
+        "heroTitle": "Advanced LABS.",
+        "heroSubtitle": "Configure your LABS parameters.",
+        "heroImage": "/uploads/1776969406388-Gemini_Generated_Image_nathq4nathq4nath.png",
+        "heroEyebrow": "LABS 2025",
+        "heroButtonLabel": "Request Lab Setup Consultation",
+        "heroButtonHref": "/contact-us",
+        "badge": "LABS 2025",
+        "heading": "Advanced LABS.",
+        "description": "Configure your LABS parameters.",
+        "styles": {
+          "heroBg": "#fcdb03",
+          "ctaBg": "#002a6c",
+          "primaryColor": "#0047ab",
+          "heroLayout": "split-right",
+          "cardColumns": "3",
+          "showFilters": true
+        },
+        "taxonomy": [
+          "Institutional",
+          "Category Hub",
+          "2026 Spec"
+        ],
+        "technicalParameters": [
+          {
+            "label": "Turnkey Architectural Scope",
+            "desc": "Customized layout design, civil specifications, and environmental zoning"
+          },
+          {
+            "label": "Equipment & Standard QA",
+            "desc": "Direct-from-manufacturer educational supply meeting institutional benchmarks"
+          },
+          {
+            "label": "Integration & Handover",
+            "desc": "End-to-end installation, commissioning, testing, and faculty training workshops"
+          }
+        ]
+      },
+      "collections": {
+        "cards": [
+          {
+            "id": 0,
+            "slug": "composite-skill-lab",
+            "collection": "cards",
+            "title": "Composite Skill Lab & Technical Workshop",
+            "summary": "Multidisciplinary vocational learning spaces with carpentry, electronics workbench, IoT prototyping stations, and 3D printing.",
+            "imageUrl": "/uploads/1777103755353-COMPOSITE SKILL LAB.PNG",
+            "href": "/p/composite-skill-lab",
+            "badge": null,
+            "categories": [
+              "COMPOSITE SKILLS LAB"
+            ],
+            "data": {},
+            "sortOrder": 0
+          },
+          {
+            "id": 1,
+            "slug": "ai-computer-lab",
+            "collection": "cards",
+            "title": "Next-Gen AI & High-Performance Computer Lab",
+            "summary": "Ergonomic networked computing workstations configured for computational thinking, graphic coding, and CBSE cyber security curriculums.",
+            "imageUrl": "/uploads/1776969406388-Gemini_Generated_Image_nathq4nathq4nath.png",
+            "href": "/labs/ai-computer-lab",
+            "badge": null,
+            "categories": [
+              "COMPUTER LAB"
+            ],
+            "data": {},
+            "sortOrder": 1
+          },
+          {
+            "id": 2,
+            "slug": "stem-discovery-studio",
+            "collection": "cards",
+            "title": "Integrated STEM Discovery & Robotics Studio",
+            "summary": "Hands-on maker station equipped with modular robotics test tracks, microcontroller kits, sensor matrices, and rapid prototyping tools.",
+            "imageUrl": "/uploads/1777104618774-GAMIFIED SCIENCE LAB.PNG",
+            "href": "/labs/stem-discovery-studio",
+            "badge": null,
+            "categories": [
+              "STEM LAB"
+            ],
+            "data": {},
+            "sortOrder": 2
+          }
+        ]
+      },
+      "categories": [
+        {
+          "id": 0,
+          "name": "COMPUTER LAB",
+          "slug": "computer-lab"
+        },
+        {
+          "id": 1,
+          "name": "COMPOSITE SKILLS LAB",
+          "slug": "composite-skills-lab"
+        },
+        {
+          "id": 2,
+          "name": "STEM LAB",
+          "slug": "stem-lab"
+        }
+      ]
+    },
+    "expectedLegacyNoDetail": {
+      "hero": {
+        "title": "Advanced LABS.",
+        "titleHtml": "Advanced <br/> LABS.",
+        "subtitle": "Configure your LABS parameters.",
+        "bannerImage": "/uploads/1776969406388-Gemini_Generated_Image_nathq4nathq4nath.png",
+        "badge": "LABS 2025",
+        "bgColor": "#fcdb03",
+        "textColor": "#fcdb03",
+        "pageDescription": "At Schoolmart, we manufacture and supply NEP-compliant STEM, science, and math labs, offering fully engineered, end-to-end solutions that make modern lab setup effortless for schools across India.",
+        "pageDescriptionBgColor": "#313d91",
+        "pageDescriptionTextColor": "#fafafa",
+        "img": "https://images.unsplash.com/photo-1546519638-68e109498ffc?w=800&q=80",
+        "mediaUrl": "/uploads/1776969406388-Gemini_Generated_Image_nathq4nathq4nath.png",
+        "mediaType": "image"
+      },
+      "ctaTitle": "Build Research-Grade STEM & Composite Skill Labs",
+      "ctaSubtitle": "Ensure 100% compliance with NEP 2020 guidelines with heavy-duty lab workstations, ESD-safe flooring, 3D printers, and certified robotics kits.",
+      "ctaButtonLabel": "Request Lab Setup Consultation",
+      "ctaHref": "/contact-us",
+      "ctaButtonHref": "/contact-us",
+      "hideCta": false,
+      "blocks": {
+        "inner_page_hero": {
+          "id": "2616af3e-138d-4118-a86a-33ce8cdb7846",
+          "key": "inner_page_hero",
+          "type": "inner_page_hero",
+          "data": {
+            "img": "https://images.unsplash.com/photo-1546519638-68e109498ffc?w=800&q=80",
+            "badge": "LABS 2025",
+            "bgColor": "#fcdb03",
+            "mediaUrl": "/uploads/1776969406388-Gemini_Generated_Image_nathq4nathq4nath.png",
+            "subtitle": "Configure your LABS parameters.",
+            "mediaType": "image",
+            "textColor": "#fcdb03",
+            "titleHtml": "Advanced <br/> LABS.",
+            "pageDescription": "At Schoolmart, we manufacture and supply NEP-compliant STEM, science, and math labs, offering fully engineered, end-to-end solutions that make modern lab setup effortless for schools across India.",
+            "pageDescriptionBgColor": "#313d91",
+            "pageDescriptionTextColor": "#fafafa"
+          },
+          "isVisible": true
+        },
+        "sidebar_categories": {
+          "id": "3e7de399-6edd-4e6f-8e64-17f8f9b218d0",
+          "key": "sidebar_categories",
+          "type": "sidebar_categories",
+          "data": {
+            "categories": [
+              "COMPUTER LAB",
+              "COMPOSITE SKILLS LAB",
+              "STEM LAB"
+            ]
+          },
+          "isVisible": true
+        }
+      },
+      "rawBlocks": {
+        "inner_page_hero": {
+          "id": "2616af3e-138d-4118-a86a-33ce8cdb7846",
+          "key": "inner_page_hero",
+          "type": "inner_page_hero",
+          "data": {
+            "img": "https://images.unsplash.com/photo-1546519638-68e109498ffc?w=800&q=80",
+            "badge": "LABS 2025",
+            "bgColor": "#fcdb03",
+            "mediaUrl": "/uploads/1776969406388-Gemini_Generated_Image_nathq4nathq4nath.png",
+            "subtitle": "Configure your LABS parameters.",
+            "mediaType": "image",
+            "textColor": "#fcdb03",
+            "titleHtml": "Advanced <br/> LABS.",
+            "pageDescription": "At Schoolmart, we manufacture and supply NEP-compliant STEM, science, and math labs, offering fully engineered, end-to-end solutions that make modern lab setup effortless for schools across India.",
+            "pageDescriptionBgColor": "#313d91",
+            "pageDescriptionTextColor": "#fafafa"
+          },
+          "isVisible": true
+        },
+        "sidebar_categories": {
+          "id": "3e7de399-6edd-4e6f-8e64-17f8f9b218d0",
+          "key": "sidebar_categories",
+          "type": "sidebar_categories",
+          "data": {
+            "categories": [
+              "COMPUTER LAB",
+              "COMPOSITE SKILLS LAB",
+              "STEM LAB"
+            ]
+          },
+          "isVisible": true
+        }
+      },
+      "heroTitle": "Advanced LABS.",
+      "heroSubtitle": "Configure your LABS parameters.",
+      "heroImage": "/uploads/1776969406388-Gemini_Generated_Image_nathq4nathq4nath.png",
+      "heroEyebrow": "LABS 2025",
+      "heroButtonLabel": "Request Lab Setup Consultation",
+      "heroButtonHref": "/contact-us",
+      "badge": "LABS 2025",
+      "heading": "Advanced LABS.",
+      "description": "Configure your LABS parameters.",
+      "styles": {
+        "heroBg": "#fcdb03",
+        "ctaBg": "#002a6c",
+        "primaryColor": "#0047ab",
+        "heroLayout": "split-right",
+        "cardColumns": "3",
+        "showFilters": true
+      },
+      "taxonomy": [
+        "Institutional",
+        "Category Hub",
+        "2026 Spec"
+      ],
+      "technicalParameters": [
+        {
+          "label": "Turnkey Architectural Scope",
+          "desc": "Customized layout design, civil specifications, and environmental zoning"
+        },
+        {
+          "label": "Equipment & Standard QA",
+          "desc": "Direct-from-manufacturer educational supply meeting institutional benchmarks"
+        },
+        {
+          "label": "Integration & Handover",
+          "desc": "End-to-end installation, commissioning, testing, and faculty training workshops"
+        }
+      ],
+      "cards": [
+        {
+          "title": "Composite Skill Lab & Technical Workshop",
+          "slug": "composite-skill-lab",
+          "description": "Multidisciplinary vocational learning spaces with carpentry, electronics workbench, IoT prototyping stations, and 3D printing.",
+          "image": "/uploads/1777103755353-COMPOSITE SKILL LAB.PNG",
+          "href": "/p/composite-skill-lab",
+          "categories": [
+            "COMPOSITE SKILLS LAB"
+          ]
+        },
+        {
+          "title": "Next-Gen AI & High-Performance Computer Lab",
+          "slug": "ai-computer-lab",
+          "description": "Ergonomic networked computing workstations configured for computational thinking, graphic coding, and CBSE cyber security curriculums.",
+          "image": "/uploads/1776969406388-Gemini_Generated_Image_nathq4nathq4nath.png",
+          "href": "/labs/ai-computer-lab",
+          "categories": [
+            "COMPUTER LAB"
+          ]
+        },
+        {
+          "title": "Integrated STEM Discovery & Robotics Studio",
+          "slug": "stem-discovery-studio",
+          "description": "Hands-on maker station equipped with modular robotics test tracks, microcontroller kits, sensor matrices, and rapid prototyping tools.",
+          "image": "/uploads/1777104618774-GAMIFIED SCIENCE LAB.PNG",
+          "href": "/labs/stem-discovery-studio",
+          "categories": [
+            "STEM LAB"
+          ]
+        }
+      ],
+      "categories": [
+        "COMPUTER LAB",
+        "COMPOSITE SKILLS LAB",
+        "STEM LAB"
+      ]
+    }
+  },
+  {
+    "sourcePage": "libraries.json",
+    "slug": "libraries",
+    "v2Payload": {
+      "page": {
+        "id": 1,
+        "slug": "libraries",
+        "title": "Libraries",
+        "template": "solution-hub",
+        "contentModel": "structured",
+        "version": 1,
+        "updatedAt": "2026-11-21T00:00:00.000Z"
+      },
+      "settings": {
+        "hero": {
+          "title": "Advanced LIBRARIES.",
+          "titleHtml": "Advanced <br/> LIBRARIES.",
+          "subtitle": "Configure your LIBRARIES parameters.",
+          "bannerImage": "/uploads/1777012622668-Gemini_Generated_Image_ngcuvengcuvengcu.png",
+          "badge": "LIBRARIES 2025",
+          "bgColor": "#efe1e1",
+          "textColor": "#002a6c",
+          "pageDescription": "we are experts in setting up TRADITIONAL LIBRARIES, DIGITAL LIBRARIES, SUSTAINABLE LIBRARIES, AR LIBRARIES, KINDERGARTEN LIBRARIES, MULTI STORIED LIBRARIES, IB SCHOOL LIBRARIES",
+          "pageDescriptionBgColor": "#ffcd09",
+          "pageDescriptionTextColor": "#0f172a",
+          "img": "https://images.unsplash.com/photo-1546519638-68e109498ffc?w=800&q=80",
+          "mediaUrl": "/uploads/1777012622668-Gemini_Generated_Image_ngcuvengcuvengcu.png",
+          "mediaType": "image"
+        },
+        "ctaTitle": "Transform Your Campus Library into an Interactive Media Commons",
+        "ctaSubtitle": "Upgrade to automated RFID management, acoustic collaborative study pods, ergonomic modular bookstacks, and digital cataloging systems.",
+        "ctaButtonLabel": "Consult Library Architects",
+        "ctaHref": "/contact-us",
+        "ctaButtonHref": "/contact-us",
+        "hideCta": false,
+        "blocks": {
+          "inner_page_hero": {
+            "id": "e3e70316-1da0-4e87-8448-c9ce83ba237a",
+            "key": "inner_page_hero",
+            "type": "inner_page_hero",
+            "data": {
+              "img": "https://images.unsplash.com/photo-1546519638-68e109498ffc?w=800&q=80",
+              "badge": "LIBRARIES 2025",
+              "bgColor": "#efe1e1",
+              "mediaUrl": "/uploads/1777012622668-Gemini_Generated_Image_ngcuvengcuvengcu.png",
+              "subtitle": "Configure your LIBRARIES parameters.",
+              "mediaType": "image",
+              "titleHtml": "Advanced <br/> LIBRARIES.",
+              "pageDescription": "we are experts in setting up TRADITIONAL LIBRARIES, DIGITAL LIBRARIES, SUSTAINABLE LIBRARIES, AR LIBRARIES, KINDERGARTEN LIBRARIES, MULTI STORIED LIBRARIES, IB SCHOOL LIBRARIES",
+              "pageDescriptionBgColor": "#ffcd09",
+              "pageDescriptionTextColor": "#0f172a"
+            },
+            "isVisible": true
+          },
+          "sidebar_categories": {
+            "id": "b821bffa-23dd-446a-8129-2f4f86a0051f",
+            "key": "sidebar_categories",
+            "type": "sidebar_categories",
+            "data": {
+              "categories": [
+                "Phygital Libraries",
+                "Reading Zones",
+                "Digital Catalogs",
+                "AR Libraries",
+                "Study Pods",
+                "Open Shelving",
+                "Audio Rooms"
+              ]
+            },
+            "isVisible": true
+          }
+        },
+        "rawBlocks": {
+          "inner_page_hero": {
+            "id": "e3e70316-1da0-4e87-8448-c9ce83ba237a",
+            "key": "inner_page_hero",
+            "type": "inner_page_hero",
+            "data": {
+              "img": "https://images.unsplash.com/photo-1546519638-68e109498ffc?w=800&q=80",
+              "badge": "LIBRARIES 2025",
+              "bgColor": "#efe1e1",
+              "mediaUrl": "/uploads/1777012622668-Gemini_Generated_Image_ngcuvengcuvengcu.png",
+              "subtitle": "Configure your LIBRARIES parameters.",
+              "mediaType": "image",
+              "titleHtml": "Advanced <br/> LIBRARIES.",
+              "pageDescription": "we are experts in setting up TRADITIONAL LIBRARIES, DIGITAL LIBRARIES, SUSTAINABLE LIBRARIES, AR LIBRARIES, KINDERGARTEN LIBRARIES, MULTI STORIED LIBRARIES, IB SCHOOL LIBRARIES",
+              "pageDescriptionBgColor": "#ffcd09",
+              "pageDescriptionTextColor": "#0f172a"
+            },
+            "isVisible": true
+          },
+          "sidebar_categories": {
+            "id": "b821bffa-23dd-446a-8129-2f4f86a0051f",
+            "key": "sidebar_categories",
+            "type": "sidebar_categories",
+            "data": {
+              "categories": [
+                "Phygital Libraries",
+                "Reading Zones",
+                "Digital Catalogs",
+                "AR Libraries",
+                "Study Pods",
+                "Open Shelving",
+                "Audio Rooms"
+              ]
+            },
+            "isVisible": true
+          }
+        },
+        "heroTitle": "Advanced LIBRARIES.",
+        "heroSubtitle": "Configure your LIBRARIES parameters.",
+        "heroImage": "/uploads/1777012622668-Gemini_Generated_Image_ngcuvengcuvengcu.png",
+        "heroEyebrow": "LIBRARIES 2025",
+        "heroButtonLabel": "Consult Library Architects",
+        "heroButtonHref": "/contact-us",
+        "badge": "LIBRARIES 2025",
+        "heading": "Advanced LIBRARIES.",
+        "description": "Configure your LIBRARIES parameters.",
+        "styles": {
+          "heroBg": "#efe1e1",
+          "ctaBg": "#002a6c",
+          "primaryColor": "#0047ab",
+          "heroLayout": "split-right",
+          "cardColumns": "3",
+          "showFilters": true
+        },
+        "taxonomy": [
+          "Institutional",
+          "Category Hub",
+          "2026 Spec"
+        ],
+        "technicalParameters": [
+          {
+            "label": "Turnkey Architectural Scope",
+            "desc": "Customized layout design, civil specifications, and environmental zoning"
+          },
+          {
+            "label": "Equipment & Standard QA",
+            "desc": "Direct-from-manufacturer educational supply meeting institutional benchmarks"
+          },
+          {
+            "label": "Integration & Handover",
+            "desc": "End-to-end installation, commissioning, testing, and faculty training workshops"
+          }
+        ]
+      },
+      "collections": {
+        "cards": [
+          {
+            "id": 0,
+            "slug": "library-innovations",
+            "collection": "cards",
+            "title": "Phygital Smart Library & RFID Automation",
+            "summary": "Automated RFID check-in/check-out kiosks, anti-theft security gates, and digital catalog kiosks connected to school LMS.",
+            "imageUrl": "/uploads/1777103789495-LIBRARY INNOVATIONS.PNG",
+            "href": "/p/library-innovations",
+            "badge": null,
+            "categories": [
+              "Phygital Libraries"
+            ],
+            "data": {},
+            "sortOrder": 0
+          },
+          {
+            "id": 1,
+            "slug": "collaborative-reading-zones",
+            "collection": "cards",
+            "title": "Collaborative Reading Amphitheatres",
+            "summary": "Tiered upholstered amphitheater seating and ergonomic reading nooks designed to foster quiet immersion and group discussions.",
+            "imageUrl": "/uploads/1777012622668-Gemini_Generated_Image_ngcuvengcuvengcu.png",
+            "href": "/libraries/collaborative-reading-zones",
+            "badge": null,
+            "categories": [
+              "Reading Zones"
+            ],
+            "data": {},
+            "sortOrder": 1
+          },
+          {
+            "id": 2,
+            "slug": "digital-catalogs-terminals",
+            "collection": "cards",
+            "title": "Cloud Digital Catalogs & Touch Terminals",
+            "summary": "OPAC touch consoles enabling instant book lookup, cross-campus inter-library reservations, and digital eBook previews.",
+            "imageUrl": "/uploads/1777012622668-Gemini_Generated_Image_ngcuvengcuvengcu.png",
+            "href": "/libraries/digital-catalogs-terminals",
+            "badge": null,
+            "categories": [
+              "Digital Catalogs"
+            ],
+            "data": {},
+            "sortOrder": 2
+          },
+          {
+            "id": 3,
+            "slug": "ar-libraries-experience",
+            "collection": "cards",
+            "title": "Augmented Reality Immersive Book Stations",
+            "summary": "Interactive 3D visual projection desks where physical picture books trigger immersive animated educational models.",
+            "imageUrl": "/uploads/1777104808239-IMMERSIVE LEARNING.PNG",
+            "href": "/libraries/ar-libraries-experience",
+            "badge": null,
+            "categories": [
+              "AR Libraries"
+            ],
+            "data": {},
+            "sortOrder": 3
+          },
+          {
+            "id": 4,
+            "slug": "acoustic-study-pods",
+            "collection": "cards",
+            "title": "Acoustic Focus & Individual Study Pods",
+            "summary": "Sound-dampening single and dual study pods equipped with task lighting, universal power sockets, and ergonomic seating.",
+            "imageUrl": "/uploads/1777012622668-Gemini_Generated_Image_ngcuvengcuvengcu.png",
+            "href": "/libraries/acoustic-study-pods",
+            "badge": null,
+            "categories": [
+              "Study Pods"
+            ],
+            "data": {},
+            "sortOrder": 4
+          },
+          {
+            "id": 5,
+            "slug": "curved-open-shelving",
+            "collection": "cards",
+            "title": "Curved Modular Open Shelving Displays",
+            "summary": "Double-sided powder-coated metal book stacks with beechwood end panels and child-height accessible curved perimeter display runs.",
+            "imageUrl": "/uploads/1777012622668-Gemini_Generated_Image_ngcuvengcuvengcu.png",
+            "href": "/libraries/curved-open-shelving",
+            "badge": null,
+            "categories": [
+              "Open Shelving"
+            ],
+            "data": {},
+            "sortOrder": 5
+          },
+          {
+            "id": 6,
+            "slug": "audio-listening-rooms",
+            "collection": "cards",
+            "title": "Audio Recording & Audiobook Studio Rooms",
+            "summary": "Soundproofed media listening booths and podcast recording stations designed for student storytelling and language acquisition.",
+            "imageUrl": "/uploads/1777272882057-SMART MUSIC ROOMS [ PROFESSIONAL ].PNG",
+            "href": "/libraries/audio-listening-rooms",
+            "badge": null,
+            "categories": [
+              "Audio Rooms"
+            ],
+            "data": {},
+            "sortOrder": 6
+          }
+        ]
+      },
+      "categories": [
+        {
+          "id": 0,
+          "name": "Phygital Libraries",
+          "slug": "phygital-libraries"
+        },
+        {
+          "id": 1,
+          "name": "Reading Zones",
+          "slug": "reading-zones"
+        },
+        {
+          "id": 2,
+          "name": "Digital Catalogs",
+          "slug": "digital-catalogs"
+        },
+        {
+          "id": 3,
+          "name": "AR Libraries",
+          "slug": "ar-libraries"
+        },
+        {
+          "id": 4,
+          "name": "Study Pods",
+          "slug": "study-pods"
+        },
+        {
+          "id": 5,
+          "name": "Open Shelving",
+          "slug": "open-shelving"
+        },
+        {
+          "id": 6,
+          "name": "Audio Rooms",
+          "slug": "audio-rooms"
+        }
+      ]
+    },
+    "expectedLegacyNoDetail": {
+      "hero": {
+        "title": "Advanced LIBRARIES.",
+        "titleHtml": "Advanced <br/> LIBRARIES.",
+        "subtitle": "Configure your LIBRARIES parameters.",
+        "bannerImage": "/uploads/1777012622668-Gemini_Generated_Image_ngcuvengcuvengcu.png",
+        "badge": "LIBRARIES 2025",
+        "bgColor": "#efe1e1",
+        "textColor": "#002a6c",
+        "pageDescription": "we are experts in setting up TRADITIONAL LIBRARIES, DIGITAL LIBRARIES, SUSTAINABLE LIBRARIES, AR LIBRARIES, KINDERGARTEN LIBRARIES, MULTI STORIED LIBRARIES, IB SCHOOL LIBRARIES",
+        "pageDescriptionBgColor": "#ffcd09",
+        "pageDescriptionTextColor": "#0f172a",
+        "img": "https://images.unsplash.com/photo-1546519638-68e109498ffc?w=800&q=80",
+        "mediaUrl": "/uploads/1777012622668-Gemini_Generated_Image_ngcuvengcuvengcu.png",
+        "mediaType": "image"
+      },
+      "ctaTitle": "Transform Your Campus Library into an Interactive Media Commons",
+      "ctaSubtitle": "Upgrade to automated RFID management, acoustic collaborative study pods, ergonomic modular bookstacks, and digital cataloging systems.",
+      "ctaButtonLabel": "Consult Library Architects",
+      "ctaHref": "/contact-us",
+      "ctaButtonHref": "/contact-us",
+      "hideCta": false,
+      "blocks": {
+        "inner_page_hero": {
+          "id": "e3e70316-1da0-4e87-8448-c9ce83ba237a",
+          "key": "inner_page_hero",
+          "type": "inner_page_hero",
+          "data": {
+            "img": "https://images.unsplash.com/photo-1546519638-68e109498ffc?w=800&q=80",
+            "badge": "LIBRARIES 2025",
+            "bgColor": "#efe1e1",
+            "mediaUrl": "/uploads/1777012622668-Gemini_Generated_Image_ngcuvengcuvengcu.png",
+            "subtitle": "Configure your LIBRARIES parameters.",
+            "mediaType": "image",
+            "titleHtml": "Advanced <br/> LIBRARIES.",
+            "pageDescription": "we are experts in setting up TRADITIONAL LIBRARIES, DIGITAL LIBRARIES, SUSTAINABLE LIBRARIES, AR LIBRARIES, KINDERGARTEN LIBRARIES, MULTI STORIED LIBRARIES, IB SCHOOL LIBRARIES",
+            "pageDescriptionBgColor": "#ffcd09",
+            "pageDescriptionTextColor": "#0f172a"
+          },
+          "isVisible": true
+        },
+        "sidebar_categories": {
+          "id": "b821bffa-23dd-446a-8129-2f4f86a0051f",
+          "key": "sidebar_categories",
+          "type": "sidebar_categories",
+          "data": {
+            "categories": [
+              "Phygital Libraries",
+              "Reading Zones",
+              "Digital Catalogs",
+              "AR Libraries",
+              "Study Pods",
+              "Open Shelving",
+              "Audio Rooms"
+            ]
+          },
+          "isVisible": true
+        }
+      },
+      "rawBlocks": {
+        "inner_page_hero": {
+          "id": "e3e70316-1da0-4e87-8448-c9ce83ba237a",
+          "key": "inner_page_hero",
+          "type": "inner_page_hero",
+          "data": {
+            "img": "https://images.unsplash.com/photo-1546519638-68e109498ffc?w=800&q=80",
+            "badge": "LIBRARIES 2025",
+            "bgColor": "#efe1e1",
+            "mediaUrl": "/uploads/1777012622668-Gemini_Generated_Image_ngcuvengcuvengcu.png",
+            "subtitle": "Configure your LIBRARIES parameters.",
+            "mediaType": "image",
+            "titleHtml": "Advanced <br/> LIBRARIES.",
+            "pageDescription": "we are experts in setting up TRADITIONAL LIBRARIES, DIGITAL LIBRARIES, SUSTAINABLE LIBRARIES, AR LIBRARIES, KINDERGARTEN LIBRARIES, MULTI STORIED LIBRARIES, IB SCHOOL LIBRARIES",
+            "pageDescriptionBgColor": "#ffcd09",
+            "pageDescriptionTextColor": "#0f172a"
+          },
+          "isVisible": true
+        },
+        "sidebar_categories": {
+          "id": "b821bffa-23dd-446a-8129-2f4f86a0051f",
+          "key": "sidebar_categories",
+          "type": "sidebar_categories",
+          "data": {
+            "categories": [
+              "Phygital Libraries",
+              "Reading Zones",
+              "Digital Catalogs",
+              "AR Libraries",
+              "Study Pods",
+              "Open Shelving",
+              "Audio Rooms"
+            ]
+          },
+          "isVisible": true
+        }
+      },
+      "heroTitle": "Advanced LIBRARIES.",
+      "heroSubtitle": "Configure your LIBRARIES parameters.",
+      "heroImage": "/uploads/1777012622668-Gemini_Generated_Image_ngcuvengcuvengcu.png",
+      "heroEyebrow": "LIBRARIES 2025",
+      "heroButtonLabel": "Consult Library Architects",
+      "heroButtonHref": "/contact-us",
+      "badge": "LIBRARIES 2025",
+      "heading": "Advanced LIBRARIES.",
+      "description": "Configure your LIBRARIES parameters.",
+      "styles": {
+        "heroBg": "#efe1e1",
+        "ctaBg": "#002a6c",
+        "primaryColor": "#0047ab",
+        "heroLayout": "split-right",
+        "cardColumns": "3",
+        "showFilters": true
+      },
+      "taxonomy": [
+        "Institutional",
+        "Category Hub",
+        "2026 Spec"
+      ],
+      "technicalParameters": [
+        {
+          "label": "Turnkey Architectural Scope",
+          "desc": "Customized layout design, civil specifications, and environmental zoning"
+        },
+        {
+          "label": "Equipment & Standard QA",
+          "desc": "Direct-from-manufacturer educational supply meeting institutional benchmarks"
+        },
+        {
+          "label": "Integration & Handover",
+          "desc": "End-to-end installation, commissioning, testing, and faculty training workshops"
+        }
+      ],
+      "cards": [
+        {
+          "title": "Phygital Smart Library & RFID Automation",
+          "slug": "library-innovations",
+          "description": "Automated RFID check-in/check-out kiosks, anti-theft security gates, and digital catalog kiosks connected to school LMS.",
+          "image": "/uploads/1777103789495-LIBRARY INNOVATIONS.PNG",
+          "href": "/p/library-innovations",
+          "categories": [
+            "Phygital Libraries"
+          ]
+        },
+        {
+          "title": "Collaborative Reading Amphitheatres",
+          "slug": "collaborative-reading-zones",
+          "description": "Tiered upholstered amphitheater seating and ergonomic reading nooks designed to foster quiet immersion and group discussions.",
+          "image": "/uploads/1777012622668-Gemini_Generated_Image_ngcuvengcuvengcu.png",
+          "href": "/libraries/collaborative-reading-zones",
+          "categories": [
+            "Reading Zones"
+          ]
+        },
+        {
+          "title": "Cloud Digital Catalogs & Touch Terminals",
+          "slug": "digital-catalogs-terminals",
+          "description": "OPAC touch consoles enabling instant book lookup, cross-campus inter-library reservations, and digital eBook previews.",
+          "image": "/uploads/1777012622668-Gemini_Generated_Image_ngcuvengcuvengcu.png",
+          "href": "/libraries/digital-catalogs-terminals",
+          "categories": [
+            "Digital Catalogs"
+          ]
+        },
+        {
+          "title": "Augmented Reality Immersive Book Stations",
+          "slug": "ar-libraries-experience",
+          "description": "Interactive 3D visual projection desks where physical picture books trigger immersive animated educational models.",
+          "image": "/uploads/1777104808239-IMMERSIVE LEARNING.PNG",
+          "href": "/libraries/ar-libraries-experience",
+          "categories": [
+            "AR Libraries"
+          ]
+        },
+        {
+          "title": "Acoustic Focus & Individual Study Pods",
+          "slug": "acoustic-study-pods",
+          "description": "Sound-dampening single and dual study pods equipped with task lighting, universal power sockets, and ergonomic seating.",
+          "image": "/uploads/1777012622668-Gemini_Generated_Image_ngcuvengcuvengcu.png",
+          "href": "/libraries/acoustic-study-pods",
+          "categories": [
+            "Study Pods"
+          ]
+        },
+        {
+          "title": "Curved Modular Open Shelving Displays",
+          "slug": "curved-open-shelving",
+          "description": "Double-sided powder-coated metal book stacks with beechwood end panels and child-height accessible curved perimeter display runs.",
+          "image": "/uploads/1777012622668-Gemini_Generated_Image_ngcuvengcuvengcu.png",
+          "href": "/libraries/curved-open-shelving",
+          "categories": [
+            "Open Shelving"
+          ]
+        },
+        {
+          "title": "Audio Recording & Audiobook Studio Rooms",
+          "slug": "audio-listening-rooms",
+          "description": "Soundproofed media listening booths and podcast recording stations designed for student storytelling and language acquisition.",
+          "image": "/uploads/1777272882057-SMART MUSIC ROOMS [ PROFESSIONAL ].PNG",
+          "href": "/libraries/audio-listening-rooms",
+          "categories": [
+            "Audio Rooms"
+          ]
+        }
+      ],
+      "categories": [
+        "Phygital Libraries",
+        "Reading Zones",
+        "Digital Catalogs",
+        "AR Libraries",
+        "Study Pods",
+        "Open Shelving",
+        "Audio Rooms"
+      ]
+    }
+  },
+  {
+    "sourcePage": "privacy-policy.json",
+    "slug": "privacy-policy",
+    "v2Payload": {
+      "page": {
+        "id": 1,
+        "slug": "privacy-policy",
+        "title": "Privacy Policy",
+        "template": "article",
+        "contentModel": "structured",
+        "version": 1,
+        "updatedAt": "2026-11-21T00:00:00.000Z"
+      },
+      "settings": {
+        "category": "",
+        "heroTitle": "Privacy Policy",
+        "heroImage": "",
+        "body": "",
+        "ctaTitle": "",
+        "ctaSubtitle": "",
+        "ctaButtonLabel": "",
+        "ctaHref": "/contact-us",
+        "hideHero": false,
+        "hideBody": false,
+        "hideCta": true
+      },
+      "collections": {},
+      "categories": []
+    },
+    "expectedLegacyNoDetail": {
+      "category": "",
+      "heroTitle": "Privacy Policy",
+      "heroImage": "",
+      "body": "",
+      "ctaTitle": "",
+      "ctaSubtitle": "",
+      "ctaButtonLabel": "",
+      "ctaHref": "/contact-us",
+      "hideHero": false,
+      "hideBody": false,
+      "hideCta": true
+    }
+  },
+  {
+    "sourcePage": "resource-composite-skill-lab.json",
+    "slug": "resource-composite-skill-lab",
+    "v2Payload": {
+      "page": {
+        "id": 1,
+        "slug": "resource-composite-skill-lab",
+        "title": "Composite Skill Lab",
+        "template": "article",
+        "contentModel": "structured",
+        "version": 1,
+        "updatedAt": "2026-11-21T00:00:00.000Z"
+      },
+      "settings": {
+        "badge": "Institutional Insight",
+        "image": "/uploads/1777103820798-COMPOSITE SKILL LAB.PNG",
+        "heroImg": "/uploads/1777104828489-COMPOSITE SKILL LAB.PNG",
+        "heading": "COMPOSITE SKILL LAB",
+        "description": "",
+        "specs": [],
+        "tags": [],
+        "btn1Label": "Request Lab Setup Guide",
+        "btn1Path": "/contact-us",
+        "ctaTitle": "Set Up NEP 2020 Compliant Composite Skill Labs",
+        "ctaSubtitle": "Equip your campus with multidisciplinary vocational equipment, robotics benches, and industrial-grade workbenches mapped to national curriculum standards.",
+        "ctaButtonLabel": "Request Lab Setup Guide",
+        "ctaHref": "/contact-us",
+        "ctaButtonHref": "/contact-us",
+        "hideCta": false,
+        "styles": {
+          "ctaBg": "#002a6c"
+        },
+        "blocks": {
+          "action_stack": {
+            "id": "3d6911d9-32b8-417b-9653-3f34a07d4dae",
+            "key": "action_stack",
+            "type": "action_stack",
+            "data": {},
+            "isVisible": true
+          }
+        },
+        "taxonomy": [
+          "Institutional",
+          "Guide",
+          "2026 Spec"
+        ],
+        "technicalParameters": [
+          {
+            "label": "Technical Parameters",
+            "desc": "Standardized specifications & turnkey architectural compliance"
+          },
+          {
+            "label": "Value Engineering",
+            "desc": "Direct-from-factory procurement with standardized quality assurance"
+          },
+          {
+            "label": "Turnkey Installation",
+            "desc": "End-to-end execution, civil integration, testing, and faculty training"
+          }
+        ],
+        "heroImage": "/uploads/1777104828489-COMPOSITE SKILL LAB.PNG",
+        "heroTitle": "COMPOSITE SKILL LAB",
+        "heroEyebrow": "Institutional Insight",
+        "category": "Institutional Insight",
+        "body": ""
+      },
+      "collections": {},
+      "categories": []
+    },
+    "expectedLegacyNoDetail": {
+      "badge": "Institutional Insight",
+      "image": "/uploads/1777103820798-COMPOSITE SKILL LAB.PNG",
+      "heroImg": "/uploads/1777104828489-COMPOSITE SKILL LAB.PNG",
+      "heading": "COMPOSITE SKILL LAB",
+      "description": "",
+      "specs": [],
+      "tags": [],
+      "btn1Label": "Request Lab Setup Guide",
+      "btn1Path": "/contact-us",
+      "ctaTitle": "Set Up NEP 2020 Compliant Composite Skill Labs",
+      "ctaSubtitle": "Equip your campus with multidisciplinary vocational equipment, robotics benches, and industrial-grade workbenches mapped to national curriculum standards.",
+      "ctaButtonLabel": "Request Lab Setup Guide",
+      "ctaHref": "/contact-us",
+      "ctaButtonHref": "/contact-us",
+      "hideCta": false,
+      "styles": {
+        "ctaBg": "#002a6c"
+      },
+      "blocks": {
+        "action_stack": {
+          "id": "3d6911d9-32b8-417b-9653-3f34a07d4dae",
+          "key": "action_stack",
+          "type": "action_stack",
+          "data": {},
+          "isVisible": true
+        }
+      },
+      "taxonomy": [
+        "Institutional",
+        "Guide",
+        "2026 Spec"
+      ],
+      "technicalParameters": [
+        {
+          "label": "Technical Parameters",
+          "desc": "Standardized specifications & turnkey architectural compliance"
+        },
+        {
+          "label": "Value Engineering",
+          "desc": "Direct-from-factory procurement with standardized quality assurance"
+        },
+        {
+          "label": "Turnkey Installation",
+          "desc": "End-to-end execution, civil integration, testing, and faculty training"
+        }
+      ],
+      "heroImage": "/uploads/1777104828489-COMPOSITE SKILL LAB.PNG",
+      "heroTitle": "COMPOSITE SKILL LAB",
+      "heroEyebrow": "Institutional Insight",
+      "category": "Institutional Insight",
+      "body": ""
+    }
+  },
+  {
+    "sourcePage": "sports-infra.json",
+    "slug": "sports-infra",
+    "v2Payload": {
+      "page": {
+        "id": 1,
+        "slug": "sports-infra",
+        "title": "Sports Infrastructure",
+        "template": "solution-hub",
+        "contentModel": "structured",
+        "version": 1,
+        "updatedAt": "2026-11-21T00:00:00.000Z"
+      },
+      "settings": {
+        "hero": {
+          "title": "Built for Champions.",
+          "titleHtml": "Built <br/> <span class=\"text-sm-blue italic font-serif lowercase tracking-normal\">for</span> <br/> Champions.",
+          "subtitle": "Engineering high-performance athletic surfaces for the next generation of athletes.",
+          "bannerImage": "/uploads/1776958500100-Gemini_Generated_Image_czxn03czxn03czxn.png",
+          "badge": "Performance 2025",
+          "bgColor": "#ffffff",
+          "textColor": "#002a6c",
+          "pageDescription": "At SportSurf [ schoolmart's subsidiary] , we believe sports aren’t just games We design, engineer, and deliver turnkey sports facilities that meet international federation standards and are built to inspire future champions.",
+          "pageDescriptionBgColor": "#fbff00",
+          "pageDescriptionTextColor": "#0011ff",
+          "img": "https://images.unsplash.com/photo-1546519638-68e109498ffc?w=800&q=80",
+          "mediaUrl": "/uploads/1776958500100-Gemini_Generated_Image_czxn03czxn03czxn.png",
+          "mediaType": "image"
+        },
+        "ctaTitle": "Build Championship-Grade Sports Facilities on Your Campus",
+        "ctaSubtitle": "Deliver FIFA/ITF-standard synthetic turf, shock-absorbing indoor court flooring, safety playground equipment, and sports performance tracking.",
+        "ctaButtonLabel": "Book Sports Infrastructure Audit",
+        "ctaHref": "/contact-us",
+        "ctaButtonHref": "/contact-us",
+        "hideCta": false,
+        "blocks": {
+          "inner_page_hero": {
+            "id": "5c5d35fc-1797-48a4-8a30-ee90c041f7d1",
+            "key": "inner_page_hero",
+            "type": "inner_page_hero",
+            "data": {
+              "img": "https://images.unsplash.com/photo-1546519638-68e109498ffc?w=800&q=80",
+              "badge": "Performance 2025",
+              "mediaUrl": "/uploads/1776958500100-Gemini_Generated_Image_czxn03czxn03czxn.png",
+              "subtitle": "Engineering high-performance athletic surfaces for the next generation of athletes.",
+              "mediaType": "image",
+              "titleHtml": "Built <br/> <span class=\"text-sm-blue italic font-serif lowercase tracking-normal\">for</span> <br/> Champions.",
+              "pageDescription": "At SportSurf [ schoolmart's subsidiary] , we believe sports aren’t just games We design, engineer, and deliver turnkey sports facilities that meet international federation standards and are built to inspire future champions.",
+              "pageDescriptionBgColor": "#fbff00",
+              "pageDescriptionTextColor": "#0011ff"
+            },
+            "isVisible": true
+          },
+          "sidebar_categories": {
+            "id": "9bacea9e-5150-4f98-bd56-d1c5039aab27",
+            "key": "sidebar_categories",
+            "type": "sidebar_categories",
+            "data": {
+              "categories": [
+                "Track & Field",
+                "Playground",
+                "Indoor Courts",
+                "Equipment",
+                "Gym Tech"
+              ]
+            },
+            "isVisible": true
+          },
+          "action_stack": {
+            "id": "90ee0b36-46b2-4a95-ad05-ba1fa4dde107",
+            "key": "action_stack",
+            "type": "action_stack",
+            "data": {
+              "cards": [
+                {
+                  "link": "/contact-us",
+                  "title": "Schedule Your \nSurvey\n(click here)",
+                  "bgColor": "#cffbc6",
+                  "textColor": "#0f0000"
+                },
+                {
+                  "link": "https://sportsurf.in/",
+                  "title": "Safety Compliance <br/> Gold Certified.",
+                  "bgColor": "#4580f7",
+                  "textColor": "#0f0000"
+                }
+              ]
+            },
+            "isVisible": true
+          },
+          "info_split_grid": {
+            "id": "c32fd6a3-f680-4c74-bd5d-2afa51e859dd",
+            "key": "info_split_grid",
+            "type": "info_split_grid",
+            "data": {
+              "image": "https://images.unsplash.com/photo-1546519638-68e109498ffc?w=1000&q=80",
+              "points": [
+                "FIBA Compliant",
+                "Anti-Skid",
+                "Heat Proof",
+                "10 Yr Warranty"
+              ],
+              "ctaPath": "/registration",
+              "heading": "High <span class=\"text-sm-blue italic font-serif lowercase tracking-normal\">Impact</span> Performance.",
+              "ctaLabel": "Start Project",
+              "description": "Shock-absorption technology for elite safety and performance. Our surfaces are tested in professional athletic labs to ensure long-term durability."
+            },
+            "isVisible": true
+          }
+        },
+        "rawBlocks": {
+          "inner_page_hero": {
+            "id": "5c5d35fc-1797-48a4-8a30-ee90c041f7d1",
+            "key": "inner_page_hero",
+            "type": "inner_page_hero",
+            "data": {
+              "img": "https://images.unsplash.com/photo-1546519638-68e109498ffc?w=800&q=80",
+              "badge": "Performance 2025",
+              "mediaUrl": "/uploads/1776958500100-Gemini_Generated_Image_czxn03czxn03czxn.png",
+              "subtitle": "Engineering high-performance athletic surfaces for the next generation of athletes.",
+              "mediaType": "image",
+              "titleHtml": "Built <br/> <span class=\"text-sm-blue italic font-serif lowercase tracking-normal\">for</span> <br/> Champions.",
+              "pageDescription": "At SportSurf [ schoolmart's subsidiary] , we believe sports aren’t just games We design, engineer, and deliver turnkey sports facilities that meet international federation standards and are built to inspire future champions.",
+              "pageDescriptionBgColor": "#fbff00",
+              "pageDescriptionTextColor": "#0011ff"
+            },
+            "isVisible": true
+          },
+          "sidebar_categories": {
+            "id": "9bacea9e-5150-4f98-bd56-d1c5039aab27",
+            "key": "sidebar_categories",
+            "type": "sidebar_categories",
+            "data": {
+              "categories": [
+                "Track & Field",
+                "Playground",
+                "Indoor Courts",
+                "Equipment",
+                "Gym Tech"
+              ]
+            },
+            "isVisible": true
+          },
+          "action_stack": {
+            "id": "90ee0b36-46b2-4a95-ad05-ba1fa4dde107",
+            "key": "action_stack",
+            "type": "action_stack",
+            "data": {
+              "cards": [
+                {
+                  "link": "/contact-us",
+                  "title": "Schedule Your \nSurvey\n(click here)",
+                  "bgColor": "#cffbc6",
+                  "textColor": "#0f0000"
+                },
+                {
+                  "link": "https://sportsurf.in/",
+                  "title": "Safety Compliance <br/> Gold Certified.",
+                  "bgColor": "#4580f7",
+                  "textColor": "#0f0000"
+                }
+              ]
+            },
+            "isVisible": true
+          },
+          "info_split_grid": {
+            "id": "c32fd6a3-f680-4c74-bd5d-2afa51e859dd",
+            "key": "info_split_grid",
+            "type": "info_split_grid",
+            "data": {
+              "image": "https://images.unsplash.com/photo-1546519638-68e109498ffc?w=1000&q=80",
+              "points": [
+                "FIBA Compliant",
+                "Anti-Skid",
+                "Heat Proof",
+                "10 Yr Warranty"
+              ],
+              "ctaPath": "/registration",
+              "heading": "High <span class=\"text-sm-blue italic font-serif lowercase tracking-normal\">Impact</span> Performance.",
+              "ctaLabel": "Start Project",
+              "description": "Shock-absorption technology for elite safety and performance. Our surfaces are tested in professional athletic labs to ensure long-term durability."
+            },
+            "isVisible": true
+          }
+        },
+        "heroTitle": "Built for Champions.",
+        "heroSubtitle": "Engineering high-performance athletic surfaces for the next generation of athletes.",
+        "heroImage": "/uploads/1776958500100-Gemini_Generated_Image_czxn03czxn03czxn.png",
+        "heroEyebrow": "Performance 2025",
+        "heroButtonLabel": "Book Sports Infrastructure Audit",
+        "heroButtonHref": "/contact-us",
+        "badge": "Performance 2025",
+        "heading": "Built for Champions.",
+        "description": "Engineering high-performance athletic surfaces for the next generation of athletes.",
+        "styles": {
+          "heroBg": "#ffffff",
+          "ctaBg": "#002a6c",
+          "primaryColor": "#0047ab",
+          "heroLayout": "split-right",
+          "cardColumns": "3",
+          "showFilters": true
+        },
+        "taxonomy": [
+          "Institutional",
+          "Category Hub",
+          "2026 Spec"
+        ],
+        "technicalParameters": [
+          {
+            "label": "Turnkey Architectural Scope",
+            "desc": "Customized layout design, civil specifications, and environmental zoning"
+          },
+          {
+            "label": "Equipment & Standard QA",
+            "desc": "Direct-from-manufacturer educational supply meeting institutional benchmarks"
+          },
+          {
+            "label": "Integration & Handover",
+            "desc": "End-to-end installation, commissioning, testing, and faculty training workshops"
+          }
+        ]
+      },
+      "collections": {
+        "cards": [
+          {
+            "id": 0,
+            "slug": "track-and-field-turf",
+            "collection": "cards",
+            "title": "IAAF Certified Synthetic Athletic Tracks & Turf",
+            "summary": "All-weather polyurethane running tracks and FIFA-standard shock-pad artificial turf engineered for high durability.",
+            "imageUrl": "/uploads/1776958500100-Gemini_Generated_Image_czxn03czxn03czxn.png",
+            "href": "/sports/track-and-field-turf",
+            "badge": null,
+            "categories": [
+              "Track & Field"
+            ],
+            "data": {},
+            "sortOrder": 0
+          },
+          {
+            "id": 1,
+            "slug": "junior-playground-courts",
+            "collection": "cards",
+            "title": "Dynamic Junior School Playgrounds & Multipurpose Courts",
+            "summary": "EPDM rubber safety surfacing, climbing towers, and multi-game markings designed for injury-free recess play.",
+            "imageUrl": "/uploads/1777104652290-SMART SPORTS FOR SCHOOLS.PNG",
+            "href": "/p/smart-sports",
+            "badge": null,
+            "categories": [
+              "Playground"
+            ],
+            "data": {},
+            "sortOrder": 1
+          },
+          {
+            "id": 2,
+            "slug": "indoor-sports-courts",
+            "collection": "cards",
+            "title": "FIBA Certified Maple Wood & PU Indoor Sports Courts",
+            "summary": "Cushioned springing system wood courts for basketball, badminton, squash, and volleyball with anti-slip polyurethane coating.",
+            "imageUrl": "/uploads/1776958500100-Gemini_Generated_Image_czxn03czxn03czxn.png",
+            "href": "/sports/indoor-sports-courts",
+            "badge": null,
+            "categories": [
+              "Indoor Courts"
+            ],
+            "data": {},
+            "sortOrder": 2
+          },
+          {
+            "id": 3,
+            "slug": "sports-equipment-gear",
+            "collection": "cards",
+            "title": "Competition Grade Sports Equipment & Gear",
+            "summary": "Heavy-duty soccer goals, adjustable basketball posts, tournament volleyball poles, and institutional ball storage carts.",
+            "imageUrl": "/uploads/1777104652290-SMART SPORTS FOR SCHOOLS.PNG",
+            "href": "/sports/sports-equipment-gear",
+            "badge": null,
+            "categories": [
+              "Equipment"
+            ],
+            "data": {},
+            "sortOrder": 3
+          },
+          {
+            "id": 4,
+            "slug": "gym-tech-systems",
+            "collection": "cards",
+            "title": "Smart Athlete Performance & Gym Tech Systems",
+            "summary": "Biometric fitness testing consoles, automated timing gates, and resistance training machines configured for adolescent physical education.",
+            "imageUrl": "/uploads/1776958500100-Gemini_Generated_Image_czxn03czxn03czxn.png",
+            "href": "/sports/gym-tech-systems",
+            "badge": null,
+            "categories": [
+              "Gym Tech"
+            ],
+            "data": {},
+            "sortOrder": 4
+          }
+        ]
+      },
+      "categories": [
+        {
+          "id": 0,
+          "name": "Track & Field",
+          "slug": "track-field"
+        },
+        {
+          "id": 1,
+          "name": "Playground",
+          "slug": "playground"
+        },
+        {
+          "id": 2,
+          "name": "Indoor Courts",
+          "slug": "indoor-courts"
+        },
+        {
+          "id": 3,
+          "name": "Equipment",
+          "slug": "equipment"
+        },
+        {
+          "id": 4,
+          "name": "Gym Tech",
+          "slug": "gym-tech"
+        }
+      ]
+    },
+    "expectedLegacyNoDetail": {
+      "hero": {
+        "title": "Built for Champions.",
+        "titleHtml": "Built <br/> <span class=\"text-sm-blue italic font-serif lowercase tracking-normal\">for</span> <br/> Champions.",
+        "subtitle": "Engineering high-performance athletic surfaces for the next generation of athletes.",
+        "bannerImage": "/uploads/1776958500100-Gemini_Generated_Image_czxn03czxn03czxn.png",
+        "badge": "Performance 2025",
+        "bgColor": "#ffffff",
+        "textColor": "#002a6c",
+        "pageDescription": "At SportSurf [ schoolmart's subsidiary] , we believe sports aren’t just games We design, engineer, and deliver turnkey sports facilities that meet international federation standards and are built to inspire future champions.",
+        "pageDescriptionBgColor": "#fbff00",
+        "pageDescriptionTextColor": "#0011ff",
+        "img": "https://images.unsplash.com/photo-1546519638-68e109498ffc?w=800&q=80",
+        "mediaUrl": "/uploads/1776958500100-Gemini_Generated_Image_czxn03czxn03czxn.png",
+        "mediaType": "image"
+      },
+      "ctaTitle": "Build Championship-Grade Sports Facilities on Your Campus",
+      "ctaSubtitle": "Deliver FIFA/ITF-standard synthetic turf, shock-absorbing indoor court flooring, safety playground equipment, and sports performance tracking.",
+      "ctaButtonLabel": "Book Sports Infrastructure Audit",
+      "ctaHref": "/contact-us",
+      "ctaButtonHref": "/contact-us",
+      "hideCta": false,
+      "blocks": {
+        "inner_page_hero": {
+          "id": "5c5d35fc-1797-48a4-8a30-ee90c041f7d1",
+          "key": "inner_page_hero",
+          "type": "inner_page_hero",
+          "data": {
+            "img": "https://images.unsplash.com/photo-1546519638-68e109498ffc?w=800&q=80",
+            "badge": "Performance 2025",
+            "mediaUrl": "/uploads/1776958500100-Gemini_Generated_Image_czxn03czxn03czxn.png",
+            "subtitle": "Engineering high-performance athletic surfaces for the next generation of athletes.",
+            "mediaType": "image",
+            "titleHtml": "Built <br/> <span class=\"text-sm-blue italic font-serif lowercase tracking-normal\">for</span> <br/> Champions.",
+            "pageDescription": "At SportSurf [ schoolmart's subsidiary] , we believe sports aren’t just games We design, engineer, and deliver turnkey sports facilities that meet international federation standards and are built to inspire future champions.",
+            "pageDescriptionBgColor": "#fbff00",
+            "pageDescriptionTextColor": "#0011ff"
+          },
+          "isVisible": true
+        },
+        "sidebar_categories": {
+          "id": "9bacea9e-5150-4f98-bd56-d1c5039aab27",
+          "key": "sidebar_categories",
+          "type": "sidebar_categories",
+          "data": {
+            "categories": [
+              "Track & Field",
+              "Playground",
+              "Indoor Courts",
+              "Equipment",
+              "Gym Tech"
+            ]
+          },
+          "isVisible": true
+        },
+        "action_stack": {
+          "id": "90ee0b36-46b2-4a95-ad05-ba1fa4dde107",
+          "key": "action_stack",
+          "type": "action_stack",
+          "data": {
+            "cards": [
+              {
+                "link": "/contact-us",
+                "title": "Schedule Your \nSurvey\n(click here)",
+                "bgColor": "#cffbc6",
+                "textColor": "#0f0000"
+              },
+              {
+                "link": "https://sportsurf.in/",
+                "title": "Safety Compliance <br/> Gold Certified.",
+                "bgColor": "#4580f7",
+                "textColor": "#0f0000"
+              }
+            ]
+          },
+          "isVisible": true
+        },
+        "info_split_grid": {
+          "id": "c32fd6a3-f680-4c74-bd5d-2afa51e859dd",
+          "key": "info_split_grid",
+          "type": "info_split_grid",
+          "data": {
+            "image": "https://images.unsplash.com/photo-1546519638-68e109498ffc?w=1000&q=80",
+            "points": [
+              "FIBA Compliant",
+              "Anti-Skid",
+              "Heat Proof",
+              "10 Yr Warranty"
+            ],
+            "ctaPath": "/registration",
+            "heading": "High <span class=\"text-sm-blue italic font-serif lowercase tracking-normal\">Impact</span> Performance.",
+            "ctaLabel": "Start Project",
+            "description": "Shock-absorption technology for elite safety and performance. Our surfaces are tested in professional athletic labs to ensure long-term durability."
+          },
+          "isVisible": true
+        }
+      },
+      "rawBlocks": {
+        "inner_page_hero": {
+          "id": "5c5d35fc-1797-48a4-8a30-ee90c041f7d1",
+          "key": "inner_page_hero",
+          "type": "inner_page_hero",
+          "data": {
+            "img": "https://images.unsplash.com/photo-1546519638-68e109498ffc?w=800&q=80",
+            "badge": "Performance 2025",
+            "mediaUrl": "/uploads/1776958500100-Gemini_Generated_Image_czxn03czxn03czxn.png",
+            "subtitle": "Engineering high-performance athletic surfaces for the next generation of athletes.",
+            "mediaType": "image",
+            "titleHtml": "Built <br/> <span class=\"text-sm-blue italic font-serif lowercase tracking-normal\">for</span> <br/> Champions.",
+            "pageDescription": "At SportSurf [ schoolmart's subsidiary] , we believe sports aren’t just games We design, engineer, and deliver turnkey sports facilities that meet international federation standards and are built to inspire future champions.",
+            "pageDescriptionBgColor": "#fbff00",
+            "pageDescriptionTextColor": "#0011ff"
+          },
+          "isVisible": true
+        },
+        "sidebar_categories": {
+          "id": "9bacea9e-5150-4f98-bd56-d1c5039aab27",
+          "key": "sidebar_categories",
+          "type": "sidebar_categories",
+          "data": {
+            "categories": [
+              "Track & Field",
+              "Playground",
+              "Indoor Courts",
+              "Equipment",
+              "Gym Tech"
+            ]
+          },
+          "isVisible": true
+        },
+        "action_stack": {
+          "id": "90ee0b36-46b2-4a95-ad05-ba1fa4dde107",
+          "key": "action_stack",
+          "type": "action_stack",
+          "data": {
+            "cards": [
+              {
+                "link": "/contact-us",
+                "title": "Schedule Your \nSurvey\n(click here)",
+                "bgColor": "#cffbc6",
+                "textColor": "#0f0000"
+              },
+              {
+                "link": "https://sportsurf.in/",
+                "title": "Safety Compliance <br/> Gold Certified.",
+                "bgColor": "#4580f7",
+                "textColor": "#0f0000"
+              }
+            ]
+          },
+          "isVisible": true
+        },
+        "info_split_grid": {
+          "id": "c32fd6a3-f680-4c74-bd5d-2afa51e859dd",
+          "key": "info_split_grid",
+          "type": "info_split_grid",
+          "data": {
+            "image": "https://images.unsplash.com/photo-1546519638-68e109498ffc?w=1000&q=80",
+            "points": [
+              "FIBA Compliant",
+              "Anti-Skid",
+              "Heat Proof",
+              "10 Yr Warranty"
+            ],
+            "ctaPath": "/registration",
+            "heading": "High <span class=\"text-sm-blue italic font-serif lowercase tracking-normal\">Impact</span> Performance.",
+            "ctaLabel": "Start Project",
+            "description": "Shock-absorption technology for elite safety and performance. Our surfaces are tested in professional athletic labs to ensure long-term durability."
+          },
+          "isVisible": true
+        }
+      },
+      "heroTitle": "Built for Champions.",
+      "heroSubtitle": "Engineering high-performance athletic surfaces for the next generation of athletes.",
+      "heroImage": "/uploads/1776958500100-Gemini_Generated_Image_czxn03czxn03czxn.png",
+      "heroEyebrow": "Performance 2025",
+      "heroButtonLabel": "Book Sports Infrastructure Audit",
+      "heroButtonHref": "/contact-us",
+      "badge": "Performance 2025",
+      "heading": "Built for Champions.",
+      "description": "Engineering high-performance athletic surfaces for the next generation of athletes.",
+      "styles": {
+        "heroBg": "#ffffff",
+        "ctaBg": "#002a6c",
+        "primaryColor": "#0047ab",
+        "heroLayout": "split-right",
+        "cardColumns": "3",
+        "showFilters": true
+      },
+      "taxonomy": [
+        "Institutional",
+        "Category Hub",
+        "2026 Spec"
+      ],
+      "technicalParameters": [
+        {
+          "label": "Turnkey Architectural Scope",
+          "desc": "Customized layout design, civil specifications, and environmental zoning"
+        },
+        {
+          "label": "Equipment & Standard QA",
+          "desc": "Direct-from-manufacturer educational supply meeting institutional benchmarks"
+        },
+        {
+          "label": "Integration & Handover",
+          "desc": "End-to-end installation, commissioning, testing, and faculty training workshops"
+        }
+      ],
+      "cards": [
+        {
+          "title": "IAAF Certified Synthetic Athletic Tracks & Turf",
+          "slug": "track-and-field-turf",
+          "description": "All-weather polyurethane running tracks and FIFA-standard shock-pad artificial turf engineered for high durability.",
+          "image": "/uploads/1776958500100-Gemini_Generated_Image_czxn03czxn03czxn.png",
+          "href": "/sports/track-and-field-turf",
+          "categories": [
+            "Track & Field"
+          ]
+        },
+        {
+          "title": "Dynamic Junior School Playgrounds & Multipurpose Courts",
+          "slug": "junior-playground-courts",
+          "description": "EPDM rubber safety surfacing, climbing towers, and multi-game markings designed for injury-free recess play.",
+          "image": "/uploads/1777104652290-SMART SPORTS FOR SCHOOLS.PNG",
+          "href": "/p/smart-sports",
+          "categories": [
+            "Playground"
+          ]
+        },
+        {
+          "title": "FIBA Certified Maple Wood & PU Indoor Sports Courts",
+          "slug": "indoor-sports-courts",
+          "description": "Cushioned springing system wood courts for basketball, badminton, squash, and volleyball with anti-slip polyurethane coating.",
+          "image": "/uploads/1776958500100-Gemini_Generated_Image_czxn03czxn03czxn.png",
+          "href": "/sports/indoor-sports-courts",
+          "categories": [
+            "Indoor Courts"
+          ]
+        },
+        {
+          "title": "Competition Grade Sports Equipment & Gear",
+          "slug": "sports-equipment-gear",
+          "description": "Heavy-duty soccer goals, adjustable basketball posts, tournament volleyball poles, and institutional ball storage carts.",
+          "image": "/uploads/1777104652290-SMART SPORTS FOR SCHOOLS.PNG",
+          "href": "/sports/sports-equipment-gear",
+          "categories": [
+            "Equipment"
+          ]
+        },
+        {
+          "title": "Smart Athlete Performance & Gym Tech Systems",
+          "slug": "gym-tech-systems",
+          "description": "Biometric fitness testing consoles, automated timing gates, and resistance training machines configured for adolescent physical education.",
+          "image": "/uploads/1776958500100-Gemini_Generated_Image_czxn03czxn03czxn.png",
+          "href": "/sports/gym-tech-systems",
+          "categories": [
+            "Gym Tech"
+          ]
+        }
+      ],
+      "categories": [
+        "Track & Field",
+        "Playground",
+        "Indoor Courts",
+        "Equipment",
+        "Gym Tech"
+      ]
+    }
+  },
+  {
+    "sourcePage": "tech-infra.json",
+    "slug": "tech-infra",
+    "v2Payload": {
+      "page": {
+        "id": 1,
+        "slug": "tech-infra",
+        "title": "Tech Infrastructure",
+        "template": "tech-infra",
+        "contentModel": "structured",
+        "version": 1,
+        "updatedAt": "2026-11-21T00:00:00.000Z"
+      },
+      "settings": {
+        "heroTitle": "Technology Infrastructure",
+        "heroSubtitle": "Future-proof your campus with cutting-edge technology infrastructure. From high-speed networks to smart classrooms, we build the digital backbone of modern education.",
+        "heroImage": "https://images.unsplash.com/photo-1544197150-b99a580bb7a8?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80",
+        "section1Title": "Technology Solutions"
+      },
+      "collections": {
+        "cards": [
+          {
+            "id": 0,
+            "slug": "network-infrastructure",
+            "collection": "cards",
+            "title": "Network Infrastructure",
+            "summary": "High-speed campus-wide Wi-Fi and LAN systems",
+            "imageUrl": "https://images.unsplash.com/photo-1544197150-b99a580bb7a8?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80",
+            "href": null,
+            "badge": null,
+            "categories": [],
+            "data": {},
+            "sortOrder": 0
+          },
+          {
+            "id": 1,
+            "slug": "smart-classrooms",
+            "collection": "cards",
+            "title": "Smart Classrooms",
+            "summary": "Interactive boards, projectors, and AV systems",
+            "imageUrl": "https://images.unsplash.com/photo-1509062522246-3755977927d7?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80",
+            "href": null,
+            "badge": null,
+            "categories": [],
+            "data": {},
+            "sortOrder": 1
+          },
+          {
+            "id": 2,
+            "slug": "data-centers",
+            "collection": "cards",
+            "title": "Data Centers",
+            "summary": "Campus servers, cloud integration and data management",
+            "imageUrl": "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80",
+            "href": null,
+            "badge": null,
+            "categories": [],
+            "data": {},
+            "sortOrder": 2
+          },
+          {
+            "id": 3,
+            "slug": "security-systems",
+            "collection": "cards",
+            "title": "Security Systems",
+            "summary": "CCTV surveillance, access control and safety systems",
+            "imageUrl": "https://images.unsplash.com/photo-1557804506-669a67965ba0?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80",
+            "href": null,
+            "badge": null,
+            "categories": [],
+            "data": {},
+            "sortOrder": 3
+          }
+        ]
+      },
+      "categories": []
+    },
+    "expectedLegacyNoDetail": {
+      "heroTitle": "Technology Infrastructure",
+      "heroSubtitle": "Future-proof your campus with cutting-edge technology infrastructure. From high-speed networks to smart classrooms, we build the digital backbone of modern education.",
+      "heroImage": "https://images.unsplash.com/photo-1544197150-b99a580bb7a8?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80",
+      "section1Title": "Technology Solutions",
+      "cards": [
+        {
+          "title": "Network Infrastructure",
+          "slug": "network-infrastructure",
+          "description": "High-speed campus-wide Wi-Fi and LAN systems",
+          "image": "https://images.unsplash.com/photo-1544197150-b99a580bb7a8?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80"
+        },
+        {
+          "title": "Smart Classrooms",
+          "slug": "smart-classrooms",
+          "description": "Interactive boards, projectors, and AV systems",
+          "image": "https://images.unsplash.com/photo-1509062522246-3755977927d7?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80"
+        },
+        {
+          "title": "Data Centers",
+          "slug": "data-centers",
+          "description": "Campus servers, cloud integration and data management",
+          "image": "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80"
+        },
+        {
+          "title": "Security Systems",
+          "slug": "security-systems",
+          "description": "CCTV surveillance, access control and safety systems",
+          "image": "https://images.unsplash.com/photo-1557804506-669a67965ba0?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80"
+        }
+      ]
+    }
+  }
+]

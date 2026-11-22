@@ -4,7 +4,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { Link } from 'react-router-dom';
 import { MoveUpRight } from 'lucide-react';
 import { useSiteContent } from '@/contexts/SiteContentContext';
-import { resolveMediaUrl } from '@/lib/media-url';
+import { MediaImage } from '@/components/ui/media-image';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -157,9 +157,13 @@ const Resources = () => {
               {/* Natural Horizontal Photo (Top section, 100% visible, zero dark tint or overlay) */}
               <div className="relative w-full h-36 sm:h-40 overflow-hidden bg-slate-100 flex-shrink-0">
                 {item.image && (
-                  <img
-                    src={resolveMediaUrl(item.image) || item.image}
+                  <MediaImage
+                    src={item.image}
                     alt={item.title}
+                    width={480}
+                    height={160}
+                    widths={[480, 960]}
+                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
                     className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-108"
                   />
                 )}

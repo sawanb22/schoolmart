@@ -1,4 +1,4 @@
-import { useState, type FormEvent } from 'react';
+import { useState, useEffect, useRef, type FormEvent } from 'react';
 import { X, Mail, KeyRound, Lock, ArrowRight, CheckCircle2 } from 'lucide-react';
 import api from '@/api/client';
 
@@ -15,8 +15,7 @@ const ForgotPasswordModal = ({ open, onClose }: ForgotPasswordModalProps) => {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
-
-  if (!open) return null;
+  const modalRef = useRef<HTMLDivElement>(null);
 
   const resetState = () => {
     setStep('email');
@@ -32,6 +31,65 @@ const ForgotPasswordModal = ({ open, onClose }: ForgotPasswordModalProps) => {
     resetState();
     onClose();
   };
+
+  useEffect(() => {
+    if (!open) return;
+
+    const previousActiveElement = document.activeElement as HTMLElement | null;
+
+    const focusFirstElement = () => {
+      if (!modalRef.current) return;
+      const focusable = modalRef.current.querySelectorAll<HTMLElement>(
+        'button:not([disabled]), [href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])'
+      );
+      if (focusable.length > 0) {
+        focusable[0].focus();
+      }
+    };
+
+    const timer = setTimeout(focusFirstElement, 50);
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        event.preventDefault();
+        handleClose();
+        return;
+      }
+
+      if (event.key === 'Tab') {
+        if (!modalRef.current) return;
+        const focusable = modalRef.current.querySelectorAll<HTMLElement>(
+          'button:not([disabled]), [href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])'
+        );
+        if (focusable.length === 0) return;
+
+        const first = focusable[0];
+        const last = focusable[focusable.length - 1];
+
+        if (event.shiftKey) {
+          if (document.activeElement === first || document.activeElement === modalRef.current) {
+            event.preventDefault();
+            last.focus();
+          }
+        } else {
+          if (document.activeElement === last) {
+            event.preventDefault();
+            first.focus();
+          }
+        }
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+
+    return () => {
+      clearTimeout(timer);
+      window.removeEventListener('keydown', handleKeyDown);
+      previousActiveElement?.focus?.();
+    };
+  }, [open, step]);
+
+  if (!open) return null;
 
   const sendOtp = async (event: FormEvent) => {
     event.preventDefault();
@@ -74,11 +132,17 @@ const ForgotPasswordModal = ({ open, onClose }: ForgotPasswordModalProps) => {
       className="fixed inset-0 z-[200] flex items-center justify-center bg-slate-950/60 p-4 backdrop-blur-sm"
       role="dialog"
       aria-modal="true"
+      aria-labelledby="forgot-password-title"
       onClick={handleClose}
     >
-      <div className="w-full max-w-md rounded-2xl bg-white shadow-2xl" onClick={(event) => event.stopPropagation()}>
+      <div
+        ref={modalRef}
+        tabIndex={-1}
+        className="w-full max-w-md rounded-2xl bg-white shadow-2xl focus:outline-none"
+        onClick={(event) => event.stopPropagation()}
+      >
         <div className="flex items-center justify-between border-b border-gray-100 p-6">
-          <h2 className="text-lg font-bold text-gray-900">Reset your password</h2>
+          <h2 id="forgot-password-title" className="text-lg font-bold text-gray-900">Reset your password</h2>
           <button type="button" onClick={handleClose} aria-label="Close" className="rounded-lg p-1.5 text-gray-400 hover:bg-gray-100 hover:text-gray-700">
             <X className="h-5 w-5" />
           </button>
@@ -95,6 +159,7 @@ const ForgotPasswordModal = ({ open, onClose }: ForgotPasswordModalProps) => {
                   <input
                     required
                     type="email"
+                    autoComplete="email"
                     pattern="[^\s@]+@[^\s@]+\.[^\s@]+"
                     value={email}
                     onChange={(event) => setEmail(event.target.value)}
@@ -133,6 +198,7 @@ const ForgotPasswordModal = ({ open, onClose }: ForgotPasswordModalProps) => {
                   <input
                     required
                     inputMode="numeric"
+                    autoComplete="one-time-code"
                     pattern="[0-9]{6}"
                     maxLength={6}
                     value={code}
@@ -149,6 +215,7 @@ const ForgotPasswordModal = ({ open, onClose }: ForgotPasswordModalProps) => {
                   <input
                     required
                     type="password"
+                    autoComplete="new-password"
                     value={newPassword}
                     onChange={(event) => setNewPassword(event.target.value)}
                     className="w-full rounded-xl border border-gray-200 py-2.5 pl-10 pr-4 text-sm focus:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-500/30"
@@ -163,6 +230,7 @@ const ForgotPasswordModal = ({ open, onClose }: ForgotPasswordModalProps) => {
                   <input
                     required
                     type="password"
+                    autoComplete="new-password"
                     value={confirmPassword}
                     onChange={(event) => setConfirmPassword(event.target.value)}
                     className="w-full rounded-xl border border-gray-200 py-2.5 pl-10 pr-4 text-sm focus:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-500/30"

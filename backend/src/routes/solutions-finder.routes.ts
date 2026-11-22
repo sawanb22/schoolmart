@@ -2,7 +2,7 @@ import { Router, Request, Response } from 'express';
 import crypto from 'crypto';
 import prisma from '../lib/prisma';
 import { searchLogLimiter, solutionsSearchLimiter } from '../middleware/rate-limit.middleware';
-import { intentScorerService } from '../services/solutions-finder';
+import { intentScorerService, solutionsIndexService } from '../services/solutions-finder';
 
 const router = Router();
 
@@ -36,6 +36,8 @@ export function anonymizeIp(ip?: string | null): string | null {
 
 async function handleSolutionsSearch(req: Request, res: Response): Promise<void> {
   try {
+    await solutionsIndexService.ensureFresh();
+
     const rawQuery = req.method === 'GET'
       ? (typeof req.query.q === 'string' ? req.query.q : (Array.isArray(req.query.q) ? String(req.query.q[0]) : (typeof req.query.query === 'string' ? req.query.query : '')))
       : (req.body?.query || req.body?.q || req.body?.queryText || '');

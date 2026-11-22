@@ -5,6 +5,7 @@ import { ShieldAlert, LogOut, ArrowLeft } from 'lucide-react';
 import Layout from './components/Layout';
 import { isAdminLoggedIn, ensureSessionSynced, getCurrentUser, clearAdminSession } from './lib/auth';
 import { clearUserSession } from '@/lib/auth-session';
+import Seo from '@/components/seo/Seo';
 
 const Dashboard = lazy(() => import('./pages/Dashboard'));
 const Products = lazy(() => import('./pages/Products'));
@@ -94,7 +95,9 @@ function Loader() {
 
 function AdminRoutes() {
   return (
-    <Routes>
+    <>
+      <Seo title="Admin Login" noindex={true} path="/admin/login" />
+      <Routes>
       <Route path="login" element={<Suspense fallback={<Loader />}><Login /></Suspense>} />
       <Route
         path=""
@@ -126,6 +129,7 @@ function AdminRoutes() {
       </Route>
       <Route path="*" element={<Navigate to="dashboard" replace />} />
     </Routes>
+    </>
   );
 }
 

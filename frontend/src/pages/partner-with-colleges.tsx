@@ -17,11 +17,13 @@ import {
   Send,
   type LucideIcon,
 } from 'lucide-react';
-import { usePageData } from '@/hooks/usePageData';
+import { useHubLegacy } from '@/hooks/useHubLegacy';
 import api from '@/api/client';
 import { resolveMediaUrl } from '@/lib/media-url';
 import MediaImage from '@/components/ui/media-image';
 import { PARTNER_PAGE_SLUG, PARTNER_DEFAULTS, slugifyModelTitle } from './partner-with-colleges.data';
+import Seo from '@/components/seo/Seo';
+import usePageSeo from '@/hooks/usePageSeo';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -39,7 +41,7 @@ const EMPTY_FORM = {
 const PartnerWithColleges = () => {
   const heroRef = useRef<HTMLDivElement>(null);
   const cardsRef = useRef<HTMLDivElement>(null);
-  const { data } = usePageData(PARTNER_PAGE_SLUG);
+  const { data } = useHubLegacy(PARTNER_PAGE_SLUG);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedModel, setSelectedModel] = useState<string>('');
@@ -115,8 +117,11 @@ const PartnerWithColleges = () => {
     }
   };
 
+  const seoProps = usePageSeo(data, 'Partner with Colleges', undefined, `/${PARTNER_PAGE_SLUG}`);
+
   return (
     <main className="partner-with-colleges-page min-h-screen bg-white">
+      <Seo {...seoProps} />
       {/* Hero Section */}
       <section className="px-4 pb-4 pt-4 sm:px-6 sm:pb-6 sm:pt-6 lg:px-8">
         <div

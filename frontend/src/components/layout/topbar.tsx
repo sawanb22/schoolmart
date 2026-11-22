@@ -1,5 +1,4 @@
 import { useEffect, useRef, useState } from 'react';
-import gsap from 'gsap';
 import { Mail, Phone, Facebook, Twitter, Youtube, Instagram, Linkedin } from 'lucide-react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useWishlist } from '@/contexts/WishlistContext';
@@ -31,35 +30,48 @@ const TopBar = () => {
   const authLinksRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const ctx = gsap.context(() => {
-      const tl = gsap.timeline({ delay: 0.2 });
+    if (typeof window !== 'undefined' && window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      return;
+    }
 
-      tl.fromTo(
-        topBarRef.current,
-        { y: -40, opacity: 0 },
-        { y: 0, opacity: 1, duration: 0.6, ease: 'power3.out' }
-      )
-        .fromTo(
-          leftContentRef.current?.children || [],
-          { x: -20, opacity: 0 },
-          { x: 0, opacity: 1, duration: 0.4, stagger: 0.1, ease: 'power3.out' },
-          '-=0.3'
+    let ctx: any;
+    let cancelled = false;
+
+    import('gsap').then(({ default: gsap }) => {
+      if (cancelled) return;
+      ctx = gsap.context(() => {
+        const tl = gsap.timeline({ delay: 0.05 });
+
+        tl.fromTo(
+          topBarRef.current,
+          { y: -10, opacity: 0.8 },
+          { y: 0, opacity: 1, duration: 0.4, ease: 'power3.out' }
         )
-        .fromTo(
-          socialIconsRef.current?.children || [],
-          { scale: 0, opacity: 0 },
-          { scale: 1, opacity: 1, duration: 0.3, stagger: 0.08, ease: 'back.out(1.7)' },
-          '-=0.2'
-        )
-        .fromTo(
-          authLinksRef.current,
-          { x: 20, opacity: 0 },
-          { x: 0, opacity: 1, duration: 0.4, ease: 'power3.out' },
-          '-=0.3'
-        );
+          .fromTo(
+            leftContentRef.current?.children || [],
+            { x: -10, opacity: 0.8 },
+            { x: 0, opacity: 1, duration: 0.3, stagger: 0.05, ease: 'power3.out' },
+            '-=0.2'
+          )
+          .fromTo(
+            socialIconsRef.current?.children || [],
+            { scale: 0.9, opacity: 0.8 },
+            { scale: 1, opacity: 1, duration: 0.3, stagger: 0.04, ease: 'back.out(1.7)' },
+            '-=0.15'
+          )
+          .fromTo(
+            authLinksRef.current,
+            { x: 10, opacity: 0.8 },
+            { x: 0, opacity: 1, duration: 0.3, ease: 'power3.out' },
+            '-=0.2'
+          );
+      });
     });
 
-    return () => ctx.revert();
+    return () => {
+      cancelled = true;
+      ctx?.revert();
+    };
   }, []);
 
   const navigate = useNavigate();
@@ -81,11 +93,7 @@ const TopBar = () => {
   }, [location.pathname]);
 
   const userName = currentUser?.name || (currentUser?.role === 'admin' ? 'Admin' : currentUser?.email || '');
-  const { count: wishlistCount, refresh: refreshWishlist } = useWishlist();
-
-  useEffect(() => {
-    refreshWishlist();
-  }, [isLoggedIn, refreshWishlist]);
+  const { count: wishlistCount } = useWishlist();
 
   const handleLogout = () => {
     clearUserSession();

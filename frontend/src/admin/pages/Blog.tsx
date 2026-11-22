@@ -198,7 +198,13 @@ export default function Blog() {
                                                 className="form-input flex-1"
                                                 value={editingCategoryName}
                                                 onChange={(e) => setEditingCategoryName(e.target.value)}
-                                                onKeyDown={(e) => { if (e.key === 'Enter') saveEditedCategory(); if (e.key === 'Escape') setEditingCategoryId(null); }}
+                                                onKeyDown={(e) => {
+                                                    if (e.key === 'Enter') {
+                                                        if (e.nativeEvent.isComposing) return;
+                                                        saveEditedCategory();
+                                                    }
+                                                    if (e.key === 'Escape') setEditingCategoryId(null);
+                                                }}
                                             />
                                         ) : (
                                             <span className="font-semibold text-gray-800">{c.name} <span className="text-xs text-gray-400 font-normal block sm:inline">({c.slug})</span></span>

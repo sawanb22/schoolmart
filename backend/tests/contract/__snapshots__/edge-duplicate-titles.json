@@ -1,0 +1,22 @@
+{
+  "title": "Edge Duplicate Titles",
+  "slug": "edge-duplicate-titles",
+  "content": null,
+  "template": "solution-hub",
+  "pageData": {
+    "heroTitle": "Duplicate Titles Test",
+    "cards": [
+      {
+        "title": "Robotics Lab",
+        "description": "First lab",
+        "slug": "robotics-lab"
+      },
+      {
+        "title": "Robotics Lab",
+        "description": "Second lab with same title",
+        "slug": "robotics-lab-2"
+      }
+    ]
+  },
+  "published": true
+}

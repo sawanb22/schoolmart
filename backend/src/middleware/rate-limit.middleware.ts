@@ -1,5 +1,26 @@
 import rateLimit from 'express-rate-limit';
 
+/**
+ * ============================================================================
+ * ARCHITECTURAL NOTE: Rate Limiting Under Phusion Passenger (cPanel Hosting)
+ * ============================================================================
+ * All rate limiters below use in-memory state stores per Node.js worker process.
+ * In a cPanel Phusion Passenger environment configured with N worker processes,
+ * incoming requests are load-balanced across all active processes.
+ *
+ * CONSEQUENCE:
+ * An individual client IP may make up to (N * max) requests per window before
+ * hitting the limit across all processes if requests distribute uniformly.
+ *
+ * OPERATIONAL MITIGATION:
+ * 1. If strict single-process rate limiting is required, set `PassengerMaxPoolSize 1`
+ *    in the application's root `.htaccess` or cPanel Node.js Application Manager.
+ * 2. Alternatively, accept the looser effective limit (up to N times configured).
+ * 3. In strict compliance with Decision D6 (no Redis, no external caching daemons),
+ *    an external Redis store is NOT used.
+ * ============================================================================
+ */
+
 const isProd = process.env.NODE_ENV === 'production';
 
 // Global rate limiting

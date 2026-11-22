@@ -130,24 +130,44 @@ export default function Users() {
         }
     };
 
-    // Generate random strong password
+    // Generate cryptographically secure strong password
     const generatePassword = () => {
         const letters = 'ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz';
         const numbers = '23456789';
         const symbols = '!@#$%&*';
         const all = letters + numbers + symbols;
 
-        let pass = '';
-        pass += letters.charAt(Math.floor(Math.random() * letters.length));
-        pass += numbers.charAt(Math.floor(Math.random() * numbers.length));
-        pass += symbols.charAt(Math.floor(Math.random() * symbols.length));
+        const getRandomInt = (max: number): number => {
+            if (max <= 0) return 0;
+            // Modulo bias reduction using rejection sampling
+            const maxUint32 = 0x100000000;
+            const limit = Math.floor(maxUint32 / max) * max;
+            const array = new Uint32Array(1);
+            do {
+                window.crypto.getRandomValues(array);
+            } while (array[0] >= limit);
+            return array[0] % max;
+        };
+
+        const chars: string[] = [
+            letters.charAt(getRandomInt(letters.length)),
+            numbers.charAt(getRandomInt(numbers.length)),
+            symbols.charAt(getRandomInt(symbols.length)),
+        ];
 
         for (let i = 3; i < 10; i++) {
-            pass += all.charAt(Math.floor(Math.random() * all.length));
+            chars.push(all.charAt(getRandomInt(all.length)));
         }
 
-        // Shuffle
-        pass = pass.split('').sort(() => 0.5 - Math.random()).join('');
+        // Secure Fisher-Yates shuffle
+        for (let i = chars.length - 1; i > 0; i--) {
+            const j = getRandomInt(i + 1);
+            const temp = chars[i];
+            chars[i] = chars[j];
+            chars[j] = temp;
+        }
+
+        const pass = chars.join('');
 
         setFormData((prev) => ({ ...prev, password: pass }));
         setShowPassword(true);
