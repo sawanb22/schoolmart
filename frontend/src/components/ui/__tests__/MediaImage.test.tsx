@@ -143,6 +143,30 @@ describe('MediaImage component (T15)', () => {
       const placeholder = screen.getByRole('img', { name: 'Totally Broken' });
       expect(placeholder.tagName.toLowerCase()).toBe('div');
     });
+
+    it('placeholder never gets a fixed pixel width/height, so it fills its container (home card grid regression)', () => {
+      render(
+        <MediaImage
+          src="/uploads/media/missing-card.jpg"
+          alt="Missing card image"
+          width={480}
+          height={240}
+          widths={[480, 960]}
+          className="w-full h-full object-cover"
+        />
+      );
+
+      let img = screen.getByRole('img', { name: 'Missing card image' });
+      fireEvent.error(img); // responsive variant fails -> retry original
+      img = screen.getByRole('img', { name: 'Missing card image' });
+      fireEvent.error(img); // original fails -> placeholder div
+
+      const placeholder = screen.getByRole('img', { name: 'Missing card image' });
+      expect(placeholder.tagName.toLowerCase()).toBe('div');
+      expect(placeholder.style.width).toBe('');
+      expect(placeholder.style.height).toBe('');
+      expect(placeholder.className).toContain('w-full');
+    });
   });
 
   describe('priority, loading, and dimensions', () => {

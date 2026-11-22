@@ -94,10 +94,8 @@ export const MediaImage: React.FC<MediaImageProps> = ({
           'relative flex items-center justify-center bg-gradient-to-br from-slate-100 to-slate-200 text-slate-400 select-none overflow-hidden',
           className
         )}
-        style={{
-          ...(width ? { width: typeof width === 'number' ? `${width}px` : width } : {}),
-          ...(height ? { height: typeof height === 'number' ? `${height}px` : height } : {}),
-        }}
+        // No fixed pixel width/height here: the placeholder must fill the box given by
+        // `className` (e.g. w-full h-full). A hard width broke the home card grid when images were missing.
       >
         <svg
           className="w-10 h-10 opacity-40 text-slate-500"
