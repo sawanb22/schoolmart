@@ -801,10 +801,10 @@
 
 ---
 
-## T17 – Ops Hardening and the cPanel Deployment Kit – PENDING REVIEW
+## T17 – Ops Hardening and the cPanel Deployment Kit – DONE
 - Date: 2026-11-22
-- Commit: `cc6cf22` (T17: Ops hardening and the cPanel deployment kit)
-- Review Status: PENDING REVIEW
+- Commit: `86f99b8` (T17: Ops hardening and the cPanel deployment kit)
+- Review Status: APPROVED (commits a4ff436..86f99b8, review clean, 0 critical, 0 important)
 - Backup used: N/A (read-only dev DB queries; all tests run strictly against isolated test DB `DATABASE_URL_TEST`)
 - Files changed (summary):
   - `backend/src/lib/logger.ts`: Implemented structured JSON logging using `pino` with level from `LOG_LEVEL` (default `info`), timestamps, process PID, and comprehensive secret redaction (`authorization`, `cookie`, `password`, `token`, `jwt`).
