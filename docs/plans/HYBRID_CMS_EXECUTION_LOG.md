@@ -704,10 +704,10 @@
 
 ---
 
-## T15 – Image pipeline and media URLs – PENDING REVIEW
+## T15 – Image pipeline and media URLs – DONE
 - Date: 2026-11-22
-- Commit: `61365cf` (T15: Image pipeline and media URLs)
-- Review Status: PENDING REVIEW
+- Commit: `54da4df` (T15: Image pipeline and media URLs)
+- Review Status: APPROVED (commits 7b7c719..54da4df, review clean, 0 critical, 0 important)
 - Backup used: N/A (read-only dev DB audit; tests run against isolated test DB `DATABASE_URL_TEST`)
 - Files changed (summary):
   - `backend/scripts/audit-media-urls.ts`: Scanned 973 media entries across `Page`, `PageItem`, `SiteContent`, `Product`, `BlogPost`, `CaseStudy`, and `Catalogue`. Confirmed 729 `/uploads/` references on disk with 0 missing files.
