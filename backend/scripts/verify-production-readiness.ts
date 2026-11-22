@@ -167,30 +167,31 @@ async function runPreflight() {
 
     // ── Test 9: Vercel SPA Rewrites Configuration ────────────────────
     try {
-        const vercelJsonPath = path.resolve(process.cwd(), '../vercel.json');
+        const vercelJsonPath = path.resolve(process.cwd(), '../frontend/vercel.json');
         if (fs.existsSync(vercelJsonPath)) {
             const config = JSON.parse(fs.readFileSync(vercelJsonPath, 'utf8'));
             const hasRewrites = Array.isArray(config.rewrites) && config.rewrites.some((r: any) => r.destination === '/index.html');
-            record('Vercel SPA Rewrites Config', hasRewrites, 'Wildcard rewrite to /index.html verified in vercel.json.');
+            record('Vercel SPA Rewrites Config', hasRewrites, 'Wildcard rewrite to /index.html verified in frontend/vercel.json.');
         } else {
-            record('Vercel SPA Rewrites Config', false, 'vercel.json not found in frontend directory.');
+            record('Vercel SPA Rewrites Config', false, 'frontend/vercel.json not found.');
         }
     } catch (e: any) {
         record('Vercel SPA Rewrites Config', false, e.message);
     }
 
-    // ── Test 10: Backend Railway Deployment Config ────────────────────
+    // ── Test 10: Backend deployment scripts ───────────────────────────
     try {
-        const railwayJsonPath = path.resolve(process.cwd(), 'railway.json');
-        if (fs.existsSync(railwayJsonPath)) {
-            const config = JSON.parse(fs.readFileSync(railwayJsonPath, 'utf8'));
-            const valid = config.build?.buildCommand === 'npm run build' && config.deploy?.startCommand === 'npm run start';
-            record('Railway Deployment Spec', valid, `Build: ${config.build?.buildCommand}, Deploy: ${config.deploy?.startCommand}.`);
+        const packageJsonPath = path.resolve(process.cwd(), 'package.json');
+        if (fs.existsSync(packageJsonPath)) {
+            const packageJson = JSON.parse(fs.readFileSync(packageJsonPath, 'utf8'));
+            const hasBuildScript = typeof packageJson.scripts?.build === 'string';
+            const hasStartScript = typeof packageJson.scripts?.start === 'string';
+            record('Backend Deployment Scripts', hasBuildScript && hasStartScript, 'package.json provides npm run build and npm run start for Render/cPanel.');
         } else {
-            record('Railway Deployment Spec', false, 'railway.json not found in backend directory.');
+            record('Backend Deployment Scripts', false, 'backend/package.json not found.');
         }
     } catch (e: any) {
-        record('Railway Deployment Spec', false, e.message);
+        record('Backend Deployment Scripts', false, e.message);
     }
 
     // ── Final Audit Summary ──────────────────────────────────────────
