@@ -50,6 +50,7 @@ yarn-debug.log*
 tree-dump.json
 yarn-error.log*
 backend/*.log
+backend/scripts/output/
 backend/testout.txt
 backend/prisma_out.txt
 puppeteer-error.png
