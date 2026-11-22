@@ -30,7 +30,7 @@
   Header set Referrer-Policy "strict-origin-when-cross-origin"
   Header set X-Frame-Options "DENY"
   Header set Permissions-Policy "camera=(), microphone=(), geolocation=()"
-  Header set Content-Security-Policy "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: blob: https:; connect-src 'self' https://api.campusmart.in; frame-src https://www.youtube.com https://www.google.com; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'"
+  Header set Content-Security-Policy "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: blob: https:; connect-src 'self' https://api.schoolmart.in; frame-src https://www.youtube.com https://www.google.com; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'"
 </IfModule>
 
 # ── 4. SPA URL Rewriting ──────────────────────────────────────────────────────

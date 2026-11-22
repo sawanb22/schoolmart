@@ -1,8 +1,16 @@
 {
+    "framework": "vite",
+    "installCommand": "npm ci --workspaces=false --include-workspace-root=false",
+    "buildCommand": "npm run build",
+    "outputDirectory": "dist",
     "headers": [
         {
             "source": "/(.*)",
             "headers": [
+                {
+                    "key": "X-Robots-Tag",
+                    "value": "noindex, nofollow"
+                },
                 {
                     "key": "X-Frame-Options",
                     "value": "DENY"
@@ -45,10 +53,6 @@
         }
     ],
     "rewrites": [
-        {
-            "source": "/uploads/(.*)",
-            "destination": "https://campussmart.onrender.com/uploads/$1"
-        },
         {
             "source": "/(.*)",
             "destination": "/index.html"

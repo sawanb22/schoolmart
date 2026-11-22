@@ -22,7 +22,7 @@ export function escapeXml(str: string): string {
  * Generates sitemap.xml content from database pages and structured items.
  */
 export async function generateSitemapXml(): Promise<string> {
-  const siteUrl = (process.env.SITE_URL || 'https://campusmart.in').trim().replace(/\/+$/, '');
+  const siteUrl = (process.env.SITE_URL || 'https://schoolmart.in').trim().replace(/\/+$/, '');
 
   // 1. Fetch published pages
   const pages = await prisma.page.findMany({

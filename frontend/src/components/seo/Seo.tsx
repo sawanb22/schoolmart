@@ -35,13 +35,13 @@ export function truncateDescription(desc?: string, maxLength = 160): string {
 }
 
 /**
- * Formats canonical URL using VITE_SITE_URL or fallback https://campusmart.in.
+ * Formats canonical URL using VITE_SITE_URL or fallback https://schoolmart.in.
  */
 export function formatCanonicalUrl(path?: string, baseUrl?: string): string {
   const siteUrl = (
     baseUrl ||
     (typeof import.meta !== 'undefined' && import.meta.env?.VITE_SITE_URL) ||
-    'https://campusmart.in'
+    'https://schoolmart.in'
   ).replace(/\/+$/, '');
 
   const rawPath = path ?? (typeof window !== 'undefined' ? window.location.pathname : '/');
@@ -61,7 +61,7 @@ export function formatImageUrl(image?: string, baseUrl?: string): string | undef
   const siteUrl = (
     baseUrl ||
     (typeof import.meta !== 'undefined' && import.meta.env?.VITE_SITE_URL) ||
-    'https://campusmart.in'
+    'https://schoolmart.in'
   ).replace(/\/+$/, '');
 
   const cleanPath = trimmed.startsWith('/') ? trimmed : `/${trimmed}`;

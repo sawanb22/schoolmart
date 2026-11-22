@@ -190,16 +190,16 @@ describe('Sitemap Service & /sitemap.xml Endpoint (T16)', () => {
       expect(xml).toContain('<?xml version="1.0" encoding="UTF-8"?>');
       expect(xml).toContain('<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">');
       expect(xml).toContain('</urlset>');
-      expect(xml).toContain('<loc>https://campusmart.in/</loc>');
+      expect(xml).toContain('<loc>https://schoolmart.in/</loc>');
     });
 
     it('includes published pages and structured card items', async () => {
       const xml = await generateSitemapXml();
 
       // Published page
-      expect(xml).toContain('<loc>https://campusmart.in/labs</loc>');
+      expect(xml).toContain('<loc>https://schoolmart.in/labs</loc>');
       // Published card item
-      expect(xml).toContain('<loc>https://campusmart.in/labs/robotics-ai-lab</loc>');
+      expect(xml).toContain('<loc>https://schoolmart.in/labs/robotics-ai-lab</loc>');
       // Includes lastmod formatted as YYYY-MM-DD
       expect(xml).toMatch(/<lastmod>\d{4}-\d{2}-\d{2}<\/lastmod>/);
     });
@@ -215,7 +215,7 @@ describe('Sitemap Service & /sitemap.xml Endpoint (T16)', () => {
       expect(xml).not.toContain('/test-preview-page');
       expect(xml).not.toContain('/draft-feature-page');
       expect(xml).not.toContain('/private-hub');
-      expect(xml).not.toContain('<loc>https://campusmart.in/home</loc>');
+      expect(xml).not.toContain('<loc>https://schoolmart.in/home</loc>');
     });
 
     it('escapes XML special characters in URLs correctly', async () => {
@@ -232,7 +232,7 @@ describe('Sitemap Service & /sitemap.xml Endpoint (T16)', () => {
       });
 
       const xml = await generateSitemapXml();
-      expect(xml).toContain('<loc>https://campusmart.in/special-lab</loc>');
+      expect(xml).toContain('<loc>https://schoolmart.in/special-lab</loc>');
 
       // Cleanup
       await prisma.page.delete({ where: { id: specialPage.id } });
@@ -248,7 +248,7 @@ describe('Sitemap Service & /sitemap.xml Endpoint (T16)', () => {
       expect(res.headers['cache-control']).toBe('public, no-cache');
       expect(res.headers['etag']).toBeDefined();
       expect(res.text).toContain('<urlset');
-      expect(res.text).toContain('https://campusmart.in/labs');
+      expect(res.text).toContain('https://schoolmart.in/labs');
     });
 
     it('handles conditional requests with If-None-Match (304)', async () => {
@@ -272,7 +272,7 @@ describe('Sitemap Service & /sitemap.xml Endpoint (T16)', () => {
 
       const content = fs.readFileSync(sitemapFilePath, 'utf8');
       expect(content).toContain('<?xml version="1.0" encoding="UTF-8"?>');
-      expect(content).toContain('https://campusmart.in/labs');
+      expect(content).toContain('https://schoolmart.in/labs');
     });
 
     it('writeSitemapFileAtomic returns false gracefully without throwing if path is invalid', async () => {

@@ -4,4 +4,4 @@ Disallow: /my-account
 Disallow: /login
 Disallow: /register
 Disallow: /registration
-Sitemap: https://campusmart.in/sitemap.xml
+Sitemap: https://schoolmart.in/sitemap.xml

@@ -97,7 +97,7 @@ const normalizeOrigin = (raw: string): string | null => {
     if (!raw) return null;
     let trimmed = raw.trim();
     if (!trimmed) return null;
-    // Auto-prepend https:// if scheme was omitted (e.g. "campusmart.in")
+    // Auto-prepend https:// if scheme was omitted (e.g. "schoolmart.in")
     if (!/^https?:\/\//i.test(trimmed)) {
         trimmed = `https://${trimmed}`;
     }
@@ -122,8 +122,6 @@ const envOrigins = [
 const prodOrigins = [
     'https://schoolmart.in',
     'https://www.schoolmart.in',
-    'https://campusmart.in',
-    'https://www.campusmart.in',
 ];
 
 const devOrigins = [
