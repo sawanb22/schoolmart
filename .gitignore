@@ -100,6 +100,7 @@ reports/
 !docs/plans/**
 !docs/deployment/**
 !backend/prisma/sql/README.md
+!.agents/**
 
 # Playwright artifacts
 test-results/
