@@ -38,6 +38,22 @@ try {
     fs.cpSync(srcPath, destPath, { recursive: true, force: true });
   }
 
+  // Explicitly copy public/.htaccess to dist/.htaccess with try/catch and error warning
+  const htaccessSrc = path.join(publicDir, ".htaccess");
+  const htaccessDest = path.join(distDir, ".htaccess");
+  try {
+    if (fs.existsSync(htaccessSrc)) {
+      fs.copyFileSync(htaccessSrc, htaccessDest);
+      console.log("📄 Copied public/.htaccess to dist/.htaccess");
+    }
+  } catch (err) {
+    console.warn(
+      "⚠️ Warning: Could not copy .htaccess to dist (permission or EPERM issue). " +
+      "Please ensure public/.htaccess is uploaded manually to your cPanel public_html directory.",
+      err
+    );
+  }
+
   // Also mirror build output to root dist directory so root-based Vercel deployments find it immediately
   const rootDistDir = path.resolve(__dirname, "../dist");
   if (rootDistDir !== distDir) {

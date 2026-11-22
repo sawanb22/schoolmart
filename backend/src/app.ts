@@ -4,8 +4,11 @@ import helmet from 'helmet';
 import compression from 'compression';
 import fs from 'fs';
 import path from 'path';
-import dotenv from 'dotenv';
 import dns from 'dns';
+import crypto from 'crypto';
+import pinoHttp from 'pino-http';
+import { logger } from './lib/logger';
+import { validateEnv } from './config/env';
 import { globalLimiter, authLimiter, otpLimiter } from './middleware/rate-limit.middleware';
 export { authLimiter, otpLimiter };
 
@@ -14,25 +17,10 @@ if (typeof dns.setDefaultResultOrder === 'function') {
     dns.setDefaultResultOrder('ipv4first');
 }
 
-dotenv.config();
-
-function validateEnv() {
-    const required = ['DATABASE_URL', 'JWT_SECRET'];
-    const missing = required.filter((key) => !process.env[key]);
-    if (missing.length > 0) {
-        throw new Error(`CRITICAL: Missing required environment variables: ${missing.join(', ')}`);
-    }
-    if (process.env.NODE_ENV === 'production') {
-        if (
-            process.env.JWT_SECRET === 'your_super_secret_jwt_key_here' ||
-            process.env.JWT_SECRET === 'your-jwt-secret'
-        ) {
-            throw new Error('CRITICAL: Insecure default JWT_SECRET cannot be used in production.');
-        }
-    }
-}
+// Validate environment configuration
 validateEnv();
 
+import healthRoutes from './routes/health.routes';
 import authRoutes from './routes/auth.routes';
 import productRoutes from './routes/products.routes';
 import blogRoutes from './routes/blog.routes';
@@ -57,33 +45,59 @@ import { UPLOADS_DIR } from './lib/uploads-dir';
 
 const app = express();
 
-// Trust the first hop reverse proxy (e.g., Render, Railway, Cloudflare, AWS ALB)
+// Trust the first hop reverse proxy (e.g., cPanel Passenger, Render, Railway, Cloudflare, AWS ALB)
 // so that req.ip and req.protocol accurately reflect client connection details
 // rather than the internal proxy IP. This is essential for express-rate-limit to
 // accurately rate limit individual client IPs instead of the shared reverse proxy.
 app.set('trust proxy', 1);
 
-if (!fs.existsSync(UPLOADS_DIR)) fs.mkdirSync(UPLOADS_DIR, { recursive: true });
-console.log(`Serving uploads from: ${UPLOADS_DIR}`);
+// Structured logging & Request ID tracing
+app.use(pinoHttp({
+    logger,
+    genReqId: (req: any) => (req.headers['x-request-id'] as string) || crypto.randomUUID(),
+    customLogLevel: (_req, res, err) => {
+        if (res.statusCode >= 500 || err) return 'error';
+        if (res.statusCode >= 400) return 'warn';
+        return 'info';
+    },
+}));
 
-// Security middleware - allow external images (Unsplash, CDNs, etc.)
+// Echo X-Request-Id response header on all incoming requests
+app.use((req, res, next) => {
+    const reqId = (req as any).id;
+    if (reqId) {
+        res.setHeader('X-Request-Id', reqId);
+    }
+    next();
+});
+
+if (!fs.existsSync(UPLOADS_DIR)) fs.mkdirSync(UPLOADS_DIR, { recursive: true });
+logger.info(`Serving uploads from: ${UPLOADS_DIR}`);
+
+// Security middleware - Restrictive API Content Security Policy
 app.use(helmet({ 
     crossOriginResourcePolicy: { policy: 'cross-origin' },
-    contentSecurityPolicy: false,
+    contentSecurityPolicy: {
+        directives: {
+            defaultSrc: ["'none'"],
+            frameAncestors: ["'none'"],
+        },
+    },
     xContentTypeOptions: true,
     xFrameOptions: { action: 'deny' },
 }));
 
 // HTTP response compression
 app.use(compression());
+
 // Env vars may hold a single URL or a comma-separated list, sometimes with a
 // stray path, trailing slash, or missing protocol; normalize everything down to bare origins
-// (scheme+host+port) so formatting typos in Render/Vercel env vars don't break traffic.
+// (scheme+host+port) so formatting typos in Render/Vercel/cPanel env vars don't break traffic.
 const normalizeOrigin = (raw: string): string | null => {
     if (!raw) return null;
     let trimmed = raw.trim();
     if (!trimmed) return null;
-    // Auto-prepend https:// if scheme was omitted (e.g. "campussmart.vercel.app")
+    // Auto-prepend https:// if scheme was omitted (e.g. "campusmart.in")
     if (!/^https?:\/\//i.test(trimmed)) {
         trimmed = `https://${trimmed}`;
     }
@@ -127,7 +141,10 @@ const allowedOrigins = Array.from(new Set([
     ...(process.env.NODE_ENV !== 'production' ? devOrigins : []),
 ]));
 
-console.log('🔒 CORS allowed origins:', allowedOrigins.length > 0 ? allowedOrigins : '(none configured - set FRONTEND_URL in environment)');
+logger.info(
+    '🔒 CORS allowed origins: ' +
+    (allowedOrigins.length > 0 ? allowedOrigins.join(', ') : '(none configured - set FRONTEND_URL in environment)')
+);
 
 const isOriginAllowed = (origin: string): boolean => {
     if (allowedOrigins.includes(origin)) return true;
@@ -146,12 +163,13 @@ app.use(cors({
         // Allow strictly permitted origins in production
         if (isOriginAllowed(origin)) return callback(null, true);
 
-        console.warn(`[CORS Blocked] Origin "${origin}" not allowed. Add it to ALLOWED_ORIGINS in .env if legitimate.`);
+        logger.warn(`[CORS Blocked] Origin "${origin}" not allowed. Add it to ALLOWED_ORIGINS in .env if legitimate.`);
         callback(null, false);
     },
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'Accept'],
+    allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'Accept', 'X-Request-Id'],
+    exposedHeaders: ['X-Request-Id'],
 }));
 
 // Global rate limiting
@@ -187,10 +205,8 @@ app.get('/shop', (_req, res) => {
 // Root /sitemap.xml
 app.use('/sitemap.xml', seoRoutes);
 
-// Health check
-app.get('/health', (_req, res) => {
-    res.json({ status: 'ok', timestamp: new Date().toISOString() });
-});
+// Health and Readiness probes
+app.use('/', healthRoutes);
 
 // Anti-cache middleware for API routes to guarantee fresh CMS delivery
 app.use('/api', (_req, res, next) => {
@@ -226,7 +242,7 @@ if (fs.existsSync(DIST_DIR)) {
     app.use(express.static(DIST_DIR));
     app.use((req, res, next) => {
         if (req.method !== 'GET') return next();
-        if (req.path.startsWith('/api') || req.path.startsWith('/uploads') || req.path === '/health') {
+        if (req.path.startsWith('/api') || req.path.startsWith('/uploads') || req.path === '/health' || req.path === '/ready') {
             return next();
         }
         res.sendFile(path.join(DIST_DIR, 'index.html'));

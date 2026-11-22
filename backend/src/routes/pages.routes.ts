@@ -13,6 +13,7 @@ import { afterContentWrite } from '../services/page-content/after-content-write'
 import { COLLECTIONS, LEGACY_HUB_DEFAULT_CATEGORIES } from '../services/page-content/constants';
 import { sanitizePageData, sanitizeRichHtml } from '../lib/sanitize';
 import { publicCmsCache } from '../services/cms-cache';
+import { logger } from '../lib/logger';
 
 const router = Router();
 
@@ -23,10 +24,10 @@ router.get('/', verifyToken, requireAdmin, async (_req: AuthRequest, res: Respon
         const pages = await prisma.page.findMany({
             orderBy: { title: 'asc' }
         });
-        console.log(`Admin ${_req.user?.id} fetched ${pages.length} pages`);
+        logger.info(`Admin ${_req.user?.id} fetched ${pages.length} pages`);
         res.json(toLegacyPagesResponse(pages));
     } catch (error) {
-        console.error('Failed to fetch pages:', error);
+        logger.error({ err: error }, 'Failed to fetch pages');
         res.status(500).json({ error: 'An unexpected internal error occurred. Please try again later.' });
     }
 });
@@ -39,7 +40,7 @@ router.get('/published', publicCmsCache(), async (_req: Request, res: Response) 
         });
         res.json(toLegacyPagesResponse(pages));
     } catch (err) {
-        console.error('Failed to fetch published pages:', err);
+        logger.error({ err }, 'Failed to fetch published pages');
         res.status(500).json({ error: 'An unexpected internal error occurred. Please try again later.' });
     }
 });
@@ -276,7 +277,7 @@ router.get('/hub/catalog', publicCmsCache(), async (req: Request, res: Response)
             items,
         });
     } catch (error) {
-        console.error('Failed to fetch hub catalog:', error);
+        logger.error({ err: error }, 'Failed to fetch hub catalog');
         res.status(500).json({ error: 'An unexpected internal error occurred. Please try again later.' });
     }
 });
@@ -293,7 +294,7 @@ router.get('/resolve', publicCmsCache(), optionalAuth, async (req: AuthRequest, 
         }
         res.json(result);
     } catch (err) {
-        console.error('Failed to resolve path:', err);
+        logger.error({ err }, 'Failed to resolve path');
         res.status(500).json({ error: 'An unexpected internal error occurred. Please try again later.' });
     }
 });
@@ -316,7 +317,7 @@ router.get('/:slug/items/:itemSlug', publicCmsCache(), optionalAuth, async (req:
 
         res.json(result);
     } catch (err) {
-        console.error(`Failed to fetch item ${req.params.itemSlug} in hub ${req.params.slug}:`, err);
+        logger.error({ err, hubSlug: req.params.slug, itemSlug: req.params.itemSlug }, 'Failed to fetch item in hub');
         res.status(500).json({ error: 'An unexpected internal error occurred. Please try again later.' });
     }
 });
@@ -341,7 +342,7 @@ router.get('/:idOrSlug', publicCmsCache(), optionalAuth, async (req: AuthRequest
         }
         res.json(page);
     } catch (err) {
-        console.error('Failed to fetch page:', err);
+        logger.error({ err, param: req.params.idOrSlug }, 'Failed to fetch page');
         res.status(500).json({ error: 'An unexpected internal error occurred. Please try again later.' });
     }
 });
@@ -450,7 +451,7 @@ router.post('/', verifyToken, requireAdmin, async (req: AuthRequest, res: Respon
             });
         }
 
-        console.log(`Page created by admin ${req.user?.id}: ${createdPage.slug}`);
+        logger.info(`Page created by admin ${req.user?.id}: ${createdPage.slug}`);
         await afterContentWrite({ pageId: createdPage.id, reason: 'page-create', authorId: req.user?.id });
 
         const responsePage = await pageContentService.getPageLegacy(createdPage.id, { isAdmin: true });
@@ -464,16 +465,16 @@ router.post('/', verifyToken, requireAdmin, async (req: AuthRequest, res: Respon
                 const page = await prisma.page.create({
                     data: createData as any
                 });
-                console.log(`Page created with collision resolution by admin ${req.user?.id}: ${page.slug}`);
+                logger.info(`Page created with collision resolution by admin ${req.user?.id}: ${page.slug}`);
                 await afterContentWrite({ pageId: page.id, reason: 'page-create', authorId: req.user?.id });
                 const responsePage = await pageContentService.getPageLegacy(page.id, { isAdmin: true });
                 return res.status(201).json(responsePage);
             } catch (retryError: any) {
-                console.error('Collision resolution retry failed:', retryError);
+                logger.error({ err: retryError }, 'Collision resolution retry failed');
                 return res.status(409).json({ error: 'A page with this slug already exists. Please choose a different title or slug.' });
             }
         }
-        console.error('Failed to create page:', error);
+        logger.error({ err: error }, 'Failed to create page');
         res.status(500).json({ error: 'An unexpected internal error occurred. Please try again later.' });
     }
 });
@@ -625,7 +626,7 @@ router.put('/:id', verifyToken, requireAdmin, async (req: AuthRequest, res: Resp
             });
         }
 
-        console.log(`Page ${id} updated by admin ${req.user?.id}`);
+        logger.info(`Page ${id} updated by admin ${req.user?.id}`);
         const writeReason = (isStructured && !hasCollectionKeys) ? 'settings' : 'legacy-adapter-update';
         await afterContentWrite({ pageId: id, reason: writeReason, authorId: req.user?.id });
 
@@ -636,7 +637,7 @@ router.put('/:id', verifyToken, requireAdmin, async (req: AuthRequest, res: Resp
             res.status(409).json({ error: 'A page with this URL slug already exists. Please choose a different slug.' });
             return;
         }
-        console.error(`Failed to update page ${req.params.id}:`, error);
+        logger.error({ err: error, pageId: req.params.id }, 'Failed to update page');
         res.status(500).json({ error: 'An unexpected internal error occurred. Please try again later.' });
     }
 });
@@ -668,11 +669,11 @@ router.delete('/:id', verifyToken, requireAdmin, async (req: AuthRequest, res: R
         await prisma.page.delete({
             where: { id }
         });
-        console.log(`Page ${id} deleted by admin ${req.user?.id}`);
+        logger.info(`Page ${id} deleted by admin ${req.user?.id}`);
         await afterContentWrite({ pageId: id, reason: 'page-delete', authorId: req.user?.id });
         res.status(204).end();
     } catch (error) {
-        console.error(`Failed to delete page ${req.params.id}:`, error);
+        logger.error({ err: error, pageId: req.params.id }, 'Failed to delete page');
         res.status(500).json({ error: 'An unexpected internal error occurred. Please try again later.' });
     }
 });

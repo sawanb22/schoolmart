@@ -19,3 +19,7 @@ export const solutionsRepository = new PrismaSolutionsRepository(prisma);
 export const solutionsIndexService = new SolutionsIndexService(solutionsRepository);
 export const solutionsAIProvider = AIProviderFactory.create();
 export const intentScorerService = new IntentScorerService(solutionsIndexService, solutionsAIProvider);
+
+export function stopSolutionsIndexer(): void {
+  solutionsIndexService.stop();
+}

@@ -1,5 +1,6 @@
 import { Prisma } from '@prisma/client';
 import prisma from '../../lib/prisma';
+import { logger } from '../../lib/logger';
 import { bumpCmsVersion } from '../cms-cache';
 import { solutionsIndexService } from '../solutions-finder';
 import { parsePageData } from '../../lib/page-data';
@@ -30,7 +31,7 @@ export function scheduleSolutionsIndexRebuild(delayMs = 2000): void {
   rebuildTimer = setTimeout(() => {
     rebuildTimer = null;
     solutionsIndexService.rebuild().catch(err => {
-      console.error('[SolutionsIndex] Debounced rebuild error:', err);
+      logger.error({ err }, '[SolutionsIndex] Debounced rebuild error');
     });
   }, delayMs);
   if (rebuildTimer && typeof rebuildTimer.unref === 'function') {
@@ -144,7 +145,7 @@ export async function afterContentWrite(params: AfterContentWriteParams, tx?: Pr
         }
       }
     } catch (err) {
-      console.error('[afterContentWrite] Failed to create or prune page revision snapshot:', err);
+      logger.error({ err }, '[afterContentWrite] Failed to create or prune page revision snapshot');
       throw err;
     }
   }
@@ -152,7 +153,7 @@ export async function afterContentWrite(params: AfterContentWriteParams, tx?: Pr
   try {
     await bumpCmsVersion(tx);
   } catch (err) {
-    console.error('[afterContentWrite] Failed to bump CmsState version:', err);
+    logger.error({ err }, '[afterContentWrite] Failed to bump CmsState version');
     throw err;
   }
 

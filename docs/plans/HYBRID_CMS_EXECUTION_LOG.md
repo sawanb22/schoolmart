@@ -799,6 +799,57 @@
 - Found, not fixed:
   - None.
 
+---
+
+## T17 – Ops Hardening and the cPanel Deployment Kit – PENDING REVIEW
+- Date: 2026-11-22
+- Commit: `cc6cf22` (T17: Ops hardening and the cPanel deployment kit)
+- Review Status: PENDING REVIEW
+- Backup used: N/A (read-only dev DB queries; all tests run strictly against isolated test DB `DATABASE_URL_TEST`)
+- Files changed (summary):
+  - `backend/src/lib/logger.ts`: Implemented structured JSON logging using `pino` with level from `LOG_LEVEL` (default `info`), timestamps, process PID, and comprehensive secret redaction (`authorization`, `cookie`, `password`, `token`, `jwt`).
+  - `backend/src/app.ts`: Mounted `pino-http` middleware with `genReqId` using `req.headers['x-request-id'] || crypto.randomUUID()` and response header `X-Request-Id` echoing. Added restrictive API Helmet CSP (`defaultSrc: ["'none'"]`, `frameAncestors: ["'none'"]`). Mounted `healthRoutes`. Replaced `console.*` with `logger.*`.
+  - `backend/src/middleware/error.middleware.ts`: Hardened error handler to log 500s with request ID and structured error object; in production mode (`NODE_ENV === 'production'`), sanitizes 500 error responses to `{ error: 'internal_error', requestId }`, strictly suppressing raw error messages and stack traces.
+  - `backend/src/server.ts`: Implemented `shutdown()` and `setupGracefulShutdown()` intercepting `SIGTERM` and `SIGINT`, closing server, stopping `solutionsIndexService` timers, cancelling sitemap sync timers, disconnecting Prisma, and exiting cleanly with 10s timeout enforcement and idempotency guard. Replaced `console.*` with `logger.*`.
+  - `backend/src/routes/health.routes.ts`: Created liveness probe (`GET /health` returning 200 with uptime without hitting DB) and readiness probe (`GET /ready` executing `SELECT 1` and `CmsState` check with 2s timeout, returning 200 with `cmsVersion` or 503 on error/timeout).
+  - `backend/src/config/env.ts`: Created `validateEnv()` with production validation requiring `DATABASE_URL`, `JWT_SECRET` (>= 32 chars in production), `SITE_URL`, `FRONTEND_URL`, and automatically defaulting `DATABASE_URL_UNPOOLED` before Prisma client loads.
+  - `backend/.env.example`: Rewrote environment configuration example with comprehensive sections and instructions for cPanel shared hosting (Phusion Passenger / PostgreSQL).
+  - `backend/prisma/schema.prisma`: Configured `binaryTargets = ["native", "debian-openssl-3.0.x", "rhel-openssl-1.1.x", "rhel-openssl-3.0.x"]`.
+  - `backend/package.json`: Installed `pino`, `pino-http`, `@types/pino-http`. Added npm scripts `"db:deploy"`, `"cms:bootstrap"`, `"cms:migrate-items"`, and compiled CLI scripts runner.
+  - `backend/scripts/bootstrap-pages.ts` & `build-cli-scripts.js`: Created runner and compilation build step to output standalone compiled `dist/scripts/bootstrap-pages.js` and `dist/scripts/migrate-page-items.js` without requiring `ts-node` in production.
+  - `backend/src/services/solutions-finder/`: Added `stop()` method to `SolutionsIndexService` and exported `stopSolutionsIndexer()`.
+  - `backend/src/services/page-content/after-content-write.ts`, `backend/src/services/cms-cache.ts`, `backend/src/routes/pages.routes.ts`: Replaced `console.*` calls with structured `logger.*`.
+  - `backend/src/middleware/rate-limit.middleware.ts`: Added detailed architectural comment documenting in-memory per-process rate limiting under Phusion Passenger and operational mitigations.
+  - `frontend/public/.htaccess`: Rewrote with `mod_deflate` compression, immutable 1-year caching for `/assets/*`, `no-cache` for `index.html`, security headers (nosniff, DENY, strict referrer), restrictive CSP, and SPA fallback, wrapped in `<IfModule>`.
+  - `frontend/build.js`: Added explicit step copying `public/.htaccess` to `dist/.htaccess` in a `try/catch` with permission warning.
+  - `frontend/vitest.config.ts`: Configured `testTimeout: 15000` to prevent Windows jsdom parallel load timeouts.
+  - `scripts/package-release.mjs`: Created automated release packaging script building backend and frontend and generating `release/frontend-<version>.zip` and `release/backend-<version>.zip`.
+  - `docs/deployment/CPANEL_DEPLOYMENT_RUNBOOK.md`: Authored complete 13-section deployment and operations runbook.
+  - `backend/tests/ops/`: Created 6 test suites (`health.test.ts`, `request-id.test.ts`, `error.test.ts`, `shutdown.test.ts`, `env.test.ts`, `headers.test.ts`) with 23 tests (100% passing).
+- Tests added:
+  - `backend/tests/ops/health.test.ts` (4 tests)
+  - `backend/tests/ops/request-id.test.ts` (3 tests)
+  - `backend/tests/ops/error.test.ts` (3 tests)
+  - `backend/tests/ops/shutdown.test.ts` (2 tests)
+  - `backend/tests/ops/env.test.ts` (8 tests)
+  - `backend/tests/ops/headers.test.ts` (3 tests)
+- Test results:
+  - Backend vitest suite: 43 passed / 43 test files, 271 passed / 271 tests (100% green).
+  - Frontend vitest suite: 26 passed / 26 test files, 123 passed / 123 tests (100% green).
+  - Frontend typecheck (`tsc -p tsconfig.app.json --noEmit`): 0 errors.
+  - Packaging script: Generated `release/frontend-1.0.0.zip` (69.27 MB) and `release/backend-1.0.0.zip` (0.57 MB).
+- Acceptance Criteria Verified:
+  - [x] All ops unit/integration tests pass (100% green).
+  - [x] `node scripts/package-release.mjs` generates valid `frontend-*.zip` and `backend-*.zip`.
+  - [x] Unzipping `frontend-*.zip` confirms `.htaccess`, `index.html`, and `assets/`.
+  - [x] cPanel deployment runbook exists and covers all 13 required sections.
+- Deviations from plan and why:
+  - Preserved `vercel.json` (root, frontend, backend) and `railway.json` (root, backend) per explicit User Directive to support preview environments for client testing prior to final cPanel deployment.
+  - Added `testTimeout: 15000` in `frontend/vitest.config.ts` to stabilize parallel jsdom environment creation on Windows.
+- Found, not fixed:
+  - None.
+
+
 
 
 

@@ -3,6 +3,7 @@ import { Request, Response, NextFunction } from 'express';
 import { LRUCache } from 'lru-cache';
 import { Prisma } from '@prisma/client';
 import prisma from '../lib/prisma';
+import { logger } from '../lib/logger';
 
 export interface CmsCacheEntry {
   version: number;
@@ -53,7 +54,7 @@ export async function getCmsVersion(options?: { clock?: () => number }): Promise
     return version;
   } catch (err) {
     if (memoizedVersion !== null) {
-      console.warn('[cms-cache] Failed to fetch CmsState from DB, using memoized version:', err);
+      logger.warn({ err }, '[cms-cache] Failed to fetch CmsState from DB, using memoized version');
       return memoizedVersion;
     }
     throw err;
@@ -154,7 +155,7 @@ export function publicCmsCache() {
 
       next();
     } catch (err) {
-      console.error('[publicCmsCache] Error in cache middleware:', err);
+      logger.error({ err }, '[publicCmsCache] Error in cache middleware');
       next(err);
     }
   };

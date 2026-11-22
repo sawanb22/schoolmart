@@ -81,6 +81,7 @@ Thumbs.db
 scratch/
 docs/*
 !docs/plans/
+!docs/deployment/
 reports/
 *.docx
 *.doc
@@ -95,6 +96,7 @@ reports/
 # Markdown documentation (Zero docs policy - user will add custom README later)
 *.md
 !docs/plans/**
+!docs/deployment/**
 !backend/prisma/sql/README.md
 
 # Playwright artifacts

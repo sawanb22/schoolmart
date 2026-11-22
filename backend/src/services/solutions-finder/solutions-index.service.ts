@@ -253,6 +253,10 @@ export class SolutionsIndexService {
     }
   }
 
+  stop(): void {
+    this.stopHeartbeat();
+  }
+
   getCards(): readonly SolutionCardDto[] {
     return this.cache;
   }
