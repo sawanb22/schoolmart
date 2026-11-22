@@ -611,4 +611,47 @@
 - Found, not fixed:
   - None.
 
+---
+
+## T13 – Revisions and restore – DONE
+- Date: 2026-11-22
+- Commit: `b751f6f` (T13: Revisions and restore)
+- Review Status: APPROVED
+- Backup used: N/A (read-only dev DB; tests on isolated Neon branch DATABASE_URL_TEST)
+- Files changed (summary):
+  - `backend/src/services/page-content/after-content-write.ts`: Added automatic page revision snapshot creation inside `afterContentWrite` whenever `params.pageId` is present. Captures page attributes, settings via `parsePageData`, items with versions, categories, and categories list. Prunes non-`pre-migration` revisions beyond 30 while strictly preserving all `pre-migration` snapshots forever.
+  - `backend/src/routes/admin-page-items.routes.ts`:
+    - Replaced raw `tx.pageRevision.create` in 8 admin routes with `afterContentWrite(..., tx)` to guarantee atomic revision creation.
+    - Implemented `GET /api/admin/pages/:pageId/revisions`: returns list of revisions `{ id, version, reason, authorId, createdAt }` ordered by `createdAt: desc, id: desc`.
+    - Implemented `POST /api/admin/pages/:pageId/revisions/:revId/restore`: transactional restore verifying `page.version` (HTTP 409 conflict protection), purging current page items/categories, recreating categories and items with original IDs from snapshot, bumping restored item versions to `maxItemVersion + 1`, reconnecting join records, reseeding Postgres sequences (`pg_get_serial_sequence`), updating page version/settings, and triggering `afterContentWrite({ reason: 'restore' })`.
+  - `backend/src/routes/pages.routes.ts`: Updated settings-only update on structured pages to pass `reason: 'settings'` to `afterContentWrite`.
+  - `frontend/src/admin/api/pageItems.ts`: Added `PageRevision` interface and client methods `fetchAdminPageRevisions(pageId)` and `restoreAdminPageRevision(pageId, revId, version)`.
+  - `frontend/src/admin/components/items/HistoryPanel.tsx`: Created slide-over History drawer displaying revision cards with formatted timestamps, author, reason badges, current version indicator, confirmation modal, conflict error alerts (409), and TanStack Query cache invalidations.
+  - `frontend/src/admin/components/UnifiedPageEditor.tsx`: Added History button to editor toolbar, wired `<HistoryPanel />` with state, and added callback to update editor local state on successful restore.
+  - `backend/tests/admin-items/revisions.test.ts`: Created backend unit test suite (5 tests covering all CMS write reasons, GET ordering, pruning retaining pre-migration revisions, restore ID/slug retention, sequence health, stale page 409, and stale item 409).
+  - `frontend/src/admin/components/__tests__/UnifiedPageEditor.history.test.tsx`: Created frontend component test suite (2 tests covering revision history listing, restore invocation with current page version, cache invalidation, and 409 conflict handling).
+  - `docs/plans/sdd/task-13-report.md`: Created detailed task execution report.
+- Tests added:
+  - `backend/tests/admin-items/revisions.test.ts` (5 tests)
+  - `frontend/src/admin/components/__tests__/UnifiedPageEditor.history.test.tsx` (2 tests)
+- Test results:
+  - `backend/tests/admin-items/revisions.test.ts`: 5 passed / 5 total (100% green)
+  - `frontend/src/admin/components/__tests__/UnifiedPageEditor.history.test.tsx`: 2 passed / 2 total (100% green)
+  - Full frontend suite (`npm run test:frontend`): 21 passed / 21 files, 82 passed / 82 total tests (100% green)
+  - Frontend typecheck (`npm run typecheck:frontend`): 0 errors
+  - Backend typecheck (`tsc --noEmit`): 0 errors
+  - Frontend Vite production build (`npm run build:frontend`): 0 errors, built cleanly in 5.66s
+  - Playwright smoke test (`npx playwright test tests/e2e/smoke.spec.ts`): 206 passed / 206 executed (3 known baseline failures skipped), 0 regressions
+- Acceptance Criteria Verified:
+  - [x] Backend revisions and restore tests pass 100%.
+  - [x] Frontend History panel component tests pass.
+  - [x] Revisions pruning verified to never prune `pre-migration` snapshots.
+  - [x] Sequence health verified after restore with clean item insertion.
+  - [x] Stale page version and stale item version both return 409.
+- Deviations from plan and why:
+  - Item Version Preservation in Snapshots: In `after-content-write.ts`, added `version: item.version` to `snapshot.items`. This ensures that when restoring a page whose items were completely deleted, `maxItemVersion` accurately accounts for the snapshot's item versions (`maxItemVersion + 1`), guaranteeing that any stale open editor drawer attempting a PATCH receives HTTP 409 `version_conflict`.
+- Found, not fixed:
+  - None.
+
+
 

@@ -626,7 +626,8 @@ router.put('/:id', verifyToken, requireAdmin, async (req: AuthRequest, res: Resp
         }
 
         console.log(`Page ${id} updated by admin ${req.user?.id}`);
-        await afterContentWrite({ pageId: id, reason: 'legacy-adapter-update', authorId: req.user?.id });
+        const writeReason = (isStructured && !hasCollectionKeys) ? 'settings' : 'legacy-adapter-update';
+        await afterContentWrite({ pageId: id, reason: writeReason, authorId: req.user?.id });
 
         const updatedResponse = await pageContentService.getPageLegacy(id, { isAdmin: true });
         res.json(updatedResponse);

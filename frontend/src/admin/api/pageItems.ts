@@ -183,3 +183,39 @@ export async function reorderAdminPageCategories(
     });
     return data;
 }
+
+// ==========================================
+// Revisions & Restore (T13)
+// ==========================================
+
+export interface PageRevision {
+    id: number;
+    version: number;
+    reason: string;
+    authorId: number | null;
+    createdAt: string;
+}
+
+/**
+ * GET /api/admin/pages/:pageId/revisions
+ */
+export async function fetchAdminPageRevisions(
+    pageId: number
+): Promise<{ revisions: PageRevision[] }> {
+    const { data } = await api.get(`/admin/pages/${pageId}/revisions`);
+    return data;
+}
+
+/**
+ * POST /api/admin/pages/:pageId/revisions/:revId/restore
+ */
+export async function restoreAdminPageRevision(
+    pageId: number,
+    revId: number,
+    version: number
+): Promise<{ page: any; restoredRevisionId: number }> {
+    const { data } = await api.post(`/admin/pages/${pageId}/revisions/${revId}/restore`, {
+        version,
+    });
+    return data;
+}

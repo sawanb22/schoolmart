@@ -1,6 +1,6 @@
 import { useRef, useState, useEffect, useMemo } from 'react';
 import { Link } from 'react-router-dom';
-import { Save, Plus, AlertCircle, Trash2, Link as LinkIcon, X, ArrowLeft, ArrowRight, FileText, Eye, EyeOff, Sparkles, Type, Palette, Layout, Sliders, Layers, ChevronUp, ChevronDown, Pencil, Check, Tag, FolderOpen, ExternalLink, Loader2, Upload } from 'lucide-react';
+import { Save, Plus, AlertCircle, Trash2, Link as LinkIcon, X, ArrowLeft, ArrowRight, FileText, Eye, EyeOff, Sparkles, Type, Palette, Layout, Sliders, Layers, ChevronUp, ChevronDown, Pencil, Check, Tag, FolderOpen, ExternalLink, Loader2, Upload, History } from 'lucide-react';
 import api from '../api/client';
 import MediaImageField from './MediaImageField';
 import FurnitureCategorySwitchboard from './FurnitureCategorySwitchboard';
@@ -12,6 +12,7 @@ import FaqEditorSection from './FaqEditorSection';
 import ItemsManager from './items/ItemsManager';
 import CategoryManager from './items/CategoryManager';
 import ConflictDialog from './items/ConflictDialog';
+import HistoryPanel from './items/HistoryPanel';
 import { clearPageDataCache, broadcastCmsInvalidation } from '@/hooks/usePageData';
 import {
     normalizeCardHref as normalizeCardHrefCore,
@@ -580,6 +581,7 @@ export default function UnifiedPageEditor({
 
     const [conflictCurrentPage, setConflictCurrentPage] = useState<any>(null);
     const [showPageConflictDialog, setShowPageConflictDialog] = useState(false);
+    const [showHistoryPanel, setShowHistoryPanel] = useState(false);
 
     const isAboutUs = page.slug === 'about-us' || page.slug === 'corporate';
     const isContactUs = page.slug === 'contact-us';
@@ -1711,6 +1713,14 @@ export default function UnifiedPageEditor({
                         </div>
                     </div>
                     <div className="flex items-center gap-3">
+                        <button
+                            type="button"
+                            onClick={() => setShowHistoryPanel(true)}
+                            className="flex items-center gap-2 px-3.5 py-2 text-xs font-bold border border-slate-200 text-slate-700 bg-white hover:bg-slate-50 rounded-xl transition-all shadow-sm active:scale-95"
+                            title="View page revision history and restore previous versions"
+                        >
+                            <History className="w-3.5 h-3.5 text-slate-500" /> History
+                        </button>
                         {page.slug !== 'job-openings' && (
                             <button
                                 type="button"
@@ -5667,6 +5677,25 @@ export default function UnifiedPageEditor({
                 } : {}}
                 title={`Page Conflict Detected on "${page.title}"`}
                 description="Another administrator or process modified this page while you were editing it. Review the settings differences below to reload latest or overwrite."
+            />
+
+            {/* Page Revision History Panel */}
+            <HistoryPanel
+                isOpen={showHistoryPanel}
+                onClose={() => setShowHistoryPanel(false)}
+                pageId={page.id}
+                pageSlug={page.slug}
+                currentPageVersion={page.version ?? 1}
+                onRestoreSuccess={(restoredPage) => {
+                    if (restoredPage) {
+                        if (restoredPage.title) setTitle(restoredPage.title);
+                        if (restoredPage.published !== undefined) setPublished(restoredPage.published);
+                        if (restoredPage.pageData) setData(parsePageData(restoredPage.pageData));
+                        if (restoredPage.version !== undefined) {
+                            page.version = restoredPage.version;
+                        }
+                    }
+                }}
             />
         </div>
     );
