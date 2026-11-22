@@ -2,6 +2,7 @@ import { Router, Response } from 'express';
 import fs from 'fs';
 import path from 'path';
 import bcrypt from 'bcryptjs';
+import { Prisma } from '@prisma/client';
 import prisma from '../lib/prisma';
 import { isValidEmail } from '../lib/validation';
 import { verifyToken, requireAdmin, AuthRequest } from '../middleware/auth.middleware';
@@ -34,13 +35,56 @@ router.get('/stats', verifyToken, requireAdmin, async (_req: AuthRequest, res: R
 // GET /api/admin/users
 router.get('/users', verifyToken, requireAdmin, async (req: AuthRequest, res: Response) => {
     try {
-        const safeLimit = Math.min(Math.max(Number(req.query.limit) || 200, 1), 500);
-        const users = await prisma.user.findMany({
-            select: { id: true, name: true, email: true, role: true, phone: true, institution: true, createdAt: true },
-            orderBy: { createdAt: 'desc' },
-            take: safeLimit,
+        if (req.query.page === undefined) {
+            const safeLimit = Math.min(Math.max(Number(req.query.limit) || 200, 1), 500);
+            const users = await prisma.user.findMany({
+                select: { id: true, name: true, email: true, role: true, phone: true, institution: true, createdAt: true },
+                orderBy: { createdAt: 'desc' },
+                take: safeLimit,
+            });
+            res.json(users);
+            return;
+        }
+
+        const page = Math.max(1, Number(req.query.page) || 1);
+        const limit = Math.min(Math.max(Number(req.query.limit) || 25, 1), 100);
+        const skip = (page - 1) * limit;
+        const search = typeof req.query.search === 'string' ? req.query.search.trim() : '';
+        const role = typeof req.query.role === 'string' ? req.query.role.trim() : '';
+
+        const where: Prisma.UserWhereInput = {};
+        if (role && (role === 'admin' || role === 'user')) {
+            where.role = role;
+        }
+        if (search) {
+            where.OR = [
+                { name: { contains: search, mode: 'insensitive' } },
+                { email: { contains: search, mode: 'insensitive' } },
+                { institution: { contains: search, mode: 'insensitive' } },
+                { phone: { contains: search, mode: 'insensitive' } },
+            ];
+        }
+
+        const [users, total] = await Promise.all([
+            prisma.user.findMany({
+                where,
+                select: { id: true, name: true, email: true, role: true, phone: true, institution: true, createdAt: true },
+                orderBy: { createdAt: 'desc' },
+                skip,
+                take: limit,
+            }),
+            prisma.user.count({ where }),
+        ]);
+
+        const totalPages = Math.max(1, Math.ceil(total / limit));
+        res.json({
+            users,
+            items: users,
+            total,
+            page,
+            limit,
+            totalPages,
         });
-        res.json(users);
     } catch (error) {
         console.error('Failed to fetch users:', error);
         res.status(500).json({ error: 'An unexpected internal error occurred. Please try again later.' });
@@ -210,15 +254,168 @@ router.delete('/users/:id', verifyToken, requireAdmin, async (req: AuthRequest, 
     }
 });
 
+// Unified helper functions for Enquiry queries (no any, unified contact/jobs logic)
+function buildContactEnquiryWhere(type: 'contact' | 'jobs' | 'all', unreadOnly: boolean): Prisma.ContactEnquiryWhereInput {
+    const where: Prisma.ContactEnquiryWhereInput = {};
+    if (unreadOnly) {
+        where.read = false;
+    }
+    if (type === 'jobs') {
+        where.OR = [
+            { resumeFilename: { not: null } },
+            { role: { not: null } },
+        ];
+    } else if (type === 'contact') {
+        where.AND = [
+            { resumeFilename: null },
+            { role: null },
+        ];
+    }
+    return where;
+}
+
+function buildQuoteRequestWhere(unreadOnly: boolean): Prisma.QuoteRequestWhereInput {
+    const where: Prisma.QuoteRequestWhereInput = {};
+    if (unreadOnly) {
+        where.read = false;
+    }
+    return where;
+}
+
 // GET /api/admin/enquiries
 router.get('/enquiries', verifyToken, requireAdmin, async (req: AuthRequest, res: Response) => {
     try {
-        const safeLimit = Math.min(Math.max(Number(req.query.limit) || 200, 1), 500);
-        const [contacts, quotes] = await Promise.all([
-            prisma.contactEnquiry.findMany({ orderBy: { createdAt: 'desc' }, take: safeLimit }),
-            prisma.quoteRequest.findMany({ orderBy: { createdAt: 'desc' }, take: safeLimit }),
+        // Backward-compatible response if page is undefined
+        if (req.query.page === undefined) {
+            const safeLimit = Math.min(Math.max(Number(req.query.limit) || 200, 1), 500);
+            const [contacts, quotes] = await Promise.all([
+                prisma.contactEnquiry.findMany({ orderBy: { createdAt: 'desc' }, take: safeLimit }),
+                prisma.quoteRequest.findMany({ orderBy: { createdAt: 'desc' }, take: safeLimit }),
+            ]);
+            res.json({ contacts, quotes });
+            return;
+        }
+
+        const page = Math.max(1, Number(req.query.page) || 1);
+        const limit = Math.min(Math.max(Number(req.query.limit) || 25, 1), 100);
+        const skip = (page - 1) * limit;
+        const rawType = (req.query.type as string) || 'all';
+        const type: 'all' | 'quote' | 'contact' | 'jobs' =
+            rawType === 'quote' || rawType === 'contact' || rawType === 'jobs' ? rawType : 'all';
+        const unreadOnly = req.query.unreadOnly === 'true' || req.query.unread === 'true';
+
+        if (type === 'quote') {
+            const where = buildQuoteRequestWhere(unreadOnly);
+            const [quotes, total] = await Promise.all([
+                prisma.quoteRequest.findMany({
+                    where,
+                    orderBy: { createdAt: 'desc' },
+                    skip,
+                    take: limit,
+                }),
+                prisma.quoteRequest.count({ where }),
+            ]);
+            const items = quotes.map(q => ({
+                id: q.id,
+                type: 'quote' as const,
+                name: q.name,
+                email: q.email,
+                phone: q.phone,
+                institution: q.institution,
+                subject: q.items || 'Quote Request',
+                message: q.message,
+                items: q.items,
+                read: q.read,
+                createdAt: q.createdAt.toISOString(),
+            }));
+            const totalPages = Math.max(1, Math.ceil(total / limit));
+            res.json({ items, total, page, limit, totalPages });
+            return;
+        }
+
+        if (type === 'contact' || type === 'jobs') {
+            const where = buildContactEnquiryWhere(type, unreadOnly);
+            const [contacts, total] = await Promise.all([
+                prisma.contactEnquiry.findMany({
+                    where,
+                    orderBy: { createdAt: 'desc' },
+                    skip,
+                    take: limit,
+                }),
+                prisma.contactEnquiry.count({ where }),
+            ]);
+            const items = contacts.map(c => ({
+                id: c.id,
+                type: (c.resumeFilename || c.role ? 'jobs' : 'contact') as 'jobs' | 'contact',
+                name: c.name,
+                email: c.email,
+                phone: c.phone,
+                subject: c.subject,
+                role: c.role,
+                message: c.message,
+                resumeFilename: c.resumeFilename,
+                resumeOriginalName: c.resumeOriginalName,
+                read: c.read,
+                createdAt: c.createdAt.toISOString(),
+            }));
+            const totalPages = Math.max(1, Math.ceil(total / limit));
+            res.json({ items, total, page, limit, totalPages });
+            return;
+        }
+
+        // type === 'all'
+        const quoteWhere = buildQuoteRequestWhere(unreadOnly);
+        const contactWhere = buildContactEnquiryWhere('all', unreadOnly);
+        const [quoteCount, contactCount, quotes, contacts] = await Promise.all([
+            prisma.quoteRequest.count({ where: quoteWhere }),
+            prisma.contactEnquiry.count({ where: contactWhere }),
+            prisma.quoteRequest.findMany({
+                where: quoteWhere,
+                orderBy: { createdAt: 'desc' },
+                take: skip + limit,
+            }),
+            prisma.contactEnquiry.findMany({
+                where: contactWhere,
+                orderBy: { createdAt: 'desc' },
+                take: skip + limit,
+            }),
         ]);
-        res.json({ contacts, quotes });
+
+        const total = quoteCount + contactCount;
+        const mappedQuotes = quotes.map(q => ({
+            id: q.id,
+            type: 'quote' as const,
+            name: q.name,
+            email: q.email,
+            phone: q.phone,
+            institution: q.institution,
+            subject: q.items || 'Quote Request',
+            message: q.message,
+            items: q.items,
+            read: q.read,
+            createdAt: q.createdAt.toISOString(),
+        }));
+        const mappedContacts = contacts.map(c => ({
+            id: c.id,
+            type: (c.resumeFilename || c.role ? 'jobs' : 'contact') as 'jobs' | 'contact',
+            name: c.name,
+            email: c.email,
+            phone: c.phone,
+            subject: c.subject,
+            role: c.role,
+            message: c.message,
+            resumeFilename: c.resumeFilename,
+            resumeOriginalName: c.resumeOriginalName,
+            read: c.read,
+            createdAt: c.createdAt.toISOString(),
+        }));
+
+        const merged = [...mappedQuotes, ...mappedContacts]
+            .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+        const items = merged.slice(skip, skip + limit);
+        const totalPages = Math.max(1, Math.ceil(total / limit));
+
+        res.json({ items, total, page, limit, totalPages });
     } catch (error) {
         console.error('Failed to fetch enquiries:', error);
         res.status(500).json({ error: 'An unexpected internal error occurred. Please try again later.' });
@@ -244,23 +441,49 @@ router.get('/enquiries/contact/:id/resume', verifyToken, requireAdmin, async (re
     }
 });
 
-// PUT /api/admin/enquiries/contact/:id/read
+// Explicit PUT /api/admin/enquiries/contact/:id/read
 router.put('/enquiries/contact/:id/read', verifyToken, requireAdmin, async (req: AuthRequest, res: Response) => {
     try {
         await prisma.contactEnquiry.update({ where: { id: Number(req.params.id) }, data: { read: true } });
-        res.json({ message: 'Marked as read' });
+        res.json({ success: true, message: 'Marked as read' });
     } catch {
         res.status(500).json({ error: 'Failed to update enquiry' });
     }
 });
 
-// PUT /api/admin/enquiries/quote/:id/read
+// Explicit PUT /api/admin/enquiries/quote/:id/read
 router.put('/enquiries/quote/:id/read', verifyToken, requireAdmin, async (req: AuthRequest, res: Response) => {
     try {
         await prisma.quoteRequest.update({ where: { id: Number(req.params.id) }, data: { read: true } });
-        res.json({ message: 'Marked as read' });
+        res.json({ success: true, message: 'Marked as read' });
     } catch {
         res.status(500).json({ error: 'Failed to update quote' });
+    }
+});
+
+// Generic PUT /api/admin/enquiries/:type/:id/read
+router.put('/enquiries/:type/:id/read', verifyToken, requireAdmin, async (req: AuthRequest, res: Response) => {
+    try {
+        const id = Number(req.params.id);
+        const { type } = req.params;
+
+        if (isNaN(id)) {
+            res.status(400).json({ error: 'Invalid ID' });
+            return;
+        }
+
+        if (type === 'quote') {
+            await prisma.quoteRequest.update({ where: { id }, data: { read: true } });
+            res.json({ success: true, message: 'Marked as read', id, type });
+        } else if (type === 'contact' || type === 'jobs' || type === 'application') {
+            await prisma.contactEnquiry.update({ where: { id }, data: { read: true } });
+            res.json({ success: true, message: 'Marked as read', id, type });
+        } else {
+            res.status(400).json({ error: 'Invalid enquiry type' });
+        }
+    } catch (error) {
+        console.error('Failed to mark enquiry as read:', error);
+        res.status(500).json({ error: 'Failed to mark enquiry as read' });
     }
 });
 
@@ -268,16 +491,62 @@ router.put('/enquiries/quote/:id/read', verifyToken, requireAdmin, async (req: A
 // contact details, for the sales team to follow up on and prepare quotations.
 router.get('/wishlist-report', verifyToken, requireAdmin, async (req: AuthRequest, res: Response) => {
     try {
-        const safeLimit = Math.min(Math.max(Number(req.query.limit) || 200, 1), 500);
-        const items = await prisma.wishlistItem.findMany({
-            include: {
-                user: { select: { id: true, name: true, email: true, phone: true, institution: true } },
-                product: { include: { category: true } },
-            },
-            orderBy: { createdAt: 'desc' },
-            take: safeLimit,
+        // Backward-compatible response if page is undefined
+        if (req.query.page === undefined) {
+            const safeLimit = Math.min(Math.max(Number(req.query.limit) || 200, 1), 500);
+            const items = await prisma.wishlistItem.findMany({
+                include: {
+                    user: { select: { id: true, name: true, email: true, phone: true, institution: true } },
+                    product: { include: { category: true } },
+                },
+                orderBy: { createdAt: 'desc' },
+                take: safeLimit,
+            });
+            res.json(items);
+            return;
+        }
+
+        const page = Math.max(1, Number(req.query.page) || 1);
+        const limit = Math.min(Math.max(Number(req.query.limit) || 25, 1), 100);
+        const skip = (page - 1) * limit;
+        const userId = req.query.userId ? Number(req.query.userId) : undefined;
+        const search = typeof req.query.search === 'string' ? req.query.search.trim() : '';
+
+        const where: Prisma.WishlistItemWhereInput = {};
+        if (userId && Number.isInteger(userId)) {
+            where.userId = userId;
+        }
+        if (search) {
+            where.OR = [
+                { user: { name: { contains: search, mode: 'insensitive' } } },
+                { user: { email: { contains: search, mode: 'insensitive' } } },
+                { product: { name: { contains: search, mode: 'insensitive' } } },
+                { designTitle: { contains: search, mode: 'insensitive' } },
+            ];
+        }
+
+        const [items, total] = await Promise.all([
+            prisma.wishlistItem.findMany({
+                where,
+                include: {
+                    user: { select: { id: true, name: true, email: true, phone: true, institution: true } },
+                    product: { include: { category: true } },
+                },
+                orderBy: { createdAt: 'desc' },
+                skip,
+                take: limit,
+            }),
+            prisma.wishlistItem.count({ where }),
+        ]);
+
+        const totalPages = Math.max(1, Math.ceil(total / limit));
+        res.json({
+            items,
+            total,
+            page,
+            limit,
+            totalPages,
         });
-        res.json(items);
     } catch (error) {
         console.error('Failed to fetch wishlist report:', error);
         res.status(500).json({ error: 'An unexpected internal error occurred. Please try again later.' });
