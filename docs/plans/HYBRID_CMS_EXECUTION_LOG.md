@@ -615,8 +615,8 @@
 
 ## T13 – Revisions and restore – DONE
 - Date: 2026-11-22
-- Commit: `b751f6f` (T13: Revisions and restore)
-- Review Status: APPROVED
+- Commit: `bbcdde9` (T13: Revisions and restore)
+- Review Status: APPROVED (commits 1aaa75b..bbcdde9, review clean, 0 critical, 0 important)
 - Backup used: N/A (read-only dev DB; tests on isolated Neon branch DATABASE_URL_TEST)
 - Files changed (summary):
   - `backend/src/services/page-content/after-content-write.ts`: Added automatic page revision snapshot creation inside `afterContentWrite` whenever `params.pageId` is present. Captures page attributes, settings via `parsePageData`, items with versions, categories, and categories list. Prunes non-`pre-migration` revisions beyond 30 while strictly preserving all `pre-migration` snapshots forever.
