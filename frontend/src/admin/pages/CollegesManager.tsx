@@ -892,7 +892,7 @@ export default function CollegesManager() {
             <span className="text-[11px] font-bold text-slate-400 uppercase">Region:</span>
             <select
               value={regionFilter}
-              onChange={(e) => setRegionFilter(e.target.value as any)}
+              onChange={(e) => setRegionFilter(e.target.value as 'All' | Region)}
               className="bg-transparent text-xs font-semibold text-slate-800 focus:outline-none cursor-pointer"
             >
               <option value="All">All Regions</option>

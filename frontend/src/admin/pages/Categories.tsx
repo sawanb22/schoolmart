@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
+import type { ElementType } from 'react';
 import { useSearchParams, Link } from 'react-router-dom';
 import {
     Plus,
@@ -43,8 +44,8 @@ import {
     SEARCH_ICON_MAP,
     SEARCH_ICON_OPTIONS,
     DEFAULT_OBJECTIVES_DATA,
-    type RawSearchOption,
 } from '@/components/sections/search-bar';
+import type { RawSearchOption } from '@/components/sections/search-bar';
 
 // --- TYPES ---
 interface ProductCategory {
@@ -64,8 +65,26 @@ interface PageSummary {
     pageData?: string | Record<string, any>;
 }
 
+interface PageCardItem {
+    id?: string | number;
+    title?: string;
+    category?: string;
+    categories?: string[];
+    [key: string]: unknown;
+}
+
+interface ApiError {
+    response?: {
+        data?: {
+            error?: string;
+            message?: string;
+        };
+        status?: number;
+    };
+}
+
 // Well-defined category-enabled showcase pages in SchoolMart (Excluding homepage as per strict invariant)
-const PRESET_SHOWCASE_PAGES: Array<{ slug: string; label: string; group: string; icon: any }> = [
+const PRESET_SHOWCASE_PAGES: Array<{ slug: string; label: string; group: string; icon: ElementType }> = [
     // Solution Infrastructure Hubs
     { slug: 'libraries', label: 'Smart Libraries', group: 'Solution Hubs', icon: BookOpen },
     { slug: 'labs', label: 'Composite & Skill Labs', group: 'Solution Hubs', icon: Microscope },
@@ -122,7 +141,7 @@ export default function Categories() {
     const [selectedPageSlug, setSelectedPageSlug] = useState<string>(searchParams.get('page') || 'libraries');
     const [pageDetails, setPageDetails] = useState<PageSummary | null>(null);
     const [pageCategories, setPageCategories] = useState<string[]>([]);
-    const [pageCards, setPageCards] = useState<any[]>([]);
+    const [pageCards, setPageCards] = useState<PageCardItem[]>([]);
     const [loadingPageData, setLoadingPageData] = useState(false);
     const [savingPage, setSavingPage] = useState(false);
     const [saveSuccessMsg, setSaveSuccessMsg] = useState('');
@@ -174,12 +193,12 @@ export default function Categories() {
                 const { data } = await api.get('/pages');
                 if (Array.isArray(data)) {
                     // Exclude homepage explicitly
-                    const filtered = data.filter((p: any) => p.slug !== 'home');
+                    const filtered = data.filter((p: PageSummary) => p.slug !== 'home');
                     setAvailablePages(filtered);
 
                     // If URL param page is present, select it; otherwise default to libraries
                     const urlPage = searchParams.get('page');
-                    if (urlPage && filtered.some((p: any) => p.slug === urlPage)) {
+                    if (urlPage && filtered.some((p: PageSummary) => p.slug === urlPage)) {
                         setSelectedPageSlug(urlPage);
                     } else if (!selectedPageSlug && filtered.length > 0) {
                         setSelectedPageSlug('libraries');
@@ -211,7 +230,7 @@ export default function Categories() {
                 setPageDetails(data);
                 const pd = typeof data.pageData === 'string' ? JSON.parse(data.pageData || '{}') : (data.pageData || {});
                 const explicitCats: string[] = Array.isArray(pd.categories) ? pd.categories.filter(Boolean) : [];
-                const cards: any[] = Array.isArray(pd.cards) ? pd.cards : [];
+                const cards: PageCardItem[] = Array.isArray(pd.cards) ? pd.cards : [];
 
                 // Discover any card categories that might not be in explicitCats yet
                 const existingSet = new Set(explicitCats.map(c => c.toLowerCase()));
@@ -422,7 +441,7 @@ export default function Categories() {
                 ? [card.category]
                 : [];
             for (const c of cardCats) {
-                if (c) {
+                if (c && typeof c === 'string') {
                     counts[c] = (counts[c] || 0) + 1;
                 }
             }
@@ -608,9 +627,10 @@ export default function Categories() {
             setHasUnsavedChanges(false);
             setSaveSuccessMsg(`Categories for ${pageDetails.title} saved! Active on live /${selectedPageSlug}`);
             setTimeout(() => setSaveSuccessMsg(''), 6000);
-        } catch (err: any) {
+        } catch (err: unknown) {
+            const apiErr = err as ApiError;
             console.error('Failed to save page categories:', err);
-            alert(err.response?.data?.error || 'Failed to save categories.');
+            alert(apiErr.response?.data?.error || 'Failed to save categories.');
         } finally {
             setSavingPage(false);
         }
@@ -646,8 +666,9 @@ export default function Categories() {
             await fetchProductCategories();
             clearPageCategoriesCache();
             setShowProductModal(false);
-        } catch (err: any) {
-            alert(err.response?.data?.error || 'Failed to save product category');
+        } catch (err: unknown) {
+            const apiErr = err as ApiError;
+            alert(apiErr.response?.data?.error || 'Failed to save product category');
         } finally {
             setSavingProductCat(false);
         }
@@ -659,8 +680,9 @@ export default function Categories() {
             await api.delete(`/products/categories/${id}`);
             await fetchProductCategories();
             clearPageCategoriesCache();
-        } catch (err: any) {
-            alert(err.response?.data?.error || 'Failed to delete category. Ensure no products are linked.');
+        } catch (err: unknown) {
+            const apiErr = err as ApiError;
+            alert(apiErr.response?.data?.error || 'Failed to delete category. Ensure no products are linked.');
         }
     };
 
@@ -672,7 +694,7 @@ export default function Categories() {
 
     // Build the list of selectable pages for Mode A
     const selectablePages = useMemo(() => {
-        const set = new Map<string, { slug: string; label: string; group: string; icon: any; id?: number }>();
+        const set = new Map<string, { slug: string; label: string; group: string; icon: ElementType; id?: number }>();
 
         // Add presets first
         for (const p of PRESET_SHOWCASE_PAGES) {
@@ -695,7 +717,7 @@ export default function Categories() {
             } else {
                 // Classify its group dynamically based on template or slug
                 let group = 'Other Pages';
-                let icon: any = FolderOpen;
+                let icon: ElementType = FolderOpen;
 
                 if (p.template === 'solution-hub' || p.template === 'grid') {
                     group = 'Solution Hubs';
@@ -731,52 +753,52 @@ export default function Categories() {
             {/* Header */}
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                 <div>
-                    <h1 className="text-2xl font-black text-slate-900 tracking-tight flex items-center gap-2.5">
-                        <Tag className="w-7 h-7 text-blue-600" />
-                        Categories & Classifications
+                    <h1 className="text-2xl font-bold text-stone-900 tracking-tight flex items-center gap-2.5">
+                        <Tag className="w-6 h-6 text-[#1e3a8a]" />
+                        Categories &amp; Classifications
                     </h1>
-                    <p className="text-xs text-slate-500 font-bold uppercase tracking-widest mt-1">
-                        Unified Master Control for Showcase Page Filters & Store Catalogues
+                    <p className="text-xs text-stone-500 font-medium tracking-wide mt-1">
+                        Unified Master Control for Showcase Page Filters &amp; Store Catalogues
                     </p>
                 </div>
 
-                {/* Top Segmented Mode Control */}
-                <div className="inline-flex p-1.5 bg-slate-200/80 rounded-2xl border border-slate-300/60 shadow-xs flex-wrap gap-1">
+                {/* Top Segmented Mode Control - Calm Stone Styling */}
+                <div className="inline-flex p-1 bg-stone-100 rounded-xl border border-stone-200 flex-wrap gap-1">
                     <button
                         type="button"
                         onClick={() => handleSwitchMode('pages')}
-                        className={`flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs font-black uppercase tracking-wider transition-all cursor-pointer ${
+                        className={`flex items-center gap-2 px-4 py-2 rounded-lg text-xs font-semibold tracking-wide transition-all cursor-pointer ${
                             activeMode === 'pages'
-                                ? 'bg-white text-blue-900 shadow-sm border border-slate-200'
-                                : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100/60'
+                                ? 'bg-white text-[#1e3a8a] shadow-xs border border-stone-200'
+                                : 'text-stone-600 hover:text-stone-900 hover:bg-stone-50 border border-transparent'
                         }`}
                     >
-                        <Layers className="w-4 h-4 text-blue-600" />
+                        <Layers className={`w-4 h-4 ${activeMode === 'pages' ? 'text-[#1e3a8a]' : 'text-stone-500'}`} />
                         Showcase Page Filters
                     </button>
                     <button
                         type="button"
                         onClick={() => handleSwitchMode('products')}
-                        className={`flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs font-black uppercase tracking-wider transition-all cursor-pointer ${
+                        className={`flex items-center gap-2 px-4 py-2 rounded-lg text-xs font-semibold tracking-wide transition-all cursor-pointer ${
                             activeMode === 'products'
-                                ? 'bg-white text-blue-900 shadow-sm border border-slate-200'
-                                : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100/60'
+                                ? 'bg-white text-[#1e3a8a] shadow-xs border border-stone-200'
+                                : 'text-stone-600 hover:text-stone-900 hover:bg-stone-50 border border-transparent'
                         }`}
                     >
-                        <Store className="w-4 h-4 text-indigo-600" />
-                        Store & Product Catalog
+                        <Store className={`w-4 h-4 ${activeMode === 'products' ? 'text-[#1e3a8a]' : 'text-stone-500'}`} />
+                        Store &amp; Product Catalog
                     </button>
                     <button
                         type="button"
                         onClick={() => handleSwitchMode('objectives')}
-                        className={`flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs font-black uppercase tracking-wider transition-all cursor-pointer ${
+                        className={`flex items-center gap-2 px-4 py-2 rounded-lg text-xs font-semibold tracking-wide transition-all cursor-pointer ${
                             activeMode === 'objectives'
-                                ? 'bg-white text-emerald-900 shadow-sm border border-slate-200'
-                                : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100/60'
+                                ? 'bg-white text-[#1e3a8a] shadow-xs border border-stone-200'
+                                : 'text-stone-600 hover:text-stone-900 hover:bg-stone-50 border border-transparent'
                         }`}
                     >
-                        <Target className="w-4 h-4 text-emerald-600" />
-                        Search & Hub Categories
+                        <Target className={`w-4 h-4 ${activeMode === 'objectives' ? 'text-[#1e3a8a]' : 'text-stone-500'}`} />
+                        Search &amp; Hub Categories
                     </button>
                 </div>
             </div>
@@ -786,34 +808,34 @@ export default function Categories() {
             {/* ========================================================================= */}
             {activeMode === 'pages' && (
                 <div className="space-y-6">
-                    {/* Guidance Strip */}
-                    <div className="bg-gradient-to-r from-blue-900 via-indigo-900 to-slate-900 rounded-2xl p-5 text-white shadow-sm border border-blue-800/40 flex flex-col md:flex-row md:items-center justify-between gap-4">
-                        <div className="flex items-center gap-3">
-                            <div className="w-10 h-10 rounded-xl bg-white/10 flex items-center justify-center text-blue-300 shrink-0">
-                                <Sparkles className="w-5 h-5 text-cm-yellow" />
+                    {/* Guidance Strip - Calm #1e293b Container */}
+                    <div className="bg-[#1e293b] rounded-xl p-5 text-white shadow-sm border border-slate-700/60 flex flex-col md:flex-row md:items-center justify-between gap-4">
+                        <div className="flex items-center gap-3.5">
+                            <div className="w-9 h-9 rounded-lg bg-white/10 flex items-center justify-center text-stone-300 shrink-0">
+                                <Sparkles className="w-4 h-4 text-stone-300" />
                             </div>
                             <div>
-                                <h2 className="text-sm font-bold text-white">Single-Stream Master Categories Control</h2>
-                                <p className="text-xs text-blue-200/90 mt-0.5">
+                                <h2 className="text-sm font-semibold text-white">Single-Stream Master Categories Control</h2>
+                                <p className="text-xs text-stone-300 mt-0.5 leading-relaxed">
                                     Categories created here control the live 1-click filter bar on that page and become the only selectable categories when assigning cards.
                                 </p>
                             </div>
                         </div>
                         {hasUnsavedChanges && (
-                            <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-amber-500/20 text-amber-200 border border-amber-400/30 text-xs font-black uppercase tracking-wider animate-pulse">
+                            <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-amber-500/20 text-amber-200 border border-amber-400/30 text-xs font-semibold tracking-wide">
                                 ● Unsaved Changes
                             </span>
                         )}
                     </div>
 
                     {/* Page Selector Strip */}
-                    <div className="bg-white rounded-2xl border border-gray-200 shadow-sm p-4 space-y-3">
+                    <div className="bg-white rounded-xl border border-stone-200 shadow-xs p-4 space-y-3">
                         <div className="flex items-center justify-between">
-                            <label className="text-xs font-black uppercase tracking-wider text-slate-700 flex items-center gap-2">
-                                <FolderOpen className="w-4 h-4 text-blue-600" />
+                            <label className="text-xs font-semibold uppercase tracking-wider text-stone-700 flex items-center gap-2">
+                                <FolderOpen className="w-4 h-4 text-[#1e3a8a]" />
                                 Select Showcase Page to Manage Categories:
                             </label>
-                            <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">
+                            <span className="text-[11px] font-medium text-stone-400 uppercase tracking-wider">
                                 {selectablePages.length} Pages Available
                             </span>
                         </div>
@@ -838,13 +860,13 @@ export default function Categories() {
                                             nextParams.set('page', page.slug);
                                             setSearchParams(nextParams);
                                         }}
-                                        className={`flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer ${
+                                        className={`flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-medium transition-all cursor-pointer ${
                                             isSelected
-                                                ? 'bg-blue-600 text-white shadow-md shadow-blue-500/20 scale-[1.02]'
-                                                : 'bg-slate-100 hover:bg-slate-200/80 text-slate-700 hover:text-slate-900'
+                                                ? 'bg-[#1e3a8a] text-white shadow-xs font-semibold'
+                                                : 'bg-stone-50 hover:bg-stone-100 text-stone-700 hover:text-stone-900 border border-stone-200/80'
                                         }`}
                                     >
-                                        <Icon className={`w-3.5 h-3.5 ${isSelected ? 'text-white' : 'text-slate-500'}`} />
+                                        <Icon className={`w-3.5 h-3.5 ${isSelected ? 'text-white' : 'text-stone-500'}`} />
                                         <span>{page.label}</span>
                                     </button>
                                 );
@@ -854,23 +876,23 @@ export default function Categories() {
 
                     {/* Selected Page Category Management Card */}
                     {loadingPageData ? (
-                        <div className="bg-white rounded-2xl border border-gray-200 p-12 text-center text-slate-400 font-bold text-xs uppercase tracking-widest">
+                        <div className="bg-white rounded-xl border border-stone-200 p-12 text-center text-stone-400 font-medium text-xs uppercase tracking-wider">
                             Loading categories for {selectedPageSlug}...
                         </div>
                     ) : (
-                        <div className="bg-white rounded-2xl border border-gray-200 shadow-sm p-6 space-y-6">
+                        <div className="bg-white rounded-xl border border-stone-200 shadow-xs p-6 space-y-6">
                             {/* Card Top: Page Info & Action Links */}
-                            <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-4 border-b border-gray-100 gap-3">
+                            <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-4 border-b border-stone-100 gap-3">
                                 <div>
                                     <div className="flex items-center gap-2">
-                                        <h2 className="text-xl font-black text-slate-900">
+                                        <h2 className="text-lg font-bold text-stone-900">
                                             {pageDetails?.title || selectedPageSlug}
                                         </h2>
-                                        <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-blue-50 text-blue-700 border border-blue-200 uppercase tracking-widest">
+                                        <span className="text-[11px] font-mono px-2 py-0.5 rounded-md bg-stone-100 text-stone-700 border border-stone-200">
                                             /{selectedPageSlug}
                                         </span>
                                     </div>
-                                    <p className="text-xs text-slate-500 mt-1">
+                                    <p className="text-xs text-stone-500 mt-1">
                                         {pageCategories.length} Categories Defined &middot; {pageCards.length} Total Cards
                                     </p>
                                 </div>
@@ -880,7 +902,7 @@ export default function Categories() {
                                         href={`/${selectedPageSlug}`}
                                         target="_blank"
                                         rel="noreferrer"
-                                        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-gray-200 hover:border-blue-300 text-xs font-bold text-slate-700 hover:text-blue-600 bg-white hover:bg-blue-50 transition-all shadow-xs"
+                                        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-stone-200 hover:border-stone-300 text-xs font-medium text-stone-700 hover:text-stone-900 bg-white hover:bg-stone-50 transition-all shadow-xs"
                                         title="View live page in new tab"
                                     >
                                         <span>Live Page</span>
@@ -888,7 +910,7 @@ export default function Categories() {
                                     </a>
                                     <Link
                                         to={`/admin/pages`}
-                                        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-gray-200 hover:border-slate-300 text-xs font-bold text-slate-700 hover:text-slate-900 bg-white hover:bg-slate-50 transition-all shadow-xs"
+                                        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-stone-200 hover:border-stone-300 text-xs font-medium text-stone-700 hover:text-stone-900 bg-white hover:bg-stone-50 transition-all shadow-xs"
                                         title="Open page in Pages Manager"
                                     >
                                         <span>Pages Manager</span>
@@ -898,7 +920,7 @@ export default function Categories() {
 
                             {/* Success Notification Banner */}
                             {saveSuccessMsg && (
-                                <div className="p-4 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs font-bold flex items-center gap-2 animate-in fade-in duration-200">
+                                <div className="p-3.5 rounded-lg bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs font-semibold flex items-center gap-2 animate-in fade-in duration-200">
                                     <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
                                     <span>{saveSuccessMsg}</span>
                                 </div>
@@ -906,12 +928,12 @@ export default function Categories() {
 
                             {/* Categories List */}
                             <div className="space-y-2.5">
-                                <label className="text-xs font-black uppercase tracking-wider text-slate-700 block">
+                                <label className="text-xs font-semibold uppercase tracking-wider text-stone-700 block">
                                     Registered Live Categories (Displayed in Order on Live Site):
                                 </label>
 
                                 {pageCategories.length === 0 ? (
-                                    <div className="p-8 text-center rounded-xl bg-slate-50 border border-dashed border-slate-300 text-slate-400 text-xs font-medium">
+                                    <div className="p-8 text-center rounded-lg bg-stone-50 border border-dashed border-stone-200 text-stone-400 text-xs font-medium">
                                         No categories defined yet for this page. Type a category name below and click &ldquo;Add Category&rdquo;.
                                     </div>
                                 ) : (
@@ -923,7 +945,7 @@ export default function Categories() {
                                             return (
                                                 <div
                                                     key={`${cat}-${idx}`}
-                                                    className="flex items-center justify-between p-3.5 rounded-xl bg-slate-50 hover:bg-white border border-gray-200/80 hover:border-blue-200 hover:shadow-xs transition-all group"
+                                                    className="flex items-center justify-between p-3 rounded-lg bg-stone-50/70 hover:bg-white border border-stone-200 hover:border-stone-300 transition-all group"
                                                 >
                                                     {/* Left: Reorder & Name */}
                                                     <div className="flex items-center gap-3 flex-1 min-w-0">
@@ -933,7 +955,7 @@ export default function Categories() {
                                                                 type="button"
                                                                 onClick={() => handleMoveCategory(idx, 'up')}
                                                                 disabled={idx === 0}
-                                                                className="p-1 rounded text-slate-400 hover:text-blue-600 hover:bg-blue-50 disabled:opacity-20 disabled:hover:bg-transparent disabled:cursor-not-allowed cursor-pointer"
+                                                                className="p-0.5 rounded text-stone-400 hover:text-stone-700 hover:bg-stone-100 disabled:opacity-20 disabled:hover:bg-transparent disabled:cursor-not-allowed cursor-pointer"
                                                                 title="Move Up"
                                                             >
                                                                 <ArrowUp className="w-3.5 h-3.5" />
@@ -942,7 +964,7 @@ export default function Categories() {
                                                                 type="button"
                                                                 onClick={() => handleMoveCategory(idx, 'down')}
                                                                 disabled={idx === pageCategories.length - 1}
-                                                                className="p-1 rounded text-slate-400 hover:text-blue-600 hover:bg-blue-50 disabled:opacity-20 disabled:hover:bg-transparent disabled:cursor-not-allowed cursor-pointer"
+                                                                className="p-0.5 rounded text-stone-400 hover:text-stone-700 hover:bg-stone-100 disabled:opacity-20 disabled:hover:bg-transparent disabled:cursor-not-allowed cursor-pointer"
                                                                 title="Move Down"
                                                             >
                                                                 <ArrowDown className="w-3.5 h-3.5" />
@@ -950,7 +972,7 @@ export default function Categories() {
                                                         </div>
 
                                                         {/* Index Badge */}
-                                                        <span className="text-[11px] font-mono font-bold text-slate-400 w-5">
+                                                        <span className="text-[11px] font-mono font-medium text-stone-400 w-5">
                                                             #{idx + 1}
                                                         </span>
 
@@ -968,34 +990,35 @@ export default function Categories() {
                                                                         }
                                                                         if (e.key === 'Escape') setEditingCategoryIndex(null);
                                                                     }}
-                                                                    className="flex-1 px-3 py-1.5 rounded-lg border border-blue-400 text-xs font-bold text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500/20 bg-white"
+                                                                    className="flex-1 px-3 py-1.5 rounded-lg border border-stone-300 text-xs font-semibold text-stone-900 focus:outline-none focus:ring-2 focus:ring-[#1e3a8a]/10 focus:border-[#1e3a8a] bg-white"
                                                                     autoFocus
                                                                 />
                                                                 <button
                                                                     type="button"
                                                                     onClick={() => handleConfirmRename(idx)}
-                                                                    className="px-2.5 py-1.5 rounded-lg bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold"
+                                                                    className="px-3 py-1.5 rounded-lg bg-[#1e3a8a] hover:bg-[#1e40af] text-white text-xs font-semibold cursor-pointer"
                                                                 >
                                                                     Done
                                                                 </button>
                                                                 <button
                                                                     type="button"
                                                                     onClick={() => setEditingCategoryIndex(null)}
-                                                                    className="px-2 py-1.5 rounded-lg text-slate-400 hover:text-slate-600 text-xs font-bold"
+                                                                    className="px-2.5 py-1.5 rounded-lg text-stone-500 hover:text-stone-700 text-xs font-medium cursor-pointer"
                                                                 >
                                                                     Cancel
                                                                 </button>
                                                             </div>
                                                         ) : (
                                                             <div className="flex items-center gap-2.5 truncate">
-                                                                <span className="text-sm font-bold text-slate-900 truncate">
+                                                                <span className="text-sm font-semibold text-stone-900 truncate">
                                                                     {cat}
                                                                 </span>
+                                                                {/* Calm neutral chip */}
                                                                 <span
-                                                                    className={`text-[10px] font-bold px-2 py-0.5 rounded-full shrink-0 ${
+                                                                    className={`text-[10px] font-semibold px-2 py-0.5 rounded-md border shrink-0 ${
                                                                         count > 0
-                                                                            ? 'bg-blue-100 text-blue-800'
-                                                                            : 'bg-slate-200 text-slate-600'
+                                                                            ? 'bg-stone-100 text-stone-800 border-stone-200'
+                                                                            : 'bg-stone-50 text-stone-500 border-stone-200'
                                                                     }`}
                                                                 >
                                                                     {count} {count === 1 ? 'card' : 'cards'}
@@ -1010,7 +1033,7 @@ export default function Categories() {
                                                             <button
                                                                 type="button"
                                                                 onClick={() => handleStartRename(idx)}
-                                                                className="p-2 rounded-lg text-slate-400 hover:text-blue-600 hover:bg-blue-50 transition-colors cursor-pointer"
+                                                                className="p-1.5 rounded-lg text-stone-400 hover:text-stone-700 hover:bg-stone-100 transition-colors cursor-pointer"
                                                                 title={`Rename "${cat}"`}
                                                             >
                                                                 <Pencil className="w-3.5 h-3.5" />
@@ -1018,7 +1041,7 @@ export default function Categories() {
                                                             <button
                                                                 type="button"
                                                                 onClick={() => handleDeleteCategory(idx)}
-                                                                className="p-2 rounded-lg text-slate-400 hover:text-red-600 hover:bg-red-50 transition-colors cursor-pointer"
+                                                                className="p-1.5 rounded-lg text-stone-400 hover:text-red-600 hover:bg-red-50 transition-colors cursor-pointer"
                                                                 title={`Delete "${cat}"`}
                                                             >
                                                                 <Trash2 className="w-3.5 h-3.5" />
@@ -1033,8 +1056,8 @@ export default function Categories() {
                             </div>
 
                             {/* Add Category Input */}
-                            <div className="pt-2 border-t border-gray-100">
-                                <label className="text-xs font-black uppercase tracking-wider text-slate-700 block mb-2">
+                            <div className="pt-2 border-t border-stone-100">
+                                <label className="text-xs font-semibold uppercase tracking-wider text-stone-700 block mb-2">
                                     Add New Category to {pageDetails?.title || selectedPageSlug}:
                                 </label>
                                 <div className="flex gap-2">
@@ -1050,12 +1073,12 @@ export default function Categories() {
                                             }
                                         }}
                                         placeholder="e.g. Cybersecurity, Collaborative Commons, Aquatics..."
-                                        className="flex-1 max-w-lg border border-gray-300 rounded-xl px-4 py-2.5 text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 bg-white"
+                                        className="flex-1 max-w-lg border border-stone-300 rounded-lg px-3.5 py-2 text-xs font-medium focus:outline-none focus:ring-2 focus:ring-[#1e3a8a]/10 focus:border-[#1e3a8a] bg-white text-stone-900"
                                     />
                                     <button
                                         type="button"
                                         onClick={handleAddCategory}
-                                        className="px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-xs font-black rounded-xl transition-all shadow-sm flex items-center gap-1.5 shrink-0 cursor-pointer"
+                                        className="px-4 py-2 bg-[#1e3a8a] hover:bg-[#1e40af] text-white text-xs font-semibold rounded-lg transition-all shadow-xs flex items-center gap-1.5 shrink-0 cursor-pointer"
                                     >
                                         <Plus className="w-4 h-4" /> Add Category
                                     </button>
@@ -1063,14 +1086,14 @@ export default function Categories() {
                             </div>
 
                             {/* Single-Stream Isolated Save Bar */}
-                            <div className="pt-4 border-t border-gray-100 flex flex-col sm:flex-row items-center justify-between gap-3 bg-slate-50/80 -mx-6 -mb-6 p-6 rounded-b-2xl">
-                                <div className="text-xs text-slate-500">
+                            <div className="pt-4 border-t border-stone-100 flex flex-col sm:flex-row items-center justify-between gap-3 bg-stone-50 -mx-6 -mb-6 p-4 px-6 rounded-b-xl border-t border-stone-200">
+                                <div className="text-xs text-stone-500">
                                     {hasUnsavedChanges ? (
-                                        <span className="text-amber-700 font-bold flex items-center gap-1.5">
+                                        <span className="text-amber-700 font-semibold flex items-center gap-1.5">
                                             ● You have unsaved changes. Click save to apply changes.
                                         </span>
                                     ) : (
-                                        <span className="text-slate-500 flex items-center gap-1.5">
+                                        <span className="text-stone-500 flex items-center gap-1.5">
                                             <Check className="w-4 h-4 text-emerald-600" />
                                             All categories are up to date.
                                         </span>
@@ -1081,7 +1104,7 @@ export default function Categories() {
                                     type="button"
                                     onClick={handleSavePageCategories}
                                     disabled={savingPage || !hasUnsavedChanges}
-                                    className="w-full sm:w-auto px-7 py-3 bg-blue-600 hover:bg-blue-700 text-white text-xs font-black rounded-xl transition-all shadow-lg active:scale-95 disabled:opacity-40 disabled:cursor-not-allowed flex items-center justify-center gap-2 cursor-pointer"
+                                    className="w-full sm:w-auto px-6 py-2.5 bg-[#1e3a8a] hover:bg-[#1e40af] text-white text-xs font-semibold rounded-lg transition-all shadow-xs active:scale-95 disabled:opacity-40 disabled:cursor-not-allowed flex items-center justify-center gap-2 cursor-pointer"
                                 >
                                     <Save className="w-4 h-4" />
                                     {savingPage ? 'Saving...' : `Save ${pageDetails?.title || ''} Categories`}
@@ -1098,32 +1121,32 @@ export default function Categories() {
             {activeMode === 'products' && (
                 <div className="space-y-6">
                     {/* Header + Add Product Category Button */}
-                    <div className="flex items-center justify-between bg-white p-6 rounded-2xl border border-gray-200 shadow-sm">
+                    <div className="flex items-center justify-between bg-white p-5 rounded-xl border border-stone-200 shadow-xs">
                         <div>
-                            <h2 className="text-lg font-black text-slate-900">E-Commerce Product Categories</h2>
-                            <p className="text-xs text-slate-500 font-bold uppercase tracking-widest mt-0.5">
-                                {productCategories.length} Classifications for Physical Store Inventory (/shop & /furniture)
+                            <h2 className="text-base font-bold text-stone-900">E-Commerce Product Categories</h2>
+                            <p className="text-xs text-stone-500 font-medium tracking-wide mt-0.5">
+                                {productCategories.length} Classifications for Physical Store Inventory (/shop &amp; /furniture)
                             </p>
                         </div>
                         <button
                             type="button"
                             onClick={openAddProductCat}
-                            className="flex items-center gap-2 px-5 py-2.5 bg-indigo-600 text-white text-xs font-black rounded-xl hover:bg-indigo-700 transition-all shadow-md active:scale-95 cursor-pointer"
+                            className="flex items-center gap-2 px-4 py-2 bg-[#1e3a8a] hover:bg-[#1e40af] text-white text-xs font-semibold rounded-lg transition-all shadow-xs active:scale-95 cursor-pointer"
                         >
                             <Plus className="w-4 h-4" /> New Product Category
                         </button>
                     </div>
 
-                    {/* Explanatory Guide Banner */}
-                    <div className="bg-slate-900 rounded-2xl p-5 text-white shadow-sm border border-slate-800 space-y-3">
+                    {/* Explanatory Guide Banner - Calm #1e293b Container */}
+                    <div className="bg-[#1e293b] rounded-xl p-5 text-white shadow-sm border border-slate-700/60 space-y-3">
                         <div className="flex items-center justify-between">
                             <div className="flex items-center gap-2.5">
-                                <HelpCircle className="w-5 h-5 text-indigo-400 shrink-0" />
+                                <HelpCircle className="w-4 h-4 text-stone-300 shrink-0" />
                                 <div>
-                                    <h3 className="text-xs font-bold uppercase tracking-wider text-white">
+                                    <h3 className="text-xs font-semibold uppercase tracking-wider text-white">
                                         How Store Product Categories Work
                                     </h3>
-                                    <p className="text-xs text-slate-300 mt-0.5">
+                                    <p className="text-xs text-stone-300 mt-0.5">
                                         Every physical product in the catalog (chairs, desks, lab sets, balls) is tagged with a product category.
                                     </p>
                                 </div>
@@ -1131,7 +1154,7 @@ export default function Categories() {
                             <button
                                 type="button"
                                 onClick={() => setShowGuide((v) => !v)}
-                                className="text-xs font-bold text-slate-300 hover:text-white px-3 py-1.5 rounded-lg bg-white/10 hover:bg-white/20 transition-all cursor-pointer"
+                                className="text-xs font-medium text-stone-300 hover:text-white px-3 py-1.5 rounded-lg bg-white/10 hover:bg-white/20 transition-all cursor-pointer"
                             >
                                 {showGuide ? 'Hide Details' : 'View Store Mapping'}
                             </button>
@@ -1145,10 +1168,10 @@ export default function Categories() {
                                         href={opt.value === 'furniture' ? '/furniture' : ['renovation', 'libraries', 'tech-infra', 'sports-infra', 'labs'].includes(opt.value) ? `/${opt.value}` : `/shop?category=${opt.value}`}
                                         target="_blank"
                                         rel="noreferrer"
-                                        className="flex items-center justify-between p-2.5 rounded-xl bg-white/5 hover:bg-white/10 text-slate-200 transition-colors"
+                                        className="flex items-center justify-between p-2.5 rounded-lg bg-white/5 hover:bg-white/10 text-stone-200 transition-colors"
                                     >
-                                        <span className="font-semibold">{opt.label}</span>
-                                        <ExternalLink className="w-3 h-3 text-slate-400" />
+                                        <span className="font-medium">{opt.label}</span>
+                                        <ExternalLink className="w-3 h-3 text-stone-400" />
                                     </a>
                                 ))}
                             </div>
@@ -1156,14 +1179,14 @@ export default function Categories() {
                     </div>
 
                     {/* Store Filter Tabs */}
-                    <div className="bg-white rounded-2xl border border-gray-200 shadow-sm p-2 flex flex-wrap gap-1.5">
+                    <div className="bg-white rounded-xl border border-stone-200 shadow-xs p-2 flex flex-wrap gap-1.5">
                         <button
                             type="button"
                             onClick={() => setActiveStoreFilter('all')}
-                            className={`px-4 py-2 rounded-xl text-xs font-black uppercase tracking-widest transition-all cursor-pointer ${
+                            className={`px-3 py-1.5 rounded-lg text-xs font-semibold tracking-wide transition-all cursor-pointer ${
                                 activeStoreFilter === 'all'
-                                    ? 'bg-indigo-600 text-white shadow-sm'
-                                    : 'text-slate-500 hover:bg-slate-100'
+                                    ? 'bg-[#1e3a8a] text-white shadow-xs'
+                                    : 'text-stone-600 hover:bg-stone-100'
                             }`}
                         >
                             All ({productCategories.length})
@@ -1175,10 +1198,10 @@ export default function Categories() {
                                     key={opt.value}
                                     type="button"
                                     onClick={() => setActiveStoreFilter(opt.value)}
-                                    className={`px-4 py-2 rounded-xl text-xs font-black uppercase tracking-widest transition-all cursor-pointer ${
+                                    className={`px-3 py-1.5 rounded-lg text-xs font-semibold tracking-wide transition-all cursor-pointer ${
                                         activeStoreFilter === opt.value
-                                            ? 'bg-indigo-600 text-white shadow-sm'
-                                            : 'text-slate-500 hover:bg-slate-100'
+                                            ? 'bg-[#1e3a8a] text-white shadow-xs'
+                                            : 'text-stone-600 hover:bg-stone-100'
                                     }`}
                                 >
                                     {opt.label} ({count})
@@ -1188,14 +1211,14 @@ export default function Categories() {
                     </div>
 
                     {/* Search Bar */}
-                    <div className="bg-white rounded-2xl border border-gray-200 shadow-sm p-4">
+                    <div className="bg-white rounded-xl border border-stone-200 shadow-xs p-3">
                         <div className="relative max-w-sm">
-                            <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+                            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-stone-400" />
                             <input
                                 value={productSearch}
                                 onChange={(e) => setProductSearch(e.target.value)}
                                 placeholder="Search product categories..."
-                                className="w-full border border-gray-200 rounded-xl pl-11 pr-4 py-2.5 text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 bg-white"
+                                className="w-full border border-stone-200 rounded-lg pl-9 pr-3 py-2 text-xs font-medium focus:outline-none focus:ring-2 focus:ring-[#1e3a8a]/10 focus:border-[#1e3a8a] bg-white text-stone-900"
                             />
                         </div>
                     </div>
@@ -1203,55 +1226,55 @@ export default function Categories() {
                     {/* Products Grid */}
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         {loadingProductCats ? (
-                            <div className="col-span-full py-16 text-center font-bold text-slate-400 uppercase tracking-widest text-xs">
+                            <div className="col-span-full py-16 text-center font-medium text-stone-400 uppercase tracking-wider text-xs">
                                 Loading Product Categories...
                             </div>
                         ) : filteredProductCats.length === 0 ? (
-                            <div className="col-span-full py-16 text-center text-slate-400 text-xs font-medium">
+                            <div className="col-span-full py-16 text-center text-stone-400 text-xs font-medium">
                                 No product categories found for this selection.
                             </div>
                         ) : (
                             filteredProductCats.map((cat) => (
                                 <div
                                     key={cat.id}
-                                    className="bg-white p-5 rounded-2xl border border-gray-200/80 shadow-xs hover:shadow-md transition-all flex items-center justify-between group"
+                                    className="bg-white p-4 rounded-xl border border-stone-200 shadow-xs hover:border-stone-300 transition-all flex items-center justify-between group"
                                 >
-                                    <div className="flex items-center gap-3.5">
-                                        <div className="w-11 h-11 rounded-xl bg-indigo-50 flex items-center justify-center text-indigo-600 shrink-0">
-                                            <Tag className="w-5 h-5" />
+                                    <div className="flex items-center gap-3">
+                                        <div className="w-10 h-10 rounded-lg bg-stone-100 flex items-center justify-center text-stone-700 shrink-0 border border-stone-200">
+                                            <Tag className="w-4 h-4" />
                                         </div>
                                         <div>
-                                            <h3 className="font-bold text-slate-900 text-sm">{cat.name}</h3>
-                                            <p className="text-[10px] font-mono text-slate-400 uppercase tracking-wider">
+                                            <h3 className="font-bold text-stone-900 text-sm">{cat.name}</h3>
+                                            <p className="text-[10px] font-mono text-stone-400 uppercase tracking-wider">
                                                 {cat.slug}
                                             </p>
                                             <div className="flex items-center gap-2 mt-1">
-                                                <span className="text-[10px] font-bold text-indigo-600 uppercase tracking-wider">
+                                                <span className="text-[10px] font-semibold px-2 py-0.5 rounded-md bg-stone-100 text-stone-800 border border-stone-200 uppercase tracking-wider">
                                                     {storePageOptions.find((p) => p.value === cat.page)?.label || cat.page}
                                                 </span>
-                                                <span className="text-[10px] text-slate-400">
+                                                <span className="text-[10px] text-stone-400 font-medium">
                                                     &middot; {cat._count?.products ?? 0} product{cat._count?.products === 1 ? '' : 's'}
                                                 </span>
                                             </div>
                                         </div>
                                     </div>
 
-                                    <div className="flex items-center gap-1.5 opacity-0 group-hover:opacity-100 transition-opacity">
+                                    <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
                                         <button
                                             type="button"
                                             onClick={() => openEditProductCat(cat)}
-                                            className="p-2 rounded-lg text-slate-500 hover:text-indigo-600 hover:bg-indigo-50 transition-colors cursor-pointer"
+                                            className="p-1.5 rounded-lg text-stone-400 hover:text-stone-700 hover:bg-stone-100 transition-colors cursor-pointer"
                                             title="Edit Category"
                                         >
-                                            <Pencil className="w-4 h-4" />
+                                            <Pencil className="w-3.5 h-3.5" />
                                         </button>
                                         <button
                                             type="button"
                                             onClick={() => deleteProductCat(cat.id)}
-                                            className="p-2 rounded-lg text-slate-500 hover:text-red-600 hover:bg-red-50 transition-colors cursor-pointer"
+                                            className="p-1.5 rounded-lg text-stone-400 hover:text-red-600 hover:bg-red-50 transition-colors cursor-pointer"
                                             title="Delete Category"
                                         >
-                                            <Trash2 className="w-4 h-4" />
+                                            <Trash2 className="w-3.5 h-3.5" />
                                         </button>
                                     </div>
                                 </div>
@@ -1261,54 +1284,54 @@ export default function Categories() {
 
                     {/* Product Category Modal */}
                     {showProductModal && (
-                        <div className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center z-[200] p-4">
-                            <div className="bg-white rounded-3xl shadow-2xl w-full max-w-md animate-in fade-in zoom-in-95 duration-200">
-                                <div className="flex items-center justify-between p-6 border-b">
+                        <div className="fixed inset-0 bg-stone-900/40 backdrop-blur-xs flex items-center justify-center z-50 p-4">
+                            <div className="bg-white rounded-2xl shadow-xl w-full max-w-md border border-stone-200 animate-in fade-in zoom-in-95 duration-150 overflow-hidden">
+                                <div className="flex items-center justify-between p-5 border-b border-stone-200 bg-stone-50">
                                     <div>
-                                        <h3 className="text-lg font-black text-slate-900">
+                                        <h3 className="text-base font-bold text-stone-900">
                                             {editingProductCat.id ? 'Edit Product Category' : 'New Product Category'}
                                         </h3>
-                                        <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-0.5">
+                                        <p className="text-[10px] font-medium text-stone-500 uppercase tracking-wider mt-0.5">
                                             Physical Store Inventory Classification
                                         </p>
                                     </div>
                                     <button
                                         type="button"
                                         onClick={() => setShowProductModal(false)}
-                                        className="p-2 text-gray-400 hover:text-slate-700 rounded-xl transition-all cursor-pointer"
+                                        className="p-1.5 text-stone-400 hover:text-stone-700 rounded-lg hover:bg-stone-100 transition-colors cursor-pointer"
                                     >
-                                        <X className="w-5 h-5" />
+                                        <X className="w-4 h-4" />
                                     </button>
                                 </div>
-                                <div className="p-6 space-y-4">
+                                <div className="p-5 space-y-4">
                                     <div className="space-y-1">
-                                        <label className="text-xs font-bold text-slate-700 uppercase tracking-wider">
+                                        <label className="text-xs font-semibold text-stone-700 uppercase tracking-wider">
                                             Category Name
                                         </label>
                                         <input
-                                            className="w-full border border-gray-200 rounded-xl px-4 py-2.5 text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-indigo-500/20"
+                                            className="w-full border border-stone-300 rounded-lg px-3.5 py-2 text-xs font-medium focus:outline-none focus:ring-2 focus:ring-[#1e3a8a]/10 focus:border-[#1e3a8a] text-stone-900"
                                             value={editingProductCat.name || ''}
                                             onChange={(e) => setEditingProductCat({ ...editingProductCat, name: e.target.value })}
                                             placeholder="e.g. Ergonomic Chairs, Chemistry Glassware..."
                                         />
                                     </div>
                                     <div className="space-y-1">
-                                        <label className="text-xs font-bold text-slate-700 uppercase tracking-wider">
+                                        <label className="text-xs font-semibold text-stone-700 uppercase tracking-wider">
                                             Slug (URL Identifier)
                                         </label>
                                         <input
-                                            className="w-full border border-gray-200 rounded-xl px-4 py-2.5 text-xs font-mono focus:outline-none focus:ring-2 focus:ring-indigo-500/20"
+                                            className="w-full border border-stone-300 rounded-lg px-3.5 py-2 text-xs font-mono focus:outline-none focus:ring-2 focus:ring-[#1e3a8a]/10 focus:border-[#1e3a8a] text-stone-900"
                                             value={editingProductCat.slug || ''}
                                             onChange={(e) => setEditingProductCat({ ...editingProductCat, slug: e.target.value })}
                                             placeholder="automatic if left blank"
                                         />
                                     </div>
                                     <div className="space-y-1">
-                                        <label className="text-xs font-bold text-slate-700 uppercase tracking-wider">
+                                        <label className="text-xs font-semibold text-stone-700 uppercase tracking-wider">
                                             Store Section
                                         </label>
                                         <select
-                                            className="w-full border border-gray-300 rounded-xl px-4 py-2.5 text-xs font-bold bg-white text-slate-800 focus:outline-none focus:ring-2 focus:ring-indigo-500/30"
+                                            className="w-full border border-stone-300 rounded-lg px-3.5 py-2 text-xs font-medium bg-white text-stone-800 focus:outline-none focus:ring-2 focus:ring-[#1e3a8a]/10 focus:border-[#1e3a8a]"
                                             value={editingProductCat.page || 'furniture'}
                                             onChange={(e) => setEditingProductCat({ ...editingProductCat, page: e.target.value })}
                                         >
@@ -1320,11 +1343,11 @@ export default function Categories() {
                                         </select>
                                     </div>
                                 </div>
-                                <div className="p-6 border-t flex justify-end gap-3 bg-slate-50/50 rounded-b-3xl">
+                                <div className="p-4 border-t border-stone-200 flex justify-end gap-2 bg-stone-50">
                                     <button
                                         type="button"
                                         onClick={() => setShowProductModal(false)}
-                                        className="px-5 py-2.5 text-xs font-bold text-slate-500 hover:text-slate-900 transition-colors cursor-pointer"
+                                        className="px-4 py-2 text-xs font-medium text-stone-600 hover:text-stone-900 hover:bg-stone-100 rounded-lg transition-colors cursor-pointer"
                                     >
                                         Cancel
                                     </button>
@@ -1332,7 +1355,7 @@ export default function Categories() {
                                         type="button"
                                         onClick={saveProductCat}
                                         disabled={savingProductCat}
-                                        className="px-6 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-black rounded-xl transition-all shadow-md disabled:opacity-50 cursor-pointer"
+                                        className="px-5 py-2 bg-[#1e3a8a] hover:bg-[#1e40af] text-white text-xs font-semibold rounded-lg transition-all shadow-xs disabled:opacity-50 cursor-pointer"
                                     >
                                         {savingProductCat ? 'Saving...' : 'Save Product Category'}
                                     </button>
@@ -1348,21 +1371,21 @@ export default function Categories() {
             {/* ========================================================================= */}
             {activeMode === 'objectives' && (
                 <div className="space-y-6">
-                    {/* Guidance Strip */}
-                    <div className="bg-gradient-to-r from-emerald-950 via-teal-900 to-slate-900 rounded-2xl p-5 text-white shadow-sm border border-emerald-800/40 flex flex-col md:flex-row md:items-center justify-between gap-4">
-                        <div className="flex items-center gap-3">
-                            <div className="w-10 h-10 rounded-xl bg-white/10 flex items-center justify-center text-emerald-300 shrink-0">
-                                <Target className="w-5 h-5 text-emerald-400" />
+                    {/* Guidance Strip - Calm #1e293b Container */}
+                    <div className="bg-[#1e293b] rounded-xl p-5 text-white shadow-sm border border-slate-700/60 flex flex-col md:flex-row md:items-center justify-between gap-4">
+                        <div className="flex items-center gap-3.5">
+                            <div className="w-9 h-9 rounded-lg bg-white/10 flex items-center justify-center text-stone-300 shrink-0">
+                                <Target className="w-4 h-4 text-stone-300" />
                             </div>
                             <div>
-                                <h2 className="text-sm font-bold text-white">Master Search Objectives &amp; Hub Categories</h2>
-                                <p className="text-xs text-emerald-200/90 mt-0.5">
+                                <h2 className="text-sm font-semibold text-white">Master Search Objectives &amp; Hub Categories</h2>
+                                <p className="text-xs text-stone-300 mt-0.5 leading-relaxed">
                                     The single source of truth for the Homepage Search Bar (&quot;Looking For&quot; selector), AI Solutions Finder classification, Hub Page tagging, and Shop Products.
                                 </p>
                             </div>
                         </div>
                         {hasUnsavedObjectives && (
-                            <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-amber-500/20 text-amber-200 border border-amber-400/30 text-xs font-black uppercase tracking-wider animate-pulse">
+                            <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-amber-500/20 text-amber-200 border border-amber-400/30 text-xs font-semibold tracking-wide">
                                 ● Unsaved Changes
                             </span>
                         )}
@@ -1370,19 +1393,19 @@ export default function Categories() {
 
                     {/* Success Alert */}
                     {objectivesSuccessMsg && (
-                        <div className="p-4 bg-emerald-50 border border-emerald-200 text-emerald-800 rounded-2xl text-xs font-bold flex items-center gap-2">
+                        <div className="p-3.5 bg-emerald-50 border border-emerald-200 text-emerald-800 rounded-lg text-xs font-semibold flex items-center gap-2">
                             <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
                             <span>{objectivesSuccessMsg}</span>
                         </div>
                     )}
 
                     {/* Action Bar */}
-                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-white p-4 rounded-2xl border border-slate-200 shadow-xs">
+                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-white p-4 rounded-xl border border-stone-200 shadow-xs">
                         <div className="flex items-center gap-2">
-                            <span className="text-xs font-black uppercase tracking-wider text-slate-800">
+                            <span className="text-xs font-semibold uppercase tracking-wider text-stone-800">
                                 Categories List
                             </span>
-                            <span className="text-[11px] font-bold text-emerald-700 bg-emerald-50 border border-emerald-200 px-2.5 py-0.5 rounded-full">
+                            <span className="text-[11px] font-semibold text-stone-700 bg-stone-100 border border-stone-200 px-2.5 py-0.5 rounded-md">
                                 {searchObjectives.length} configured
                             </span>
                         </div>
@@ -1390,7 +1413,7 @@ export default function Categories() {
                             <button
                                 type="button"
                                 onClick={handleOpenAddObjective}
-                                className="inline-flex items-center gap-1.5 px-4 py-2 bg-slate-900 hover:bg-black text-white text-xs font-bold rounded-xl transition-all cursor-pointer shadow-xs"
+                                className="inline-flex items-center gap-1.5 px-3.5 py-2 bg-stone-800 hover:bg-stone-900 text-white text-xs font-semibold rounded-lg transition-all cursor-pointer shadow-xs"
                             >
                                 <Plus className="w-3.5 h-3.5" />
                                 <span>Add New Category</span>
@@ -1399,10 +1422,10 @@ export default function Categories() {
                                 type="button"
                                 onClick={() => handleSaveObjectives()}
                                 disabled={savingObjectives}
-                                className={`inline-flex items-center gap-1.5 px-5 py-2 text-xs font-black rounded-xl transition-all shadow-xs cursor-pointer ${
+                                className={`inline-flex items-center gap-1.5 px-4 py-2 text-xs font-semibold rounded-lg transition-all shadow-xs cursor-pointer ${
                                     hasUnsavedObjectives
-                                        ? 'bg-emerald-600 hover:bg-emerald-700 text-white shadow-emerald-600/20 animate-pulse'
-                                        : 'bg-emerald-50 hover:bg-emerald-100 text-emerald-700 border border-emerald-200'
+                                        ? 'bg-[#1e3a8a] hover:bg-[#1e40af] text-white shadow-xs'
+                                        : 'bg-stone-100 hover:bg-stone-200/80 text-stone-700 border border-stone-200'
                                 } disabled:opacity-50`}
                             >
                                 <Save className="w-3.5 h-3.5" />
@@ -1413,11 +1436,11 @@ export default function Categories() {
 
                     {/* Categories List */}
                     {loadingObjectives ? (
-                        <div className="p-12 text-center text-slate-400 font-bold text-xs bg-white rounded-2xl border border-slate-200">
+                        <div className="p-12 text-center text-stone-400 font-medium text-xs bg-white rounded-xl border border-stone-200">
                             Loading search objectives...
                         </div>
                     ) : (
-                        <div className="space-y-3">
+                        <div className="space-y-2.5">
                             {searchObjectives.map((item, idx) => {
                                 const IconComponent = SEARCH_ICON_MAP[item.iconName || 'Target'] || Target;
                                 const isAllBaseline = item.id === 'all';
@@ -1426,52 +1449,52 @@ export default function Categories() {
                                 return (
                                     <div
                                         key={item.id || idx}
-                                        className={`p-4 rounded-2xl border transition-all flex flex-col sm:flex-row sm:items-center justify-between gap-4 ${
+                                        className={`p-3.5 rounded-xl border transition-all flex flex-col sm:flex-row sm:items-center justify-between gap-3 ${
                                             isLive
-                                                ? 'bg-white border-slate-200 hover:border-slate-300 shadow-xs'
-                                                : 'bg-slate-50 border-slate-200 opacity-60'
+                                                ? 'bg-white border-stone-200 hover:border-stone-300 shadow-xs'
+                                                : 'bg-stone-50 border-stone-200 opacity-60'
                                         }`}
                                     >
-                                        <div className="flex items-center gap-3.5 min-w-0">
-                                            <span className="w-8 h-8 rounded-xl bg-slate-100 text-slate-700 font-bold text-xs flex items-center justify-center shrink-0 border border-slate-200">
+                                        <div className="flex items-center gap-3 min-w-0">
+                                            <span className="w-7 h-7 rounded-md bg-stone-100 text-stone-600 font-mono text-xs flex items-center justify-center shrink-0 border border-stone-200">
                                                 #{String(idx + 1).padStart(2, '0')}
                                             </span>
-                                            <div className="w-9 h-9 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-700 flex items-center justify-center shrink-0">
+                                            <div className="w-8 h-8 rounded-lg bg-stone-100 border border-stone-200 text-stone-700 flex items-center justify-center shrink-0">
                                                 <IconComponent className="w-4 h-4" />
                                             </div>
                                             <div className="min-w-0">
                                                 <div className="flex items-center gap-2 flex-wrap">
-                                                    <span className="font-extrabold text-slate-900 text-sm">
+                                                    <span className="font-bold text-stone-900 text-sm">
                                                         {item.label}
                                                     </span>
                                                     {item.shortLabel && (
-                                                        <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-slate-100 text-slate-600 border border-slate-200">
+                                                        <span className="px-2 py-0.5 rounded-md text-[10px] font-semibold bg-stone-100 text-stone-700 border border-stone-200">
                                                             Pill: {item.shortLabel}
                                                         </span>
                                                     )}
-                                                    <span className="px-2 py-0.5 rounded-full text-[10px] font-mono font-bold bg-blue-50 text-blue-700 border border-blue-200">
+                                                    <span className="px-2 py-0.5 rounded-md text-[10px] font-mono font-medium bg-stone-100 text-stone-700 border border-stone-200">
                                                         id: {item.id}
                                                     </span>
                                                 </div>
-                                                <p className="text-[11px] text-slate-500 font-mono mt-0.5 truncate">
+                                                <p className="text-[11px] text-stone-500 font-mono mt-0.5 truncate">
                                                     Default Route: {item.defaultRoute || '/find-solutions'} • Icon: {item.iconName || 'Target'}
                                                 </p>
                                             </div>
                                         </div>
 
-                                        <div className="flex items-center gap-2 shrink-0 self-end sm:self-auto">
+                                        <div className="flex items-center gap-1.5 shrink-0 self-end sm:self-auto">
                                             {/* Live / Hidden Toggle */}
                                             <button
                                                 type="button"
                                                 onClick={() => handleToggleObjectiveActive(idx)}
-                                                className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer ${
+                                                className={`px-2.5 py-1 rounded-md text-xs font-semibold transition-all flex items-center gap-1.5 cursor-pointer ${
                                                     isLive
-                                                        ? 'bg-emerald-50 text-emerald-700 border border-emerald-200 hover:bg-emerald-100'
-                                                        : 'bg-slate-200/80 text-slate-600 border border-slate-300 hover:bg-slate-300'
+                                                        ? 'bg-stone-100 text-stone-800 border border-stone-200 hover:bg-stone-200/70'
+                                                        : 'bg-stone-200/80 text-stone-600 border border-stone-300 hover:bg-stone-300'
                                                 }`}
                                                 title="Toggle visibility in search bar and dropdowns"
                                             >
-                                                <span className={`w-1.5 h-1.5 rounded-full ${isLive ? 'bg-emerald-500' : 'bg-slate-400'}`}></span>
+                                                <span className={`w-1.5 h-1.5 rounded-full ${isLive ? 'bg-emerald-600' : 'bg-stone-400'}`}></span>
                                                 <span>{isLive ? 'Live' : 'Hidden'}</span>
                                             </button>
 
@@ -1480,10 +1503,10 @@ export default function Categories() {
                                                 type="button"
                                                 onClick={() => handleMoveObjective(idx, 'up')}
                                                 disabled={idx === 0}
-                                                className="p-2 text-slate-400 hover:text-slate-700 hover:bg-slate-100 rounded-xl transition-all disabled:opacity-30 cursor-pointer"
+                                                className="p-1.5 text-stone-400 hover:text-stone-700 hover:bg-stone-100 rounded-lg transition-all disabled:opacity-30 cursor-pointer"
                                                 title="Move Up"
                                             >
-                                                <ChevronUp className="w-4 h-4" />
+                                                <ChevronUp className="w-3.5 h-3.5" />
                                             </button>
 
                                             {/* Reorder Down */}
@@ -1491,20 +1514,20 @@ export default function Categories() {
                                                 type="button"
                                                 onClick={() => handleMoveObjective(idx, 'down')}
                                                 disabled={idx === searchObjectives.length - 1}
-                                                className="p-2 text-slate-400 hover:text-slate-700 hover:bg-slate-100 rounded-xl transition-all disabled:opacity-30 cursor-pointer"
+                                                className="p-1.5 text-stone-400 hover:text-stone-700 hover:bg-stone-100 rounded-lg transition-all disabled:opacity-30 cursor-pointer"
                                                 title="Move Down"
                                             >
-                                                <ChevronDown className="w-4 h-4" />
+                                                <ChevronDown className="w-3.5 h-3.5" />
                                             </button>
 
                                             {/* Edit */}
                                             <button
                                                 type="button"
                                                 onClick={() => handleOpenEditObjective(idx)}
-                                                className="p-2 text-blue-600 hover:bg-blue-50 rounded-xl transition-all cursor-pointer"
+                                                className="p-1.5 text-stone-500 hover:text-[#1e3a8a] hover:bg-stone-100 rounded-lg transition-all cursor-pointer"
                                                 title="Edit Category Details"
                                             >
-                                                <Pencil className="w-4 h-4" />
+                                                <Pencil className="w-3.5 h-3.5" />
                                             </button>
 
                                             {/* Delete */}
@@ -1512,10 +1535,10 @@ export default function Categories() {
                                                 <button
                                                     type="button"
                                                     onClick={() => handleDeleteObjective(idx)}
-                                                    className="p-2 text-red-500 hover:bg-red-50 rounded-xl transition-all cursor-pointer"
+                                                    className="p-1.5 text-stone-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-all cursor-pointer"
                                                     title="Delete Category"
                                                 >
-                                                    <Trash2 className="w-4 h-4" />
+                                                    <Trash2 className="w-3.5 h-3.5" />
                                                 </button>
                                             )}
                                         </div>
@@ -1527,34 +1550,34 @@ export default function Categories() {
 
                     {/* Modal: Add / Edit Search Objective */}
                     {showNewObjectiveModal && (
-                        <div className="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-4">
-                            <div className="bg-white w-full max-w-lg rounded-3xl shadow-2xl border border-slate-200 overflow-hidden animate-in fade-in zoom-in-95 duration-150">
-                                <div className="p-6 border-b border-slate-100 flex items-center justify-between bg-slate-50/50">
+                        <div className="fixed inset-0 z-50 bg-stone-900/40 backdrop-blur-xs flex items-center justify-center p-4">
+                            <div className="bg-white w-full max-w-lg rounded-2xl shadow-xl border border-stone-200 overflow-hidden animate-in fade-in zoom-in-95 duration-150">
+                                <div className="p-5 border-b border-stone-200 flex items-center justify-between bg-stone-50">
                                     <div>
-                                        <h3 className="text-base font-extrabold text-slate-900 flex items-center gap-2">
-                                            <Target className="w-5 h-5 text-emerald-600" />
+                                        <h3 className="text-base font-bold text-stone-900 flex items-center gap-2">
+                                            <Target className="w-4 h-4 text-[#1e3a8a]" />
                                             {editingObjectiveIndex !== null ? 'Edit Search Objective' : 'Add Search Objective'}
                                         </h3>
-                                        <p className="text-xs text-slate-500 font-medium mt-0.5">
+                                        <p className="text-xs text-stone-500 font-medium mt-0.5">
                                             Configures how this category appears in the search bar and hub dropdowns.
                                         </p>
                                     </div>
                                     <button
                                         type="button"
                                         onClick={() => setShowNewObjectiveModal(false)}
-                                        className="p-2 text-slate-400 hover:text-slate-700 rounded-xl transition-all cursor-pointer"
+                                        className="p-1.5 text-stone-400 hover:text-stone-700 rounded-lg hover:bg-stone-100 transition-colors cursor-pointer"
                                     >
-                                        <X className="w-5 h-5" />
+                                        <X className="w-4 h-4" />
                                     </button>
                                 </div>
 
-                                <div className="p-6 space-y-4">
+                                <div className="p-5 space-y-4">
                                     <div className="space-y-1">
-                                        <label className="text-xs font-bold text-slate-700 uppercase tracking-wider">
+                                        <label className="text-xs font-semibold text-stone-700 uppercase tracking-wider">
                                             Category Label (Display Name) *
                                         </label>
                                         <input
-                                            className="w-full border border-gray-300 rounded-xl px-4 py-2.5 text-xs font-bold text-slate-800 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500"
+                                            className="w-full border border-stone-300 rounded-lg px-3.5 py-2 text-xs font-medium text-stone-900 focus:outline-none focus:ring-2 focus:ring-[#1e3a8a]/10 focus:border-[#1e3a8a]"
                                             value={objectiveForm.label || ''}
                                             onChange={(e) => {
                                                 const val = e.target.value;
@@ -1573,11 +1596,11 @@ export default function Categories() {
 
                                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                         <div className="space-y-1">
-                                            <label className="text-xs font-bold text-slate-700 uppercase tracking-wider">
+                                            <label className="text-xs font-semibold text-stone-700 uppercase tracking-wider">
                                                 Category ID (Slug) *
                                             </label>
                                             <input
-                                                className="w-full border border-gray-300 rounded-xl px-4 py-2.5 text-xs font-mono font-bold text-slate-800 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500"
+                                                className="w-full border border-stone-300 rounded-lg px-3.5 py-2 text-xs font-mono font-medium text-stone-900 focus:outline-none focus:ring-2 focus:ring-[#1e3a8a]/10 focus:border-[#1e3a8a]"
                                                 value={objectiveForm.id || ''}
                                                 onChange={(e) => setObjectiveForm({ ...objectiveForm, id: e.target.value })}
                                                 placeholder="e.g. smart-campus, sports-infra"
@@ -1585,11 +1608,11 @@ export default function Categories() {
                                         </div>
 
                                         <div className="space-y-1">
-                                            <label className="text-xs font-bold text-slate-700 uppercase tracking-wider">
+                                            <label className="text-xs font-semibold text-stone-700 uppercase tracking-wider">
                                                 Short Label (Pill Text)
                                             </label>
                                             <input
-                                                className="w-full border border-gray-300 rounded-xl px-4 py-2.5 text-xs font-semibold text-slate-800 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500"
+                                                className="w-full border border-stone-300 rounded-lg px-3.5 py-2 text-xs font-medium text-stone-900 focus:outline-none focus:ring-2 focus:ring-[#1e3a8a]/10 focus:border-[#1e3a8a]"
                                                 value={objectiveForm.shortLabel || ''}
                                                 onChange={(e) => setObjectiveForm({ ...objectiveForm, shortLabel: e.target.value })}
                                                 placeholder="e.g. Smart Campus, Sports"
@@ -1599,11 +1622,11 @@ export default function Categories() {
 
                                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                         <div className="space-y-1">
-                                            <label className="text-xs font-bold text-slate-700 uppercase tracking-wider">
+                                            <label className="text-xs font-semibold text-stone-700 uppercase tracking-wider">
                                                 Display Icon
                                             </label>
                                             <select
-                                                className="w-full border border-gray-300 rounded-xl px-4 py-2.5 text-xs font-bold bg-white text-slate-800 focus:outline-none focus:ring-2 focus:ring-emerald-500/30"
+                                                className="w-full border border-stone-300 rounded-lg px-3.5 py-2 text-xs font-medium bg-white text-stone-800 focus:outline-none focus:ring-2 focus:ring-[#1e3a8a]/10 focus:border-[#1e3a8a]"
                                                 value={objectiveForm.iconName || 'Target'}
                                                 onChange={(e) => setObjectiveForm({ ...objectiveForm, iconName: e.target.value })}
                                             >
@@ -1616,11 +1639,11 @@ export default function Categories() {
                                         </div>
 
                                         <div className="space-y-1">
-                                            <label className="text-xs font-bold text-slate-700 uppercase tracking-wider">
+                                            <label className="text-xs font-semibold text-stone-700 uppercase tracking-wider">
                                                 Default Target Route
                                             </label>
                                             <input
-                                                className="w-full border border-gray-300 rounded-xl px-4 py-2.5 text-xs font-mono font-semibold text-slate-800 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500"
+                                                className="w-full border border-stone-300 rounded-lg px-3.5 py-2 text-xs font-mono font-medium text-stone-900 focus:outline-none focus:ring-2 focus:ring-[#1e3a8a]/10 focus:border-[#1e3a8a]"
                                                 value={objectiveForm.defaultRoute || ''}
                                                 onChange={(e) => setObjectiveForm({ ...objectiveForm, defaultRoute: e.target.value })}
                                                 placeholder="/smart-classrooms"
@@ -1634,27 +1657,27 @@ export default function Categories() {
                                                 type="checkbox"
                                                 checked={objectiveForm.active !== false}
                                                 onChange={(e) => setObjectiveForm({ ...objectiveForm, active: e.target.checked })}
-                                                className="w-4 h-4 rounded text-emerald-600 focus:ring-emerald-500 border-gray-300"
+                                                className="w-4 h-4 rounded text-[#1e3a8a] focus:ring-[#1e3a8a] border-stone-300"
                                             />
-                                            <span className="text-xs font-bold text-slate-800">
+                                            <span className="text-xs font-medium text-stone-800">
                                                 Active &amp; Visible in Homepage Search &amp; CMS Dropdowns
                                             </span>
                                         </label>
                                     </div>
                                 </div>
 
-                                <div className="p-6 border-t border-slate-100 flex justify-end gap-3 bg-slate-50/50 rounded-b-3xl">
+                                <div className="p-4 border-t border-stone-200 flex justify-end gap-2 bg-stone-50">
                                     <button
                                         type="button"
                                         onClick={() => setShowNewObjectiveModal(false)}
-                                        className="px-5 py-2.5 text-xs font-bold text-slate-500 hover:text-slate-900 transition-colors cursor-pointer"
+                                        className="px-4 py-2 text-xs font-medium text-stone-600 hover:text-stone-900 hover:bg-stone-100 rounded-lg transition-colors cursor-pointer"
                                     >
                                         Cancel
                                     </button>
                                     <button
                                         type="button"
                                         onClick={handleSaveObjectiveModal}
-                                        className="px-6 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-black rounded-xl transition-all shadow-md cursor-pointer"
+                                        className="px-5 py-2 bg-[#1e3a8a] hover:bg-[#1e40af] text-white text-xs font-semibold rounded-lg transition-all shadow-xs cursor-pointer"
                                     >
                                         Apply Category
                                     </button>

@@ -1,158 +1,257 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
+import { useNavigate, Link } from 'react-router-dom';
 import {
-    Users, Package, MessageSquare, TrendingUp, AlertCircle,
-    Tag, FileText, Globe, CheckCircle, Database, Zap, Star, BookMarked,
-    BookOpen, ArrowRight, Activity, Heart
+  Package,
+  FolderTree,
+  Globe,
+  Users,
+  AlertTriangle,
+  ArrowRight,
+  RotateCw,
+  Heart,
+  MessageSquare,
+  BookOpen,
+  BookMarked,
+  Tag,
+  FileText,
+  Star,
+  Search,
+  GraduationCap,
 } from 'lucide-react';
-import { Link } from 'react-router-dom';
 import api from '../api/client';
+import { StatCard, ErrorBanner, PageHeader } from '../components/ui';
+import { cn } from '../../lib/utils';
 
-interface Stats {
-    users: number;
-    products: number;
-    orders: number;
-    unreadEnquiries: number;
-    unreadQuotes: number;
-    pendingClassifieds: number;
-    totalRevenue: number;
+/**
+ * Admin dashboard.
+ * Deliberately light on the database: one request to GET /admin/stats (7 simple counts).
+ * No charts, trends or analytics, and no polling; it only loads when opened or on "Refresh".
+ */
+export interface DashboardStats {
+  users: number;
+  products: number;
+  orders: number;
+  unreadEnquiries: number;
+  unreadQuotes: number;
+  pendingClassifieds: number;
+  totalRevenue: number;
 }
 
-const sectionGroups = [
-    {
-        heading: '🌐 Website Content',
-        color: 'blue',
-        items: [
-            { to: '/admin/homepage-editor', icon: Star, label: 'Homepage & Cards', desc: 'Edit cards, images, text & hero', bg: 'bg-blue-50', txt: 'text-blue-700', ibg: 'bg-blue-100' },
-            { to: '/admin/pages', icon: Globe, label: 'All Pages', desc: 'Edit every page on the website', bg: 'bg-sky-50', txt: 'text-sky-700', ibg: 'bg-sky-100' },
-            { to: '/admin/blog', icon: BookOpen, label: "Blog (What's Trending)", desc: 'Manage articles, categories & layout', bg: 'bg-indigo-50', txt: 'text-indigo-700', ibg: 'bg-indigo-100' },
-        ]
-    },
-    {
-        heading: '📦 Products & Catalogue',
-        color: 'emerald',
-        items: [
-            { to: '/admin/products', icon: Package, label: 'Products', desc: 'Add, edit, or remove product listings', bg: 'bg-emerald-50', txt: 'text-emerald-700', ibg: 'bg-emerald-100' },
-            { to: '/admin/catalogues', icon: BookMarked, label: 'Catalogues & Case Studies', desc: 'Manage PDF brochures & case studies', bg: 'bg-teal-50', txt: 'text-teal-700', ibg: 'bg-teal-100' },
-            { to: '/admin/classifieds', icon: Tag, label: 'Classifieds', desc: 'Manage opportunities & listings', bg: 'bg-green-50', txt: 'text-green-700', ibg: 'bg-green-100' },
-        ]
-    },
-    {
-        heading: '📬 Quotations & Enquiries',
-        color: 'orange',
-        items: [
-            { to: '/admin/enquiries', icon: MessageSquare, label: 'Enquiries & Leads', desc: 'View quote requests & messages', bg: 'bg-amber-50', txt: 'text-amber-700', ibg: 'bg-amber-100' },
-            { to: '/admin/wishlist-report', icon: Heart, label: 'Wishlist Reports', desc: 'Leads for quotations', bg: 'bg-rose-50', txt: 'text-rose-700', ibg: 'bg-rose-100' },
-        ]
-    },
-    {
-        heading: '👥 People & Settings',
-        color: 'violet',
-        items: [
-            { to: '/admin/users', icon: Users, label: 'Users', desc: 'Manage registered accounts', bg: 'bg-violet-50', txt: 'text-violet-700', ibg: 'bg-violet-100' },
-            { to: '/admin/site-content', icon: FileText, label: 'Site Settings', desc: 'Update global site configuration', bg: 'bg-purple-50', txt: 'text-purple-700', ibg: 'bg-purple-100' },
-        ]
-    },
+interface QuickNavItem {
+  to: string;
+  icon: typeof Package;
+  label: string;
+  desc: string;
+}
+
+interface QuickNavGroup {
+  heading: string;
+  items: QuickNavItem[];
+}
+
+const quickNavGroups: QuickNavGroup[] = [
+  {
+    heading: 'Website Content',
+    items: [
+      { to: '/admin/homepage-editor', icon: Star, label: 'Homepage & Cards', desc: 'Hero, homepage cards and featured blocks' },
+      { to: '/admin/pages', icon: Globe, label: 'All Pages', desc: 'Edit every page on the website' },
+      { to: '/admin/blog', icon: BookOpen, label: "Blog (What's Trending)", desc: 'Articles, categories and layout' },
+      { to: '/admin/solutions-finder', icon: Search, label: 'Solutions Finder', desc: 'Search cards and taxonomy' },
+    ],
+  },
+  {
+    heading: 'Products & Catalogue',
+    items: [
+      { to: '/admin/products', icon: Package, label: 'Products', desc: 'Add, edit or remove products' },
+      { to: '/admin/categories', icon: FolderTree, label: 'Categories', desc: 'Product and page categories' },
+      { to: '/admin/catalogues', icon: BookMarked, label: 'Catalogues & Case Studies', desc: 'PDF brochures and case studies' },
+      { to: '/admin/colleges', icon: GraduationCap, label: 'Colleges for Sale', desc: 'Institution sale listings' },
+      { to: '/admin/classifieds', icon: Tag, label: 'Classifieds', desc: 'Opportunities and listings' },
+    ],
+  },
+  {
+    heading: 'Enquiries & Leads',
+    items: [
+      { to: '/admin/enquiries', icon: MessageSquare, label: 'Enquiries', desc: 'Quote requests and messages' },
+      { to: '/admin/wishlist-report', icon: Heart, label: 'Wishlist Reports', desc: 'Saved products, leads for quotes' },
+    ],
+  },
+  {
+    heading: 'People & Settings',
+    items: [
+      { to: '/admin/users', icon: Users, label: 'Users', desc: 'Customer and admin accounts' },
+      { to: '/admin/site-content', icon: FileText, label: 'Site Settings', desc: 'Contacts, branding and footer' },
+    ],
+  },
 ];
 
+function DashboardSkeleton() {
+  return (
+    <div className="max-w-7xl mx-auto space-y-8 p-4 sm:p-6 lg:p-8 animate-pulse" data-testid="dashboard-skeleton">
+      <div className="space-y-2 pb-5 border-b border-stone-200">
+        <div className="h-7 w-48 bg-stone-200 rounded-md" />
+        <div className="h-4 w-72 bg-stone-100 rounded-md" />
+      </div>
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        {[1, 2, 3, 4].map((i) => (
+          <div key={i} className="h-28 bg-stone-100 rounded-xl border border-stone-200" />
+        ))}
+      </div>
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+        {[1, 2, 3, 4, 5, 6].map((i) => (
+          <div key={i} className="h-20 bg-stone-100 rounded-xl border border-stone-200" />
+        ))}
+      </div>
+    </div>
+  );
+}
+
 export default function Dashboard() {
-    const [stats, setStats] = useState<Stats | null>(null);
-    const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
+  const [stats, setStats] = useState<DashboardStats | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [refreshing, setRefreshing] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
-    useEffect(() => {
-        api.get('/admin/stats').then(({ data }) => setStats(data)).finally(() => setLoading(false));
-    }, []);
+  const fetchStats = useCallback(async (isRefresh = false) => {
+    try {
+      if (isRefresh) setRefreshing(true);
+      else setLoading(true);
+      setError(null);
+      const res = await api.get<DashboardStats>('/admin/stats');
+      setStats(res.data);
+    } catch (err) {
+      console.error('Failed to fetch admin stats:', err);
+      setError('Could not load the dashboard numbers. Check your connection and try again.');
+    } finally {
+      setLoading(false);
+      setRefreshing(false);
+    }
+  }, []);
 
-    const statCards = [
-        { label: 'Registered Users', value: stats?.users ?? '–', icon: Users, color: 'bg-blue-500', light: 'bg-blue-50 text-blue-700' },
-        { label: 'Active Products', value: stats?.products ?? '–', icon: Package, color: 'bg-emerald-500', light: 'bg-emerald-50 text-emerald-700' },
-        { label: 'Quote Requests', value: (stats?.unreadQuotes || 0) + (stats?.unreadEnquiries || 0), icon: MessageSquare, color: 'bg-violet-500', light: 'bg-violet-50 text-violet-700' },
-        { label: 'Revenue', value: `₹${(((stats?.totalRevenue || 0)) / 1000).toFixed(0)}K`, icon: TrendingUp, color: 'bg-orange-500', light: 'bg-orange-50 text-orange-700' },
-        { label: 'Unread Enquiries', value: (stats?.unreadEnquiries || 0) + (stats?.unreadQuotes || 0), icon: MessageSquare, color: 'bg-red-500', light: 'bg-red-50 text-red-700' },
-        { label: 'Pending Listings', value: stats?.pendingClassifieds ?? '–', icon: AlertCircle, color: 'bg-yellow-500', light: 'bg-yellow-50 text-yellow-700' },
-    ];
+  useEffect(() => {
+    fetchStats();
+  }, [fetchStats]);
 
-    return (
-        <div className="max-w-7xl mx-auto space-y-8">
+  if (loading) return <DashboardSkeleton />;
 
-            {/* Welcome */}
-            <div className="flex items-start justify-between">
-                <div>
-                    <h1 className="text-2xl font-extrabold text-gray-900">Welcome back, Admin 👋</h1>
-                    <p className="text-gray-500 text-sm mt-1">Here's your SchoolMart control center. Jump to any section below.</p>
-                </div>
-                <div className="hidden sm:flex items-center gap-2 bg-emerald-50 border border-emerald-200 text-emerald-700 text-xs font-semibold px-3 py-2 rounded-xl">
-                    <Activity className="w-3.5 h-3.5" />
-                    System Live
-                </div>
-            </div>
+  const unreadQuotes = stats?.unreadQuotes ?? 0;
+  const unreadEnquiries = stats?.unreadEnquiries ?? 0;
+  const pendingClassifieds = stats?.pendingClassifieds ?? 0;
+  const totalAttention = unreadQuotes + unreadEnquiries;
 
-            {/* Stats Strip */}
-            {!loading && (
-                <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
-                    {statCards.map((s) => (
-                        <div key={s.label} className="bg-white rounded-2xl border border-gray-100 p-4 shadow-sm flex flex-col gap-2">
-                            <div className={`w-8 h-8 ${s.color} rounded-lg flex items-center justify-center`}>
-                                <s.icon className="w-4 h-4 text-white" />
-                            </div>
-                            <div className="text-2xl font-bold text-gray-900">{loading ? '…' : s.value}</div>
-                            <div className="text-xs text-gray-500 font-medium leading-tight">{s.label}</div>
-                        </div>
-                    ))}
-                </div>
-            )}
+  const show = (n: number | undefined) => (typeof n === 'number' ? n.toLocaleString() : '–');
 
-            {/* Quick Navigation Sections */}
-            <div className="space-y-6">
-                {sectionGroups.map((group) => (
-                    <div key={group.heading}>
-                        <h2 className="text-sm font-black text-gray-700 mb-3 uppercase tracking-widest">{group.heading}</h2>
-                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
-                            {group.items.map(({ to, icon: Icon, label, desc, bg, txt, ibg }) => (
-                                <Link
-                                    key={to}
-                                    to={to}
-                                    className={`group flex items-center gap-4 ${bg} border border-transparent hover:border-gray-200 hover:shadow-md rounded-2xl p-4 transition-all`}
-                                >
-                                    <div className={`w-11 h-11 ${ibg} ${txt} rounded-xl flex items-center justify-center shrink-0`}>
-                                        <Icon className="w-5 h-5" />
-                                    </div>
-                                    <div className="min-w-0 flex-1">
-                                        <div className={`font-bold text-sm ${txt}`}>{label}</div>
-                                        <div className="text-xs text-gray-500 mt-0.5 truncate">{desc}</div>
-                                    </div>
-                                    <ArrowRight className={`w-4 h-4 ${txt} opacity-0 group-hover:opacity-100 shrink-0 transition-opacity`} />
-                                </Link>
-                            ))}
-                        </div>
-                    </div>
-                ))}
-            </div>
+  return (
+    <div className="max-w-7xl mx-auto space-y-8 p-4 sm:p-6 lg:p-8">
+      <PageHeader
+        title="Dashboard"
+        subtitle="Your SchoolMart control centre. Open any section below."
+        className="mb-0"
+        actions={
+          <button
+            type="button"
+            onClick={() => fetchStats(true)}
+            disabled={refreshing}
+            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-stone-200 bg-white hover:bg-stone-50 text-stone-700 text-xs font-semibold shadow-2xs transition-colors disabled:opacity-50"
+          >
+            <RotateCw className={cn('w-3.5 h-3.5 text-stone-500', refreshing && 'animate-spin')} />
+            <span>{refreshing ? 'Refreshing…' : 'Refresh'}</span>
+          </button>
+        }
+      />
 
-            {/* System Status */}
-            <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-5">
-                <h2 className="font-bold text-gray-900 mb-4 flex items-center gap-2 text-sm uppercase tracking-widest">
-                    <CheckCircle className="w-4 h-4 text-emerald-500" /> System Status
+      {error && <ErrorBanner message={error} retry={() => fetchStats(false)} onDismiss={() => setError(null)} />}
+
+      {/* Needs attention: only when there is something unread */}
+      {totalAttention > 0 && (
+        <div className="rounded-xl border border-amber-300 bg-amber-50/90 p-4 sm:p-5">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <div className="flex items-start gap-3">
+              <div className="w-9 h-9 rounded-lg bg-amber-100 text-amber-700 border border-amber-200 flex items-center justify-center shrink-0">
+                <AlertTriangle className="w-5 h-5" />
+              </div>
+              <div>
+                <h2 className="text-sm sm:text-base font-bold text-amber-950">
+                  {totalAttention} unread {totalAttention === 1 ? 'enquiry' : 'enquiries'}
                 </h2>
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                    {[
-                        { label: 'Database', icon: Database },
-                        { label: 'Authentication', icon: CheckCircle },
-                        { label: 'API Server', icon: Zap },
-                    ].map(s => (
-                        <div key={s.label} className="flex items-center justify-between py-2.5 px-4 bg-gray-50 rounded-xl">
-                            <div className="flex items-center gap-2 text-sm text-gray-700">
-                                <s.icon className="w-4 h-4 text-gray-400" />
-                                {s.label}
-                            </div>
-                            <span className="flex items-center gap-1.5 text-xs font-semibold text-emerald-700">
-                                <span className="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-pulse" />
-                                Operational
-                            </span>
-                        </div>
-                    ))}
-                </div>
+                <p className="text-xs text-amber-800/90 mt-1">
+                  {unreadQuotes} quote {unreadQuotes === 1 ? 'request' : 'requests'} · {unreadEnquiries} contact{' '}
+                  {unreadEnquiries === 1 ? 'message' : 'messages'}
+                </p>
+              </div>
             </div>
-
+            <Link
+              to="/admin/enquiries"
+              className="inline-flex items-center justify-center gap-1.5 px-4 py-2 rounded-lg bg-amber-600 hover:bg-amber-700 text-white text-xs font-semibold transition-colors shrink-0"
+            >
+              <span>Review enquiries</span>
+              <ArrowRight className="w-3.5 h-3.5" />
+            </Link>
+          </div>
         </div>
-    );
+      )}
+
+      {/* Key numbers */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <StatCard
+          title="Active Products"
+          value={show(stats?.products)}
+          subtitle="Live in the catalogue"
+          icon={Package}
+          onClick={() => navigate('/admin/products')}
+        />
+        <StatCard
+          title="Unread Enquiries"
+          value={show(stats ? totalAttention : undefined)}
+          subtitle="Quotes and contact messages"
+          icon={MessageSquare}
+          onClick={() => navigate('/admin/enquiries')}
+        />
+        <StatCard
+          title="Pending Classifieds"
+          value={show(stats ? pendingClassifieds : undefined)}
+          subtitle="Waiting for review"
+          icon={Tag}
+          onClick={() => navigate('/admin/classifieds')}
+        />
+        <StatCard
+          title="Registered Users"
+          value={show(stats?.users)}
+          subtitle="Customer and admin accounts"
+          icon={Users}
+          onClick={() => navigate('/admin/users')}
+        />
+      </div>
+
+      {/* Quick navigation */}
+      <div className="space-y-6">
+        {quickNavGroups.map((group) => (
+          <section key={group.heading} className="space-y-3">
+            <h2 className="text-xs font-bold text-stone-500 uppercase tracking-wider">{group.heading}</h2>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3">
+              {group.items.map(({ to, icon: Icon, label, desc }) => (
+                <Link
+                  key={to}
+                  to={to}
+                  className="group flex items-start gap-3.5 p-4 rounded-xl bg-white border border-stone-200 hover:border-stone-300 hover:shadow-sm transition-all"
+                >
+                  <div className="w-10 h-10 rounded-lg bg-stone-50 text-[#1e3a8a] border border-stone-200/80 group-hover:bg-blue-50 group-hover:border-blue-100 flex items-center justify-center shrink-0 transition-colors">
+                    <Icon className="w-5 h-5" />
+                  </div>
+                  <div className="min-w-0 flex-1">
+                    <div className="text-sm font-semibold text-stone-800 group-hover:text-[#1e3a8a] transition-colors">
+                      {label}
+                    </div>
+                    <div className="text-xs text-stone-500 mt-0.5 leading-relaxed">{desc}</div>
+                  </div>
+                  <ArrowRight className="w-4 h-4 text-stone-300 group-hover:text-stone-600 transition-colors shrink-0 mt-0.5" />
+                </Link>
+              ))}
+            </div>
+          </section>
+        ))}
+      </div>
+    </div>
+  );
 }

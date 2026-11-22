@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useMemo } from 'react';
+import { useEffect, useState, useMemo, type FormEvent } from 'react';
 import {
   Compass,
   Sparkles,
@@ -19,6 +19,8 @@ import {
   Wand2,
 } from 'lucide-react';
 import api from '../api/client';
+import { AdminPagination } from '../components/ui/AdminPagination';
+import { tableStyles } from '../components/ui/tableStyles';
 
 // ─── Interfaces ───────────────────────────────────────────────────────────────
 
@@ -127,6 +129,7 @@ export default function SolutionsFinderManager() {
   const [loadingCards, setLoadingCards] = useState(false);
   const [cardSearch, setCardSearch] = useState('');
   const [selectedCategoryFilter, setSelectedCategoryFilter] = useState<string>('all');
+  const [cardPage, setCardPage] = useState(1);
   const [cardModalOpen, setCardModalOpen] = useState(false);
   const [editingCard, setEditingCard] = useState<SolutionCard | null>(null);
   const [deleteConfirmId, setDeleteConfirmId] = useState<number | null>(null);
@@ -229,7 +232,7 @@ export default function SolutionsFinderManager() {
   const fetchLogs = async (page = 1) => {
     setLoadingLogs(true);
     try {
-      const params: any = { page, limit: 25 };
+      const params: Record<string, string | number> = { page, limit: 25 };
       if (unmatchedOnlyFilter) params.unmatchedOnly = 'true';
       if (logsCategoryFilter !== 'all') params.category = logsCategoryFilter;
       if (logsSearchText.trim()) params.search = logsSearchText.trim();
@@ -260,6 +263,11 @@ export default function SolutionsFinderManager() {
       fetchStats();
     }
   }, [unmatchedOnlyFilter, logsCategoryFilter]);
+
+  // Reset card page when card filters change
+  useEffect(() => {
+    setCardPage(1);
+  }, [cardSearch, selectedCategoryFilter]);
 
   // ─── Actions ────────────────────────────────────────────────────────────────
 
@@ -369,7 +377,7 @@ export default function SolutionsFinderManager() {
     }
   };
 
-  const handleSaveCard = async (e: React.FormEvent) => {
+  const handleSaveCard = async (e: FormEvent) => {
     e.preventDefault();
     setFormError(null);
 
@@ -430,9 +438,11 @@ export default function SolutionsFinderManager() {
       }
       setCardModalOpen(false);
       fetchCacheStatus();
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error('Failed to save card', err);
-      const errMsg = err.response?.data?.error || 'Failed to save solution card';
+      const errMsg =
+        (err as { response?: { data?: { error?: string } } })?.response?.data?.error ||
+        'Failed to save solution card';
       setFormError(errMsg);
     } finally {
       setIsSavingCard(false);
@@ -505,16 +515,20 @@ export default function SolutionsFinderManager() {
       await api.put('/admin/solutions-finder/taxonomy', taxonomy);
       showToast('Taxonomy successfully saved & RAM index updated');
       fetchCacheStatus();
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error('Failed to save taxonomy', err);
-      const msg = err.response?.data?.error || 'Failed to save taxonomy';
+      const msg =
+        (err as { response?: { data?: { error?: string } } })?.response?.data?.error ||
+        'Failed to save taxonomy';
       setTaxonomyError(msg);
     } finally {
       setSavingTaxonomy(false);
     }
   };
 
-  // ─── Filtered Cards ─────────────────────────────────────────────────────────
+  // ─── Filtered & Paginated Cards ─────────────────────────────────────────────
+
+  const CARD_PAGE_SIZE = 25;
 
   const filteredCards = useMemo(() => {
     return cards.filter(card => {
@@ -531,6 +545,13 @@ export default function SolutionsFinderManager() {
     });
   }, [cards, cardSearch, selectedCategoryFilter]);
 
+  const cardTotalPages = Math.max(1, Math.ceil(filteredCards.length / CARD_PAGE_SIZE));
+
+  const paginatedCards = useMemo(() => {
+    const start = (cardPage - 1) * CARD_PAGE_SIZE;
+    return filteredCards.slice(start, start + CARD_PAGE_SIZE);
+  }, [filteredCards, cardPage]);
+
   return (
     <div className="p-4 sm:p-6 lg:p-8 max-w-7xl mx-auto space-y-6">
 
@@ -543,17 +564,17 @@ export default function SolutionsFinderManager() {
       )}
 
       {/* ─── Header & Cache Status ─────────────────────────────────────────── */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-white p-6 rounded-2xl border border-gray-100 shadow-sm">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-white p-6 rounded-2xl border border-stone-200 shadow-2xs">
         <div>
           <div className="flex items-center gap-2.5">
-            <div className="w-10 h-10 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center font-bold">
+            <div className="w-10 h-10 rounded-xl bg-blue-50 text-[#1e3a8a] flex items-center justify-center font-bold">
               <Compass className="w-6 h-6" />
             </div>
             <div>
-              <h1 className="text-2xl font-extrabold text-gray-900 tracking-tight">
+              <h1 className="text-2xl font-bold text-stone-900 tracking-tight">
                 Solutions Finder Manager
               </h1>
-              <p className="text-xs text-gray-500 font-medium">
+              <p className="text-xs text-stone-500 font-medium">
                 Manage AI-curated catalogue cards, Categories A–J, and buyer search analytics.
               </p>
             </div>
@@ -561,41 +582,41 @@ export default function SolutionsFinderManager() {
         </div>
 
         {/* Cache Status Badge & Manual Rebuild */}
-        <div className="flex items-center gap-3 bg-slate-50 border border-slate-200/80 px-4 py-2.5 rounded-xl">
+        <div className="flex items-center gap-3 bg-stone-50 border border-stone-200 px-4 py-2.5 rounded-xl">
           <div className="flex items-center gap-2">
             <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse" />
-            <span className="text-xs font-semibold text-slate-700">
+            <span className="text-xs font-semibold text-stone-700">
               RAM Cache: {cacheStatus?.activeCardsCount ?? cards.filter(c => c.active).length} Active Cards
             </span>
           </div>
-          <span className="text-slate-300">|</span>
-          <span className="text-[11px] font-mono text-slate-500 uppercase">
+          <span className="text-stone-300">|</span>
+          <span className="text-[11px] font-mono text-stone-500 uppercase">
             v:{cacheStatus?.version ? cacheStatus.version.slice(0, 8) : 'syncing'}
           </span>
           <button
             onClick={handleRebuildCache}
             disabled={isRebuilding}
             title="Force immediate cache recompile"
-            className="ml-2 p-1.5 rounded-lg text-slate-600 hover:text-blue-600 hover:bg-white transition-colors"
+            className="ml-2 p-1.5 rounded-lg text-stone-600 hover:text-[#1e3a8a] hover:bg-white transition-colors"
           >
-            <RefreshCw className={`w-4 h-4 ${isRebuilding ? 'animate-spin text-blue-600' : ''}`} />
+            <RefreshCw className={`w-4 h-4 ${isRebuilding ? 'animate-spin text-[#1e3a8a]' : ''}`} />
           </button>
         </div>
       </div>
 
       {/* ─── Tab Navigation Bar ─────────────────────────────────────────────── */}
-      <div className="flex items-center gap-2 border-b border-gray-200">
+      <div className="flex items-center gap-2 border-b border-stone-200">
         <button
           onClick={() => setActiveTab('cards')}
           className={`flex items-center gap-2 px-5 py-3 font-semibold text-sm border-b-2 transition-all ${
             activeTab === 'cards'
-              ? 'border-blue-600 text-blue-600'
-              : 'border-transparent text-gray-500 hover:text-gray-800'
+              ? 'border-[#1e3a8a] text-[#1e3a8a]'
+              : 'border-transparent text-stone-500 hover:text-stone-800'
           }`}
         >
           <Layers className="w-4 h-4" />
           <span>Solution Cards</span>
-          <span className="text-xs bg-gray-100 text-gray-600 px-2 py-0.5 rounded-full font-bold">
+          <span className="text-xs bg-stone-100 text-stone-600 px-2 py-0.5 rounded-full font-bold">
             {cards.length}
           </span>
         </button>
@@ -604,8 +625,8 @@ export default function SolutionsFinderManager() {
           onClick={() => setActiveTab('taxonomy')}
           className={`flex items-center gap-2 px-5 py-3 font-semibold text-sm border-b-2 transition-all ${
             activeTab === 'taxonomy'
-              ? 'border-blue-600 text-blue-600'
-              : 'border-transparent text-gray-500 hover:text-gray-800'
+              ? 'border-[#1e3a8a] text-[#1e3a8a]'
+              : 'border-transparent text-stone-500 hover:text-stone-800'
           }`}
         >
           <Tag className="w-4 h-4" />
@@ -616,8 +637,8 @@ export default function SolutionsFinderManager() {
           onClick={() => setActiveTab('analytics')}
           className={`flex items-center gap-2 px-5 py-3 font-semibold text-sm border-b-2 transition-all ${
             activeTab === 'analytics'
-              ? 'border-blue-600 text-blue-600'
-              : 'border-transparent text-gray-500 hover:text-gray-800'
+              ? 'border-[#1e3a8a] text-[#1e3a8a]'
+              : 'border-transparent text-stone-500 hover:text-stone-800'
           }`}
         >
           <TrendingUp className="w-4 h-4" />
@@ -634,23 +655,23 @@ export default function SolutionsFinderManager() {
       {activeTab === 'cards' && (
         <div className="space-y-4">
           {/* Action Bar */}
-          <div className="flex flex-col sm:flex-row items-center justify-between gap-3 bg-white p-4 rounded-xl border border-gray-100 shadow-sm">
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-3 bg-white p-4 rounded-xl border border-stone-200 shadow-2xs">
             <div className="flex items-center gap-3 w-full sm:w-auto">
               <div className="relative flex-1 sm:w-64">
-                <Search className="w-4 h-4 text-gray-400 absolute left-3 top-1/2 -translate-y-1/2" />
+                <Search className="w-4 h-4 text-stone-400 absolute left-3 top-1/2 -translate-y-1/2" />
                 <input
                   type="text"
                   placeholder="Search cards, slugs, URLs..."
                   value={cardSearch}
                   onChange={e => setCardSearch(e.target.value)}
-                  className="w-full pl-9 pr-3 py-2 text-sm border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500"
+                  className="w-full pl-9 pr-3 py-2 text-sm border border-stone-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#1e3a8a]/20 focus:border-[#1e3a8a]"
                 />
               </div>
 
               <select
                 value={selectedCategoryFilter}
                 onChange={e => setSelectedCategoryFilter(e.target.value)}
-                className="text-sm border border-gray-200 rounded-lg px-3 py-2 bg-white text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500"
+                className="text-sm border border-stone-200 rounded-lg px-3 py-2 bg-white text-stone-700 focus:outline-none focus:ring-2 focus:ring-[#1e3a8a]/20 focus:border-[#1e3a8a]"
               >
                 <option value="all">All Categories</option>
                 {taxonomy?.categories.map(cat => (
@@ -663,7 +684,7 @@ export default function SolutionsFinderManager() {
 
             <button
               onClick={() => handleOpenCreateModal()}
-              className="w-full sm:w-auto flex items-center justify-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm font-semibold transition-colors shadow-sm shadow-blue-200"
+              className="w-full sm:w-auto flex items-center justify-center gap-2 px-4 py-2 bg-[#1e3a8a] hover:bg-[#172554] text-white rounded-lg text-sm font-semibold transition-colors shadow-2xs"
             >
               <Plus className="w-4 h-4" />
               <span>Add Solution Card</span>
@@ -671,50 +692,50 @@ export default function SolutionsFinderManager() {
           </div>
 
           {/* Cards Table */}
-          <div className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
+          <div className="bg-white rounded-xl border border-stone-200 shadow-2xs overflow-hidden">
             <div className="overflow-x-auto">
-              <table className="w-full text-left text-sm text-gray-600">
-                <thead className="bg-slate-50 border-b border-gray-200 text-gray-700 font-semibold text-xs uppercase tracking-wider">
+              <table className={tableStyles.table}>
+                <thead className={tableStyles.thead}>
                   <tr>
-                    <th className="py-3.5 px-4">Status</th>
-                    <th className="py-3.5 px-4">Solution Card</th>
-                    <th className="py-3.5 px-4">Category</th>
-                    <th className="py-3.5 px-4">Destination Page</th>
-                    <th className="py-3.5 px-4">Key Deliverables</th>
-                    <th className="py-3.5 px-4 text-center">Priority</th>
-                    <th className="py-3.5 px-4 text-right">Actions</th>
+                    <th className={tableStyles.th}>Status</th>
+                    <th className={tableStyles.th}>Solution Card</th>
+                    <th className={tableStyles.th}>Category</th>
+                    <th className={tableStyles.th}>Destination Page</th>
+                    <th className={tableStyles.th}>Key Deliverables</th>
+                    <th className={`${tableStyles.th} text-center`}>Priority</th>
+                    <th className={`${tableStyles.th} text-right`}>Actions</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-gray-100">
+                <tbody className={tableStyles.tbody}>
                   {loadingCards ? (
                     <tr>
-                      <td colSpan={7} className="py-12 text-center text-gray-400">
-                        <RefreshCw className="w-6 h-6 animate-spin mx-auto mb-2 text-blue-500" />
+                      <td colSpan={7} className="py-12 text-center text-stone-400">
+                        <RefreshCw className="w-6 h-6 animate-spin mx-auto mb-2 text-[#1e3a8a]" />
                         Loading solution catalogue cards...
                       </td>
                     </tr>
                   ) : filteredCards.length === 0 ? (
                     <tr>
-                      <td colSpan={7} className="py-12 text-center text-gray-400">
+                      <td colSpan={7} className="py-12 text-center text-stone-400">
                         No solution cards match your criteria.
                       </td>
                     </tr>
                   ) : (
-                    filteredCards.map(card => (
-                      <tr key={card.id} className="hover:bg-slate-50/70 transition-colors">
+                    paginatedCards.map(card => (
+                      <tr key={card.id} className={tableStyles.tr}>
                         {/* Status Toggle */}
-                        <td className="py-3.5 px-4">
+                        <td className={tableStyles.td}>
                           <button
                             onClick={() => handleToggleActive(card.id)}
                             className={`px-2.5 py-1 rounded-full text-xs font-semibold flex items-center gap-1.5 transition-colors ${
                               card.active
                                 ? 'bg-emerald-50 text-emerald-700 border border-emerald-200 hover:bg-emerald-100'
-                                : 'bg-gray-100 text-gray-500 border border-gray-200 hover:bg-gray-200'
+                                : 'bg-stone-100 text-stone-500 border border-stone-200 hover:bg-stone-200'
                             }`}
                           >
                             <span
                               className={`w-1.5 h-1.5 rounded-full ${
-                                card.active ? 'bg-emerald-500' : 'bg-gray-400'
+                                card.active ? 'bg-emerald-500' : 'bg-stone-400'
                               }`}
                             />
                             {card.active ? 'Active' : 'Inactive'}
@@ -722,9 +743,9 @@ export default function SolutionsFinderManager() {
                         </td>
 
                         {/* Title & Badge */}
-                        <td className="py-3.5 px-4">
-                          <div className="font-semibold text-gray-900">{card.title}</div>
-                          <div className="text-xs text-gray-400 font-mono mt-0.5">
+                        <td className={tableStyles.td}>
+                          <div className="font-semibold text-stone-900">{card.title}</div>
+                          <div className="text-xs text-stone-400 font-mono mt-0.5">
                             slug: {card.cardSlug}
                           </div>
                           {card.badge && (
@@ -735,24 +756,24 @@ export default function SolutionsFinderManager() {
                         </td>
 
                         {/* Category */}
-                        <td className="py-3.5 px-4">
-                          <span className="inline-block text-xs font-medium text-slate-700 bg-slate-100 px-2.5 py-1 rounded-md">
+                        <td className={tableStyles.td}>
+                          <span className="inline-block text-xs font-medium text-stone-700 bg-stone-100 px-2.5 py-1 rounded-md">
                             {card.categorySlug}
                           </span>
                         </td>
 
                         {/* Destination Page */}
-                        <td className="py-3.5 px-4">
-                          <div className="font-medium text-gray-900 text-xs">
+                        <td className={tableStyles.td}>
+                          <div className="font-medium text-stone-900 text-xs">
                             {card.targetPageTitle || card.targetSlug}
                           </div>
                           <div className="flex items-center gap-1.5 mt-0.5">
-                            <span className="font-mono text-[11px] text-blue-600">/{card.targetSlug}</span>
+                            <span className="font-mono text-[11px] text-[#1e3a8a]">/{card.targetSlug}</span>
                             <a
                               href={`/${card.targetSlug}`}
                               target="_blank"
                               rel="noreferrer"
-                              className="text-gray-400 hover:text-blue-600"
+                              className="text-stone-400 hover:text-[#1e3a8a]"
                               title="View Page"
                             >
                               <ExternalLink className="w-3 h-3" />
@@ -761,11 +782,11 @@ export default function SolutionsFinderManager() {
                         </td>
 
                         {/* Inclusions (Strict 3) */}
-                        <td className="py-3.5 px-4">
-                          <ul className="text-xs text-gray-600 space-y-0.5 max-w-xs">
+                        <td className={tableStyles.td}>
+                          <ul className="text-xs text-stone-600 space-y-0.5 max-w-xs">
                             {card.inclusions.map((inc, i) => (
                               <li key={i} className="truncate flex items-center gap-1">
-                                <span className="w-1 h-1 rounded-full bg-blue-500 shrink-0" />
+                                <span className="w-1 h-1 rounded-full bg-[#1e3a8a] shrink-0" />
                                 <span className="truncate">{inc}</span>
                               </li>
                             ))}
@@ -773,25 +794,25 @@ export default function SolutionsFinderManager() {
                         </td>
 
                         {/* Priority */}
-                        <td className="py-3.5 px-4 text-center">
-                          <span className="inline-block px-2.5 py-1 bg-slate-100 text-slate-800 font-bold rounded-md text-xs">
+                        <td className={`${tableStyles.td} text-center`}>
+                          <span className="inline-block px-2.5 py-1 bg-stone-100 text-stone-800 font-bold rounded-md text-xs">
                             {card.priority}
                           </span>
                         </td>
 
                         {/* Actions */}
-                        <td className="py-3.5 px-4 text-right">
+                        <td className={`${tableStyles.td} text-right`}>
                           <div className="flex items-center justify-end gap-1.5">
                             <button
                               onClick={() => handleOpenEditModal(card)}
-                              className="p-1.5 text-gray-500 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
+                              className="p-1.5 text-stone-500 hover:text-[#1e3a8a] hover:bg-stone-100 rounded-lg transition-colors"
                               title="Edit Solution Card"
                             >
                               <Edit3 className="w-4 h-4" />
                             </button>
                             <button
                               onClick={() => setDeleteConfirmId(card.id)}
-                              className="p-1.5 text-gray-500 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+                              className="p-1.5 text-stone-500 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors"
                               title="Delete Solution Card"
                             >
                               <Trash2 className="w-4 h-4" />
@@ -804,6 +825,15 @@ export default function SolutionsFinderManager() {
                 </tbody>
               </table>
             </div>
+
+            {/* Pagination */}
+            <AdminPagination
+              page={cardPage}
+              totalPages={cardTotalPages}
+              totalItems={filteredCards.length}
+              pageSize={CARD_PAGE_SIZE}
+              onPageChange={setCardPage}
+            />
           </div>
         </div>
       )}
@@ -811,23 +841,23 @@ export default function SolutionsFinderManager() {
       {/* ─── TAB 2: TAXONOMY & CATEGORIES ──────────────────────────────────── */}
       {activeTab === 'taxonomy' && (
         loadingTaxonomy ? (
-          <div className="bg-white p-12 rounded-xl text-center text-gray-400 border border-gray-100">
-            <RefreshCw className="w-6 h-6 animate-spin mx-auto mb-2 text-blue-500" />
+          <div className="bg-white p-12 rounded-xl text-center text-stone-400 border border-stone-200 shadow-2xs">
+            <RefreshCw className="w-6 h-6 animate-spin mx-auto mb-2 text-[#1e3a8a]" />
             Loading taxonomy store...
           </div>
         ) : taxonomy ? (
         <div className="space-y-6">
-          <div className="flex items-center justify-between bg-white p-4 rounded-xl border border-gray-100 shadow-sm">
+          <div className="flex items-center justify-between bg-white p-4 rounded-xl border border-stone-200 shadow-2xs">
             <div>
-              <h2 className="text-lg font-bold text-gray-900">Categories A through J & Prompts</h2>
-              <p className="text-xs text-gray-500">
+              <h2 className="text-lg font-bold text-stone-900">Categories A through J & Prompts</h2>
+              <p className="text-xs text-stone-500">
                 Ensure all 10 core letter codes (A–J) remain intact. Subcategories populate the dynamic search tray.
               </p>
             </div>
             <button
               onClick={handleSaveTaxonomy}
               disabled={savingTaxonomy}
-              className="flex items-center gap-2 px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm font-semibold transition-colors shadow-sm"
+              className="flex items-center gap-2 px-5 py-2.5 bg-[#1e3a8a] hover:bg-[#172554] text-white rounded-lg text-sm font-semibold transition-colors shadow-2xs cursor-pointer disabled:opacity-50"
             >
               <Check className="w-4 h-4" />
               <span>{savingTaxonomy ? 'Validating & Saving...' : 'Save Taxonomy'}</span>
@@ -846,15 +876,15 @@ export default function SolutionsFinderManager() {
             {taxonomy.categories.map((cat, idx) => (
               <div
                 key={cat.id}
-                className="bg-white p-5 rounded-xl border border-gray-200 shadow-sm space-y-3"
+                className="bg-white p-5 rounded-xl border border-stone-200 shadow-2xs space-y-3"
               >
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2.5">
-                    <div className="w-8 h-8 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center text-sm shadow-sm">
+                    <div className="w-8 h-8 rounded-lg bg-blue-50 text-[#1e3a8a] flex items-center justify-center text-sm shadow-2xs font-bold">
                       <Tag className="w-4 h-4" />
                     </div>
                     <div>
-                      <h3 className="font-bold text-gray-900 text-sm">{cat.label}</h3>
+                      <h3 className="font-bold text-stone-900 text-sm">{cat.label}</h3>
                     </div>
                   </div>
                   <input
@@ -866,26 +896,26 @@ export default function SolutionsFinderManager() {
                       setTaxonomy({ ...taxonomy, categories: updated });
                     }}
                     placeholder="Short pill label"
-                    className="text-xs border border-gray-200 rounded px-2.5 py-1 text-right focus:outline-none focus:border-blue-500"
+                    className="text-xs border border-stone-200 rounded px-2.5 py-1 text-right focus:outline-none focus:border-[#1e3a8a]"
                   />
                 </div>
 
                 {/* Subcategories Tag Manager */}
                 <div>
-                  <label className="text-[11px] font-semibold text-gray-500 uppercase tracking-wider block mb-1.5">
+                  <label className="text-[11px] font-semibold text-stone-500 uppercase tracking-wider block mb-1.5">
                     Subcategories & Infrastructure Components
                   </label>
                   <div className="flex flex-wrap gap-1.5 mb-2">
                     {cat.subcategories.map(sub => (
                       <span
                         key={sub}
-                        className="inline-flex items-center gap-1 bg-slate-100 text-slate-700 text-xs px-2.5 py-1 rounded-md"
+                        className="inline-flex items-center gap-1 bg-stone-100 text-stone-700 text-xs px-2.5 py-1 rounded-md"
                       >
                         {sub}
                         <button
                           type="button"
                           onClick={() => handleRemoveSubcategory(cat.id, sub)}
-                          className="text-gray-400 hover:text-red-500"
+                          className="text-stone-400 hover:text-red-500"
                         >
                           <X className="w-3 h-3" />
                         </button>
@@ -907,12 +937,12 @@ export default function SolutionsFinderManager() {
                           handleAddSubcategory(cat.id);
                         }
                       }}
-                      className="flex-1 text-xs border border-gray-200 rounded-lg px-3 py-1.5 focus:outline-none focus:ring-1 focus:ring-blue-500"
+                      className="flex-1 text-xs border border-stone-200 rounded-lg px-3 py-1.5 focus:outline-none focus:ring-1 focus:ring-[#1e3a8a]"
                     />
                     <button
                       type="button"
                       onClick={() => handleAddSubcategory(cat.id)}
-                      className="px-3 py-1.5 bg-gray-100 hover:bg-gray-200 text-gray-700 text-xs font-semibold rounded-lg"
+                      className="px-3 py-1.5 bg-stone-100 hover:bg-stone-200 text-stone-700 text-xs font-semibold rounded-lg transition-colors"
                     >
                       Add
                     </button>
@@ -923,10 +953,10 @@ export default function SolutionsFinderManager() {
           </div>
 
           {/* Popular Search Prompts Tray */}
-          <div className="bg-white p-6 rounded-xl border border-gray-200 shadow-sm space-y-4">
+          <div className="bg-white p-6 rounded-xl border border-stone-200 shadow-2xs space-y-4">
             <div>
-              <h3 className="font-bold text-gray-900">Popular Search Prompt Trays</h3>
-              <p className="text-xs text-gray-500">
+              <h3 className="font-bold text-stone-900">Popular Search Prompt Trays</h3>
+              <p className="text-xs text-stone-500">
                 Clickable chips displayed under the homepage AI search bar for 1-click discovery.
               </p>
             </div>
@@ -935,9 +965,9 @@ export default function SolutionsFinderManager() {
               {taxonomy.popularSearchPrompts.map(prompt => (
                 <span
                   key={prompt}
-                  className="inline-flex items-center gap-2 bg-blue-50 text-blue-700 border border-blue-100 text-xs px-3 py-1.5 rounded-full font-medium"
+                  className="inline-flex items-center gap-2 bg-blue-50 text-[#1e3a8a] border border-blue-100 text-xs px-3 py-1.5 rounded-full font-medium"
                 >
-                  <Sparkles className="w-3.5 h-3.5 text-blue-500" />
+                  <Sparkles className="w-3.5 h-3.5 text-[#1e3a8a]" />
                   {prompt}
                   <button
                     type="button"
@@ -962,12 +992,12 @@ export default function SolutionsFinderManager() {
                     handleAddPrompt();
                   }
                 }}
-                className="flex-1 text-xs border border-gray-200 rounded-lg px-3 py-2 focus:outline-none focus:ring-1 focus:ring-blue-500"
+                className="flex-1 text-xs border border-stone-200 rounded-lg px-3 py-2 focus:outline-none focus:ring-1 focus:ring-[#1e3a8a]"
               />
               <button
                 type="button"
                 onClick={handleAddPrompt}
-                className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold rounded-lg"
+                className="px-4 py-2 bg-[#1e3a8a] hover:bg-[#172554] text-white text-xs font-semibold rounded-lg transition-colors shadow-2xs cursor-pointer"
               >
                 Add Prompt
               </button>
@@ -982,52 +1012,52 @@ export default function SolutionsFinderManager() {
         <div className="space-y-6">
           {/* KPI Stat Cards */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            <div className="bg-white p-5 rounded-xl border border-gray-100 shadow-sm">
-              <span className="text-xs font-semibold text-gray-400 uppercase tracking-wider">
+            <div className="bg-white p-5 rounded-xl border border-stone-200 shadow-2xs">
+              <span className="text-xs font-semibold text-stone-400 uppercase tracking-wider">
                 Total Searches
               </span>
-              <div className="text-2xl font-extrabold text-gray-900 mt-1">
+              <div className="text-2xl font-extrabold text-stone-900 mt-1">
                 {stats?.totalSearches ?? 0}
               </div>
-              <p className="text-[11px] text-gray-500 mt-1">Historical telemetry queries</p>
+              <p className="text-[11px] text-stone-500 mt-1">Historical telemetry queries</p>
             </div>
 
-            <div className="bg-white p-5 rounded-xl border border-gray-100 shadow-sm">
-              <span className="text-xs font-semibold text-gray-400 uppercase tracking-wider">
+            <div className="bg-white p-5 rounded-xl border border-stone-200 shadow-2xs">
+              <span className="text-xs font-semibold text-stone-400 uppercase tracking-wider">
                 Zero-Match Rate
               </span>
               <div
                 className={`text-2xl font-extrabold mt-1 ${
-                  (stats?.zeroMatchRate || 0) > 15 ? 'text-red-600' : 'text-gray-900'
+                  (stats?.zeroMatchRate || 0) > 15 ? 'text-red-600' : 'text-stone-900'
                 }`}
               >
                 {stats?.zeroMatchRate ?? 0}%
               </div>
-              <p className="text-[11px] text-gray-500 mt-1">
+              <p className="text-[11px] text-stone-500 mt-1">
                 {stats?.zeroMatchCount ?? 0} searches matched 0 cards
               </p>
             </div>
 
-            <div className="bg-white p-5 rounded-xl border border-gray-100 shadow-sm">
-              <span className="text-xs font-semibold text-gray-400 uppercase tracking-wider">
+            <div className="bg-white p-5 rounded-xl border border-stone-200 shadow-2xs">
+              <span className="text-xs font-semibold text-stone-400 uppercase tracking-wider">
                 Consultation Conversions
               </span>
               <div className="text-2xl font-extrabold text-emerald-600 mt-1">
                 {stats?.convertedCount ?? 0}
               </div>
-              <p className="text-[11px] text-gray-500 mt-1">
+              <p className="text-[11px] text-stone-500 mt-1">
                 {stats?.conversionRate ?? 0}% conversion rate
               </p>
             </div>
 
-            <div className="bg-white p-5 rounded-xl border border-gray-100 shadow-sm">
-              <span className="text-xs font-semibold text-gray-400 uppercase tracking-wider">
+            <div className="bg-white p-5 rounded-xl border border-stone-200 shadow-2xs">
+              <span className="text-xs font-semibold text-stone-400 uppercase tracking-wider">
                 Unmatched Demand
               </span>
               <div className="text-2xl font-extrabold text-indigo-600 mt-1">
                 {stats?.recentUnmetQueries?.length ?? 0}
               </div>
-              <p className="text-[11px] text-gray-500 mt-1">Recent unfulfilled requests</p>
+              <p className="text-[11px] text-stone-500 mt-1">Recent unfulfilled requests</p>
             </div>
           </div>
 
@@ -1058,7 +1088,7 @@ export default function SolutionsFinderManager() {
                         setActiveTab('cards');
                         handleOpenCreateModal(unmet.queryText);
                       }}
-                      className="px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-md shrink-0 flex items-center gap-1 shadow-sm"
+                      className="px-3 py-1.5 bg-[#1e3a8a] hover:bg-[#172554] text-white font-semibold rounded-md shrink-0 flex items-center gap-1 shadow-2xs"
                     >
                       <Plus className="w-3.5 h-3.5" />
                       <span>Create Card</span>
@@ -1070,26 +1100,26 @@ export default function SolutionsFinderManager() {
           )}
 
           {/* Logs Table Filter Bar */}
-          <div className="flex flex-col sm:flex-row items-center justify-between gap-3 bg-white p-4 rounded-xl border border-gray-100 shadow-sm">
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-3 bg-white p-4 rounded-xl border border-stone-200 shadow-2xs">
             <div className="flex flex-wrap items-center gap-3 w-full sm:w-auto">
               <div className="relative flex-1 sm:w-64">
-                <Search className="w-4 h-4 text-gray-400 absolute left-3 top-1/2 -translate-y-1/2" />
+                <Search className="w-4 h-4 text-stone-400 absolute left-3 top-1/2 -translate-y-1/2" />
                 <input
                   type="text"
                   placeholder="Filter logs by query..."
                   value={logsSearchText}
                   onChange={e => setLogsSearchText(e.target.value)}
                   onKeyDown={e => e.key === 'Enter' && fetchLogs(1)}
-                  className="w-full pl-9 pr-3 py-2 text-sm border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500/20"
+                  className="w-full pl-9 pr-3 py-2 text-sm border border-stone-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#1e3a8a]/20"
                 />
               </div>
 
-              <label className="flex items-center gap-2 text-xs font-semibold text-gray-700 cursor-pointer select-none">
+              <label className="flex items-center gap-2 text-xs font-semibold text-stone-700 cursor-pointer select-none">
                 <input
                   type="checkbox"
                   checked={unmatchedOnlyFilter}
                   onChange={e => setUnmatchedOnlyFilter(e.target.checked)}
-                  className="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                  className="rounded border-stone-300 text-[#1e3a8a] focus:ring-[#1e3a8a]"
                 />
                 <span>Zero-Matches Only (0 results)</span>
               </label>
@@ -1097,7 +1127,7 @@ export default function SolutionsFinderManager() {
               <select
                 value={logsCategoryFilter}
                 onChange={e => setLogsCategoryFilter(e.target.value)}
-                className="text-xs border border-gray-200 rounded-lg px-2.5 py-1.5 bg-white text-gray-700 focus:outline-none focus:ring-1 focus:ring-blue-500"
+                className="text-xs border border-stone-200 rounded-lg px-2.5 py-1.5 bg-white text-stone-700 focus:outline-none focus:ring-1 focus:ring-[#1e3a8a]"
               >
                 <option value="all">All Categories</option>
                 {taxonomy?.categories.map(c => (
@@ -1107,54 +1137,50 @@ export default function SolutionsFinderManager() {
                 ))}
               </select>
             </div>
-
-            <div className="text-xs text-gray-500 font-medium">
-              Showing {logs.length} of {logsTotalCount} queries
-            </div>
           </div>
 
           {/* Logs Table */}
-          <div className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
+          <div className="bg-white rounded-xl border border-stone-200 shadow-2xs overflow-hidden">
             <div className="overflow-x-auto">
-              <table className="w-full text-left text-sm text-gray-600">
-                <thead className="bg-slate-50 border-b border-gray-200 text-gray-700 font-semibold text-xs uppercase tracking-wider">
+              <table className={tableStyles.table}>
+                <thead className={tableStyles.thead}>
                   <tr>
-                    <th className="py-3 px-4">Query Text</th>
-                    <th className="py-3 px-4">Category</th>
-                    <th className="py-3 px-4">Institution</th>
-                    <th className="py-3 px-4 text-center">Matched</th>
-                    <th className="py-3 px-4">Anonymized IP</th>
-                    <th className="py-3 px-4 text-center">Converted</th>
-                    <th className="py-3 px-4 text-right">Timestamp</th>
+                    <th className={tableStyles.th}>Query Text</th>
+                    <th className={tableStyles.th}>Category</th>
+                    <th className={tableStyles.th}>Institution</th>
+                    <th className={`${tableStyles.th} text-center`}>Matched</th>
+                    <th className={tableStyles.th}>Anonymized IP</th>
+                    <th className={`${tableStyles.th} text-center`}>Converted</th>
+                    <th className={`${tableStyles.th} text-right`}>Timestamp</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-gray-100">
+                <tbody className={tableStyles.tbody}>
                   {loadingLogs ? (
                     <tr>
-                      <td colSpan={7} className="py-12 text-center text-gray-400">
-                        <RefreshCw className="w-6 h-6 animate-spin mx-auto mb-2 text-blue-500" />
+                      <td colSpan={7} className="py-12 text-center text-stone-400">
+                        <RefreshCw className="w-6 h-6 animate-spin mx-auto mb-2 text-[#1e3a8a]" />
                         Loading telemetry query logs...
                       </td>
                     </tr>
                   ) : logs.length === 0 ? (
                     <tr>
-                      <td colSpan={7} className="py-12 text-center text-gray-400">
+                      <td colSpan={7} className="py-12 text-center text-stone-400">
                         No search queries recorded yet.
                       </td>
                     </tr>
                   ) : (
                     logs.map(log => (
-                      <tr key={log.id} className="hover:bg-slate-50/70 transition-colors">
-                        <td className="py-3 px-4 font-medium text-gray-900 max-w-xs truncate">
+                      <tr key={log.id} className={tableStyles.tr}>
+                        <td className={`${tableStyles.td} font-medium text-stone-900 max-w-xs truncate`}>
                           "{log.queryText}"
                         </td>
-                        <td className="py-3 px-4 text-xs">
-                          {log.categorySlug || <span className="text-gray-400">—</span>}
+                        <td className={`${tableStyles.td} text-xs`}>
+                          {log.categorySlug || <span className="text-stone-400">—</span>}
                         </td>
-                        <td className="py-3 px-4 text-xs">
-                          {log.institutionType || <span className="text-gray-400">—</span>}
+                        <td className={`${tableStyles.td} text-xs`}>
+                          {log.institutionType || <span className="text-stone-400">—</span>}
                         </td>
-                        <td className="py-3 px-4 text-center">
+                        <td className={`${tableStyles.td} text-center`}>
                           {log.matchedCount === 0 ? (
                             <span className="inline-block px-2 py-0.5 rounded text-[11px] font-bold bg-red-100 text-red-700">
                               0 (Unmatched)
@@ -1165,19 +1191,19 @@ export default function SolutionsFinderManager() {
                             </span>
                           )}
                         </td>
-                        <td className="py-3 px-4 font-mono text-xs text-gray-400">
+                        <td className={`${tableStyles.td} font-mono text-xs text-stone-400`}>
                           {log.userIp || '—'}
                         </td>
-                        <td className="py-3 px-4 text-center">
+                        <td className={`${tableStyles.td} text-center`}>
                           {log.converted ? (
                             <span className="inline-flex items-center gap-1 text-[11px] font-bold text-emerald-600">
                               <CheckCircle2 className="w-3.5 h-3.5" /> Yes
                             </span>
                           ) : (
-                            <span className="text-gray-400 text-xs">No</span>
+                            <span className="text-stone-400 text-xs">No</span>
                           )}
                         </td>
-                        <td className="py-3 px-4 text-right text-xs text-gray-400">
+                        <td className={`${tableStyles.td} text-right text-xs text-stone-400`}>
                           {new Date(log.createdAt).toLocaleString()}
                         </td>
                       </tr>
@@ -1188,42 +1214,28 @@ export default function SolutionsFinderManager() {
             </div>
 
             {/* Pagination */}
-            {logsTotalPages > 1 && (
-              <div className="p-4 border-t border-gray-100 flex items-center justify-between">
-                <button
-                  disabled={logsPage <= 1}
-                  onClick={() => fetchLogs(logsPage - 1)}
-                  className="px-3 py-1.5 border border-gray-200 rounded-md text-xs font-semibold disabled:opacity-40"
-                >
-                  Previous
-                </button>
-                <span className="text-xs text-gray-500 font-medium">
-                  Page {logsPage} of {logsTotalPages}
-                </span>
-                <button
-                  disabled={logsPage >= logsTotalPages}
-                  onClick={() => fetchLogs(logsPage + 1)}
-                  className="px-3 py-1.5 border border-gray-200 rounded-md text-xs font-semibold disabled:opacity-40"
-                >
-                  Next
-                </button>
-              </div>
-            )}
+            <AdminPagination
+              page={logsPage}
+              totalPages={logsTotalPages}
+              totalItems={logsTotalCount}
+              pageSize={25}
+              onPageChange={fetchLogs}
+            />
           </div>
         </div>
       )}
 
       {/* ─── CARD CREATE / EDIT MODAL ───────────────────────────────────────── */}
       {cardModalOpen && (
-        <div className="fixed inset-0 z-50 bg-slate-900/50 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto">
-          <div className="bg-white rounded-2xl shadow-2xl max-w-2xl w-full p-6 space-y-5 my-8">
-            <div className="flex items-center justify-between border-b border-gray-100 pb-4">
-              <h3 className="text-lg font-bold text-gray-900">
+        <div className="fixed inset-0 z-50 bg-stone-900/50 backdrop-blur-xs flex items-center justify-center p-4 overflow-y-auto">
+          <div className="bg-white rounded-2xl shadow-2xl max-w-2xl w-full p-6 space-y-5 my-8 border border-stone-200">
+            <div className="flex items-center justify-between border-b border-stone-100 pb-4">
+              <h3 className="text-lg font-bold text-stone-900">
                 {editingCard ? `Edit Solution Card: ${editingCard.cardSlug}` : 'Create New Solution Card'}
               </h3>
               <button
                 onClick={() => setCardModalOpen(false)}
-                className="text-gray-400 hover:text-gray-600"
+                className="text-stone-400 hover:text-stone-600"
               >
                 <X className="w-5 h-5" />
               </button>
@@ -1240,7 +1252,7 @@ export default function SolutionsFinderManager() {
               {/* Title & Slug */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-xs font-semibold text-gray-700 mb-1">
+                  <label className="block text-xs font-semibold text-stone-700 mb-1">
                     Card Title *
                   </label>
                   <input
@@ -1249,12 +1261,12 @@ export default function SolutionsFinderManager() {
                     value={formTitle}
                     onChange={e => handleTitleChange(e.target.value)}
                     placeholder="e.g. Turnkey AI & GPU Center of Excellence"
-                    className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/20"
+                    className="w-full border border-stone-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#1e3a8a]/20 focus:border-[#1e3a8a]"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-xs font-semibold text-gray-700 mb-1">
+                  <label className="block text-xs font-semibold text-stone-700 mb-1">
                     Card Slug (Unique Key) *
                   </label>
                   <div className="relative">
@@ -1267,7 +1279,7 @@ export default function SolutionsFinderManager() {
                         setSlugManuallyEdited(true);
                       }}
                       placeholder="e.g. turnkey-ai-coe"
-                      className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm font-mono focus:outline-none focus:ring-2 focus:ring-blue-500/20"
+                      className="w-full border border-stone-200 rounded-lg px-3 py-2 text-sm font-mono focus:outline-none focus:ring-2 focus:ring-[#1e3a8a]/20 focus:border-[#1e3a8a]"
                     />
                     <button
                       type="button"
@@ -1279,7 +1291,7 @@ export default function SolutionsFinderManager() {
                         setFormCardSlug(generated);
                       }}
                       title="Regenerate slug from title"
-                      className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 hover:text-blue-600"
+                      className="absolute right-2 top-1/2 -translate-y-1/2 text-stone-400 hover:text-[#1e3a8a]"
                     >
                       <Wand2 className="w-4 h-4" />
                     </button>
@@ -1289,14 +1301,14 @@ export default function SolutionsFinderManager() {
 
               {/* Target Page Selector (Zero Dead Links Invariant) */}
               <div>
-                <label className="block text-xs font-semibold text-gray-700 mb-1">
+                <label className="block text-xs font-semibold text-stone-700 mb-1">
                   Target Destination Page *
                 </label>
                 <select
                   required
                   value={formTargetSlug}
                   onChange={e => setFormTargetSlug(e.target.value)}
-                  className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-blue-500/20"
+                  className="w-full border border-stone-200 rounded-lg px-3 py-2 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-[#1e3a8a]/20 focus:border-[#1e3a8a]"
                 >
                   <option value="">Select destination page...</option>
                   {pagesLookup
@@ -1307,7 +1319,7 @@ export default function SolutionsFinderManager() {
                       </option>
                     ))}
                 </select>
-                <p className="text-[11px] text-gray-400 mt-1">
+                <p className="text-[11px] text-stone-400 mt-1">
                   Clicking "Explore Solution" on the card navigates directly to /{formTargetSlug || '{targetSlug}'}
                 </p>
               </div>
@@ -1315,14 +1327,14 @@ export default function SolutionsFinderManager() {
               {/* Category & Badge */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-xs font-semibold text-gray-700 mb-1">
+                  <label className="block text-xs font-semibold text-stone-700 mb-1">
                     Primary Domain / Category *
                   </label>
                   <select
                     required
                     value={formCategorySlug}
                     onChange={e => setFormCategorySlug(e.target.value)}
-                    className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-blue-500/20"
+                    className="w-full border border-stone-200 rounded-lg px-3 py-2 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-[#1e3a8a]/20 focus:border-[#1e3a8a]"
                   >
                     {taxonomy?.categories.map(cat => (
                       <option key={cat.id} value={cat.id}>
@@ -1333,7 +1345,7 @@ export default function SolutionsFinderManager() {
                 </div>
 
                 <div>
-                  <label className="block text-xs font-semibold text-gray-700 mb-1">
+                  <label className="block text-xs font-semibold text-stone-700 mb-1">
                     Badge Label (Optional)
                   </label>
                   <input
@@ -1341,14 +1353,14 @@ export default function SolutionsFinderManager() {
                     value={formBadge}
                     onChange={e => setFormBadge(e.target.value)}
                     placeholder="e.g. Turnkey Suite, Flagship Tech"
-                    className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/20"
+                    className="w-full border border-stone-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#1e3a8a]/20 focus:border-[#1e3a8a]"
                   />
                 </div>
               </div>
 
               {/* Summary */}
               <div>
-                <label className="block text-xs font-semibold text-gray-700 mb-1">
+                <label className="block text-xs font-semibold text-stone-700 mb-1">
                   Executive Summary (1–2 Sentences) *
                 </label>
                 <textarea
@@ -1357,18 +1369,18 @@ export default function SolutionsFinderManager() {
                   value={formSummary}
                   onChange={e => setFormSummary(e.target.value)}
                   placeholder="Comprehensive physical deliverable summary for institutional decision makers..."
-                  className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/20"
+                  className="w-full border border-stone-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#1e3a8a]/20 focus:border-[#1e3a8a]"
                 />
               </div>
 
               {/* Strict 3 Inclusions (Enforcing Invariant) */}
-              <div className="bg-blue-50/50 border border-blue-100 p-4 rounded-xl space-y-2.5">
+              <div className="bg-blue-50/40 border border-blue-100 p-4 rounded-xl space-y-2.5">
                 <div className="flex items-center justify-between">
-                  <span className="text-xs font-bold text-blue-900 flex items-center gap-1.5">
-                    <CheckCircle2 className="w-4 h-4 text-blue-600" />
+                  <span className="text-xs font-bold text-[#1e3a8a] flex items-center gap-1.5">
+                    <CheckCircle2 className="w-4 h-4 text-[#1e3a8a]" />
                     Key Physical Inclusions (Strictly 3 Required)
                   </span>
-                  <span className="text-[11px] font-semibold text-blue-700">
+                  <span className="text-[11px] font-semibold text-[#1e3a8a]">
                     {[formInclusions[0], formInclusions[1], formInclusions[2]].filter(s => s.trim()).length}/3 Complete
                   </span>
                 </div>
@@ -1380,7 +1392,7 @@ export default function SolutionsFinderManager() {
                     value={formInclusions[0]}
                     onChange={e => setFormInclusions([e.target.value, formInclusions[1], formInclusions[2]])}
                     placeholder="Inclusion 1 (e.g. 50x High-TFLOPS Workstations with Liquid Cooling)"
-                    className="w-full border border-gray-200 rounded-lg px-3 py-1.5 text-xs bg-white focus:outline-none focus:ring-2 focus:ring-blue-500/20"
+                    className="w-full border border-stone-200 rounded-lg px-3 py-1.5 text-xs bg-white focus:outline-none focus:ring-2 focus:ring-[#1e3a8a]/20 focus:border-[#1e3a8a]"
                   />
                   <input
                     type="text"
@@ -1388,7 +1400,7 @@ export default function SolutionsFinderManager() {
                     value={formInclusions[1]}
                     onChange={e => setFormInclusions([formInclusions[0], e.target.value, formInclusions[2]])}
                     placeholder="Inclusion 2 (e.g. Dedicated Server Rack, UPS Power Backup & Smart PDU)"
-                    className="w-full border border-gray-200 rounded-lg px-3 py-1.5 text-xs bg-white focus:outline-none focus:ring-2 focus:ring-blue-500/20"
+                    className="w-full border border-stone-200 rounded-lg px-3 py-1.5 text-xs bg-white focus:outline-none focus:ring-2 focus:ring-[#1e3a8a]/20 focus:border-[#1e3a8a]"
                   />
                   <input
                     type="text"
@@ -1396,14 +1408,14 @@ export default function SolutionsFinderManager() {
                     value={formInclusions[2]}
                     onChange={e => setFormInclusions([formInclusions[0], formInclusions[1], e.target.value])}
                     placeholder="Inclusion 3 (e.g. Faculty Master Training & AI Curriculum Stack)"
-                    className="w-full border border-gray-200 rounded-lg px-3 py-1.5 text-xs bg-white focus:outline-none focus:ring-2 focus:ring-blue-500/20"
+                    className="w-full border border-stone-200 rounded-lg px-3 py-1.5 text-xs bg-white focus:outline-none focus:ring-2 focus:ring-[#1e3a8a]/20 focus:border-[#1e3a8a]"
                   />
                 </div>
               </div>
 
               {/* Keywords Tag Input */}
               <div>
-                <label className="block text-xs font-semibold text-gray-700 mb-1">
+                <label className="block text-xs font-semibold text-stone-700 mb-1">
                   NLP Search Keywords (Comma separated)
                 </label>
                 <input
@@ -1411,19 +1423,19 @@ export default function SolutionsFinderManager() {
                   value={formKeywordsText}
                   onChange={e => setFormKeywordsText(e.target.value)}
                   placeholder="e.g. ai lab, nvidia, gpu cluster, machine learning"
-                  className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/20"
+                  className="w-full border border-stone-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#1e3a8a]/20 focus:border-[#1e3a8a]"
                 />
               </div>
 
               {/* Priority & Active Toggles */}
               <div className="flex items-center justify-between pt-2">
                 <div className="flex items-center gap-3">
-                  <label className="text-xs font-semibold text-gray-700">Display Priority:</label>
+                  <label className="text-xs font-semibold text-stone-700">Display Priority:</label>
                   <input
                     type="number"
                     value={formPriority}
                     onChange={e => setFormPriority(Number(e.target.value))}
-                    className="w-20 border border-gray-200 rounded-lg px-2 py-1 text-sm text-center"
+                    className="w-20 border border-stone-200 rounded-lg px-2 py-1 text-sm text-center"
                   />
                 </div>
 
@@ -1432,25 +1444,25 @@ export default function SolutionsFinderManager() {
                     type="checkbox"
                     checked={formActive}
                     onChange={e => setFormActive(e.target.checked)}
-                    className="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                    className="rounded border-stone-300 text-[#1e3a8a] focus:ring-[#1e3a8a]"
                   />
-                  <span className="text-xs font-semibold text-gray-700">Active in Catalogue</span>
+                  <span className="text-xs font-semibold text-stone-700">Active in Catalogue</span>
                 </label>
               </div>
 
               {/* Modal Buttons */}
-              <div className="flex items-center justify-end gap-3 pt-4 border-t border-gray-100">
+              <div className="flex items-center justify-end gap-3 pt-4 border-t border-stone-100">
                 <button
                   type="button"
                   onClick={() => setCardModalOpen(false)}
-                  className="px-4 py-2 border border-gray-200 text-gray-700 rounded-lg text-sm font-semibold hover:bg-gray-50"
+                  className="px-4 py-2 border border-stone-200 text-stone-700 rounded-lg text-sm font-semibold hover:bg-stone-50 transition-colors cursor-pointer"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
                   disabled={isSavingCard}
-                  className="px-5 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm font-semibold transition-colors shadow-sm disabled:opacity-50"
+                  className="px-5 py-2 bg-[#1e3a8a] hover:bg-[#172554] text-white rounded-lg text-sm font-semibold transition-colors shadow-2xs disabled:opacity-50 cursor-pointer"
                 >
                   {isSavingCard ? 'Saving...' : editingCard ? 'Update Card' : 'Create Card'}
                 </button>
