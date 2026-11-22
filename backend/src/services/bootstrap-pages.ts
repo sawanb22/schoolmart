@@ -61,7 +61,6 @@ export const requiredDefaults: [string, string][] = [
     ['how-it-works', 'How It Works'],
     ['brand-help', 'Brand Help'],
     ['sell-on-schoolmart', 'Sell on SchoolMart'],
-    ['sell-on-campusmart', 'Sell on SchoolMart'],
     ['20-stunning-college-buildings', '20 Stunning College Buildings'],
     ['academic-buildings', 'Academic Buildings'],
     ['research-facilities', 'Research Facilities'],
