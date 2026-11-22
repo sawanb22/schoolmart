@@ -324,3 +324,11 @@ Configure automated daily backups via cPanel Cron Jobs:
    The backend uses `sharp` for responsive WebP variant generation. If native libvips binaries are incompatible with the host's C library, the upload controller automatically falls back to storing the original uploaded media without throwing 500 errors.
 3. **No Edge CDN / Cloudflare:**
    Static assets are served directly through Apache. Browser caching is enforced via `mod_headers` immutable headers (`max-age=31536000`), while `index.html` is strictly set to `no-cache`.
+
+## Full database copy (Neon -> cPanel) - use this, not pg_dump-less scripts
+
+1. On your PC: `cd backend; npm run db:export` -> writes `backend/prisma/backups/backup-<time>.json` (every table, found automatically).
+2. Create the empty cPanel database, then from your PC (if cPanel allows remote PostgreSQL) or the cPanel Terminal: set `DATABASE_URL` to the cPanel database and run `npx prisma migrate deploy`.
+3. `TARGET_DATABASE_URL=<cpanel url> npm run db:restore -- <backup file>` (add `--force` only to overwrite a non-empty database).
+4. Check row counts: `SOURCE_DATABASE_URL=<cpanel url> npm run db:export` and compare with step 1.
+

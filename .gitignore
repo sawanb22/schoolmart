@@ -122,3 +122,4 @@ backend/prisma/database-export.json
 !backend/scripts/*.sql
 !backend/prisma/sql/*.sql
 !backend/prisma/migrations/**
+backend/prisma/backups/

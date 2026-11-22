@@ -16,8 +16,8 @@
     "cms:migrate-items": "node dist/scripts/migrate-page-items.js",
     "db:migrate": "npx prisma migrate dev --name init",
     "db:seed": "npx ts-node --transpile-only prisma/seed.ts",
-    "db:export": "node scripts/export-database.js",
-    "db:restore": "node scripts/restore-database.js",
+    "db:export": "node scripts/db-backup.js",
+    "db:restore": "node scripts/db-restore.js",
     "db:reset": "npx prisma migrate reset --force",
     "db:studio": "npx prisma studio",
     "db:generate": "npx prisma generate"
