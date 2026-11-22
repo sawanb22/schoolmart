@@ -1,6 +1,6 @@
 # Baseline Network Request Metrics
 
-- **Date:** 2026-11-21T20:42:37.112Z
+- **Date:** 2026-11-22T07:54:15.290Z
 - **Environment:** Local development (Frontend: Vite 5173, Backend: Express 3001)
 - **Measurement Type:** Cold loads with empty cache (new browser context per target)
 
@@ -15,16 +15,16 @@
 
 ## Cold Load Image Transfer (Home Page `/`)
 
-- **Total Images Loaded:** 20
-- **Total Image Bytes:** 2382.91 KB (2.33 MB / 24,40,096 bytes)
+- **Total Images Loaded:** 38
+- **Total Image Bytes:** 2386.66 KB (2.33 MB / 24,43,940 bytes)
 
 ## Detailed API Requests per Page
 
 ### Home Page (`/`)
 
 - Total calls: 3
-  - `GET` /src/api/client.ts
   - `GET` /src/api/cms.ts
+  - `GET` /src/api/client.ts
   - `GET` /api/content
 
 ### Labs Hub (`/labs`)
@@ -33,7 +33,7 @@
   - `GET` /src/api/client.ts
   - `GET` /src/api/cms.ts
   - `GET` /api/content
-  - `GET` /api/pages/labs
+  - `GET` /api/pages/labs?v=2
 
 ### Labs Item Detail (`/labs/composite-skill-lab`)
 

@@ -16,6 +16,7 @@ import {
 import {
     type ItemFull,
     fetchAdminPageItems,
+    fetchAdminPageCategories,
     deleteAdminPageItem,
     reorderAdminPageItems,
     updateAdminPageItem,
@@ -61,7 +62,21 @@ export default function ItemsManager({
         staleTime: 30_000,
     });
 
+    const { data: catData } = useQuery({
+        queryKey: ['admin', 'categories', pageId],
+        queryFn: () => fetchAdminPageCategories(pageId),
+        staleTime: 30_000,
+    });
+
     const items: (ItemFull & { card?: any })[] = data?.items || [];
+
+    const resolvedCategories = Array.from(
+        new Set<string>([
+            ...availableCategories,
+            ...(catData?.categories?.map((c) => c.name) || []),
+            ...items.flatMap((it) => it.categories || it.card?.categories || (it.card?.category ? [it.card.category] : [])),
+        ])
+    );
 
     // Deep link auto-open when targetCardSlug is matched
     useEffect(() => {
@@ -240,6 +255,7 @@ export default function ItemsManager({
                         return (
                             <div
                                 key={item.id}
+                                data-testid="item-row"
                                 className={`rounded-2xl border transition-all p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4 ${
                                     isPublished
                                         ? 'bg-white border-slate-200 hover:border-slate-300 shadow-2xs'
@@ -386,7 +402,7 @@ export default function ItemsManager({
                     setEditingItem(null);
                 }}
                 onSaved={handleSavedItem}
-                availableCategories={availableCategories}
+                availableCategories={resolvedCategories}
                 renderCardFields={renderCardFields}
             />
         </section>

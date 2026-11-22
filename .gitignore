@@ -95,6 +95,7 @@ reports/
 
 # Markdown documentation (Zero docs policy - user will add custom README later)
 *.md
+!README.md
 !docs/plans/**
 !docs/deployment/**
 !backend/prisma/sql/README.md
@@ -102,6 +103,7 @@ reports/
 # Playwright artifacts
 test-results/
 playwright-report/
+tests/e2e/artifacts/
 
 # Tooling, IDE & AI agent metadata
 .commandcode/

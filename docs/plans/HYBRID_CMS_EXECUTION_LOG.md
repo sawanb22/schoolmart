@@ -849,6 +849,44 @@
 - Found, not fixed:
   - None.
 
+---
+
+## T18 – Final Verification and Handover – PENDING REVIEW
+
+- Commit: 0e2160c (`T18: Final verification and handover`)
+- What was done:
+  - Executed full test verification: Backend Vitest (43/43 files, 271/271 tests passing), Frontend Vitest (26/26 files, 123/123 tests passing), Frontend Typecheck (0 errors), and Production Build (`dist/` + `.htaccess`).
+  - Executed Playwright E2E suites: Smoke suite (206/206 passing, 0 regressions), Visual suite (20/20 passing), SEO suite (7/7 passing), Admin items E2E (4/4 passing).
+  - Configured `dotenv.config` in `playwright.config.ts` and `admin-items.spec.ts` to ensure consistent JWT verification in E2E environments.
+  - Resolved category selection in `ItemsManager.tsx` on structured hubs by querying `fetchAdminPageCategories`, added `data-testid="item-row"` for robust element selection.
+  - Stabilized React 19 document metadata hoisting assertions in `seo.spec.ts` using Playwright auto-retrying assertions (`toHaveTitle`, `toHaveCount`).
+  - Executed Invariants checks (I1–I8) and Section 6.2 SQL checks against dev database: confirmed 0 violations across all checks.
+  - Re-ran bundle budget check (`node frontend/scripts/check-bundle-budget.mjs`): Entry JS bundle achieved 149.30 KB Gzip (under the 170 KB budget).
+  - Measured Core Web Vitals via Playwright CDP: Mobile `/labs` scored 100 Performance, 2036 ms LCP, 44 ms TBT, 0.08 CLS, and 83/100 SEO.
+  - Authored comprehensive Master Handover document: `docs/plans/HYBRID_CMS_HANDOVER.md`.
+  - Updated project root `README.md` with architecture, test commands, database guides, and operational links.
+  - Verified zero-remote-push and stop-before-merge policy: work remains strictly on `feat/hybrid-cms`.
+- Test results:
+  - Backend vitest suite: 43 passed / 43 test files, 271 passed / 271 tests (100% green).
+  - Frontend vitest suite: 26 passed / 26 test files, 123 passed / 123 tests (100% green).
+  - Frontend typecheck: 0 errors.
+  - Playwright Smoke: 206 passed / 3 baseline skipped, 0 regressions.
+  - Playwright Visual: 20/20 passed.
+  - Playwright SEO: 7/7 passed.
+  - Playwright Admin Items: 4/4 passed.
+- Acceptance Criteria Verified:
+  - [x] Backend and frontend unit/integration test suites pass 100%.
+  - [x] Playwright smoke test passes without regressions (206/206).
+  - [x] Section 6 Gates G1–G9 and Invariants I1–I8 verified and recorded in log.
+  - [x] `docs/plans/HYBRID_CMS_HANDOVER.md` authored.
+  - [x] `README.md` updated.
+  - [x] Stopped before merging into `main` per user directive.
+- Deviations from plan and why:
+  - None.
+- Found, not fixed:
+  - None.
+
+
 
 
 

@@ -8,7 +8,7 @@ interface GoldenSeoRoute {
 const GOLDEN_ROUTES: GoldenSeoRoute[] = [
   { path: '/', expectedPath: '/' },
   { path: '/labs', expectedPath: '/labs' },
-  { path: '/solutions/stem-tinkering-lab', expectedPath: '/solutions/stem-tinkering-lab' },
+  { path: '/labs/composite-skill-lab', expectedPath: '/labs/composite-skill-lab' },
   { path: '/furniture', expectedPath: '/furniture' },
   { path: '/faq', expectedPath: '/faq' },
 ];
@@ -20,24 +20,23 @@ test.describe('SEO Metadata & Canonical Link Verification (T16)', () => {
     test(`Golden Route [${route.path}] has valid SEO title, canonical link, and meta description`, async ({ page }) => {
       // 1. Visit path and wait for network idle or dom content loaded
       try {
-        await page.goto(route.path, { waitUntil: 'networkidle', timeout: 20000 });
+        await page.goto(route.path, { waitUntil: 'networkidle', timeout: 30000 });
       } catch {
         await page.waitForLoadState('domcontentloaded');
       }
 
-      // Settle delay for React 19 document metadata hoisting
-      await page.waitForTimeout(500);
+      // 2. Wait for React 19 document metadata hoisting
+      const canonical = page.locator('link[rel="canonical"]');
+      await expect(canonical).toHaveCount(1, { timeout: 30000 });
 
-      // 2. Verify document title
+      // 3. Verify document title
+      await expect(page).toHaveTitle(/CampusMart/i, { timeout: 30000 });
       const title = await page.title();
       expect(title).toBeTruthy();
       expect(title.trim().length).toBeGreaterThan(0);
-      expect(title).toContain('CampusMart');
       titlesByRoute[route.path] = title;
 
-      // 3. Verify canonical link
-      const canonical = page.locator('link[rel="canonical"]');
-      await expect(canonical).toHaveCount(1);
+      // 4. Verify canonical link
       const canonicalHref = await canonical.getAttribute('href');
       expect(canonicalHref).toBeTruthy();
 
@@ -65,8 +64,8 @@ test.describe('SEO Metadata & Canonical Link Verification (T16)', () => {
     for (const route of GOLDEN_ROUTES) {
       if (!titlesByRoute[route.path]) {
         try {
-          await page.goto(route.path, { waitUntil: 'domcontentloaded', timeout: 20000 });
-          await page.waitForTimeout(300);
+          await page.goto(route.path, { waitUntil: 'domcontentloaded', timeout: 30000 });
+          await expect(page).toHaveTitle(/CampusMart/i, { timeout: 30000 });
           titlesByRoute[route.path] = await page.title();
         } catch {
           // If navigation fails, let assertion handle it

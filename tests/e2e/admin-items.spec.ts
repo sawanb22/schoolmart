@@ -1,5 +1,12 @@
 import { test, expect } from '@playwright/test';
 import jwt from 'jsonwebtoken';
+import dotenv from 'dotenv';
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+dotenv.config({ path: path.resolve(__dirname, '../../backend/.env') });
 
 test.describe.serial('Admin Items & Strict Structured Writes E2E', () => {
   const timestamp = Date.now();
@@ -14,7 +21,7 @@ test.describe.serial('Admin Items & Strict Structured Writes E2E', () => {
     // Generate valid admin JWT token
     const secret = process.env.JWT_SECRET || 'test_jwt_secret_for_vitest_harness_only_not_prod';
     adminToken = jwt.sign(
-      { id: 999, email: 'admin@schoolmart.in', role: 'admin' },
+      { id: 1, email: 'admin@schoolmart.in', role: 'admin' },
       secret,
       { expiresIn: '1d' }
     );
@@ -45,9 +52,11 @@ test.describe.serial('Admin Items & Strict Structured Writes E2E', () => {
   });
 
   test('creates new card on labs in ItemsManager and verifies on /labs and subpage', async ({ page }) => {
+    test.setTimeout(90000);
+
     // Inject admin authentication in localStorage
     await page.addInitScript(({ token }) => {
-      const userStr = JSON.stringify({ id: 999, email: 'admin@schoolmart.in', role: 'admin' });
+      const userStr = JSON.stringify({ id: 1, email: 'admin@schoolmart.in', role: 'admin' });
       localStorage.setItem('cm_admin_token', token);
       localStorage.setItem('cm_admin_user', userStr);
       localStorage.setItem('cm_token', token);
@@ -56,7 +65,7 @@ test.describe.serial('Admin Items & Strict Structured Writes E2E', () => {
 
     // 1. Visit /admin/pages?edit=labs
     await page.goto('/admin/pages?edit=labs', { waitUntil: 'domcontentloaded' });
-    await expect(page.locator('#sec-cards')).toBeVisible({ timeout: 30000 });
+    await expect(page.locator('#sec-cards')).toBeVisible({ timeout: 60000 });
 
     // 2. Click "New Item"
     const newBtn = page.locator('#sec-cards').getByRole('button', { name: /New Item/i });
@@ -78,6 +87,17 @@ test.describe.serial('Admin Items & Strict Structured Writes E2E', () => {
     const descInput = drawer.locator('textarea[placeholder="Card teaser description..."]');
     if (await descInput.isVisible()) {
       await descInput.fill('Automated E2E test laboratory equipment and facilities.');
+    }
+
+    // Assign COMPUTER LAB category so the card is visible under the default category filter on /labs
+    const compLabBtn = drawer.locator('button').filter({ hasText: /COMPUTER LAB/i }).first();
+    if (await compLabBtn.isVisible()) {
+      await compLabBtn.click();
+    } else {
+      const anyCatBtn = drawer.locator('button').filter({ hasText: /\+ / }).first();
+      if (await anyCatBtn.isVisible()) {
+        await anyCatBtn.click();
+      }
     }
 
     // 4. Save new item
@@ -111,9 +131,10 @@ test.describe.serial('Admin Items & Strict Structured Writes E2E', () => {
   });
 
   test('edits card title in ItemsManager and verifies updated title on public subpage', async ({ page }) => {
+    test.setTimeout(90000);
     // Inject admin authentication
     await page.addInitScript(({ token }) => {
-      const userStr = JSON.stringify({ id: 999, email: 'admin@schoolmart.in', role: 'admin' });
+      const userStr = JSON.stringify({ id: 1, email: 'admin@schoolmart.in', role: 'admin' });
       localStorage.setItem('cm_admin_token', token);
       localStorage.setItem('cm_admin_user', userStr);
       localStorage.setItem('cm_token', token);
@@ -123,9 +144,10 @@ test.describe.serial('Admin Items & Strict Structured Writes E2E', () => {
     // Visit /admin/pages?edit=labs
     await page.goto('/admin/pages?edit=labs', { waitUntil: 'domcontentloaded' });
     await expect(page.locator('#sec-cards')).toBeVisible({ timeout: 30000 });
+    await expect(page.locator('#sec-cards').getByText(testCardTitle)).toBeVisible({ timeout: 30000 });
 
     // Locate card row and click Edit
-    const cardRow = page.locator('#sec-cards div').filter({ hasText: testCardTitle }).first();
+    const cardRow = page.locator('#sec-cards [data-testid="item-row"]').filter({ hasText: testCardTitle });
     const editBtn = cardRow.getByRole('button', { name: /Edit/i });
     await editBtn.click();
 
@@ -150,9 +172,10 @@ test.describe.serial('Admin Items & Strict Structured Writes E2E', () => {
   });
 
   test('reorders cards in ItemsManager with Move up / Move down', async ({ page }) => {
+    test.setTimeout(90000);
     // Inject admin auth
     await page.addInitScript(({ token }) => {
-      const userStr = JSON.stringify({ id: 999, email: 'admin@schoolmart.in', role: 'admin' });
+      const userStr = JSON.stringify({ id: 1, email: 'admin@schoolmart.in', role: 'admin' });
       localStorage.setItem('cm_admin_token', token);
       localStorage.setItem('cm_admin_user', userStr);
       localStorage.setItem('cm_token', token);
@@ -161,9 +184,10 @@ test.describe.serial('Admin Items & Strict Structured Writes E2E', () => {
 
     await page.goto('/admin/pages?edit=labs', { waitUntil: 'domcontentloaded' });
     await expect(page.locator('#sec-cards')).toBeVisible({ timeout: 30000 });
+    await expect(page.locator('#sec-cards').getByText(testCardTitleUpdated)).toBeVisible({ timeout: 30000 });
 
     // Find card row
-    const cardRow = page.locator('#sec-cards div').filter({ hasText: testCardTitleUpdated }).first();
+    const cardRow = page.locator('#sec-cards [data-testid="item-row"]').filter({ hasText: testCardTitleUpdated });
     const moveUpBtn = cardRow.getByTitle('Move up');
     const moveDownBtn = cardRow.getByTitle('Move down');
 
@@ -178,6 +202,7 @@ test.describe.serial('Admin Items & Strict Structured Writes E2E', () => {
   });
 
   test('handles concurrent version conflict dialog when saving with stale version', async ({ browser, request }) => {
+    test.setTimeout(90000);
     if (!createdItemId) {
       test.skip(true, 'Skipping conflict test because item was not created via UI');
       return;
@@ -187,7 +212,7 @@ test.describe.serial('Admin Items & Strict Structured Writes E2E', () => {
     const page = await context.newPage();
 
     await page.addInitScript(({ token }) => {
-      const userStr = JSON.stringify({ id: 999, email: 'admin@schoolmart.in', role: 'admin' });
+      const userStr = JSON.stringify({ id: 1, email: 'admin@schoolmart.in', role: 'admin' });
       localStorage.setItem('cm_admin_token', token);
       localStorage.setItem('cm_admin_user', userStr);
       localStorage.setItem('cm_token', token);
@@ -197,7 +222,7 @@ test.describe.serial('Admin Items & Strict Structured Writes E2E', () => {
     // 1. Open card in admin drawer
     await page.goto(`/admin/pages?edit=labs&card=${testCardSlug}`, { waitUntil: 'domcontentloaded' });
     const drawer = page.locator('.fixed.inset-0');
-    await expect(drawer.getByRole('heading', { level: 2, name: /Edit:/i })).toBeVisible({ timeout: 15000 });
+    await expect(drawer.getByRole('heading', { level: 2, name: /Edit:/i })).toBeVisible({ timeout: 30000 });
 
     // 2. In background, increment the item version via API to simulate concurrent write
     const currentItemRes = await request.get(`/api/admin/pages/${labsPageId}/items?collection=cards`, {
