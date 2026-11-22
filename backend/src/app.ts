@@ -2,6 +2,7 @@ import express from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
 import compression from 'compression';
+import pino from 'pino';
 import fs from 'fs';
 import path from 'path';
 import dns from 'dns';
@@ -41,9 +42,27 @@ import pagesRoutes from './routes/pages.routes';
 import mediaRoutes from './routes/media.routes';
 import seoRoutes from './routes/seo.routes';
 import { errorHandler } from './middleware/error.middleware';
+import { verifyTokenFromQueryOrHeader } from './middleware/auth.middleware';
 import { UPLOADS_DIR } from './lib/uploads-dir';
 
 const app = express();
+
+const redactDownloadTokenFromUrl = (url?: string): string | undefined =>
+    url?.replace(/([?&]token=)[^&#]*/gi, '$1[REDACTED]');
+
+const serializeRequestForLogs = (req: express.Request) => {
+    const query = { ...req.query };
+    if (Object.prototype.hasOwnProperty.call(query, 'token')) {
+        query.token = '[REDACTED]';
+    }
+
+    return {
+        ...pino.stdSerializers.req(req),
+        url: redactDownloadTokenFromUrl(req.originalUrl || req.url),
+        query,
+        params: req.params,
+    };
+};
 
 // Trust the first hop reverse proxy (e.g., cPanel Passenger, Render, Railway, Cloudflare, AWS ALB)
 // so that req.ip and req.protocol accurately reflect client connection details
@@ -54,6 +73,7 @@ app.set('trust proxy', 1);
 // Structured logging & Request ID tracing
 app.use(pinoHttp({
     logger,
+    serializers: { req: serializeRequestForLogs },
     genReqId: (req: any) => (req.headers['x-request-id'] as string) || crypto.randomUUID(),
     customLogLevel: (_req, res, err) => {
         if (res.statusCode >= 500 || err) return 'error';
@@ -178,13 +198,30 @@ app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true }));
 
 // Static files (uploaded images/PDFs/videos/documents).
+// Catalogue and college-sale document PDFs are private. This middleware must
+// run before the static handlers below, otherwise Express serves the file
+// without giving authentication a chance to run.
+const protectedUploadPdfPath = /^\/(catalogues|documents)\/.+\.pdf$/i;
+app.use('/uploads', (req, res, next) => {
+    if (protectedUploadPdfPath.test(req.path)) {
+        return verifyTokenFromQueryOrHeader(req, res, next);
+    }
+    next();
+});
+
 const staticOptions = {
     maxAge: '7d',
     immutable: true,
     setHeaders: (res: any, filePath: string) => {
-        if (filePath.endsWith('.pdf')) {
+        if (/\.pdf$/i.test(filePath)) {
             const fileName = path.basename(filePath);
             res.setHeader('Content-Disposition', `inline; filename="${fileName}"`);
+
+            // A protected PDF must never be stored in a shared cache, where a
+            // later anonymous request could be served from cache without auth.
+            if (/[\\/](catalogues|documents)[\\/].+\.pdf$/i.test(filePath)) {
+                res.setHeader('Cache-Control', 'private, no-store');
+            }
         }
     },
 };

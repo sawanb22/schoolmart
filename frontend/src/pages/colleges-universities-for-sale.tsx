@@ -24,7 +24,7 @@ import api from '@/api/client';
 import LoginGate from '@/components/common/LoginGate';
 import LoginPromptModal from '@/components/login-prompt-modal';
 import MediaImage from '@/components/ui/media-image';
-import { resolveMediaUrl } from '@/lib/media-url';
+import { protectedFileUrl } from '@/lib/protected-file-url';
 import RichTextContent from '@/components/common/RichTextContent';
 import PaginationControl from '@/components/common/PaginationControl';
 import { CollegesGridSkeleton } from '@/components/ui/page-skeleton';
@@ -146,8 +146,6 @@ const CollegeCardCarousel: React.FC<{
 const REGIONS: (Region | 'All')[] = ['All', 'North', 'South', 'East', 'West'];
 const PAGE_SIZE = 8;
 
-const resolveImage = (value?: string) => resolveMediaUrl(value);
-
 const EMPTY_FORM = { name: '', email: '', phone: '', institution: '', message: '' };
 
 export default function CollegesUniversitiesForSale() {
@@ -194,7 +192,7 @@ export default function CollegesUniversitiesForSale() {
       setShowLoginPrompt(true);
       return;
     }
-    const targetUrl = resolveImage(rawUrl);
+    const targetUrl = protectedFileUrl(rawUrl);
     window.open(targetUrl, '_blank', 'noopener,noreferrer');
   };
 
@@ -204,7 +202,7 @@ export default function CollegesUniversitiesForSale() {
       setShowLoginPrompt(true);
       return;
     }
-    const targetUrl = resolveImage(rawUrl);
+    const targetUrl = protectedFileUrl(rawUrl);
     window.open(targetUrl, '_blank', 'noopener,noreferrer');
   };
 

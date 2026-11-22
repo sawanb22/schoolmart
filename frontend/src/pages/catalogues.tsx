@@ -4,7 +4,7 @@ import { FileText, Send, X, CheckCircle } from 'lucide-react';
 import api from '@/api/client';
 import LoginGate, { useRequireLogin } from '@/components/common/LoginGate';
 import { useHubLegacy } from '@/hooks/useHubLegacy';
-import { resolveMediaUrl } from '@/lib/media-url';
+import { protectedFileUrl } from '@/lib/protected-file-url';
 import { MediaImage } from '@/components/ui/media-image';
 import { getCardCover } from '@/lib/card-covers';
 import { getUserSession } from '@/lib/auth-session';
@@ -237,7 +237,7 @@ const Catalogues = () => {
                             </Link>
                           ) : hasPdf ? (
                             <a
-                              href={resolveMediaUrl(catalogue.downloadLink)}
+                              href={protectedFileUrl(catalogue.downloadLink)}
                               target="_blank"
                               rel="noopener noreferrer"
                               onClick={(e) => handleDownloadClick(e, catalogue)}

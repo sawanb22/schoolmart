@@ -38,6 +38,8 @@ import HtmlRichTextEditor from '../components/HtmlRichTextEditor';
 import RichTextContent from '@/components/common/RichTextContent';
 import { PaginationControl } from '@/components/common/PaginationControl';
 import { resolveMediaUrl } from '../../lib/media-url';
+import { protectedFileUrl } from '../../lib/protected-file-url';
+import { getAdminToken } from '../lib/auth';
 import { broadcastCmsInvalidation, clearPageDataCache } from '@/hooks/usePageData';
 
 export type Region = 'North' | 'South' | 'East' | 'West';
@@ -1075,7 +1077,7 @@ export default function CollegesManager() {
                         <div className="flex flex-col gap-1">
                           {card.ndaUrl ? (
                             <a
-                              href={resolveMediaUrl(card.ndaUrl)}
+                              href={protectedFileUrl(card.ndaUrl, getAdminToken())}
                               target="_blank"
                               rel="noreferrer"
                               className="inline-flex items-center gap-1 text-[11px] font-bold text-blue-600 hover:underline"
@@ -1089,7 +1091,7 @@ export default function CollegesManager() {
 
                           {card.mandateUrl ? (
                             <a
-                              href={resolveMediaUrl(card.mandateUrl)}
+                              href={protectedFileUrl(card.mandateUrl, getAdminToken())}
                               target="_blank"
                               rel="noreferrer"
                               className="inline-flex items-center gap-1 text-[11px] font-bold text-emerald-600 hover:underline"
