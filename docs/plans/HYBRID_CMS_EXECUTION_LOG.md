@@ -657,8 +657,8 @@
 
 ## T14 – Bundle and rendering performance – DONE
 - Date: 2026-11-22
-- Commit: Pending (T14: Bundle and rendering performance)
-- Review Status: PENDING REVIEW
+- Commit: d4d1232 (T14: Bundle and rendering performance)
+- Review Status: APPROVED (commits f77569d..d4d1232, review clean, 0 critical, 0 important)
 - Files changed (summary):
   - `frontend/vite.config.js`: Deleted obsolete configuration.
   - `frontend/vite.config.ts`: Consolidated into single canonical configuration; retained `/api` and `/uploads` proxies, made `kimi-plugin-inspect-react` strictly dev-only, set `build.target: 'es2020'`, and configured Rollup `manualChunks` (`react`, `router`, `query`, `gsap`, `radix`, `icons`).
