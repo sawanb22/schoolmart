@@ -194,7 +194,7 @@ export default function Layout() {
 
                 {/* Navigation Items */}
                 {isExpanded ? (
-                    <div className="flex-1 overflow-y-auto py-3 px-2.5 space-y-4">
+                    <div className="flex-1 overflow-y-auto py-3 px-2.5 space-y-4 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
                         {navGroups.map((group) => (
                             <div key={group.label}>
                                 <p className="text-[10px] font-bold text-stone-400 uppercase tracking-wider px-2.5 mb-1">
@@ -240,7 +240,7 @@ export default function Layout() {
                         ))}
                     </div>
                 ) : (
-                    <div className="flex-1 overflow-y-auto py-3 px-1.5 space-y-3">
+                    <div className="flex-1 overflow-y-auto py-3 px-1.5 space-y-3 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
                         {navGroups.map((group, groupIdx) => (
                             <div key={group.label}>
                                 {groupIdx > 0 && (

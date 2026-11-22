@@ -13,6 +13,7 @@ import {
   Send,
 } from 'lucide-react';
 import api from '@/api/client';
+import LoginGate from '@/components/common/LoginGate';
 import { MediaImage } from '@/components/ui/media-image';
 import { MASTER_CATEGORIES, HIGHER_ED_INSTITUTIONS, OTHER_INSTITUTIONS } from '@/components/sections/search-bar';
 
@@ -866,6 +867,7 @@ export default function FindSolutions() {
                   </div>
                 </div>
               ) : (
+                <LoginGate title="Please log in to submit your requirement" message="Create a free account or log in to share your campus requirement with our team.">
                 <form onSubmit={handleConsultationSubmit} className="space-y-6">
                   {formError && (
                     <div className="p-3.5 bg-red-50 border border-red-200 rounded-lg text-xs text-red-700 font-semibold">
@@ -1065,6 +1067,7 @@ export default function FindSolutions() {
                     </button>
                   </div>
                 </form>
+                </LoginGate>
               )}
             </section>
 

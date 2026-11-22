@@ -4,6 +4,7 @@ import { ArrowRight, CheckCircle, Send, Sparkles } from 'lucide-react';
 import { usePagination } from '@/hooks/usePagination';
 import PaginationControl from '@/components/common/PaginationControl';
 import api from '@/api/client';
+import LoginGate from '@/components/common/LoginGate';
 import { useHubLegacy } from '@/hooks/useHubLegacy';
 import { MediaImage } from '@/components/ui/media-image';
 import { PageCardGridSkeleton } from '@/components/ui/page-skeleton';
@@ -310,6 +311,7 @@ const SmartClassrooms = () => {
                 Thank you. Your request has been submitted successfully.
               </div>
             ) : (
+              <LoginGate title="Please log in to continue" message="Create a free account or log in to request information.">
               <form onSubmit={handleSubmit} className="space-y-5">
                 {error && <div className="rounded-lg border border-red-200 bg-red-50 p-3 text-red-600">{error}</div>}
                 <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
@@ -341,6 +343,7 @@ const SmartClassrooms = () => {
                   {submitting ? 'Submitting...' : 'Request Information'}
                 </button>
               </form>
+              </LoginGate>
             )}
           </div>
         </section>

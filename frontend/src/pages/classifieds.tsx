@@ -14,6 +14,7 @@ import {
 } from 'lucide-react';
 import { usePageData } from '@/hooks/usePageData';
 import api from '@/api/client';
+import LoginGate from '@/components/common/LoginGate';
 import MediaImage from '@/components/ui/media-image';
 import { normalizeCardHref, isExternalLink } from '@/lib/cms-routing';
 
@@ -386,6 +387,7 @@ const Classifieds = () => {
                   </button>
                 </div>
               ) : (
+                <LoginGate title="Please log in to continue" message="Create a free account or log in to submit your listing enquiry.">
                 <form onSubmit={handleSubmit} className="space-y-4">
                   {formError && (
                     <div className="rounded-lg border border-red-200 bg-red-50 p-3 text-sm text-red-600">
@@ -515,6 +517,7 @@ const Classifieds = () => {
                     </button>
                   </div>
                 </form>
+                </LoginGate>
               )}
             </div>
           </div>

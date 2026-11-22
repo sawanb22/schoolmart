@@ -956,7 +956,7 @@ const SearchBar = () => {
             {/* Custom Popover 1: Institution Selection (Scrollbar completely hidden) */}
             {isInstitutionOpen && (
               <div
-                className="absolute top-full left-0 mt-2.5 w-84 sm:w-96 bg-white rounded-2xl border border-slate-200/90 shadow-2xl p-2.5 z-[100] animate-in fade-in zoom-in-95 duration-150 max-h-[420px] overflow-y-auto [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden"
+                className="absolute top-full left-0 mt-2.5 w-84 sm:w-96 max-w-[calc(100vw-1.5rem)] bg-white rounded-2xl border border-slate-200/90 shadow-2xl p-2.5 z-[100] animate-in fade-in zoom-in-95 duration-150 max-h-[420px] overflow-y-auto [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden"
                 onClick={(e) => e.stopPropagation()}
               >
                 <div className="space-y-2.5">
@@ -1087,7 +1087,7 @@ const SearchBar = () => {
 
           {/* ─── DROPDOWN 2: I AM LOOKING FOR (Opens Side Panel ONLY on Hover/Click) ─── */}
           <div
-            className={`relative shrink-0 flex items-center border-r border-slate-200 transition-colors ${
+            className={`sm:relative shrink-0 flex items-center border-r border-slate-200 transition-colors ${
               isObjectiveOpen ? 'bg-slate-200 text-slate-900' : 'bg-slate-100 hover:bg-slate-200/80 text-slate-700'
             }`}
           >
@@ -1122,16 +1122,16 @@ const SearchBar = () => {
             {/* Custom Popover 2: Clean Two-Column Layout (Zero Scrollbars, Options Open to the Right ONLY on Hover) */}
             {isObjectiveOpen && (
               <div
-                className={`absolute top-full left-0 sm:left-auto sm:right-0 md:left-0 mt-2.5 bg-white rounded-2xl border border-slate-200/90 shadow-2xl p-0 z-[100] animate-in fade-in zoom-in-95 duration-150 overflow-hidden flex flex-col md:flex-row transition-all ${
+                className={`absolute top-full left-0 right-0 sm:left-auto sm:right-0 md:left-0 md:right-auto mt-2.5 bg-white rounded-2xl border border-slate-200/90 shadow-2xl p-0 z-[100] animate-in fade-in zoom-in-95 duration-150 overflow-hidden flex flex-col md:flex-row transition-all ${
                   hoveredCategory
-                    ? 'w-[94vw] sm:w-[720px] md:w-[820px] max-w-[860px]'
-                    : 'w-[330px] sm:w-[400px] md:w-[420px]'
+                    ? 'sm:w-[720px] md:w-[820px] sm:max-w-[860px]'
+                    : 'sm:w-[400px] md:w-[420px]'
                 }`}
                 onClick={(e) => e.stopPropagation()}
               >
                 {/* ── LEFT COLUMN: 10 Categories List (Clean Text, No A/B Prefixes, No Scrollbars) ── */}
                 <div
-                  className={`p-2 max-h-[440px] overflow-y-auto [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden bg-white ${
+                  className={`p-2 max-h-[38vh] md:max-h-[440px] overflow-y-auto [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden bg-white ${
                     hoveredCategory ? 'w-full md:w-[350px] shrink-0 border-b md:border-b-0 md:border-r border-slate-100' : 'w-full'
                   }`}
                 >
@@ -1181,7 +1181,7 @@ const SearchBar = () => {
 
                 {/* ── RIGHT COLUMN: Connected Flyout Panel (Opens ONLY when category is hovered/clicked) ── */}
                 {hoveredCategory && (
-                  <div className="flex-1 p-4 bg-slate-50/70 max-h-[420px] overflow-y-auto [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden flex flex-col justify-between animate-in fade-in duration-100">
+                  <div className="flex-1 p-4 bg-slate-50/70 max-h-[45vh] md:max-h-[420px] overflow-y-auto [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden flex flex-col justify-between animate-in fade-in duration-100">
                     <div>
                       {/* Clean Header: Category Title without Robotic Elements */}
                       <div className="pb-2.5 border-b border-slate-200 mb-3">

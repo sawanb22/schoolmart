@@ -3,11 +3,12 @@ import prisma from '../lib/prisma';
 import { isValidEmail, isValidPhone } from '../lib/validation';
 import { syncToSpreadsheet } from '../services/spreadsheet.service';
 import { inquiryLimiter } from '../middleware/rate-limit.middleware';
+import { verifyToken } from '../middleware/auth.middleware';
 
 const router = Router();
 
 // POST /api/inquiries - Submit Institutional Consultation & Scope Request
-router.post('/', inquiryLimiter, async (req: Request, res: Response): Promise<void> => {
+router.post('/', inquiryLimiter, verifyToken, async (req: Request, res: Response): Promise<void> => {
   try {
     const {
       name,

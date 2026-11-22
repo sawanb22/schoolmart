@@ -3,6 +3,7 @@ import { Link, useNavigate, useSearchParams, useLocation } from 'react-router-do
 import { Eye, EyeOff, Mail, Lock, User, Phone, Building2, ArrowRight, CheckCircle, Shield } from 'lucide-react';
 import api from '@/api/client';
 import { setUserSession } from '@/lib/auth-session';
+import { getSafeRedirect, withRedirect } from '@/lib/safe-redirect';
 import Seo from '@/components/seo/Seo';
 
 type Step = 'form' | 'otp' | 'done';
@@ -11,6 +12,8 @@ const Registration = () => {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const location = useLocation();
+  // Same-site path to return to after sign-up / verification (open-redirect safe)
+  const redirectTo = getSafeRedirect(searchParams.get('redirect'));
 
   const [step, setStep] = useState<Step>('form');
   const [sending, setSending] = useState(false);
@@ -79,11 +82,13 @@ const Registration = () => {
         });
         setUserSession(data.accessToken, data.user);
         setStep('done');
-        setTimeout(() => navigate(data.user?.role === 'admin' ? '/admin/dashboard' : '/my-account'), 1500);
+        const afterLogin = redirectTo && !redirectTo.startsWith('/admin') ? redirectTo : '/my-account';
+        setTimeout(() => navigate(data.user?.role === 'admin' ? '/admin/dashboard' : afterLogin), 1500);
       } else {
         // Password not in memory (e.g. user refreshed OTP screen) -> send to login with verified notice
         setStep('done');
-        setTimeout(() => navigate('/login?verified=true'), 1500);
+        const loginUrl = `/login?verified=true${redirectTo ? `&redirect=${encodeURIComponent(redirectTo)}` : ''}`;
+        setTimeout(() => navigate(loginUrl), 1500);
       }
     } catch (err: any) {
       setError(err.response?.data?.error || 'Invalid OTP. Please try again.');
@@ -196,7 +201,7 @@ const Registration = () => {
 
             <p className="text-center text-sm text-gray-500 mt-6">
               Already have an account?{' '}
-              <Link to="/login" className="font-semibold text-[#0a2463] hover:underline">Sign in</Link>
+              <Link to={withRedirect('/login', redirectTo ?? '')} className="font-semibold text-[#0a2463] hover:underline">Sign in</Link>
             </p>
           </div>
         )}

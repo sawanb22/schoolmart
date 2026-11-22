@@ -82,6 +82,8 @@ describe('Catalogues Page (v2 Summary Shape)', () => {
   };
 
   beforeEach(() => {
+    localStorage.clear();
+    sessionStorage.clear();
     server.use(
       http.get('/api/pages/catalogues', ({ request }) => {
         const url = new URL(request.url);
@@ -108,5 +110,33 @@ describe('Catalogues Page (v2 Summary Shape)', () => {
     expect(screen.getByText('Featured Institutional Case Studies')).toBeInTheDocument();
     expect(screen.getByText('Heritage School Lab Transformation')).toBeInTheDocument();
     expect(screen.getByText('Turnkey Lab Setup')).toBeInTheDocument();
+  });
+
+  it('does not expose PDF links to logged-out visitors', async () => {
+    renderWithProviders(<Catalogues />);
+
+    await waitFor(() => {
+      expect(screen.getAllByRole('link', { name: /Log in to download/i })).toHaveLength(2);
+    });
+
+    for (const link of screen.getAllByRole('link', { name: /Log in to download/i })) {
+      expect(link).toHaveAttribute('href', '/login?redirect=/catalogues');
+    }
+    expect(screen.queryByRole('link', { name: /Download PDF/i })).not.toBeInTheDocument();
+    expect(document.body.innerHTML).not.toContain('stem-catalogue.pdf');
+    expect(document.body.innerHTML).not.toContain('vocational.pdf');
+  });
+
+  it('shows the PDF download links to logged-in users', async () => {
+    localStorage.setItem('cm_token', 'token-123');
+    localStorage.setItem('cm_user', JSON.stringify({ id: 1, name: 'Test User', email: 'user@example.com', role: 'user' }));
+
+    renderWithProviders(<Catalogues />);
+
+    await waitFor(() => {
+      expect(screen.getAllByRole('link', { name: /Download PDF/i })).toHaveLength(2);
+    });
+    expect(screen.getAllByRole('link', { name: /Download PDF/i })[0].getAttribute('href')).toContain('stem-catalogue.pdf');
+    expect(screen.queryByRole('link', { name: /Log in to download/i })).not.toBeInTheDocument();
   });
 });

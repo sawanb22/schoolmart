@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect, useMemo } from 'react';
 import { CheckCircle, Send, Briefcase, MapPin, Clock, ArrowRight, Upload, FileText, Check, Sparkles } from 'lucide-react';
 import api from '@/api/client';
+import LoginGate from '@/components/common/LoginGate';
 import { useHubLegacy } from '@/hooks/useHubLegacy';
 
 export interface JobOpening {
@@ -284,6 +285,7 @@ const JobOpenings = () => {
                   </div>
                 )}
 
+              <LoginGate title="Please log in to apply" message="Create a free account or log in to submit your application and resume.">
               <form onSubmit={handleSubmit} className="space-y-4">
                 <div>
                   <label htmlFor="job-name" className="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5">
@@ -434,6 +436,7 @@ const JobOpenings = () => {
                   {submitting ? 'Submitting Application...' : ((pageData as any).formButtonLabel || 'Submit Application')}
                 </button>
               </form>
+              </LoginGate>
             </div>
           </div>
           )}

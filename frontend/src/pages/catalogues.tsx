@@ -2,6 +2,7 @@ import { useState, type MouseEvent } from 'react';
 import { Link } from 'react-router-dom';
 import { FileText, Send, X, CheckCircle } from 'lucide-react';
 import api from '@/api/client';
+import LoginGate, { useRequireLogin } from '@/components/common/LoginGate';
 import { useHubLegacy } from '@/hooks/useHubLegacy';
 import { resolveMediaUrl } from '@/lib/media-url';
 import { MediaImage } from '@/components/ui/media-image';
@@ -37,6 +38,7 @@ const PAGE_SIZE = 6;
 
 const Catalogues = () => {
   const { data, loading } = useHubLegacy('catalogues');
+  const { loggedIn } = useRequireLogin();
 
   const heroTitle = data.heroTitle || '';
   const rawSubtitle = data.heroSubtitle || '';
@@ -225,7 +227,15 @@ const Catalogues = () => {
                         </div>
 
                         <div className="pt-4">
-                          {hasPdf ? (
+                          {hasPdf && !loggedIn ? (
+                            <Link
+                              to="/login?redirect=/catalogues"
+                              className="inline-flex w-full items-center justify-center gap-2 rounded-lg bg-cm-blue px-4 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-cm-blue-dark shadow-sm"
+                            >
+                              <FileText className="h-4 w-4" />
+                              Log in to download
+                            </Link>
+                          ) : hasPdf ? (
                             <a
                               href={resolveMediaUrl(catalogue.downloadLink)}
                               target="_blank"
@@ -398,6 +408,7 @@ const Catalogues = () => {
                   </button>
                 </div>
               ) : (
+                <LoginGate title="Please log in to continue" message="Create a free account or log in to request this catalogue.">
                 <form onSubmit={handleRequestSubmit} className="space-y-4">
                   {formError && (
                     <div className="rounded-lg border border-red-200 bg-red-50 p-3 text-sm text-red-600">
@@ -468,6 +479,7 @@ const Catalogues = () => {
                     {submitting ? 'Submitting Request...' : 'Send Catalogue Request'}
                   </button>
                 </form>
+                </LoginGate>
               )}
             </div>
           </div>

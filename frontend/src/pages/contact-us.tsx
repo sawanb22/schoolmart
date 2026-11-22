@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Phone, Mail, Clock, Send, MessageCircle, type LucideIcon } from 'lucide-react';
 import api from '@/api/client';
+import LoginGate from '@/components/common/LoginGate';
 import { usePageData } from '@/hooks/usePageData';
 import { useSiteContent } from '@/contexts/SiteContentContext';
 import { getWhatsAppUrl, sanitizePhone } from '@/lib/contact-actions';
@@ -188,6 +189,7 @@ const ContactUs = () => {
                   {submitError}
                 </div>
               )}
+              <LoginGate title="Please log in to contact us" message="Create a free account or log in to send us a message.">
               <form onSubmit={handleSubmit} className="space-y-6">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div>
@@ -316,6 +318,7 @@ const ContactUs = () => {
                   {submitting ? 'Sending...' : 'Send Message'}
                 </button>
               </form>
+              </LoginGate>
             </div>
           </div>
 

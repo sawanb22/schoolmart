@@ -6,6 +6,7 @@ import { isValidEmail, isValidPhone, isValidPincode } from '../lib/validation';
 import { uploadResume } from '../middleware/upload.middleware';
 import { sendOtpEmail, generateOtp } from '../lib/email';
 import { otpLimiter, inquiryLimiter } from '../middleware/rate-limit.middleware';
+import { verifyToken } from '../middleware/auth.middleware';
 
 const router = Router();
 
@@ -24,7 +25,7 @@ const getOptionalUser = async (req: Request) => {
 };
 
 // POST /api/contact
-router.post('/', inquiryLimiter, uploadResume.single('resume'), async (req: Request, res: Response) => {
+router.post('/', inquiryLimiter, verifyToken, uploadResume.single('resume'), async (req: Request, res: Response) => {
     try {
         const { name, email, phone, institution, subject, role, message } = req.body;
         if (!name || !email || !phone || !message) {
@@ -104,7 +105,7 @@ router.post('/send-quote-otp', otpLimiter, async (req: Request, res: Response) =
 });
 
 // POST /api/contact/quote
-router.post('/quote', inquiryLimiter, async (req: Request, res: Response) => {
+router.post('/quote', inquiryLimiter, verifyToken, async (req: Request, res: Response) => {
     try {
         const { name, email, phone, institution, pincode, items, message, otpCode } = req.body;
         if (!name || !email || !phone || !pincode || !message) {

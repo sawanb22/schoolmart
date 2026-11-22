@@ -21,6 +21,7 @@ import {
 } from 'lucide-react';
 import { useHubLegacy } from '@/hooks/useHubLegacy';
 import api from '@/api/client';
+import LoginGate from '@/components/common/LoginGate';
 import LoginPromptModal from '@/components/login-prompt-modal';
 import MediaImage from '@/components/ui/media-image';
 import { resolveMediaUrl } from '@/lib/media-url';
@@ -790,6 +791,7 @@ export default function CollegesUniversitiesForSale() {
                   Thank you. Your enquiry has been sent — the listing owner will get back to you soon.
                 </div>
               ) : (
+                <LoginGate title="Please log in to contact this business" message="Create a free account or log in to send an enquiry.">
                 <form onSubmit={submitContactForm} className="space-y-4 text-xs sm:text-sm">
                   {formError && (
                     <div className="rounded-lg border border-red-200 bg-red-50 p-3 text-sm text-red-600">{formError}</div>
@@ -855,6 +857,7 @@ export default function CollegesUniversitiesForSale() {
                     {submitting ? 'Sending...' : 'Send Enquiry'}
                   </button>
                 </form>
+                </LoginGate>
               )}
             </div>
           </div>

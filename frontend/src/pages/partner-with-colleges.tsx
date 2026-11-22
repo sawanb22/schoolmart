@@ -19,6 +19,7 @@ import {
 } from 'lucide-react';
 import { useHubLegacy } from '@/hooks/useHubLegacy';
 import api from '@/api/client';
+import LoginGate from '@/components/common/LoginGate';
 import { resolveMediaUrl } from '@/lib/media-url';
 import MediaImage from '@/components/ui/media-image';
 import { PARTNER_PAGE_SLUG, PARTNER_DEFAULTS, slugifyModelTitle } from './partner-with-colleges.data';
@@ -316,6 +317,7 @@ const PartnerWithColleges = () => {
                   </button>
                 </div>
               ) : (
+                <LoginGate title="Please log in to continue" message="Create a free account or log in to send your partnership enquiry.">
                 <form onSubmit={handleSubmit} className="space-y-4">
                   {formError && (
                     <div className="rounded-lg border border-red-200 bg-red-50 p-3 text-sm text-red-600">
@@ -442,6 +444,7 @@ const PartnerWithColleges = () => {
                     </button>
                   </div>
                 </form>
+                </LoginGate>
               )}
             </div>
           </div>

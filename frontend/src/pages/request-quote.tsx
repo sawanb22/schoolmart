@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import { useSearchParams, Link } from 'react-router-dom';
 import { Send, CheckCircle, Package, ArrowLeft, ShieldCheck, RefreshCw, X, Plus, Minus, Trash2 } from 'lucide-react';
 import api from '@/api/client';
+import LoginGate, { useRequireLogin } from '@/components/common/LoginGate';
 import { getUserSession } from '@/lib/auth-session';
 import { useWishlist } from '@/contexts/WishlistContext';
 import { resolveMediaUrl } from '@/lib/media-url';
@@ -39,6 +40,7 @@ const RequestQuote = () => {
 
   const { items: wishlistItems, updateQuantity: updateWishlistQty } = useWishlist();
   const user = getUserSession();
+  const { loggedIn } = useRequireLogin();
 
   const [formData, setFormData] = useState({
     name: user?.name || '',
@@ -52,6 +54,14 @@ const RequestQuote = () => {
     budget: '',
     timeline: '',
   });
+
+  // Prefill name/email when the session appears after mount (e.g. login in another tab).
+  // Adjusting state during render avoids an extra effect pass.
+  const [prefilledFromSession, setPrefilledFromSession] = useState(Boolean(user));
+  if (loggedIn && user && !prefilledFromSession) {
+    setPrefilledFromSession(true);
+    setFormData(prev => (prev.email ? prev : { ...prev, name: prev.name || user.name || '', email: user.email || '' }));
+  }
 
   useEffect(() => {
     const productSlug = searchParams.get('product');
@@ -326,6 +336,7 @@ const RequestQuote = () => {
             </div>
           )}
 
+          <LoginGate title="Please log in to request a quote" message="Create a free account or log in to fill this form.">
           <form onSubmit={handleSubmit} className="space-y-5">
             {submitError && (
               <div className="p-3 bg-red-50 border border-red-200 rounded-xl text-red-600 text-sm">
@@ -580,6 +591,7 @@ const RequestQuote = () => {
               {submitting ? 'Submitting Quotation Request...' : 'Submit Institutional Quote Request'}
             </button>
           </form>
+          </LoginGate>
         </div>
       </div>
 

@@ -6,6 +6,7 @@ import api from '@/api/client';
 import { useContactAction } from '@/hooks/useContactAction';
 import ContactActionModal from '@/components/ui/contact-action-modal';
 import { useSiteContent } from '@/contexts/SiteContentContext';
+import LoginGate from '@/components/common/LoginGate';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -50,21 +51,24 @@ const PartnershipForm = () => {
   useEffect(() => {
     const ctx = gsap.context(() => {
       // Form container slide in
-      gsap.fromTo(
-        formRef.current,
-        { x: -60, opacity: 0 },
-        {
-          x: 0,
-          opacity: 1,
-          duration: 0.7,
-          ease: 'power3.out',
-          scrollTrigger: {
-            trigger: containerRef.current,
-            start: 'top 80%',
-            toggleActions: 'play none none none',
-          },
-        }
-      );
+      // formRef is null while the login gate is shown instead of the form
+      if (formRef.current) {
+        gsap.fromTo(
+          formRef.current,
+          { x: -60, opacity: 0 },
+          {
+            x: 0,
+            opacity: 1,
+            duration: 0.7,
+            ease: 'power3.out',
+            scrollTrigger: {
+              trigger: containerRef.current,
+              start: 'top 80%',
+              toggleActions: 'play none none none',
+            },
+          }
+        );
+      }
 
       // Form fields stagger
       const formFields = formRef.current?.querySelectorAll('.form-field');
@@ -158,6 +162,7 @@ const PartnershipForm = () => {
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
           {/* Form */}
+          <LoginGate title="Please log in to contact us" message="Create a free account or log in to send your partnership enquiry.">
           <form
             ref={formRef}
             onSubmit={handleSubmit}
@@ -268,6 +273,7 @@ const PartnershipForm = () => {
               </button>
             </div>
           </form>
+          </LoginGate>
 
           {/* Contact Info */}
           <div ref={contactRef} className="flex flex-col justify-center">

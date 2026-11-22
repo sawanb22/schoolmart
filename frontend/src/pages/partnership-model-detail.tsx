@@ -4,6 +4,7 @@ import { ArrowLeft, ArrowRight, Handshake, X, CheckCircle2, Send } from 'lucide-
 import { useHubItem } from '@/hooks/useHubItem';
 import { itemToCard } from '@/lib/item-to-card';
 import api from '@/api/client';
+import LoginGate from '@/components/common/LoginGate';
 import { resolveMediaUrl } from '@/lib/media-url';
 import MediaImage from '@/components/ui/media-image';
 import { PARTNER_PAGE_SLUG, PARTNER_DEFAULTS, slugifyModelTitle } from './partner-with-colleges.data';
@@ -178,6 +179,7 @@ const PartnershipModelDetail = () => {
                   </button>
                 </div>
               ) : (
+                <LoginGate title="Please log in to continue" message="Create a free account or log in to enquire about this partnership model.">
                 <form onSubmit={handleSubmit} className="space-y-4">
                   {formError && (
                     <div className="rounded-lg border border-red-200 bg-red-50 p-3 text-sm text-red-600">
@@ -286,6 +288,7 @@ const PartnershipModelDetail = () => {
                     </button>
                   </div>
                 </form>
+                </LoginGate>
               )}
             </div>
           </div>

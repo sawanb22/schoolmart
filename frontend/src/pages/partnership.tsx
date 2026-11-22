@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
 import { Send, CheckCircle } from 'lucide-react';
 import api from '@/api/client';
+import LoginGate from '@/components/common/LoginGate';
 import { usePageData } from '@/hooks/usePageData';
 
 const DEFAULTS = {
@@ -114,6 +115,7 @@ const Partnership = () => {
             </div>
           )}
 
+          <LoginGate title="Please log in to continue" message="Create a free account or log in to send your partnership enquiry.">
           <form onSubmit={handleSubmit} className="space-y-5">
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
@@ -203,6 +205,7 @@ const Partnership = () => {
               {submitting ? 'Submitting...' : 'Submit Partnership Enquiry'}
             </button>
           </form>
+          </LoginGate>
         </div>
       </div>
     </main>

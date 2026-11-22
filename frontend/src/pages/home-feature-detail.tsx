@@ -3,6 +3,7 @@ import { ArrowLeft, CheckCircle, Send } from 'lucide-react';
 import { Link, useLocation } from 'react-router-dom';
 import { useSiteContent } from '@/contexts/SiteContentContext';
 import api from '@/api/client';
+import LoginGate from '@/components/common/LoginGate';
 import MediaImage from '@/components/ui/media-image';
 import { useState } from 'react';
 
@@ -66,13 +67,13 @@ const HomeFeatureDetail = () => {
         <section className="bg-white rounded-2xl p-6 sm:p-10 shadow-sm mt-8 max-w-3xl mx-auto">
           <h2 className="text-2xl font-bold text-cm-blue-dark mb-2">Request More Information</h2>
           <p className="text-gray-600 mb-6">Tell us what your institution needs and our team will contact you.</p>
-          {submitted ? <div className="rounded-lg border border-green-200 bg-green-50 p-4 text-green-700">Thank you. Your request has been submitted successfully.</div> : <form onSubmit={handleSubmit} className="space-y-5">
+          {submitted ? <div className="rounded-lg border border-green-200 bg-green-50 p-4 text-green-700">Thank you. Your request has been submitted successfully.</div> : <LoginGate title="Please log in to continue" message="Create a free account or log in to request more information."><form onSubmit={handleSubmit} className="space-y-5">
             {error && <div className="rounded-lg border border-red-200 bg-red-50 p-3 text-red-600">{error}</div>}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4"><div><label className="form-label">Full Name *</label><input className="form-input" required value={formData.name} onChange={(event) => setFormData({ ...formData, name: event.target.value })} /></div><div><label className="form-label">Email *</label><input type="email" className="form-input" required value={formData.email} onChange={(event) => setFormData({ ...formData, email: event.target.value })} /></div></div>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4"><div><label className="form-label">Phone *</label><input type="tel" className="form-input" required value={formData.phone} onChange={(event) => setFormData({ ...formData, phone: event.target.value })} /></div><div><label className="form-label">Institution *</label><input className="form-input" required value={formData.institution} onChange={(event) => setFormData({ ...formData, institution: event.target.value })} /></div></div>
             <div><label className="form-label">Message *</label><textarea className="form-input min-h-[120px]" required value={formData.message} onChange={(event) => setFormData({ ...formData, message: event.target.value })} /></div>
             <button type="submit" disabled={submitting} className="btn-primary w-full flex items-center justify-center gap-2 disabled:opacity-60"><Send className="w-5 h-5" />{submitting ? 'Submitting...' : 'Request Information'}</button>
-          </form>}
+          </form></LoginGate>}
         </section>
       </div>
     </main>

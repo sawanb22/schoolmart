@@ -3,6 +3,7 @@ import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import { Eye, EyeOff, Mail, Lock, ArrowRight, CheckCircle2, ShieldAlert } from 'lucide-react';
 import api from '@/api/client';
 import { setUserSession } from '@/lib/auth-session';
+import { getSafeRedirect, withRedirect } from '@/lib/safe-redirect';
 import ForgotPasswordModal from '@/components/forgot-password-modal';
 import AuthCardLayout from '@/components/common/AuthCardLayout';
 import Seo from '@/components/seo/Seo';
@@ -52,7 +53,7 @@ const Login = () => {
 
       setUserSession(data.accessToken, data.user);
 
-      const redirectParam = searchParams.get('redirect');
+      const redirectParam = getSafeRedirect(searchParams.get('redirect'));
       const targetUrl = redirectParam && !redirectParam.startsWith('/admin') ? redirectParam : '/my-account';
 
       navigate(targetUrl, { replace: true });
@@ -76,7 +77,8 @@ const Login = () => {
   };
 
   const handleGoToVerify = () => {
-    navigate('/registration?step=otp', {
+    const redirectParam = getSafeRedirect(searchParams.get('redirect'));
+    navigate(`/registration?step=otp${redirectParam ? `&redirect=${encodeURIComponent(redirectParam)}` : ''}`, {
       state: {
         email: unverifiedEmail || formData.email.trim().toLowerCase(),
         password: formData.password.trim(),
@@ -96,7 +98,7 @@ const Login = () => {
           <div className="space-y-4">
             <p className="text-center text-sm text-gray-500">
               Don't have an account?{' '}
-              <Link to="/registration" className="font-semibold text-[#0a2463] hover:underline">
+              <Link to={withRedirect('/registration', getSafeRedirect(searchParams.get('redirect')) ?? '')} className="font-semibold text-[#0a2463] hover:underline">
                 Sign up
               </Link>
             </p>

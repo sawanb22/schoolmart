@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { ArrowLeft, ArrowRight, CheckCircle, Send, X, BookOpen, Layers, ShieldCheck, Sparkles } from 'lucide-react';
 import { Link, useParams } from 'react-router-dom';
 import api from '@/api/client';
+import LoginGate from '@/components/common/LoginGate';
 import { usePageData } from '@/hooks/usePageData';
 import { resolveMediaUrl } from '@/lib/media-url';
 import { slugifyStepTitle } from './campus-design-execution.data';
@@ -401,6 +402,7 @@ const CampusDesignService = () => {
                   </button>
                 </div>
               ) : (
+                <LoginGate title="Please log in to continue" message="Create a free account or log in to request a quote.">
                 <form onSubmit={handleSubmit} className="space-y-4">
                   {error && <div className="p-3 bg-red-50 border border-red-200 rounded-lg text-red-600 text-xs">{error}</div>}
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -436,6 +438,7 @@ const CampusDesignService = () => {
                     {submitting ? 'Submitting...' : 'Send Quotation Request'}
                   </button>
                 </form>
+                </LoginGate>
               )}
             </div>
           </div>
