@@ -754,10 +754,10 @@
 
 ---
 
-## T16 – SEO: metadata, sitemap, robots – PENDING REVIEW
+## T16 – SEO: metadata, sitemap, robots – DONE
 - Date: 2026-11-22
-- Commit: `c559ae3` (T16: SEO: metadata, sitemap, robots)
-- Review Status: PENDING REVIEW
+- Commit: `7a00cd1` (T16: SEO: metadata, sitemap, robots)
+- Review Status: APPROVED (commits 7f7b733..7a00cd1, review clean, 0 critical, 0 important)
 - Backup used: N/A (read-only dev DB queries; tests run strictly against isolated test DB `DATABASE_URL_TEST`)
 - Files changed (summary):
   - `backend/src/services/page-content/schemas.ts`: Updated `SettingsSchema` with `seoTitle`, `seoDescription`, `ogImage`, `noindex`. Added `ItemSeoSchema` to `ItemInputSchema`.
