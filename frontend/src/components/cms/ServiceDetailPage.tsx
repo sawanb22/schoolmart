@@ -6,6 +6,7 @@ import { itemToCard } from '@/lib/item-to-card';
 import { MediaImage } from '@/components/ui/media-image';
 import RichTextContent from '@/components/common/RichTextContent';
 import { ArticleDetailSkeleton } from '@/components/ui/page-skeleton';
+import Seo from '@/components/seo/Seo';
 
 export interface ServiceDetailPageProps {
   categorySlug?: string;
@@ -99,9 +100,22 @@ export default function ServiceDetailPage({
   const isExternalCta = effectiveCtaHref.startsWith('http');
 
   const parentOverviewTitle = categoryTitle || hub?.title || 'Overview';
+  const itemSeo = (item?.data as any)?.seo || card?.seo || {};
+  const seoTitle = itemSeo.title || card?.title || item?.title || categoryTitle || '';
+  const seoDescription = itemSeo.description || card?.description || item?.summary || '';
+  const seoImage = itemSeo.ogImage || card?.image || item?.imageUrl || '';
+  const seoPath = `/${slug}/${item?.slug || normalizedItemSlug}`;
+  const seoNoindex = Boolean(itemSeo.noindex);
 
   return (
     <main className="min-h-screen bg-gray-50/50 py-8 sm:py-12">
+      <Seo
+        title={seoTitle}
+        description={seoDescription}
+        image={seoImage}
+        path={seoPath}
+        noindex={seoNoindex}
+      />
       <article className="mx-auto max-w-3xl px-4 sm:px-6">
         <div className="mb-8 flex items-center justify-between gap-4 flex-wrap">
           <Link

@@ -4,6 +4,7 @@ import { useHubItem } from '@/hooks/useHubItem';
 import { itemToCard } from '@/lib/item-to-card';
 import { buildArticleViewModel } from '@/components/cms/article-view-model';
 import GenericPageRenderer, { type GenericPageData } from '@/components/cms/GenericPageRenderer';
+import Seo from '@/components/seo/Seo';
 
 export interface UniversalArticleDetailProps {
   hubSlug: string;
@@ -144,6 +145,7 @@ export default function UniversalArticleDetail({
   // 6. Not found fallback
   return (
     <main className="min-h-[60vh] flex flex-col items-center justify-center gap-5 px-4 bg-slate-50/60">
+      <Seo title="Article Not Found" noindex path={`/${hubSlug}/${normalizedSlug}`} />
       <h1 className="text-3xl font-bold text-cm-blue-dark">Article not found</h1>
       <p className="text-gray-600">That guide or article couldn't be found.</p>
       <Link to={`/${hubSlug}`} className="btn-primary">

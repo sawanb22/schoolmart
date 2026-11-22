@@ -752,6 +752,54 @@
 - Found, not fixed:
   - None.
 
+---
+
+## T16 – SEO: metadata, sitemap, robots – PENDING REVIEW
+- Date: 2026-11-22
+- Commit: `c559ae3` (T16: SEO: metadata, sitemap, robots)
+- Review Status: PENDING REVIEW
+- Backup used: N/A (read-only dev DB queries; tests run strictly against isolated test DB `DATABASE_URL_TEST`)
+- Files changed (summary):
+  - `backend/src/services/page-content/schemas.ts`: Updated `SettingsSchema` with `seoTitle`, `seoDescription`, `ogImage`, `noindex`. Added `ItemSeoSchema` to `ItemInputSchema`.
+  - `backend/src/validation/page-settings.schema.ts` & `item.schema.ts`: Re-export compatibility schemas.
+  - `backend/src/services/sitemap.service.ts`: Created sitemap generator querying published `Page` and `PageItem` records (excluding `home`, `test-*`, `draft-*`, and `noindex`), escaping XML entities, and providing debounced atomic filesystem sync via temp file + rename sync.
+  - `backend/src/routes/seo.routes.ts`: Created `GET /sitemap.xml` route applying `publicCmsCache()` caching.
+  - `backend/src/app.ts`: Mounted `seoRoutes` at root `/sitemap.xml` (before `/api`).
+  - `backend/src/services/page-content/after-content-write.ts`: Added debounced `scheduleSitemapSync(10000)` call when `SITEMAP_WRITE_PATH` is configured.
+  - `backend/tests/seo/sitemap.test.ts`: Created 9 backend tests covering XML structure, page & card inclusion/exclusion, XML entity escaping, `/sitemap.xml` caching & 304 handling, and atomic file write resilience.
+  - `frontend/public/robots.txt`: Created robots crawl policy disallowing `/admin`, `/my-account`, `/login`, `/register`, `/registration` and pointing to `https://campusmart.in/sitemap.xml`.
+  - `frontend/src/components/seo/Seo.tsx`: Built React 19 document metadata hoisting component (`<title>`, `<meta name="description">`, `<link rel="canonical">`, OpenGraph, Twitter Cards, robots `noindex`).
+  - `frontend/src/hooks/usePageSeo.ts`: Built hook resolving hierarchical title and description fallbacks for pages and items.
+  - `frontend/src/components/seo/__tests__/Seo.test.tsx`: Created 15 frontend unit tests for `<Seo>` and `usePageSeo`.
+  - `frontend/src/admin/components/UnifiedPageEditor.tsx`: Added collapsible SEO & Social Sharing card with character counters (60 for title, 160 for description) and `🌐 SEO` pill anchor.
+  - `frontend/src/admin/components/items/ItemEditorDrawer.tsx`: Added collapsible SEO section for item fields with character counters.
+  - Mounted `<Seo>` across public routes: `SolutionPageRenderer`, `ServicePageRenderer`, `GenericPageRenderer`, `ServiceDetailPage`, `UniversalArticleDetail`, bespoke hubs (`science-tech-labs`, `smart-classrooms`, `partner-with-colleges`, `furniture`, `faq`), `home.tsx`, and static/admin pages (`noindex`).
+  - `tests/e2e/seo.spec.ts`: Created Playwright E2E suite covering 5 golden routes (`/`, `/labs`, `/solutions/stem-tinkering-lab`, `/furniture`, `/faq`) asserting non-empty distinct titles, canonical links, and utility route `noindex`.
+  - `docs/plans/sdd/task-16-report.md`: Detailed execution report.
+  - `docs/plans/sdd/task-16-review-package.diff`: Review diff package from base `7f7b733`.
+- Tests added:
+  - `backend/tests/seo/sitemap.test.ts` (9 tests)
+  - `frontend/src/components/seo/__tests__/Seo.test.tsx` (15 tests)
+  - `tests/e2e/seo.spec.ts` (Playwright E2E suite)
+- Test results:
+  - Backend vitest suite: 37 passed / 37 test files, 248 passed / 248 tests (100% green).
+  - Frontend vitest suite: 26 passed / 26 test files, 123 passed / 123 tests (100% green).
+  - Frontend typecheck (`tsc -p tsconfig.app.json --noEmit`): 0 errors.
+  - Frontend production build & bundle budget: 149.30 KB Gzip (budget <= 170 KB, 20.70 KB under budget).
+- Acceptance Criteria Verified:
+  - [x] All tests pass (backend & frontend).
+  - [x] `GET /sitemap.xml` returns valid XML with proper URLs and `<lastmod>`.
+  - [x] Admin SEO collapsible section allows setting title & description with live character count (60/160).
+  - [x] Atomic sitemap sync writes safely to disk without throwing.
+  - [x] `robots.txt` disallows admin/auth routes and points to sitemap.
+  - [x] Playwright SEO test created covering golden routes.
+- Deviations from plan and why:
+  - In `SolutionPageRenderer`, `ServicePageRenderer`, `science-tech-labs`, `smart-classrooms`, and `faq`, moved `usePageSeo` to the top of each component before any conditional skeleton returns to strictly uphold React Rules of Hooks.
+  - Adjusted Prisma item slug filter from `slug: { not: null }` to `slug: { not: '' }` to match the non-nullable `String` schema.
+- Found, not fixed:
+  - None.
+
+
 
 
 

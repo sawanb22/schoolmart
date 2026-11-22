@@ -51,6 +51,7 @@ import adminPageItemsRoutes from './routes/admin-page-items.routes';
 import contentRoutes from './routes/content.routes';
 import pagesRoutes from './routes/pages.routes';
 import mediaRoutes from './routes/media.routes';
+import seoRoutes from './routes/seo.routes';
 import { errorHandler } from './middleware/error.middleware';
 import { UPLOADS_DIR } from './lib/uploads-dir';
 
@@ -182,6 +183,9 @@ if (fs.existsSync(rootUploadsFallback) && rootUploadsFallback !== UPLOADS_DIR) {
 app.get('/shop', (_req, res) => {
     res.redirect(301, 'https://schoolmart.store');
 });
+
+// Root /sitemap.xml
+app.use('/sitemap.xml', seoRoutes);
 
 // Health check
 app.get('/health', (_req, res) => {

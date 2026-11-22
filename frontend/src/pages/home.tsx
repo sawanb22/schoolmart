@@ -11,10 +11,27 @@ import Resources from '@/components/sections/resources';
 import PartnershipForm from '@/components/sections/partnership-form';
 import CollaborationsTicker from '@/components/sections/collaborations-ticker';
 import { useSiteContent } from '@/contexts/SiteContentContext';
+import Seo from '@/components/seo/Seo';
+import usePageSeo from '@/hooks/usePageSeo';
 
 export default function Home() {
   const { content } = useSiteContent();
   const styles = content.home_styles || {};
+  const homeHero = content.home_hero || {};
+  const homeSeo = content.home_seo || {};
+
+  const seoProps = usePageSeo(
+    {
+      seoTitle: homeSeo.title,
+      seoDescription: homeSeo.description,
+      ogImage: homeSeo.ogImage || homeHero.image,
+      heroTitle: homeHero.title || homeHero.headline,
+      heroSubtitle: homeHero.subtitle || homeHero.description,
+    },
+    'CampusMart - India\'s Premier Higher Ed Setup & Procurement Platform',
+    'Comprehensive institutional solutions, laboratory setups, sports infrastructure, smart classrooms, and procurement for universities and colleges across India.',
+    '/'
+  );
 
   const headingFontClass =
     styles.headingFont === 'playfair' ? 'font-playfair' :
@@ -34,6 +51,7 @@ export default function Home() {
       className={`min-h-screen w-full ${bodyFontClass} ${headingFontClass}`}
       style={{ '--primary-color': primaryColor } as React.CSSProperties}
     >
+      <Seo {...seoProps} />
       <TopBar />
       <Header />
       {!styles.hideCategories && <CategoryBar />}

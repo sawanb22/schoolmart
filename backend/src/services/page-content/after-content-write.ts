@@ -4,6 +4,9 @@ import { bumpCmsVersion } from '../cms-cache';
 import { solutionsIndexService } from '../solutions-finder';
 import { parsePageData } from '../../lib/page-data';
 import { REVISIONS_KEPT_PER_PAGE } from './constants';
+import { scheduleSitemapSync, cancelPendingSitemapSync } from '../sitemap.service';
+
+export { scheduleSitemapSync, cancelPendingSitemapSync };
 
 export interface AfterContentWriteParams {
   pageId?: number;
@@ -155,6 +158,11 @@ export async function afterContentWrite(params: AfterContentWriteParams, tx?: Pr
 
   // Schedule debounced search index rebuild
   scheduleSolutionsIndexRebuild(2000);
+
+  // Schedule debounced atomic sitemap file sync if SITEMAP_WRITE_PATH is configured
+  if (process.env.SITEMAP_WRITE_PATH) {
+    scheduleSitemapSync(10000);
+  }
 }
 
 export default afterContentWrite;

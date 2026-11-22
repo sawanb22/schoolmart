@@ -1,6 +1,6 @@
 import { useRef, useState, useEffect, useMemo } from 'react';
 import { Link } from 'react-router-dom';
-import { Save, Plus, AlertCircle, Trash2, Link as LinkIcon, X, ArrowLeft, ArrowRight, FileText, Eye, EyeOff, Sparkles, Type, Palette, Layout, Sliders, Layers, ChevronUp, ChevronDown, Pencil, Check, Tag, FolderOpen, ExternalLink, Loader2, Upload, History } from 'lucide-react';
+import { Save, Plus, AlertCircle, Trash2, Link as LinkIcon, X, ArrowLeft, ArrowRight, FileText, Eye, EyeOff, Sparkles, Type, Palette, Layout, Sliders, Layers, ChevronUp, ChevronDown, Pencil, Check, Tag, FolderOpen, ExternalLink, Loader2, Upload, History, Globe } from 'lucide-react';
 import api from '../api/client';
 import MediaImageField from './MediaImageField';
 import FurnitureCategorySwitchboard from './FurnitureCategorySwitchboard';
@@ -582,6 +582,7 @@ export default function UnifiedPageEditor({
     const [conflictCurrentPage, setConflictCurrentPage] = useState<any>(null);
     const [showPageConflictDialog, setShowPageConflictDialog] = useState(false);
     const [showHistoryPanel, setShowHistoryPanel] = useState(false);
+    const [showSeoSection, setShowSeoSection] = useState(false);
 
     const isAboutUs = page.slug === 'about-us' || page.slug === 'corporate';
     const isContactUs = page.slug === 'contact-us';
@@ -1615,6 +1616,7 @@ export default function UnifiedPageEditor({
 
         // 1. General Configuration
         pills.push({ id: 'sec-general', label: '⚙️ General' });
+        pills.push({ id: 'sec-seo', label: '🌐 SEO' });
 
         if (isAboutUs) {
             pills.push({ id: 'sec-styling', label: '🎨 Styling' });
@@ -2024,6 +2026,129 @@ export default function UnifiedPageEditor({
                             Controls which category this Hub Page and its internal cards are matched under in the AI Solutions Finder and homepage search bar. If cards do not have their own explicit category, they automatically inherit this one.
                         </p>
                     </div>
+                </section>
+
+                {/* SEO Configuration Section */}
+                <section id="sec-seo" className="rounded-2xl border border-slate-200 bg-white overflow-hidden shadow-xs scroll-mt-36">
+                    <button
+                        type="button"
+                        onClick={() => setShowSeoSection(!showSeoSection)}
+                        className="w-full flex items-center justify-between p-5 bg-gradient-to-r from-slate-50 to-white hover:bg-slate-100/70 transition cursor-pointer text-left"
+                    >
+                        <div className="flex items-center gap-3">
+                            <div className="p-2 rounded-xl bg-blue-50 text-blue-600">
+                                <Globe className="w-5 h-5" />
+                            </div>
+                            <div>
+                                <h4 className="text-xs font-black text-slate-800 uppercase tracking-[0.2em]">
+                                    Search Engine Optimization (SEO) &amp; Social Metadata
+                                </h4>
+                                <p className="text-xs text-slate-500 mt-0.5">
+                                    Custom title, meta description, OpenGraph preview image, and crawl indexing.
+                                </p>
+                            </div>
+                        </div>
+                        <div className="flex items-center gap-2">
+                            {(data.seoTitle || data.seoDescription || data.noindex) && (
+                                <span className="text-[10px] font-bold px-2.5 py-1 rounded-full bg-emerald-100 text-emerald-800 border border-emerald-200">
+                                    Configured
+                                </span>
+                            )}
+                            <div className="p-1 rounded-lg text-slate-400">
+                                {showSeoSection ? <ChevronUp className="w-5 h-5" /> : <ChevronDown className="w-5 h-5" />}
+                            </div>
+                        </div>
+                    </button>
+
+                    {showSeoSection && (
+                        <div className="p-6 pt-4 border-t border-slate-200 space-y-6 bg-white">
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                {/* SEO Title */}
+                                <div className="space-y-1.5">
+                                    <div className="flex items-center justify-between">
+                                        <label className="block text-sm font-bold text-gray-700">
+                                            SEO Meta Title
+                                        </label>
+                                        <span className={`text-xs font-mono ${(data.seoTitle?.length || 0) > 60 ? 'text-red-500 font-bold' : 'text-slate-400'}`}>
+                                            {data.seoTitle?.length || 0}/60
+                                        </span>
+                                    </div>
+                                    <input
+                                        type="text"
+                                        value={data.seoTitle ?? ''}
+                                        onChange={(e) => set('seoTitle', e.target.value)}
+                                        placeholder={data.heroTitle || title || 'Custom page title'}
+                                        className="w-full border border-gray-300 rounded-xl px-4 py-3 text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500 transition-all bg-white text-slate-800"
+                                    />
+                                    <p className="text-[11px] text-gray-500">
+                                        Browser tab title format: <code>&quot;{'{title}'} | CampusMart&quot;</code>. Defaults to hero title or page title if empty.
+                                    </p>
+                                </div>
+
+                                {/* OG Image */}
+                                <div className="space-y-1.5">
+                                    <label className="block text-sm font-bold text-gray-700">
+                                        OpenGraph / Social Card Image
+                                    </label>
+                                    <input
+                                        type="text"
+                                        value={data.ogImage ?? ''}
+                                        onChange={(e) => set('ogImage', e.target.value)}
+                                        placeholder={data.heroImage || '/uploads/og-banner.jpg'}
+                                        className="w-full border border-gray-300 rounded-xl px-4 py-3 text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500 transition-all bg-white text-slate-800"
+                                    />
+                                    <p className="text-[11px] text-gray-500">
+                                        Absolute URL or image path for social sharing previews (LinkedIn, Twitter, WhatsApp).
+                                    </p>
+                                </div>
+                            </div>
+
+                            {/* SEO Description */}
+                            <div className="space-y-1.5">
+                                <div className="flex items-center justify-between">
+                                    <label className="block text-sm font-bold text-gray-700">
+                                        SEO Meta Description
+                                    </label>
+                                    <span className={`text-xs font-mono ${(data.seoDescription?.length || 0) > 160 ? 'text-red-500 font-bold' : 'text-slate-400'}`}>
+                                        {data.seoDescription?.length || 0}/160
+                                    </span>
+                                </div>
+                                <textarea
+                                    rows={3}
+                                    value={data.seoDescription ?? ''}
+                                    onChange={(e) => set('seoDescription', e.target.value)}
+                                    placeholder={data.heroSubtitle || 'Enter search engine description for SERP snippets'}
+                                    className="w-full border border-gray-300 rounded-xl px-4 py-3 text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500 transition-all bg-white text-slate-800 resize-none"
+                                />
+                                <p className="text-[11px] text-gray-500">
+                                    Search engine description snippet. Recommended: max 160 characters (longer snippets will be truncated at word boundary).
+                                </p>
+                            </div>
+
+                            {/* Noindex Toggle */}
+                            <div className="p-4 rounded-xl bg-slate-50 border border-slate-200 flex items-center justify-between">
+                                <div>
+                                    <h5 className="text-xs font-bold text-slate-800 uppercase tracking-wider">
+                                        Search Engine Visibility (noindex)
+                                    </h5>
+                                    <p className="text-xs text-slate-500 mt-0.5">
+                                        When enabled, adds <code>&lt;meta name=&quot;robots&quot; content=&quot;noindex, nofollow&quot;&gt;</code> and excludes this page from sitemap.xml.
+                                    </p>
+                                </div>
+                                <button
+                                    type="button"
+                                    onClick={() => set('noindex', !data.noindex)}
+                                    className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold transition-all ${
+                                        data.noindex
+                                            ? 'bg-amber-100 text-amber-800 border border-amber-300'
+                                            : 'bg-emerald-50 text-emerald-700 border border-emerald-200'
+                                    }`}
+                                >
+                                    {data.noindex ? 'Hidden from Crawlers (noindex)' : 'Indexable by Crawlers'}
+                                </button>
+                            </div>
+                        </div>
+                    )}
                 </section>
 
                 {/* ─── Detail / Article Page Content Section ─── */}

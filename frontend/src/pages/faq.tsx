@@ -6,6 +6,8 @@ import { useHubLegacy } from '@/hooks/useHubLegacy';
 import { FaqPageSkeleton } from '@/components/ui/page-skeleton';
 import { SafeRichText } from '@/components/common/RichTextContent';
 import { resolveCtaButtonStyles } from '@/lib/ctaStyles';
+import Seo from '@/components/seo/Seo';
+import usePageSeo from '@/hooks/usePageSeo';
 import type { FaqItem } from '@/components/sections/faq-section';
 import {
   Accordion,
@@ -22,6 +24,7 @@ export default function FaqPage() {
   const { data, loading } = useHubLegacy('faq');
   const { content } = useSiteContent();
   const [searchQuery, setSearchQuery] = useState('');
+  const seoProps = usePageSeo(data, 'Frequently Asked Questions (FAQ)', undefined, '/faq');
 
   // Read FAQs directly from database (pageData.faqs first, then global site content home_faqs)
   const pageFaqs = (data as any)?.faqs;
@@ -70,11 +73,17 @@ export default function FaqPage() {
   const cleanPhone = phone.replace(/[^0-9+]/g, '');
 
   if (loading && !heroTitle && faqs.length === 0) {
-    return <FaqPageSkeleton />;
+    return (
+      <>
+        <Seo {...seoProps} />
+        <FaqPageSkeleton />
+      </>
+    );
   }
 
   return (
     <div className="min-h-screen bg-gray-50/50 pb-10">
+      <Seo {...seoProps} />
       {/* Hero Header */}
       {!hideHero && (heroEyebrow || heroTitle || heroSubtitle) && (
         <div className="bg-[#12395b] text-white py-8 sm:py-12 relative overflow-hidden">

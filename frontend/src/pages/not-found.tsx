@@ -1,9 +1,11 @@
 import { Link } from 'react-router-dom';
 import { Home, ShoppingBag } from 'lucide-react';
+import Seo from '@/components/seo/Seo';
 
 const NotFound = () => {
   return (
     <div className="min-h-[70vh] flex items-center justify-center px-4 py-16 bg-slate-50/50">
+      <Seo title="Page Not Found" noindex={true} path="/not-found" />
       <div className="max-w-md w-full text-center bg-white p-8 rounded-3xl shadow-sm border border-slate-100">
         <span className="inline-block text-6xl font-black text-cm-blue mb-2">404</span>
         <h1 className="text-2xl font-bold text-slate-900 mb-3">Page Not Found</h1>

@@ -16,6 +16,17 @@ export function checkJsonByteLength(payload: unknown, maxBytes: number): boolean
 }
 
 /**
+ * SEO metadata schema for structured page items.
+ */
+export const ItemSeoSchema = z.object({
+  title: z.string().optional(),
+  description: z.string().optional(),
+  ogImage: z.string().optional(),
+  noindex: z.boolean().optional(),
+});
+export type ItemSeo = z.infer<typeof ItemSeoSchema>;
+
+/**
  * Loosely typed object schema for legacy card inputs.
  * Enforces that if title-like keys exist, they must be strings.
  */
@@ -147,6 +158,10 @@ export const SettingsSchema = z.object({
   hideSearch: z.boolean().optional(),
   template: z.string().optional(),
   categories: z.array(z.string()).optional(),
+  seoTitle: z.string().optional(),
+  seoDescription: z.string().optional(),
+  ogImage: z.string().optional(),
+  noindex: z.boolean().optional(),
 })
   .passthrough()
   .superRefine((val, ctx) => {

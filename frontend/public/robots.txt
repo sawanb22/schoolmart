@@ -1,0 +1,7 @@
+User-agent: *
+Disallow: /admin
+Disallow: /my-account
+Disallow: /login
+Disallow: /register
+Disallow: /registration
+Sitemap: https://campusmart.in/sitemap.xml

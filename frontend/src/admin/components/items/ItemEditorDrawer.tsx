@@ -5,6 +5,9 @@ import {
     AlertCircle,
     Check,
     Loader2,
+    Globe,
+    ChevronDown,
+    ChevronUp,
 } from 'lucide-react';
 import {
     type ItemFull,
@@ -46,6 +49,7 @@ export default function ItemEditorDrawer({
     const [saving, setSaving] = useState(false);
     const [saveError, setSaveError] = useState<string | null>(null);
     const [savedSuccess, setSavedSuccess] = useState(false);
+    const [seoOpen, setSeoOpen] = useState(false);
 
     // Conflict state
     const [conflictCurrent, setConflictCurrent] = useState<(ItemFull & { card?: any }) | null>(null);
@@ -232,6 +236,149 @@ export default function ItemEditorDrawer({
                             availableCategories={availableCategories}
                         />
                     )}
+
+                    {/* Collapsible SEO Section */}
+                    <div className="border border-slate-200 rounded-2xl overflow-hidden bg-white shadow-xs">
+                        <button
+                            type="button"
+                            onClick={() => setSeoOpen(!seoOpen)}
+                            className="w-full flex items-center justify-between p-4 bg-slate-50 hover:bg-slate-100/80 transition text-left cursor-pointer"
+                        >
+                            <div className="flex items-center gap-2.5">
+                                <Globe className="w-4 h-4 text-blue-600" />
+                                <div>
+                                    <span className="text-xs font-bold text-slate-800 uppercase tracking-wider block">
+                                        SEO &amp; Search Engine Metadata
+                                    </span>
+                                    <span className="text-[11px] text-slate-500">
+                                        Custom title, description, social preview image, and indexing
+                                    </span>
+                                </div>
+                            </div>
+                            <div className="flex items-center gap-2">
+                                {(card.seo?.title || card.seo?.description || card.seo?.noindex) && (
+                                    <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-blue-100 text-blue-700">
+                                        Configured
+                                    </span>
+                                )}
+                                {seoOpen ? (
+                                    <ChevronUp className="w-4 h-4 text-slate-400" />
+                                ) : (
+                                    <ChevronDown className="w-4 h-4 text-slate-400" />
+                                )}
+                            </div>
+                        </button>
+
+                        {seoOpen && (
+                            <div className="p-4 space-y-4 border-t border-slate-200 bg-white">
+                                {/* Title */}
+                                <div>
+                                    <div className="flex items-center justify-between mb-1">
+                                        <label className="block text-xs font-bold text-slate-700">
+                                            SEO Title
+                                        </label>
+                                        <span className={`text-[11px] font-mono ${(card.seo?.title?.length || 0) > 60 ? 'text-red-500 font-bold' : 'text-slate-400'}`}>
+                                            {card.seo?.title?.length || 0}/60
+                                        </span>
+                                    </div>
+                                    <input
+                                        type="text"
+                                        value={card.seo?.title || ''}
+                                        onChange={(e) => {
+                                            const v = e.target.value;
+                                            setCard((prev: any) => ({
+                                                ...prev,
+                                                seo: { ...(prev.seo || {}), title: v },
+                                            }));
+                                        }}
+                                        placeholder={card.title || 'Custom search engine title'}
+                                        className="w-full border border-slate-200 rounded-lg px-3 py-2 text-xs focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none"
+                                    />
+                                    <p className="text-[11px] text-slate-400 mt-1">
+                                        Leave blank to default to item title. Recommended: max 60 characters.
+                                    </p>
+                                </div>
+
+                                {/* Description */}
+                                <div>
+                                    <div className="flex items-center justify-between mb-1">
+                                        <label className="block text-xs font-bold text-slate-700">
+                                            SEO Description
+                                        </label>
+                                        <span className={`text-[11px] font-mono ${(card.seo?.description?.length || 0) > 160 ? 'text-red-500 font-bold' : 'text-slate-400'}`}>
+                                            {card.seo?.description?.length || 0}/160
+                                        </span>
+                                    </div>
+                                    <textarea
+                                        rows={3}
+                                        value={card.seo?.description || ''}
+                                        onChange={(e) => {
+                                            const v = e.target.value;
+                                            setCard((prev: any) => ({
+                                                ...prev,
+                                                seo: { ...(prev.seo || {}), description: v },
+                                            }));
+                                        }}
+                                        placeholder={card.description || 'Custom search engine meta description'}
+                                        className="w-full border border-slate-200 rounded-lg px-3 py-2 text-xs focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none resize-none"
+                                    />
+                                    <p className="text-[11px] text-slate-400 mt-1">
+                                        Leave blank to default to item summary. Recommended: max 160 characters.
+                                    </p>
+                                </div>
+
+                                {/* OG Image */}
+                                <div>
+                                    <label className="block text-xs font-bold text-slate-700 mb-1">
+                                        OpenGraph / Social Image URL
+                                    </label>
+                                    <input
+                                        type="text"
+                                        value={card.seo?.ogImage || ''}
+                                        onChange={(e) => {
+                                            const v = e.target.value;
+                                            setCard((prev: any) => ({
+                                                ...prev,
+                                                seo: { ...(prev.seo || {}), ogImage: v },
+                                            }));
+                                        }}
+                                        placeholder={card.image || '/uploads/custom-og.jpg'}
+                                        className="w-full border border-slate-200 rounded-lg px-3 py-2 text-xs focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none"
+                                    />
+                                </div>
+
+                                {/* Noindex Toggle */}
+                                <div className="flex items-center justify-between pt-2 border-t border-slate-100">
+                                    <div>
+                                        <span className="block text-xs font-bold text-slate-700">
+                                            Exclude from Search Engines (noindex)
+                                        </span>
+                                        <span className="text-[11px] text-slate-500">
+                                            Instruct crawlers not to index this item and exclude it from the sitemap.
+                                        </span>
+                                    </div>
+                                    <button
+                                        type="button"
+                                        onClick={() => {
+                                            setCard((prev: any) => ({
+                                                ...prev,
+                                                seo: { ...(prev.seo || {}), noindex: !prev.seo?.noindex },
+                                            }));
+                                        }}
+                                        className={`relative inline-flex h-5 w-9 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none ${
+                                            card.seo?.noindex ? 'bg-red-600' : 'bg-slate-200'
+                                        }`}
+                                    >
+                                        <span
+                                            className={`pointer-events-none inline-block h-4 w-4 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out ${
+                                                card.seo?.noindex ? 'translate-x-4' : 'translate-x-0'
+                                            }`}
+                                        />
+                                    </button>
+                                </div>
+                            </div>
+                        )}
+                    </div>
                 </div>
 
                 {/* Footer Toolbar */}

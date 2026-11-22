@@ -5,6 +5,7 @@ import api from '@/api/client';
 import { setUserSession } from '@/lib/auth-session';
 import ForgotPasswordModal from '@/components/forgot-password-modal';
 import AuthCardLayout from '@/components/common/AuthCardLayout';
+import Seo from '@/components/seo/Seo';
 
 const Login = () => {
   const navigate = useNavigate();
@@ -87,6 +88,7 @@ const Login = () => {
 
   return (
     <>
+      <Seo title="Login" noindex={true} path="/login" />
       <AuthCardLayout
         title="Welcome back"
         subtitle="Sign in to your SchoolMart customer account"

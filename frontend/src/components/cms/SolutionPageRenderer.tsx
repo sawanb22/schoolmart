@@ -11,6 +11,8 @@ import { MediaImage } from '@/components/ui/media-image';
 import { SportsInfraSkeleton } from '@/components/ui/page-skeleton';
 import { SafeRichText } from '@/components/common/RichTextContent';
 import { resolveCtaButtonStyles } from '@/lib/ctaStyles';
+import Seo from '@/components/seo/Seo';
+import usePageSeo from '@/hooks/usePageSeo';
 
 export interface PartnerLogoItem {
   name: string;
@@ -168,6 +170,7 @@ const SolutionPageRenderer = ({ slug = '' }: SolutionPageRendererProps) => {
   const { data, loading } = useHubLegacy(slug);
   const { isSaved, isPending, add, remove, showLoginPrompt, setShowLoginPrompt } = useDesignWishlist(slug);
   const [selectedCategory, setSelectedCategory] = useState('');
+  const seoProps = usePageSeo(data, slug, undefined, slug ? `/${slug}` : undefined);
 
   const styles: SolutionPageStyles = {
     headingFont: 'poppins',
@@ -327,13 +330,19 @@ const SolutionPageRenderer = ({ slug = '' }: SolutionPageRendererProps) => {
     card.href?.trim() || `/${slug}/${card.slug?.trim() || slugifySolutionItem(card.title)}`;
 
   if (loading) {
-    return <SportsInfraSkeleton />;
+    return (
+      <>
+        <Seo {...seoProps} />
+        <SportsInfraSkeleton />
+      </>
+    );
   }
 
   const showCta = !data.hideCta && (Boolean(data.ctaTitle) || Boolean(data.ctaButtonLabel));
 
   return (
     <main className={`min-h-screen bg-white ${bodyFontClass} ${showCta ? 'pb-0' : 'pb-16'}`}>
+      <Seo {...seoProps} />
       <LoginPromptModal open={showLoginPrompt} onClose={() => setShowLoginPrompt(false)} />
 
       {/* Hero Section - 100% Database Driven */}
