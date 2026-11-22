@@ -84,7 +84,15 @@ function PageLoader() {
   );
 }
 
-function Layout({ children }: { children: React.ReactNode }) {
+export function Layout({
+  children,
+  showCategoryBar = true,
+  showBreadcrumb = true,
+}: {
+  children: React.ReactNode;
+  showCategoryBar?: boolean;
+  showBreadcrumb?: boolean;
+}) {
   const location = useLocation();
   if (!location.pathname.startsWith('/admin') && location.pathname !== location.pathname.toLowerCase()) {
     return <Navigate to={location.pathname.toLowerCase() + location.search} replace />;
@@ -95,9 +103,13 @@ function Layout({ children }: { children: React.ReactNode }) {
     <div className={`min-h-screen flex flex-col ${isAuthPage ? 'auth-page-shell' : ''}`}>
       <TopBar />
       <Header />
-      <CategoryBar />
-      <BreadcrumbBar />
-      <main className="flex-1">{children}</main>
+      {showCategoryBar && <CategoryBar />}
+      {showBreadcrumb && <BreadcrumbBar />}
+      <main className="flex-1">
+        <Suspense fallback={<PageCardGridSkeleton cardCount={6} />}>
+          {children}
+        </Suspense>
+      </main>
       <Footer />
     </div>
   );

@@ -2,8 +2,6 @@ import fs from "fs";
 import path from "path";
 import { fileURLToPath } from "url";
 import { build } from "vite";
-import react from "@vitejs/plugin-react";
-import { inspectAttr } from "kimi-plugin-inspect-react";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -11,7 +9,6 @@ const __dirname = path.dirname(__filename);
 console.log("🚀 Starting clean frontend Vite production build...");
 
 process.env.NODE_ENV = process.env.NODE_ENV || "production";
-const isDev = process.env.NODE_ENV !== "production";
 
 const distDir = path.resolve(__dirname, "dist");
 const assetsDir = path.join(distDir, "assets");
@@ -21,21 +18,10 @@ if (fs.existsSync(assetsDir)) {
 
 try {
   await build({
-    configFile: false,
+    configFile: path.resolve(__dirname, "vite.config.ts"),
     root: __dirname,
+    mode: "production",
     publicDir: false, // Prevent Vite from copying .htaccess and triggering sandbox EPERM
-    plugins: [
-      ...(isDev ? [inspectAttr()] : []),
-      react(),
-    ],
-    resolve: {
-      alias: {
-        "@": path.resolve(__dirname, "./src"),
-      },
-    },
-    css: {
-      postcss: path.resolve(__dirname, "postcss.config.js"),
-    },
     build: {
       emptyOutDir: false,
     },

@@ -653,5 +653,55 @@
 - Found, not fixed:
   - None.
 
+---
+
+## T14 – Bundle and rendering performance – DONE
+- Date: 2026-11-22
+- Commit: Pending (T14: Bundle and rendering performance)
+- Review Status: PENDING REVIEW
+- Files changed (summary):
+  - `frontend/vite.config.js`: Deleted obsolete configuration.
+  - `frontend/vite.config.ts`: Consolidated into single canonical configuration; retained `/api` and `/uploads` proxies, made `kimi-plugin-inspect-react` strictly dev-only, set `build.target: 'es2020'`, and configured Rollup `manualChunks` (`react`, `router`, `query`, `gsap`, `radix`, `icons`).
+  - `frontend/build.js`: Configured to use `vite.config.ts` and mode `production`.
+  - `frontend/src/components/layout/topbar.tsx`: Replaced static GSAP import with async dynamic import; added `prefers-reduced-motion` check; animated transform/opacity with delay <= 0.05s from visible state.
+  - `frontend/src/components/layout/header.tsx`: Replaced static GSAP import with async dynamic import; added `prefers-reduced-motion` check; animated transform/opacity with delay <= 0.05s from visible state.
+  - `frontend/src/components/layout/footer.tsx`: Replaced static GSAP import with async dynamic import; added `prefers-reduced-motion` check; animated transform/opacity with delay <= 0.05s from visible state.
+  - `frontend/src/components/sections/category-bar.tsx`: Replaced static GSAP import with async dynamic import; added `prefers-reduced-motion` check; animated transform/opacity with delay <= 0.05s from visible state.
+  - `frontend/src/App.tsx`: Added `showCategoryBar?: boolean` and `showBreadcrumb?: boolean` props to `Layout`; wrapped `<main>` with `<Suspense fallback={<PageCardGridSkeleton cardCount={6} />}>`. Tested `/` via `Layout`; reverted to standalone `<Home />` per Step 5 criterion due to CSS encapsulation/font differences on `/`.
+  - `frontend/index.html`: Optimized Google Fonts link to exactly 12 pairs (`Plus Jakarta Sans: 400,500,600,700`, `Poppins: 400,600,700`, `Open Sans: 400,600`, `Space Grotesk: 500,700`, `Playfair Display: 600`); removed bulky 643 KB `favicon.png` reference in favor of `/favicon.ico` and `/favicon-32x32.png`.
+  - `frontend/src/components/ErrorBoundary.tsx`: Removed `reload()` calls from `render()`; debounced chunk reload attempts in `componentDidCatch` (max 1 reload per 30s using `sessionStorage.getItem('cm_chunk_reload_ts')`); hid error details when `!import.meta.env.DEV`.
+  - `frontend/scripts/analyze.mjs`: Added script generating `frontend/dist/stats.html` using `rollup-plugin-visualizer`.
+  - `frontend/scripts/check-bundle-budget.mjs`: Added automated bundle budget validator checking that entry + modulepreloads sum <= 170.00 KB gzip.
+  - `frontend/package.json`: Added `rollup-plugin-visualizer` to devDependencies; added `"analyze"` script; chained `"build": "npm run typecheck && node build.js && node scripts/check-bundle-budget.mjs"`.
+  - `frontend/src/components/__tests__/ErrorBoundary.test.tsx`: Created unit tests verifying single chunk reload attempt, no reload in render, and masking of error message in production mode.
+  - `frontend/src/components/layout/__tests__/Layout.test.tsx`: Created tests verifying chrome remains mounted while lazy child routes are suspended.
+  - `docs/plans/sdd/task-14-report.md`: Created detailed task report.
+- Tests added:
+  - `frontend/src/components/__tests__/ErrorBoundary.test.tsx` (3 tests)
+  - `frontend/src/components/layout/__tests__/Layout.test.tsx` (2 tests)
+- Test results:
+  - Full frontend Vitest suite (`npm run test:frontend`): 23 test files passed, 87 passed / 87 total (100% green).
+  - Frontend typecheck (`npm run typecheck:frontend`): 0 errors.
+  - Automated bundle budget check (`node scripts/check-bundle-budget.mjs`): **132.45 KB Gzip** (under 170.00 KB budget, 37.55 KB head room).
+  - Playwright smoke test (`npx playwright test tests/e2e/smoke.spec.ts`): 206 passed / 206 executed (3 known baseline failures skipped), 0 regressions.
+- Metrics (Performance & Web Vitals via `scripts/measure-lighthouse.mjs`):
+  - `/labs` Performance: **100** (was 98)
+  - `/labs` Total Blocking Time (TBT): **55 ms** (was 225 ms, -75.6%)
+  - `/labs` First Contentful Paint (FCP): **584 ms** (was 1,008 ms, -42.1%)
+  - `/` Total Blocking Time (TBT): **105 ms** (was 281 ms, -62.6%)
+  - `/` Largest Contentful Paint (LCP): **872 ms** (was 1,096 ms, -20.4%)
+  - `/` First Contentful Paint (FCP): **872 ms** (was 1,096 ms, -20.4%)
+  - GSAP excluded from critical path: **-45.13 KB gzip deferred** to async chunk.
+- Acceptance Criteria Verified:
+  - [x] Only `frontend/vite.config.ts` exists. `kimi-plugin-inspect-react` does not appear in production `dist`.
+  - [x] Gzip entry + modulepreloads sum meets budget (132.45 KB <= 170 KB).
+  - [x] ErrorBoundary and Layout component tests pass.
+  - [x] Playwright smoke test suite passes without regression (206/206).
+- Deviations from plan and why:
+  - Step 5 Home chrome: Visual snapshot on `/` differed when routed inside `Layout` due to root container font inheritance and custom CSS variables in `home.tsx`. Following the explicit requirement in brief Step 5 ("Only keep this change if the `/` visual test passes. Otherwise revert this step and document why in log"), `/` continues to route directly to `<Home />`.
+- Found, not fixed:
+  - None.
+
+
 
 

@@ -1,5 +1,4 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
-import gsap from 'gsap';
 import { Menu, X, ChevronDown } from 'lucide-react';
 import { Link, useLocation } from 'react-router-dom';
 import { isAdminSession } from '@/lib/auth-session';
@@ -58,29 +57,42 @@ const MainHeader = () => {
   }, []);
 
   useEffect(() => {
-    const ctx = gsap.context(() => {
-      const tl = gsap.timeline({ delay: 0.5 });
+    if (typeof window !== 'undefined' && window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      return;
+    }
 
-      tl.fromTo(
-        headerRef.current,
-        { scaleX: 0, transformOrigin: 'left' },
-        { scaleX: 1, duration: 0.8, ease: 'power3.out' }
-      )
-        .fromTo(
-          logoRef.current,
-          { clipPath: 'circle(0% at 50% 50%)', opacity: 0 },
-          { clipPath: 'circle(100% at 50% 50%)', opacity: 1, duration: 0.6, ease: 'power3.out' },
-          '-=0.4'
+    let ctx: any;
+    let cancelled = false;
+
+    import('gsap').then(({ default: gsap }) => {
+      if (cancelled) return;
+      ctx = gsap.context(() => {
+        const tl = gsap.timeline({ delay: 0.05 });
+
+        tl.fromTo(
+          headerRef.current,
+          { y: -10, opacity: 0.9 },
+          { y: 0, opacity: 1, duration: 0.4, ease: 'power3.out' }
         )
-        .fromTo(
-          navRef.current?.children || [],
-          { y: -30, opacity: 0 },
-          { y: 0, opacity: 1, duration: 0.4, stagger: 0.1, ease: 'back.out(1.7)' },
-          '-=0.3'
-        );
+          .fromTo(
+            logoRef.current,
+            { scale: 0.95, opacity: 0.9 },
+            { scale: 1, opacity: 1, duration: 0.4, ease: 'power3.out' },
+            '-=0.2'
+          )
+          .fromTo(
+            navRef.current?.children || [],
+            { y: -10, opacity: 0.8 },
+            { y: 0, opacity: 1, duration: 0.3, stagger: 0.05, ease: 'power2.out' },
+            '-=0.2'
+          );
+      });
     });
 
-    return () => ctx.revert();
+    return () => {
+      cancelled = true;
+      ctx?.revert();
+    };
   }, []);
 
   const navItems: NavItem[] = useMemo(() => {
