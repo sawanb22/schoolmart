@@ -19,18 +19,10 @@ const HeroBanner = () => {
     image: rawHero.image ? (resolveMediaUrl(rawHero.image) || rawHero.image) : ''
   };
 
-  const [bgImageUrl, setBgImageUrl] = useState<string>(() => heroData.image);
+  const [imgError, setImgError] = useState(false);
 
   useEffect(() => {
-    if (!heroData.image) {
-      setBgImageUrl('');
-      return;
-    }
-    const candidate = heroData.image;
-    const testImg = new Image();
-    testImg.src = candidate;
-    testImg.onload = () => setBgImageUrl(candidate);
-    testImg.onerror = () => setBgImageUrl('');
+    setImgError(false);
   }, [heroData.image]);
 
   const containerRef = useRef<HTMLDivElement>(null);
@@ -105,17 +97,22 @@ const HeroBanner = () => {
   return (
     <div
       ref={containerRef}
-      className="relative overflow-hidden w-full transition-colors"
+      className="relative overflow-hidden w-full transition-colors isolate"
       style={{
         backgroundColor: bgColor,
         minHeight: heroLayout === 'minimal' ? '220px' : '300px',
       }}
     >
       {/* Background Photograph */}
-      {bgImageUrl && (
-        <div
-          className="absolute inset-0 bg-cover bg-center"
-          style={{ backgroundImage: `url('${bgImageUrl}')` }}
+      {heroData.image && !imgError && (
+        <img
+          src={heroData.image}
+          alt={heroData.title || 'Hero background'}
+          fetchPriority="high"
+          loading="eager"
+          decoding="async"
+          className="absolute inset-0 w-full h-full object-cover -z-10"
+          onError={() => setImgError(true)}
         />
       )}
 

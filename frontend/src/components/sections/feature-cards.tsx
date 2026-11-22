@@ -6,7 +6,7 @@ import { FileText, MoveUpRight } from 'lucide-react';
 import { useSiteContent } from '@/contexts/SiteContentContext';
 import { useContactAction } from '@/hooks/useContactAction';
 import ContactActionModal from '@/components/ui/contact-action-modal';
-import { resolveMediaUrl } from '@/lib/media-url';
+import { MediaImage } from '@/components/ui/media-image';
 import { SafeRichText } from '@/components/common/RichTextContent';
 import { HomeFeatureCardsSkeleton } from '@/components/ui/page-skeleton';
 
@@ -154,9 +154,13 @@ const FeatureCards = () => {
                         style={{ height: photoHeight }}
                       >
                         {image && (
-                          <img
-                            src={resolveMediaUrl(image) || image}
+                          <MediaImage
+                            src={image}
                             alt={title}
+                            width={480}
+                            height={photoHeight}
+                            widths={[480, 960]}
+                            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
                             className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-108"
                           />
                         )}

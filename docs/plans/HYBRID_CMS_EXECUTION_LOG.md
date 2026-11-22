@@ -702,6 +702,56 @@
 - Found, not fixed:
   - None.
 
+---
+
+## T15 – Image pipeline and media URLs – PENDING REVIEW
+- Date: 2026-11-22
+- Commit: `61365cf` (T15: Image pipeline and media URLs)
+- Review Status: PENDING REVIEW
+- Backup used: N/A (read-only dev DB audit; tests run against isolated test DB `DATABASE_URL_TEST`)
+- Files changed (summary):
+  - `backend/scripts/audit-media-urls.ts`: Scanned 973 media entries across `Page`, `PageItem`, `SiteContent`, `Product`, `BlogPost`, `CaseStudy`, and `Catalogue`. Confirmed 729 `/uploads/` references on disk with 0 missing files.
+  - `backend/scripts/download-legacy-uploads.ts`: Tool to sync any missing legacy files from production CDN (executed; verified 0 missing).
+  - `backend/src/routes/media.routes.ts`: Upgraded POST `/api/media` with dynamic `sharp` loading, generating `<base>-480.webp`, `<base>-960.webp`, `<base>-1600.webp` variants for dimensions smaller than original. Resilient against missing sharp/binaries; videos bypass variants.
+  - `backend/tests/media/variants.test.ts`: Created backend tests verifying 3 variants for 2000px image, width-bounded variants for 800px image, graceful 201 without variants on error, and video upload behavior.
+  - `frontend/src/lib/media-url.ts`: Removed hardcoded `sportsurf.in/new` rewrite in favor of `VITE_MEDIA_BASE_URL` with API/window origin fallback.
+  - `frontend/src/lib/__tests__/media-url.test.ts`: Created unit tests (8 tests) verifying upload paths, absolute URLs, data/blob URLs, and absence of third-party domains.
+  - `frontend/.env.example` & `frontend/.env.production`: Added `VITE_MEDIA_BASE_URL=https://api.campusmart.in`.
+  - `frontend/scripts/optimize-images.mjs`: Script to optimize `public/images/` to WebP (quality 78, responsive >960px variants). Generated 14 WebP files saving 89.2% byte payload (9.41 MB -> 1.02 MB).
+  - `frontend/package.json`: Added `"images:optimize"` script.
+  - `frontend/src/components/ui/media-image.tsx`: Upgraded with `widths`, `sizes`, `width`, `height` props; auto-generates responsive `srcSet` for `/uploads/`; gracefully drops `srcSet` and falls back to original `src` on variant load failure.
+  - `frontend/src/components/ui/__tests__/MediaImage.test.tsx`: Created 13 unit tests for `MediaImage` responsive variants, remote URL omission, onError recovery, priority/loading attributes, and dimensions.
+  - `frontend/src/components/sections/hero-banner.tsx`: Replaced CSS `backgroundImage` with `<img fetchpriority="high" loading="eager" decoding="async" className="absolute inset-0 w-full h-full object-cover -z-10" />`; added `isolate` to container; removed `new Image()` preflight.
+  - `frontend/src/components/cms/SolutionPageRenderer.tsx`: Integrated `widths`, `sizes`, `width`, and `height` on card images, centered hero, and split hero.
+  - `frontend/src/components/sections/feature-cards.tsx`, `resources.tsx`, `digital-solutions.tsx`: Integrated `MediaImage` with responsive `widths`, `sizes`, and explicit dimensions.
+  - `docs/plans/sdd/task-15-report.md`: Comprehensive execution report.
+- Tests added:
+  - `backend/tests/media/variants.test.ts` (4 tests)
+  - `frontend/src/lib/__tests__/media-url.test.ts` (8 tests)
+  - `frontend/src/components/ui/__tests__/MediaImage.test.tsx` (13 tests)
+- Test results:
+  - Backend tests: 36 passed / 36 test files, 242+ passed (100% green).
+  - Frontend tests: 25 passed / 25 test files, 108 passed / 108 tests (100% green).
+  - Frontend typecheck (`npm run typecheck --prefix frontend`): 0 errors.
+  - Backend build (`prisma generate && tsc`): 0 errors.
+  - Frontend production build (`npm run build --prefix frontend`): Clean build, 149.24 KB Gzip (budget <= 170 KB, 20.76 KB under budget).
+- Metrics:
+  - Static images payload in `public/images`: **89.2% reduction** (9.41 MB PNGs -> 1.02 MB WebPs).
+  - Missing upload references in DB: **0** (729/729 exist on disk).
+  - Hardcoded `sportsurf.in` media references in `frontend/src`: **0**.
+- Acceptance Criteria Verified:
+  - [x] Audit script runs and generates report; 0 missing `/uploads/` files.
+  - [x] Searching `frontend/src` for `sportsurf.in` yields 0 results for media resolver.
+  - [x] All tests pass (frontend and backend).
+  - [x] Static images in `public/images` converted to WebP with 14 files committed.
+  - [x] Backend upload generates WebP variants with dynamic sharp resilience.
+  - [x] `MediaImage` component supports responsive widths, sizes, explicit dimensions, and error fallback.
+  - [x] Home hero banner renders as semantic `<img>` with `fetchpriority="high"` and container isolation.
+- Deviations from plan and why:
+  - None.
+- Found, not fixed:
+  - None.
+
 
 
 

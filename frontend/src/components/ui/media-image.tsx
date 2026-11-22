@@ -7,6 +7,22 @@ export interface MediaImageProps extends Omit<React.ImgHTMLAttributes<HTMLImageE
   fallbackNode?: React.ReactNode;
   priority?: boolean;
   fetchPriority?: 'high' | 'low' | 'auto';
+  widths?: number[];
+  sizes?: string;
+  width?: number | string;
+  height?: number | string;
+}
+
+/**
+ * Returns a variant path replacing the file extension with `-${width}.webp`.
+ * Strips existing variant suffix if present. Preserves query string and hash.
+ */
+export function getUploadVariantPath(src: string, width: number): string {
+  const match = src.match(/^([^?#]+)\.([a-zA-Z0-9]+)(.*)$/);
+  if (!match) return src;
+  const basePath = match[1].replace(/-\d+$/, '');
+  const queryAndHash = match[3] || '';
+  return `${basePath}-${width}.webp${queryAndHash}`;
 }
 
 export const MediaImage: React.FC<MediaImageProps> = ({
@@ -19,16 +35,22 @@ export const MediaImage: React.FC<MediaImageProps> = ({
   loading,
   priority = false,
   fetchPriority,
+  widths,
+  sizes,
+  width,
+  height,
   ...rest
 }) => {
+  const [variantFailed, setVariantFailed] = useState(false);
   const [useFallback, setUseFallback] = useState(false);
   const [hasError, setHasError] = useState(false);
 
   // Reset state when source props change
   useEffect(() => {
+    setVariantFailed(false);
     setUseFallback(false);
     setHasError(false);
-  }, [src, fallbackSrc]);
+  }, [src, fallbackSrc, widths]);
 
   const initialUrl = src ? resolveMediaUrl(src) : '';
   const fallbackUrl = fallbackSrc ? resolveMediaUrl(fallbackSrc) : '';
@@ -39,6 +61,24 @@ export const MediaImage: React.FC<MediaImageProps> = ({
   const isHighPriority = priority === true || fetchPriority === 'high';
   const resolvedLoading: 'eager' | 'lazy' = isHighPriority ? 'eager' : (loading || 'lazy');
   const resolvedFetchPriority = isHighPriority ? 'high' : fetchPriority;
+
+  // Responsive variant generation for /uploads/ URLs
+  const isSvg = typeof src === 'string' && (src.toLowerCase().endsWith('.svg') || src.toLowerCase().includes('.svg?'));
+  const isUploadUrl = Boolean(
+    typeof src === 'string' &&
+    src.includes('/uploads/') &&
+    !isSvg
+  );
+
+  let generatedSrcSet: string | undefined = undefined;
+  if (isUploadUrl && widths && widths.length > 0 && !variantFailed && !useFallback) {
+    generatedSrcSet = widths
+      .map((w) => `${resolveMediaUrl(getUploadVariantPath(src!, w))} ${w}w`)
+      .join(', ');
+  }
+
+  const effectiveSrcSet = generatedSrcSet || rest.srcSet;
+  const effectiveSizes = sizes || (effectiveSrcSet ? '100vw' : undefined);
 
   if (!effectiveUrl || hasError) {
     if (fallbackNode) {
@@ -54,6 +94,10 @@ export const MediaImage: React.FC<MediaImageProps> = ({
           'relative flex items-center justify-center bg-gradient-to-br from-slate-100 to-slate-200 text-slate-400 select-none overflow-hidden',
           className
         )}
+        style={{
+          ...(width ? { width: typeof width === 'number' ? `${width}px` : width } : {}),
+          ...(height ? { height: typeof height === 'number' ? `${height}px` : height } : {}),
+        }}
       >
         <svg
           className="w-10 h-10 opacity-40 text-slate-500"
@@ -76,15 +120,28 @@ export const MediaImage: React.FC<MediaImageProps> = ({
     <img
       src={effectiveUrl}
       alt={alt}
+      width={width}
+      height={height}
       loading={resolvedLoading}
+      {...(effectiveSrcSet ? { srcSet: effectiveSrcSet } : {})}
+      {...(effectiveSizes ? { sizes: effectiveSizes } : {})}
       {...(resolvedFetchPriority ? { fetchPriority: resolvedFetchPriority } : {})}
       className={className}
       onError={(e) => {
+        if (generatedSrcSet && !variantFailed) {
+          // If responsive WebP variant fails to load, fall back to original source without srcSet
+          setVariantFailed(true);
+          onError?.(e);
+          return;
+        }
+
         if (!useFallback && fallbackUrl && fallbackUrl !== effectiveUrl) {
           setUseFallback(true);
-        } else {
-          setHasError(true);
+          onError?.(e);
+          return;
         }
+
+        setHasError(true);
         onError?.(e);
       }}
       {...rest}

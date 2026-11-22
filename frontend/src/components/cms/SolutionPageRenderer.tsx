@@ -88,6 +88,10 @@ export function SolutionCard({
             <MediaImage
               src={card.image}
               alt={card.title}
+              width={480}
+              height={230}
+              widths={[480, 960]}
+              sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
               className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
             />
           )}
@@ -376,6 +380,13 @@ const SolutionPageRenderer = ({ slug = '' }: SolutionPageRendererProps) => {
                   <MediaImage
                     src={data.heroImage}
                     alt={data.heroTitle || ''}
+                    width={960}
+                    height={320}
+                    widths={[480, 960, 1600]}
+                    sizes="(max-width: 768px) 100vw, 960px"
+                    priority
+                    fetchPriority="high"
+                    loading="eager"
                     className="w-full h-[280px] sm:h-[320px] object-cover"
                   />
                 </div>
@@ -457,6 +468,13 @@ const SolutionPageRenderer = ({ slug = '' }: SolutionPageRendererProps) => {
                   <MediaImage
                     src={data.heroImage}
                     alt={data.heroTitle || ''}
+                    width={960}
+                    height={300}
+                    widths={[480, 960, 1600]}
+                    sizes="(max-width: 1024px) 100vw, 50vw"
+                    priority
+                    fetchPriority="high"
+                    loading="eager"
                     className="rounded-2xl shadow-xl w-full h-[260px] sm:h-[300px] object-cover border-2 border-white/20 relative z-10"
                   />
                 </div>

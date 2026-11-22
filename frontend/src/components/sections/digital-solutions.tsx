@@ -2,6 +2,7 @@ import { useEffect, useRef } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { Link } from 'react-router-dom';
+import { MediaImage } from '@/components/ui/media-image';
 import { SafeRichText } from '@/components/common/RichTextContent';
 import { BookOpen, Glasses, Library, GraduationCap, ClipboardCheck, Settings } from 'lucide-react';
 
@@ -137,9 +138,13 @@ const DigitalSolutions = () => {
               className={`solution-card ${index % 2 === 1 ? 'md:flex-row-reverse' : ''}`}
             >
               <div className="solution-image overflow-hidden rounded-xl shadow-lg">
-                <img
+                <MediaImage
                   src={image}
                   alt={title}
+                  width={960}
+                  height={320}
+                  widths={[480, 960, 1600]}
+                  sizes="(max-width: 768px) 100vw, 50vw"
                   className="w-full h-64 md:h-80 object-cover hover:scale-105 transition-transform duration-500"
                 />
               </div>
